@@ -1,0 +1,1142 @@
+{
+  "entrada": {
+    "semeadura_safrinha": "01/02",
+    "pesos": {
+      "renda": 5.0,
+      "solo": 3.0,
+      "agua": 3.0,
+      "pragas": 3.0,
+      "risco": 3.0
+    },
+    "rotacao_atual": "milho_safrinha",
+    "ajustes": {},
+    "n_alternativas": 3
+  },
+  "diagnostico": {
+    "area": {
+      "origem": "ponto",
+      "talhao_id": null,
+      "area_ha": 99.89500281585802,
+      "centroide": {
+        "lat": -24.2,
+        "lon": -54.2
+      },
+      "municipio": {
+        "cod_ibge": "4108809",
+        "nome": "Guaíra"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -54.205029,
+              -24.204406
+            ],
+            [
+              -54.205029,
+              -24.195594
+            ],
+            [
+              -54.194972,
+              -24.195594
+            ],
+            [
+              -54.194972,
+              -24.204406
+            ],
+            [
+              -54.205029,
+              -24.204406
+            ]
+          ]
+        ]
+      }
+    },
+    "relevo": {
+      "altitude_media": 309.4517822265625,
+      "altitude_min": 297.0,
+      "altitude_max": 317.0,
+      "declividade_media": 3.2605345249176025,
+      "declividade_p90": 5.311740398406982,
+      "classe_embrapa": "suave ondulado",
+      "texto": "Declividade média 3.3% (suave ondulado), altitude média 309 m."
+    },
+    "solo": {
+      "p30": {
+        "clay": 40.50522232055664,
+        "sand": 38.117017110188804,
+        "silt": 21.374021848042805,
+        "soc": 18.707236448923748,
+        "phh2o": 5.394051631291707,
+        "bdod": 1.2785867253939311
+      },
+      "prof": {
+        "clay": {
+          "0-5cm": 38.75229263305664,
+          "5-15cm": 38.89972686767578,
+          "15-30cm": 42.15986251831055,
+          "30-60cm": 46.31135940551758
+        },
+        "sand": {
+          "0-5cm": 38.75896072387695,
+          "5-15cm": 39.03666687011719,
+          "15-30cm": 37.28993606567383,
+          "30-60cm": 34.49209213256836
+        },
+        "silt": {
+          "0-5cm": 22.497711181640625,
+          "5-15cm": 22.085241317749023,
+          "15-30cm": 20.525312423706055,
+          "30-60cm": 19.1656494140625
+        },
+        "soc": {
+          "0-5cm": 28.42012596130371,
+          "5-15cm": 18.1484317779541,
+          "15-30cm": 15.842143058776855,
+          "30-60cm": 9.068615913391113
+        },
+        "phh2o": {
+          "0-5cm": 5.420305252075195,
+          "5-15cm": 5.392567157745361,
+          "15-30cm": 5.386290073394775,
+          "30-60cm": 5.3332624435424805
+        },
+        "bdod": {
+          "0-5cm": 1.2505868673324585,
+          "5-15cm": 1.265721082687378,
+          "15-30cm": 1.296497106552124,
+          "30-60cm": 1.2627164125442505
+        }
+      },
+      "cad_mm_cm": {
+        "0-5cm": 1.2767021656036377,
+        "5-15cm": 1.2526726722717285,
+        "15-30cm": 1.2363946437835693,
+        "30-60cm": 1.2303650379180908,
+        "0-30": 1.248538573582967,
+        "0-60": 1.239451805750529
+      },
+      "cad_mm_0_30": 37.456157207489014,
+      "cad_mm_0_60": 74.36710834503174,
+      "classe_textura": "argiloso",
+      "cad_metodo": "Saxton & Rawls (2006) com areia, argila e MO (SoilGrids); wv0033/wv1500 indisponíveis",
+      "texto": "Argila 41%, areia 38%, C orgânico 18.7 g/kg, pH 5.4 (0–30 cm); CAD 1.25 mm/cm (74 mm em 60 cm).",
+      "fonte": "SoilGrids (ISRIC), média no polígono"
+    },
+    "historico": [
+      {
+        "ano": 2019,
+        "classe": 39,
+        "nome_classe": "Soja",
+        "fracao_dominante": 0.7027027027027027
+      },
+      {
+        "ano": 2020,
+        "classe": 39,
+        "nome_classe": "Soja",
+        "fracao_dominante": 0.737919737919738
+      },
+      {
+        "ano": 2021,
+        "classe": 39,
+        "nome_classe": "Soja",
+        "fracao_dominante": 0.7428337428337428
+      },
+      {
+        "ano": 2022,
+        "classe": 39,
+        "nome_classe": "Soja",
+        "fracao_dominante": 0.7428337428337428
+      },
+      {
+        "ano": 2023,
+        "classe": 39,
+        "nome_classe": "Soja",
+        "fracao_dominante": 0.7444717444717445
+      },
+      {
+        "ano": 2024,
+        "classe": 39,
+        "nome_classe": "Soja",
+        "fracao_dominante": 0.7461097461097461
+      }
+    ],
+    "rotacao_detectada": {
+      "rotacao": null,
+      "fonte": null,
+      "dias_solo_descoberto": null
+    },
+    "clima": {
+      "fonte": "NASA POWER 1991–2024, célula ~50 km (cel_-24.000_-54.3750)",
+      "celula": {
+        "id": "cel_-24.000_-54.3750",
+        "lat": -24.0,
+        "lon": -54.375,
+        "elev": 284.96
+      },
+      "semeadura_safrinha": "01/02",
+      "riscos": {
+        "geada_safrinha": 0.0,
+        "geada_trigo": 0.0,
+        "veranico_safrinha": 0.235,
+        "n_anos": 34,
+        "periodo": "1991–2024"
+      },
+      "geada_por_semeadura": [
+        {
+          "semeadura": "15/01",
+          "prob": 0.0,
+          "anos_com_evento": 0,
+          "n_anos": 34
+        },
+        {
+          "semeadura": "01/02",
+          "prob": 0.0,
+          "anos_com_evento": 0,
+          "n_anos": 34
+        },
+        {
+          "semeadura": "15/02",
+          "prob": 0.059,
+          "anos_com_evento": 2,
+          "n_anos": 34
+        },
+        {
+          "semeadura": "01/03",
+          "prob": 0.176,
+          "anos_com_evento": 6,
+          "n_anos": 34
+        },
+        {
+          "semeadura": "15/03",
+          "prob": 0.235,
+          "anos_com_evento": 8,
+          "n_anos": 34
+        }
+      ],
+      "diagnostico": {
+        "inicio_chuvas": {
+          "mediana": "21/09",
+          "p80": "09/10"
+        },
+        "calor_soja": {
+          "mediana": 10.5,
+          "media": 12.235294342041016,
+          "p80": 19.800000000000004
+        },
+        "balanco_p_et0": {
+          "soja": {
+            "n_anos": 34.0,
+            "media": 83.9945068359375,
+            "mediana": 73.96658325195312,
+            "p20": -73.41089401245115,
+            "p80": 253.6713592529297,
+            "media_1991_2020": 99.8154067993164,
+            "mediana_1991_2020": 86.7130355834961,
+            "p20_1991_2020": -57.54319534301757,
+            "p80_1991_2020": 262.6533569335938
+          },
+          "safrinha": {
+            "n_anos": 34.0,
+            "media": 98.37836456298828,
+            "mediana": 72.023193359375,
+            "p20": -51.30157279968258,
+            "p80": 204.37587280273442,
+            "media_1991_2020": 105.94361114501953,
+            "mediana_1991_2020": 72.59812927246094,
+            "p20_1991_2020": 10.882059860229518,
+            "p80_1991_2020": 197.32622375488282
+          },
+          "trigo": {
+            "n_anos": 34.0,
+            "media": 103.63982391357422,
+            "mediana": 69.56039428710938,
+            "p20": -41.86193809509275,
+            "p80": 276.38659667968756,
+            "media_1991_2020": 123.28483581542969,
+            "mediana_1991_2020": 84.76028442382812,
+            "p20_1991_2020": 6.204245376586918,
+            "p80_1991_2020": 276.38659667968756
+          }
+        },
+        "chuva_intensa": {
+          "media": 2.029411792755127,
+          "mediana": 2.0
+        }
+      },
+      "textos": [
+        "Início das chuvas (a partir de 01/09): mediana 21/09, p80 09/10 (1 em 5 anos atrasa até lá).",
+        "Calor na soja: mediana 10.5 dias/ciclo acima do limiar (média 12.2; p80 19.8).",
+        "Balanço P − ET0 por ciclo — soja: mediana 74 mm, p20 -73 mm; safrinha: mediana 72 mm, p20 -51 mm; trigo: mediana 70 mm, p20 -42 mm.",
+        "Chuva intensa (≥ 50 mm/dia): média 2.0 dias/ano (mediana 2)."
+      ]
+    },
+    "produtividade": {
+      "municipio": "Guaíra",
+      "cod_ibge": "4108809",
+      "fonte": "IBGE PAM",
+      "culturas": {
+        "soja": {
+          "kg_ha": 2533.4,
+          "sc_ha": 42.223333333333336,
+          "cv": 0.3014457864565699,
+          "tendencia_kg_ha_ano": -98.55757575757939,
+          "anos": "2021–2025",
+          "n": 5
+        },
+        "milho_total": {
+          "kg_ha": 4610.0,
+          "sc_ha": 76.83333333333333,
+          "cv": 0.2551738301507748,
+          "tendencia_kg_ha_ano": -162.56363636363562,
+          "anos": "2021–2025",
+          "n": 5
+        },
+        "milho_1safra": {
+          "kg_ha": 6370.6,
+          "sc_ha": 106.17666666666668,
+          "cv": 0.29134272365201697,
+          "tendencia_kg_ha_ano": -322.7117117116901,
+          "anos": "2017–2025",
+          "n": 5
+        },
+        "milho_2safra": {
+          "kg_ha": 4610.0,
+          "sc_ha": 76.83333333333333,
+          "cv": 0.25495703675047965,
+          "tendencia_kg_ha_ano": -161.51515151515082,
+          "anos": "2021–2025",
+          "n": 5
+        },
+        "trigo": {
+          "kg_ha": 2368.0,
+          "sc_ha": 39.46666666666667,
+          "cv": 0.3353337071449705,
+          "tendencia_kg_ha_ano": 85.23809523809298,
+          "anos": "2020–2025",
+          "n": 5
+        },
+        "aveia": {
+          "kg_ha": 1570.0,
+          "sc_ha": null,
+          "cv": 0.25736165335983,
+          "tendencia_kg_ha_ano": 25.56552162849914,
+          "anos": "2021–2025",
+          "n": 5
+        }
+      },
+      "texto": "Rendimento médio em Guaíra, 2021–2025: soja 42 sc/ha, milho 2ª safra 77 sc/ha, trigo 39 sc/ha, aveia 1570 kg/ha.",
+      "rendimento_usado": "PAM do município (cód. IBGE 4108809)"
+    },
+    "avisos": [
+      "Ponto convertido em quadrado de ~100 ha centrado nele; relevo, histórico e solo valem para esse quadrado, não para a lavoura real."
+    ]
+  },
+  "ranking": [
+    {
+      "posicao": 1,
+      "id": "milheto_crotalaria",
+      "rotacao": "Soja → milheto/crotalária (cobertura)",
+      "nota": 0.755,
+      "atual": false,
+      "criterios": {
+        "renda": 0.455,
+        "solo": 0.819,
+        "agua": 1.0,
+        "pragas": 0.7,
+        "risco": 1.0
+      },
+      "contribuicoes": {
+        "renda": 0.134,
+        "solo": 0.144,
+        "agua": 0.176,
+        "pragas": 0.124,
+        "risco": 0.176
+      },
+      "margem": {
+        "total_r_ha": 160.0,
+        "incremental_r_ha": -90.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Milheto/crotalária (cobertura)",
+            "rendimento_sc_ha": null,
+            "preco": null,
+            "custo": 450.0,
+            "margem_r_ha": -450.0,
+            "fonte": "custo estimativa de referência, validar (sem venda)"
+          }
+        ],
+        "ano_ruim_r_ha": 5.0,
+        "bonus_proxima_soja_r_ha": 360.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): soma −R$ 90/ha contra −R$ 417/ha na 2ª safra, melhora a saúde do solo (0,82 contra 0,56; ~35 dias de solo descoberto contra 60) e reduz o risco climático (algum evento adverso em 0% dos anos contra 24%). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~35 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
+          "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ 160/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 5/ha/ano.",
+          "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 01/02), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 74 mm).",
+          "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio)."
+        ],
+        "beneficios": [
+          "Boa cobertura/palha: protege o solo e reduz erosão.",
+          "Fixação de nitrogênio relevante para a próxima soja.",
+          "Ajuda a quebrar ciclo de pragas e doenças.",
+          "Palhada/N elevam a soja seguinte (~+3 sc/ha, estimativa).",
+          "Chuva atende praticamente toda a demanda hídrica."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
+        ],
+        "avisos": []
+      }
+    },
+    {
+      "posicao": 2,
+      "id": "aveia",
+      "rotacao": "Soja → aveia (cobertura/palha)",
+      "nota": 0.697,
+      "atual": false,
+      "criterios": {
+        "renda": 0.433,
+        "solo": 0.626,
+        "agua": 1.0,
+        "pragas": 0.6,
+        "risco": 1.0
+      },
+      "contribuicoes": {
+        "renda": 0.127,
+        "solo": 0.11,
+        "agua": 0.176,
+        "pragas": 0.106,
+        "risco": 0.176
+      },
+      "margem": {
+        "total_r_ha": 114.0,
+        "incremental_r_ha": -135.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Aveia (cobertura)",
+            "rendimento_sc_ha": null,
+            "preco": null,
+            "custo": 375.0,
+            "margem_r_ha": -375.0,
+            "fonte": "custo estimativa de referência, validar (sem venda)"
+          }
+        ],
+        "ano_ruim_r_ha": -41.0,
+        "bonus_proxima_soja_r_ha": 240.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): soma −R$ 135/ha contra −R$ 417/ha na 2ª safra, reduz o risco climático (algum evento adverso em 0% dos anos contra 24%) e atende melhor a demanda de água (1,00 contra 0,88). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~40 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
+          "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ 114/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -135/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -41/ha/ano.",
+          "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 74 mm).",
+          "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio)."
+        ],
+        "beneficios": [
+          "Boa cobertura/palha: protege o solo e reduz erosão.",
+          "Ajuda a quebrar ciclo de pragas e doenças.",
+          "Palhada/N elevam a soja seguinte (~+2 sc/ha, estimativa).",
+          "Chuva atende praticamente toda a demanda hídrica."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
+        ],
+        "avisos": []
+      }
+    },
+    {
+      "posicao": 3,
+      "id": "milho_braquiaria",
+      "rotacao": "Soja → milho safrinha + braquiária",
+      "nota": 0.619,
+      "atual": false,
+      "criterios": {
+        "renda": 0.311,
+        "solo": 0.711,
+        "agua": 0.864,
+        "pragas": 0.65,
+        "risco": 0.765
+      },
+      "contribuicoes": {
+        "renda": 0.092,
+        "solo": 0.125,
+        "agua": 0.152,
+        "pragas": 0.115,
+        "risco": 0.135
+      },
+      "margem": {
+        "total_r_ha": -128.0,
+        "incremental_r_ha": -377.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Milho 2ª safra",
+            "rendimento_sc_ha": 76.8,
+            "preco": 53.89,
+            "custo": 4678.0,
+            "margem_r_ha": -538.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Braquiária em consórcio",
+            "rendimento_sc_ha": null,
+            "preco": null,
+            "custo": 200.0,
+            "margem_r_ha": -200.0,
+            "fonte": "custo estimativa de referência, validar (sem venda)"
+          }
+        ],
+        "ano_ruim_r_ha": -948.0,
+        "bonus_proxima_soja_r_ha": 360.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,71 contra 0,56; ~30 dias de solo descoberto contra 60), quebra melhor o ciclo de pragas (0,65 contra 0,50) e soma −R$ 377/ha contra −R$ 417/ha na 2ª safra. Risco climático igual (algum evento adverso em 24% dos anos). Maiores contribuições para a nota: Água (0,15) e Risco climático (0,13).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~30 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Milho 2ª safra: 77 sc/ha (PAM Guaíra 2021–2025) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ -538/ha (CV do rendimento 25%; ano ruim, p20 de 10 anos = 64 sc/ha → R$ -1.202/ha).",
+          "Braquiária em consórcio: sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
+          "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ -128/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -377/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -948/ha/ano.",
+          "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 01/02), a água no solo atendeu em média 86% da demanda; em 8 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 99 mm).",
+          "Geada no florescimento/enchimento do milho semeado em 01/02: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
+          "Veranico ≥ 15 dias em mar–abr: 8 de 34 anos (24%), NASA POWER 1991–2024, célula ~50 km."
+        ],
+        "beneficios": [
+          "Boa cobertura/palha: protege o solo e reduz erosão.",
+          "Ajuda a quebrar ciclo de pragas e doenças.",
+          "Palhada/N elevam a soja seguinte (~+3 sc/ha, estimativa)."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
+          "Veranico ≥15 dias em mar–abr em 24% dos anos."
+        ],
+        "avisos": [
+          "Margem total negativa com os preços e custos usados."
+        ]
+      }
+    },
+    {
+      "posicao": 4,
+      "id": "milho_safrinha",
+      "rotacao": "Soja → milho safrinha",
+      "nota": 0.562,
+      "atual": true,
+      "criterios": {
+        "renda": 0.291,
+        "solo": 0.556,
+        "agua": 0.876,
+        "pragas": 0.5,
+        "risco": 0.765
+      },
+      "contribuicoes": {
+        "renda": 0.086,
+        "solo": 0.098,
+        "agua": 0.155,
+        "pragas": 0.088,
+        "risco": 0.135
+      },
+      "margem": {
+        "total_r_ha": -168.0,
+        "incremental_r_ha": -417.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Milho 2ª safra",
+            "rendimento_sc_ha": 76.8,
+            "preco": 53.89,
+            "custo": 4678.0,
+            "margem_r_ha": -538.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)"
+          }
+        ],
+        "ano_ruim_r_ha": -988.0,
+        "bonus_proxima_soja_r_ha": 120.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "É a rotação atual; ficou em 4º lugar entre 6 opções válidas. A melhor alternativa (milheto/crotalária (cobertura)) tem nota 0,75. Maiores contribuições para a nota: Água (0,15) e Risco climático (0,13).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~60 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Milho 2ª safra: 77 sc/ha (PAM Guaíra 2021–2025) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ -538/ha (CV do rendimento 25%; ano ruim, p20 de 10 anos = 64 sc/ha → R$ -1.202/ha).",
+          "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ -168/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -417/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -988/ha/ano.",
+          "Água: na fase crítica (floração/enchimento do milho, semeadura em 01/02), a água no solo atendeu em média 88% da demanda; em 6 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 99 mm).",
+          "Geada no florescimento/enchimento do milho semeado em 01/02: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
+          "Veranico ≥ 15 dias em mar–abr: 8 de 34 anos (24%), NASA POWER 1991–2024, célula ~50 km."
+        ],
+        "beneficios": [
+          "Sem benefício marcante nos critérios avaliados."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
+          "Veranico ≥15 dias em mar–abr em 24% dos anos."
+        ],
+        "avisos": [
+          "Margem total negativa com os preços e custos usados."
+        ]
+      }
+    },
+    {
+      "posicao": 5,
+      "id": "pousio",
+      "rotacao": "Soja → pousio",
+      "nota": 0.545,
+      "atual": false,
+      "criterios": {
+        "renda": 0.4,
+        "solo": 0.122,
+        "agua": 1.0,
+        "pragas": 0.3,
+        "risco": 1.0
+      },
+      "contribuicoes": {
+        "renda": 0.118,
+        "solo": 0.022,
+        "agua": 0.176,
+        "pragas": 0.053,
+        "risco": 0.176
+      },
+      "margem": {
+        "total_r_ha": 49.0,
+        "incremental_r_ha": -200.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Pousio (manejo)",
+            "rendimento_sc_ha": null,
+            "preco": null,
+            "custo": 200.0,
+            "margem_r_ha": -200.0,
+            "fonte": "custo estimativa de referência, validar (sem venda)"
+          }
+        ],
+        "ano_ruim_r_ha": -106.0,
+        "bonus_proxima_soja_r_ha": 0.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): piora a saúde do solo (0,12 contra 0,56; ~150 dias de solo descoberto contra 60), reduz o risco climático (algum evento adverso em 0% dos anos contra 24%) e quebra menos o ciclo de pragas (0,30 contra 0,50). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~150 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
+          "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ 49/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -200/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -106/ha/ano.",
+          "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
+          "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio)."
+        ],
+        "beneficios": [
+          "Chuva atende praticamente toda a demanda hídrica."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
+          "Muitos dias de solo exposto: risco de erosão e plantas daninhas."
+        ],
+        "avisos": []
+      }
+    },
+    {
+      "posicao": 6,
+      "id": "trigo",
+      "rotacao": "Soja → trigo",
+      "nota": 0.536,
+      "atual": false,
+      "criterios": {
+        "renda": 0.0,
+        "solo": 0.504,
+        "agua": 0.936,
+        "pragas": 0.6,
+        "risco": 1.0
+      },
+      "contribuicoes": {
+        "renda": 0.0,
+        "solo": 0.089,
+        "agua": 0.165,
+        "pragas": 0.106,
+        "risco": 0.176
+      },
+      "margem": {
+        "total_r_ha": -1263.0,
+        "incremental_r_ha": -1512.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Trigo",
+            "rendimento_sc_ha": 39.5,
+            "preco": 68.44,
+            "custo": 4334.0,
+            "margem_r_ha": -1632.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2020–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)"
+          }
+        ],
+        "ano_ruim_r_ha": -2490.0,
+        "bonus_proxima_soja_r_ha": 120.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.095/ha na 2ª safra (−R$ 1.512/ha contra −R$ 417/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 24%) e quebra melhor o ciclo de pragas (0,60 contra 0,50). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,17).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~70 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Trigo: 39 sc/ha (PAM Guaíra 2020–2025) × R$ 68.44/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.334/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)) = R$ -1.632/ha (CV do rendimento 34%; ano ruim, p20 de 10 anos = 24 sc/ha → R$ -2.705/ha).",
+          "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ -1.263/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.512/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.490/ha/ano.",
+          "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 94% da demanda; em 2 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 99 mm).",
+          "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km."
+        ],
+        "beneficios": [
+          "Ajuda a quebrar ciclo de pragas e doenças.",
+          "Chuva atende praticamente toda a demanda hídrica."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
+        ],
+        "avisos": [
+          "Margem total negativa com os preços e custos usados."
+        ]
+      }
+    }
+  ],
+  "atual": {
+    "posicao": 4,
+    "id": "milho_safrinha",
+    "rotacao": "Soja → milho safrinha",
+    "nota": 0.562,
+    "atual": true,
+    "criterios": {
+      "renda": 0.291,
+      "solo": 0.556,
+      "agua": 0.876,
+      "pragas": 0.5,
+      "risco": 0.765
+    },
+    "contribuicoes": {
+      "renda": 0.086,
+      "solo": 0.098,
+      "agua": 0.155,
+      "pragas": 0.088,
+      "risco": 0.135
+    },
+    "margem": {
+      "total_r_ha": -168.0,
+      "incremental_r_ha": -417.0,
+      "escala_S_r_ha": 1000.0,
+      "itens": [
+        {
+          "cultura": "Soja",
+          "rendimento_sc_ha": 42.2,
+          "preco": 120.14,
+          "custo": 4824.0,
+          "margem_r_ha": 249.0,
+          "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+        },
+        {
+          "cultura": "Milho 2ª safra",
+          "rendimento_sc_ha": 76.8,
+          "preco": 53.89,
+          "custo": 4678.0,
+          "margem_r_ha": -538.0,
+          "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)"
+        }
+      ],
+      "ano_ruim_r_ha": -988.0,
+      "bonus_proxima_soja_r_ha": 120.0,
+      "linha_custo": "coe"
+    },
+    "card": {
+      "por_que": "É a rotação atual; ficou em 4º lugar entre 6 opções válidas. A melhor alternativa (milheto/crotalária (cobertura)) tem nota 0,75. Maiores contribuições para a nota: Água (0,15) e Risco climático (0,13).",
+      "evidencias": [
+        "Dias de solo descoberto/ano (catálogo): ~60 dias.",
+        "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+        "Milho 2ª safra: 77 sc/ha (PAM Guaíra 2021–2025) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ -538/ha (CV do rendimento 25%; ano ruim, p20 de 10 anos = 64 sc/ha → R$ -1.202/ha).",
+        "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N, estimativa de referência).",
+        "Total da rotação: R$ -168/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -417/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -988/ha/ano.",
+        "Água: na fase crítica (floração/enchimento do milho, semeadura em 01/02), a água no solo atendeu em média 88% da demanda; em 6 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 99 mm).",
+        "Geada no florescimento/enchimento do milho semeado em 01/02: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
+        "Veranico ≥ 15 dias em mar–abr: 8 de 34 anos (24%), NASA POWER 1991–2024, célula ~50 km."
+      ],
+      "beneficios": [
+        "Sem benefício marcante nos critérios avaliados."
+      ],
+      "lacunas": [
+        "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+      ],
+      "riscos": [
+        "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
+        "Veranico ≥15 dias em mar–abr em 24% dos anos."
+      ],
+      "avisos": [
+        "Margem total negativa com os preços e custos usados."
+      ]
+    },
+    "eliminada": false,
+    "motivos": []
+  },
+  "alternativas": [
+    {
+      "posicao": 1,
+      "id": "milheto_crotalaria",
+      "rotacao": "Soja → milheto/crotalária (cobertura)",
+      "nota": 0.755,
+      "atual": false,
+      "criterios": {
+        "renda": 0.455,
+        "solo": 0.819,
+        "agua": 1.0,
+        "pragas": 0.7,
+        "risco": 1.0
+      },
+      "contribuicoes": {
+        "renda": 0.134,
+        "solo": 0.144,
+        "agua": 0.176,
+        "pragas": 0.124,
+        "risco": 0.176
+      },
+      "margem": {
+        "total_r_ha": 160.0,
+        "incremental_r_ha": -90.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Milheto/crotalária (cobertura)",
+            "rendimento_sc_ha": null,
+            "preco": null,
+            "custo": 450.0,
+            "margem_r_ha": -450.0,
+            "fonte": "custo estimativa de referência, validar (sem venda)"
+          }
+        ],
+        "ano_ruim_r_ha": 5.0,
+        "bonus_proxima_soja_r_ha": 360.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): soma −R$ 90/ha contra −R$ 417/ha na 2ª safra, melhora a saúde do solo (0,82 contra 0,56; ~35 dias de solo descoberto contra 60) e reduz o risco climático (algum evento adverso em 0% dos anos contra 24%). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~35 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
+          "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ 160/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 5/ha/ano.",
+          "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 01/02), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 74 mm).",
+          "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio)."
+        ],
+        "beneficios": [
+          "Boa cobertura/palha: protege o solo e reduz erosão.",
+          "Fixação de nitrogênio relevante para a próxima soja.",
+          "Ajuda a quebrar ciclo de pragas e doenças.",
+          "Palhada/N elevam a soja seguinte (~+3 sc/ha, estimativa).",
+          "Chuva atende praticamente toda a demanda hídrica."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
+        ],
+        "avisos": []
+      }
+    },
+    {
+      "posicao": 2,
+      "id": "aveia",
+      "rotacao": "Soja → aveia (cobertura/palha)",
+      "nota": 0.697,
+      "atual": false,
+      "criterios": {
+        "renda": 0.433,
+        "solo": 0.626,
+        "agua": 1.0,
+        "pragas": 0.6,
+        "risco": 1.0
+      },
+      "contribuicoes": {
+        "renda": 0.127,
+        "solo": 0.11,
+        "agua": 0.176,
+        "pragas": 0.106,
+        "risco": 0.176
+      },
+      "margem": {
+        "total_r_ha": 114.0,
+        "incremental_r_ha": -135.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Aveia (cobertura)",
+            "rendimento_sc_ha": null,
+            "preco": null,
+            "custo": 375.0,
+            "margem_r_ha": -375.0,
+            "fonte": "custo estimativa de referência, validar (sem venda)"
+          }
+        ],
+        "ano_ruim_r_ha": -41.0,
+        "bonus_proxima_soja_r_ha": 240.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): soma −R$ 135/ha contra −R$ 417/ha na 2ª safra, reduz o risco climático (algum evento adverso em 0% dos anos contra 24%) e atende melhor a demanda de água (1,00 contra 0,88). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~40 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
+          "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ 114/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -135/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -41/ha/ano.",
+          "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 74 mm).",
+          "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio)."
+        ],
+        "beneficios": [
+          "Boa cobertura/palha: protege o solo e reduz erosão.",
+          "Ajuda a quebrar ciclo de pragas e doenças.",
+          "Palhada/N elevam a soja seguinte (~+2 sc/ha, estimativa).",
+          "Chuva atende praticamente toda a demanda hídrica."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
+        ],
+        "avisos": []
+      }
+    },
+    {
+      "posicao": 3,
+      "id": "milho_braquiaria",
+      "rotacao": "Soja → milho safrinha + braquiária",
+      "nota": 0.619,
+      "atual": false,
+      "criterios": {
+        "renda": 0.311,
+        "solo": 0.711,
+        "agua": 0.864,
+        "pragas": 0.65,
+        "risco": 0.765
+      },
+      "contribuicoes": {
+        "renda": 0.092,
+        "solo": 0.125,
+        "agua": 0.152,
+        "pragas": 0.115,
+        "risco": 0.135
+      },
+      "margem": {
+        "total_r_ha": -128.0,
+        "incremental_r_ha": -377.0,
+        "escala_S_r_ha": 1000.0,
+        "itens": [
+          {
+            "cultura": "Soja",
+            "rendimento_sc_ha": 42.2,
+            "preco": 120.14,
+            "custo": 4824.0,
+            "margem_r_ha": 249.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Milho 2ª safra",
+            "rendimento_sc_ha": 76.8,
+            "preco": 53.89,
+            "custo": 4678.0,
+            "margem_r_ha": -538.0,
+            "fonte": "rendimento IBGE PAM (Guaíra, 2021–2025); preço SEAB/DERAL-PR, média PR nov/25 a out/26; custo CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)"
+          },
+          {
+            "cultura": "Braquiária em consórcio",
+            "rendimento_sc_ha": null,
+            "preco": null,
+            "custo": 200.0,
+            "margem_r_ha": -200.0,
+            "fonte": "custo estimativa de referência, validar (sem venda)"
+          }
+        ],
+        "ano_ruim_r_ha": -948.0,
+        "bonus_proxima_soja_r_ha": 360.0,
+        "linha_custo": "coe"
+      },
+      "card": {
+        "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,71 contra 0,56; ~30 dias de solo descoberto contra 60), quebra melhor o ciclo de pragas (0,65 contra 0,50) e soma −R$ 377/ha contra −R$ 417/ha na 2ª safra. Risco climático igual (algum evento adverso em 24% dos anos). Maiores contribuições para a nota: Água (0,15) e Risco climático (0,13).",
+        "evidencias": [
+          "Dias de solo descoberto/ano (catálogo): ~30 dias.",
+          "Soja: 42 sc/ha (PAM Guaíra 2021–2025) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 249/ha (CV do rendimento 30%; ano ruim, p20 de 10 anos = 41 sc/ha → R$ 94/ha).",
+          "Milho 2ª safra: 77 sc/ha (PAM Guaíra 2021–2025) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ -538/ha (CV do rendimento 25%; ano ruim, p20 de 10 anos = 64 sc/ha → R$ -1.202/ha).",
+          "Braquiária em consórcio: sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
+          "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N, estimativa de referência).",
+          "Total da rotação: R$ -128/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -377/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -948/ha/ano.",
+          "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 01/02), a água no solo atendeu em média 86% da demanda; em 8 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 99 mm).",
+          "Geada no florescimento/enchimento do milho semeado em 01/02: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
+          "Veranico ≥ 15 dias em mar–abr: 8 de 34 anos (24%), NASA POWER 1991–2024, célula ~50 km."
+        ],
+        "beneficios": [
+          "Boa cobertura/palha: protege o solo e reduz erosão.",
+          "Ajuda a quebrar ciclo de pragas e doenças.",
+          "Palhada/N elevam a soja seguinte (~+3 sc/ha, estimativa)."
+        ],
+        "lacunas": [
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        ],
+        "riscos": [
+          "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
+          "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
+          "Veranico ≥15 dias em mar–abr em 24% dos anos."
+        ],
+        "avisos": [
+          "Margem total negativa com os preços e custos usados."
+        ]
+      }
+    }
+  ],
+  "eliminadas": [
+    {
+      "id": "soja_safrinha",
+      "rotacao": "Soja → soja safrinha",
+      "motivos": [
+        "Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024).",
+        "Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+      ]
+    }
+  ],
+  "avisos": [
+    "Ponto convertido em quadrado de ~100 ha centrado nele; relevo, histórico e solo valem para esse quadrado, não para a lavoura real."
+  ],
+  "metodologia": {
+    "formula": "Nota = Σ peso_i × critério_i / Σ peso_i",
+    "criterios": {
+      "renda": "Margem incremental da 2ª safra (rendimento PAM do município × preço SEAB/DERAL − custo CONAB; cobertura/pousio = −custo estimado; mais o bônus de palhada/N na soja seguinte), na escala S = max(margem da soja do município, R$ 1.000/ha): renda = clip(0,5 + incremental / (2·S), 0, 1). Incremental +S = 1,0; zero = 0,5; −S = 0.",
+      "solo": "Média de cobertura de palha, fixação de N e (1 − dias de solo descoberto/180); valores de catálogo (estimativas de referência, validar com agrônomo/Embrapa).",
+      "agua": "Média nos 34 anos (1991–2024) de ΣETa/ΣETc na fase crítica da 2ª cultura, por balanço hídrico diário (NASA POWER + CAD do solo do polígono, SoilGrids); depende da data de semeadura. Pousio = 1,0.",
+      "pragas": "Potencial de quebra de ciclo de pragas e doenças por rotação; valor de catálogo (0–1), estimativa a validar.",
+      "risco": "Π(1 − p) dos riscos climáticos da 2ª cultura (geada, veranico) em 1991–2024, célula NASA POWER ~50 km; sem risco considerado = 1,0."
+    },
+    "versao": "0.1.0"
+  }
+}
