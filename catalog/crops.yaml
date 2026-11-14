@@ -135,3 +135,98 @@ culturas:
       - risco: deficit_hidrico
         fases: [florescimento, enchimento_de_graos]
         fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo
+
+  trigo:
+    nome: Trigo
+    nome_cientifico: Triticum aestivum L.
+    finalidade: graos
+
+    # FAO, tabela 4. Estimativa do grupo cevada/aveia/trigo.
+    ciclo_dias:
+      min: 120
+      max: 150
+      unidade: dias
+      fonte: https://www.fao.org/4/s2022e/s2022e02.htm
+
+    # FAO, tabela 5. Demanda sazonal aproximada do grupo de cereais.
+    demanda_hidrica_mm_ciclo:
+      min: 450
+      max: 650
+      unidade: mm/ciclo
+      fonte: https://www.fao.org/4/s2022e/s2022e02.htm
+
+    requisitos_solo:
+      umidade:
+        observacao: "Evitar semeadura em solo encharcado e avaliar a drenagem."
+        fonte: https://www.embrapa.br/busca-de-noticias/-/noticia/90345214/cuidados-na-semeadura-do-trigo-na-regiao-sul
+
+    vulnerabilidades:
+      - risco: mosaico
+        fonte: https://www.embrapa.br/busca-de-noticias/-/noticia/90345214/cuidados-na-semeadura-do-trigo-na-regiao-sul
+
+  aveia_branca:
+    nome: Aveia-branca
+    nome_cientifico: Avena sativa L.
+    finalidade: graos
+
+    # FAO, tabela 4. Estimativa do grupo cevada/aveia/trigo.
+    ciclo_dias:
+      min: 120
+      max: 150
+      unidade: dias
+      fonte: https://www.fao.org/4/s2022e/s2022e02.htm
+
+    # FAO, tabela 5. Demanda sazonal aproximada do grupo de cereais.
+    demanda_hidrica_mm_ciclo:
+      min: 450
+      max: 650
+      unidade: mm/ciclo
+      fonte: https://www.fao.org/4/s2022e/s2022e02.htm
+
+  cevada:
+    nome: Cevada
+    nome_cientifico: Hordeum vulgare L.
+    finalidade: graos
+
+    # FAO, tabela 4. Estimativa do grupo cevada/aveia/trigo.
+    ciclo_dias:
+      min: 120
+      max: 150
+      unidade: dias
+      fonte: https://www.fao.org/4/s2022e/s2022e02.htm
+
+    # FAO, tabela 5. Demanda sazonal aproximada do grupo de cereais.
+    demanda_hidrica_mm_ciclo:
+      min: 450
+      max: 650
+      unidade: mm/ciclo
+      fonte: https://www.fao.org/4/s2022e/s2022e02.htm
+
+    requisitos_solo:
+      umidade:
+        observacao: "Priorizar solo profundo e bem drenado."
+        fonte: https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cevada/pre-producao/planejamento
+
+      compactacao:
+        observacao: "Priorizar solo descompactado."
+        fonte: https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cevada/pre-producao/planejamento
+
+      ph:
+        observacao: "Planejar a correção da acidez e da fertilidade a partir da análise de solo e da recomendação local."
+        fonte: https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cevada/pre-producao/planejamento
+
+  azevem_anual:
+    nome: Azevém anual
+    nome_cientifico: Lolium multiflorum Lam.
+    finalidade: cobertura
+
+    # Dias até o florescimento. O fim da cobertura depende do manejo.
+    florescimento_dias:
+      min: 100
+      max: 120
+      unidade: dias
+      fonte: https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf
+
+    janela_plantio:
+      observacao: "Março a junho como referência geral para cobertura. Validar região, cultivar e finalidade."
+      fonte: https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf
