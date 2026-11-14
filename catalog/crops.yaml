@@ -1,0 +1,4 @@
+# Catálogo de culturas — frente 2. Esquema completo: classe Cultura (backend/domain).
+# Regra: todo número é uma faixa {min, max} com `fonte`. Sem fonte = não entra no motor.
+# Culturas do MVP: soja, milho, sorgo, feijao, trigo, milheto, braquiaria, crotalaria
+culturas: {}

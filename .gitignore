@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/src/api/schema.d.ts
+
+# Segredos e credenciais
+.env
+.env.*
+!.env.example
+*credentials*.json
+*service-account*.json
+
+# Dados brutos (pesados, não versionar). Somente data/demo vai para o git.
+data/raw/
+data/tmp/
+*.nc
+*.h5
+*.hdf
+*.tif
+!data/demo/**/*.tif
+
+# Editores e SO
+.vscode/
+.idea/
+.DS_Store

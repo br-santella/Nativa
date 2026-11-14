@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic>=2
+pandas
+pyarrow
+duckdb
+numpy
+scipy
+scikit-learn
+joblib
+pyyaml
+httpx
+pytest
