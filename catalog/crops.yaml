@@ -1,4 +1,137 @@
-# Catálogo de culturas — frente 2. Esquema completo: classe Cultura (backend/domain).
-# Regra: todo número é uma faixa {min, max} com `fonte`. Sem fonte = não entra no motor.
-# Culturas do MVP: soja, milho, sorgo, feijao, trigo, milheto, braquiaria, crotalaria
-culturas: {}
+# Catálogo de culturas — frente 2.
+# Cada faixa numérica tem min, max, unidade e fonte.
+culturas:
+  soja:
+    nome: Soja
+    nome_cientifico: Glycine max
+    finalidade: graos
+
+    # Referência geral do levantamento preliminar. Varia com cultivar e ambiente.
+    ciclo_dias:
+      min: 100
+      max: 145
+      unidade: dias
+      fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/caracteristicas-da-soja
+
+    demanda_hidrica_mm_ciclo:
+      min: 450
+      max: 800
+      unidade: mm/ciclo
+      fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua
+
+    requisitos_solo:
+      texturas_adequadas:
+        valores: [media]
+        observacao: "Condição ótima de referência. A ficha também cita solos orgânicos."
+        fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1150
+
+      ph:
+        min: 5.5
+        max: 6.0
+        unidade: "pH em água"
+        fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf
+
+      nitrogenio:
+        observacao: "A inoculação favorece a fixação biológica de nitrogênio."
+        fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf
+
+      compactacao:
+        observacao: "Avaliar camadas compactadas que restrinjam o desenvolvimento das raízes."
+        fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf
+
+      umidade:
+        observacao: "Solo bem drenado é a condição ótima de referência."
+        fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1150
+
+    infraestrutura:
+      maquinas:
+        valores: [semeadora, colhedora]
+        observacao: "Equipamentos do cenário mecanizado de produção de grãos."
+        fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf
+
+      irrigacao:
+        observacao: "Avaliar a necessidade conforme a disponibilidade de água ao longo do ciclo."
+        fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua
+
+      mao_de_obra:
+        observacao: "Prever operação da semeadora e da colhedora no cenário mecanizado."
+        fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf
+
+    impactos_no_solo:
+      - efeito: diversificacao_da_rotacao
+        direcao: positiva
+        descricao: "A soja pode compor uma rotação com gramíneas."
+        fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf
+
+    vulnerabilidades:
+      - risco: deficit_hidrico
+        fases: [florescimento, enchimento_de_graos]
+        fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua
+
+  milho:
+    nome: Milho para grãos
+    nome_cientifico: Zea mays
+    finalidade: graos
+
+    # Referência geral do levantamento preliminar. Varia com cultivar e ambiente.
+    ciclo_dias:
+      min: 100
+      max: 150
+      unidade: dias
+      fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/relacoes-com-o-clima
+
+    demanda_hidrica_mm_ciclo:
+      min: 400
+      max: 700
+      unidade: mm/ciclo
+      fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo
+
+    requisitos_solo:
+      texturas_adequadas:
+        valores: [media]
+        observacao: "Condição ótima de referência. A ficha também cita solos orgânicos."
+        fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663
+
+      ph:
+        min: 5.0
+        max: 7.0
+        unidade: "pH"
+        observacao: "Método de medição não especificado na fonte."
+        fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663
+
+      nitrogenio:
+        observacao: "Dimensionar a adubação nitrogenada conforme o sistema de produção e a produtividade esperada."
+        fonte: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf
+
+      compactacao:
+        observacao: "Avaliar camadas compactadas que restrinjam o desenvolvimento das raízes."
+        fonte: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf
+
+      umidade:
+        observacao: "Solo bem drenado é a condição ótima de referência."
+        fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663
+
+    infraestrutura:
+      maquinas:
+        valores: [semeadora, colhedora]
+        observacao: "Equipamentos do cenário mecanizado de produção de grãos."
+        fonte: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf
+
+      irrigacao:
+        observacao: "Avaliar a necessidade conforme a disponibilidade de água ao longo do ciclo."
+        fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo
+
+      mao_de_obra:
+        observacao: "Prever operação da semeadora e da colhedora no cenário mecanizado."
+        fonte: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf
+
+    impactos_no_solo:
+      - efeito: cobertura_por_palhada
+        direcao: positiva
+        descricao: "Os resíduos do milho ajudam a cobrir o solo quando permanecem na superfície."
+        fonte: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf
+
+    vulnerabilidades:
+      - risco: deficit_hidrico
+        fases: [florescimento, enchimento_de_graos]
+        fonte: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo
