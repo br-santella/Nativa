@@ -16,6 +16,8 @@ import "./rotation-strategies.css";
 
 const DEMO_FIELD = "72638";
 const RECALC_DELAY_MS = 600;
+/** The engine accepts 1 to 6 alternatives; the page asks for 6 and shows as many as the user picks. */
+const MAX_OPTIONS = 6;
 const CURRENT_COLOR = "#9fb3b6";
 const OPTION_COLOR = "#ffbf22";
 
@@ -26,6 +28,8 @@ type Props = {
   crops: Crop[];
   /** Persists edited weights in the app state, so they survive leaving the page. */
   onPesosChange?: (pesos: Pesos) => void;
+  /** Persists the number of options shown. */
+  onCountChange?: (count: number) => void;
   onEditSetup: () => void;
   onSources: () => void;
 };
@@ -51,7 +55,7 @@ function fallbackInputs(farm: Farm, crops: Crop[]): SetupInputs {
 
 const score = (v: number | null | undefined) => (v == null ? null : Math.round(v * 100));
 
-export default function RotationStrategies({ inputs, farm, crops, onPesosChange, onEditSetup, onSources }: Props) {
+export default function RotationStrategies({ inputs, farm, crops, onPesosChange, onCountChange, onEditSetup, onSources }: Props) {
   const { language } = useLanguage();
   const en = language === "en";
   const lang: Lang = en ? "en" : "pt-BR";
@@ -90,7 +94,9 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
   const pending = JSON.stringify(pesos) !== JSON.stringify(committed);
 
   // Engine call: one request per distinct body (weights, setup and language).
-  const body = useMemo(() => ({ ...base, pesos: committed }), [base, committed]);
+  const body = useMemo(() => ({ ...base, pesos: committed, n_alternativas: MAX_OPTIONS }), [base, committed]);
+  const [count, setCount] = useState(Math.min(Math.max(base.n_alternativas, 1), MAX_OPTIONS));
+  const chooseCount = (n: number) => { setCount(n); onCountChange?.(n); };
   const requestKey = JSON.stringify(body) + lang;
   const [api, setApi] = useState<Health | null>(null);
   const [res, setRes] = useState<Recomendacao | null>(null);
@@ -120,7 +126,7 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
 
   const current = res?.atual ?? null;
   const block = res?.agora ?? (res ? { ranking: res.ranking, alternativas: res.alternativas, eliminadas: res.eliminadas } : null);
-  const options = block ? block.alternativas.slice(0, base.n_alternativas) : [];
+  const options = block ? block.alternativas.slice(0, count) : [];
   const evaluated = block?.ranking.length ?? 0;
 
   const bestId = options.reduce<ItemRanking | null>((best, it) => (it.nota ?? -1) > (best?.nota ?? -1) ? it : best, null)?.id;
@@ -156,41 +162,53 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
   const statusLine = error?.codigo === "sem_conexao" ? null : (loading || pending) && res ? say("Atualizando resultados…", "Updating results…") : null;
 
   return <div className="rs">
-   {/* Context: what the engine is working with. */}
-   <section className="rs-context" aria-label={say("Seus dados", "Your data")}>
-    <div><span>{say("Sua área", "Your land")}</span><strong>{farm.name || say("Sua propriedade", "Your farm")}</strong><small>{[farm.city, farm.area && `${Number.isFinite(Number(farm.area)) ? Number(farm.area).toLocaleString(en ? "en-US" : "pt-BR", { maximumFractionDigits: 1 }) : farm.area} ha`].filter(Boolean).join(" · ")}</small></div>
-    <div><span>{say("Rotação atual", "Current rotation")}</span><strong>{current?.rotacao ?? "—"}</strong><small>{res?.colheita_estimada ? say(`Colheita do verão ~${res.colheita_estimada.data}`, `Summer harvest ~${res.colheita_estimada.data}`) : say("Do seu cadastro", "From your setup")}</small></div>
-    <div><span>{say("Semeadura da 2ª safra", "Second-crop sowing")}</span><strong>{res?.semeadura_2a?.data ?? "—"}</strong><small>{res?.semeadura_2a ? origin(res.semeadura_2a.origem) : ""}</small></div>
-    <button type="button" className="rs-link-button" onClick={onEditSetup}>{say("Editar cadastro", "Edit setup")}</button>
-   </section>
+   <div className="rs-top">
+    {/* Land summary: what the engine is working with. */}
+    <section className="rs-summary" aria-label={say("Sua área", "Your land")}>
+     <span className="rs-eyebrow">{say("Sua área", "Your land")}</span>
+     <h2>{farm.name || say("Sua propriedade", "Your farm")}</h2>
+     <p className="rs-summary-place">{[farm.city, farm.area && `${Number.isFinite(Number(farm.area)) ? Number(farm.area).toLocaleString(en ? "en-US" : "pt-BR", { maximumFractionDigits: 1 }) : farm.area} ha`].filter(Boolean).join(" · ")}</p>
+     <ul className="rs-facts">
+      <li><span className="rs-fact-icon" aria-hidden="true">⟳</span><div><small>{say("Rotação atual", "Current rotation")}</small><strong>{current?.rotacao ?? "—"}</strong></div></li>
+      <li><span className="rs-fact-icon" aria-hidden="true">☀</span><div><small>{say("Colheita do verão", "Summer harvest")}</small><strong>{res?.colheita_estimada ? `~${res.colheita_estimada.data}` : "—"}</strong>{res?.colheita_estimada && <em>{origin(res.colheita_estimada.origem)}</em>}</div></li>
+      <li><span className="rs-fact-icon" aria-hidden="true">✿</span><div><small>{say("Semeadura da 2ª safra", "Second-crop sowing")}</small><strong>{res?.semeadura_2a?.data ?? "—"}</strong>{res?.semeadura_2a && <em>{origin(res.semeadura_2a.origem)}</em>}</div></li>
+     </ul>
+     <button type="button" className="rs-link-button" onClick={onEditSetup}>{say("Editar cadastro →", "Edit setup →")}</button>
+    </section>
 
-   {/* 01 · priorities */}
-   <section className="rs-section">
-    <header className="rs-heading"><span className="rs-step">01</span><div><h2>{say("O que mais importa na sua safra", "What matters most this season")}</h2><p>{say("Veio do seu cadastro. Se mudar aqui, os resultados se atualizam sozinhos.", "This comes from your setup. Change it here and the results update on their own.")}</p></div></header>
-    <div className="rs-profiles">
-     {PRIORITIES.map(p => <button key={p.id} type="button" className={"rs-profile" + (priority === p.id ? " is-selected" : "")} aria-pressed={priority === p.id} onClick={() => chooseProfile(p.id)}>
-      <span className="rs-profile-icon" aria-hidden="true">{p.icon}</span><span><strong>{tx(p.title)}</strong><small>{tx(p.description)}</small></span>
-     </button>)}
-    </div>
-    <details className="rs-adjust" open={priority === "custom"}>
-     <summary>{priority === "custom" ? say("Ajuste do seu jeito · em uso", "Your own balance · in use") : say("Ajuste do seu jeito", "Make it your own")}</summary>
-     <div className="rs-sliders">
-      {CRITERIA.map(c => <label key={c.id} className="rs-slider">
-       <span><strong>{tx(c.name)}</strong><output>{pesos[c.id]}<small>/10</small></output></span>
-       <input type="range" min="0" max="10" value={pesos[c.id]} onChange={e => setWeight(c.id, Number(e.target.value))}/>
-       <small>{tx(c.hint)}</small>
-      </label>)}
+    {/* 01 · priorities */}
+    <section className="rs-section rs-priorities">
+     <header className="rs-heading"><span className="rs-step">01</span><div><h2>{say("O que mais importa na sua safra", "What matters most this season")}</h2><p>{say("Veio do seu cadastro. Se mudar aqui, os resultados se atualizam sozinhos.", "This comes from your setup. Change it here and the results update on their own.")}</p></div></header>
+     <div className="rs-profiles">
+      {PRIORITIES.map(p => <button key={p.id} type="button" className={"rs-profile" + (priority === p.id ? " is-selected" : "")} aria-pressed={priority === p.id} onClick={() => chooseProfile(p.id)}>
+       <span className="rs-profile-icon" aria-hidden="true">{p.icon}</span><span><strong>{tx(p.title)}</strong><small>{tx(p.description)}</small></span>
+      </button>)}
      </div>
-    </details>
-   </section>
+     <details className="rs-adjust" open={priority === "custom"}>
+      <summary>{priority === "custom" ? say("Ajuste do seu jeito · em uso", "Your own balance · in use") : say("Ajuste do seu jeito", "Make it your own")}</summary>
+      <div className="rs-sliders">
+       {CRITERIA.map(c => <label key={c.id} className="rs-slider">
+        <span><strong>{tx(c.name)}</strong><output>{pesos[c.id]}<small>/10</small></output></span>
+        <input type="range" min="0" max="10" value={pesos[c.id]} onChange={e => setWeight(c.id, Number(e.target.value))}/>
+        <small>{tx(c.hint)}</small>
+       </label>)}
+      </div>
+     </details>
+    </section>
+   </div>
 
    {/* 02 · options */}
    <section className="rs-section">
-    <header className="rs-heading"><span className="rs-step">02</span><div>
+    <header className="rs-heading rs-heading-row"><span className="rs-step">02</span><div>
      <h2>{say("Suas opções", "Your options")}</h2>
-     <p>{say(`As ${base.n_alternativas} alternativas com maior nota para as suas prioridades. A nota vai de 0 a 100 e junta os cinco critérios com os pesos acima.`,
-      `The ${base.n_alternativas} alternatives with the highest score for your priorities. The score goes from 0 to 100 and combines the five criteria with the weights above.`)}</p>
-    </div></header>
+     <p>{say(`As ${count} alternativas com maior nota para as suas prioridades. A nota vai de 0 a 100 e junta os cinco critérios com os pesos acima.`,
+      `The ${count} alternatives with the highest score for your priorities. The score goes from 0 to 100 and combines the five criteria with the weights above.`)}</p>
+    </div>
+     <div className="rs-count" role="radiogroup" aria-label={say("Quantas opções mostrar", "How many options to show")}>
+      <span>{say("Mostrar", "Show")}</span>
+      {Array.from({ length: MAX_OPTIONS }, (_, i) => i + 1).map(n => <label key={n}><input type="radio" name="option-count" checked={count === n} onChange={() => chooseCount(n)}/><span>{n}</span></label>)}
+     </div>
+    </header>
     {statusLine && <p className="rs-status" role="status">{statusLine}</p>}
     {!res ? <Placeholder error={error} degraded={api != null && api.status !== "ok"} en={en}/> : <>
      {current && <p className="rs-baseline">{current.eliminada
@@ -211,11 +229,8 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
    {res && current && target && <section className="rs-section" ref={compareRef}>
     <header className="rs-heading"><span className="rs-step">03</span><div>
      <h2>{say("Compare lado a lado", "Compare side by side")}</h2>
-     <p>{say("Sua rotação de hoje, à esquerda, contra a opção escolhida, à direita. No meio, o que você ganha e o que você perde ao trocar.", "Your rotation today on the left against the chosen option on the right. In the middle, what you gain and what you lose by switching.")}</p>
+     <p>{say("Sua rotação de hoje, à esquerda, contra uma das opções, à direita. No meio, o que você ganha e o que perde ao trocar; use as setas para passar pelas opções.", "Your rotation today on the left against one of the options on the right. In the middle, what you gain and lose by switching; use the arrows to go through the options.")}</p>
     </div></header>
-    <div className="rs-pills" role="radiogroup" aria-label={say("Opção para comparar", "Option to compare")}>
-     {options.map((o, i) => <label key={o.id}><input type="radio" name="compare" checked={target.id === o.id} onChange={() => setCompareId(o.id)}/><span>#{i + 1} {o.rotacao}</span></label>)}
-    </div>
     <div className="rs-versus">
      <ScenarioCard item={current} rank={0} current={null} best={false} theme={null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data}
       evaluated={evaluated} en={en} money={money} compared={false} compact/>
@@ -285,7 +300,7 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
     {item.eliminada ? <p className="rs-warning">{say("Eliminada pelas regras: ", "Ruled out: ")}{(item.motivos ?? []).join(" ")}</p> : <>
      <div className="rs-card-score"><strong>{score(item.nota)}</strong><span>/ 100</span><small>{isCurrent && item.posicao != null && evaluated > 0 ? say(`${item.posicao}ª entre ${evaluated} avaliadas`, `#${item.posicao} of ${evaluated} evaluated`) : say("nota para as suas prioridades", "score for your priorities")}</small></div>
      <p className="rs-card-sequence">{item.rotacao}</p>
-     {calendar && <Calendar months={calendar} summer={item.verao!.nome} second={secondName} en={en}/>}
+     {!compact && calendar && <Calendar months={calendar} summer={item.verao!.nome} second={secondName} en={en}/>}
      <dl className="rs-traits">
       {CRITERIA.map(c => {
         const value = item.criterios?.[c.id];
@@ -298,8 +313,10 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
         </dd></div>;
       })}
      </dl>
+     {!compact && <>
      <div className="rs-card-note is-benefit"><small>{say("Benefício potencial", "Potential benefit")}</small><p>{item.card?.beneficios[0] ?? say("Sem benefício marcante nos critérios avaliados.", "No notable benefit in the criteria evaluated.")}</p></div>
      <div className="rs-card-note is-attention"><small>{say("Ponto de atenção", "Point of attention")}</small><p>{item.card?.riscos[0] ?? "—"}</p></div>
+     </>}
     </>}
    </div>
    {!compact && open && item.card && <div className="rs-details">
