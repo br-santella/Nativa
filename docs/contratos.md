@@ -1,49 +1,86 @@
-# Contratos entre as frentes
+# Contracts
 
-Os contratos são o que permite as 6 frentes trabalharem em paralelo. **Quem muda um contrato avisa o grupo e
-atualiza este arquivo no mesmo pull request.** Até o dado real existir, use dados de exemplo no mesmo formato.
+Interfaces between the backend (engine), the catalog and the frontend. A pull request that changes one of
+these interfaces updates this file.
 
-## C1 — Dados da região demo (frente 1 → frentes 3 e 4)
+The backend is the engine API in `motor_field_shift/`. The complete reference (every field, rule and
+example) is [motor_field_shift/api/README.md](../motor_field_shift/api/README.md) and the Swagger UI at
+`http://localhost:8000/docs`.
 
-`data/demo/features_decendio.parquet`: uma linha por ponto × ano × decêndio (36 por ano).
+> Field names, routes and error codes are in Portuguese, as defined in the engine code.
 
-| Coluna | Tipo | Unidade | Fonte |
-| --- | --- | --- | --- |
-| `lat`, `lon` | float | graus | — |
-| `ano` | int | — | — |
-| `decendio` | int | 1–36 | — |
-| `chuva_mm` | float | mm | GPM IMERG |
-| `et0_mm` | float | mm | NASA POWER |
-| `tmin_c`, `tmax_c` | float | °C | NASA POWER |
-| `sm_raiz` | float | m³/m³ | SMAP L4 |
-| `ndvi` | float | 0–1 | MODIS / HLS (com lacunas preenchidas) |
+## C1 — Engine local data
 
-`data/demo/climatologia.parquet`: mesmas variáveis com `p10`, `p50` e `p90` por ponto × decêndio.
+The engine reads local files in `motor_field_shift/data/`. `/v1/contexto` and the live fallbacks query
+external sources at request time and write a cache.
 
-`data/demo/models/*.joblib`: modelos treinados (preenchimento de nuvem, classificador de uso, anomalia).
+- `data/raw/` and `data/processed/` (~280 MB) are not in git. The list of files, their sizes and the
+  script that generates each one is in the "Dados necessários" section of the API README.
+- `data/ref/precos_custos.json` and `data/contexto/pragas_alertas.json` are versioned.
+- The live fallbacks (NASA POWER and SoilGrids 2.0) run only for areas inside Western Paraná that a local
+  file does not cover. Areas outside the region are rejected before any fallback runs.
 
-## C2 — Catálogo (frente 2 → frentes 3, 4 e 5)
+## C2 — Catalog
 
-- `catalog/crops.yaml`: um bloco por cultura no esquema da classe `Cultura`. **Todo número é uma faixa
-  (`min`/`max`) e tem `fonte`.** Campo sem fonte não entra no motor.
-- `catalog/vocabulario.yaml`: listas fechadas compartilhadas por catálogo, formulário da fazenda e frontend
-  (máquinas, irrigação, mão de obra, texturas, finalidades, critérios).
-- `catalog/textos.yaml`: modelos de frase em pt-BR usados nas explicações, nos motivos de confiança e nos
-  encaminhamentos.
+- `catalog/crops.yaml`: one block per crop. Every number is a range (`min`/`max`) with a unit and a
+  `fonte` (source).
+- `catalog/vocabulario.yaml`: closed lists for the catalog, the farm form and the frontend (machinery,
+  irrigation, labor, soil textures).
 
-## C3 — API (frentes 3 e 4 → frente 5)
+The engine does not read `catalog/`. It uses its internal crop list, exposed by `/v1/opcoes`. The valid
+ids for the API are the ones returned by `/v1/opcoes`.
 
-Os modelos Pydantic em `backend/domain/` são a fonte única; o OpenAPI sai em `/docs` e os tipos do frontend são
-gerados com `openapi-typescript`.
+## C3 — API
 
-| Rota | Entrada | Saída |
+Base URL: `http://localhost:8000`. CORS open to all origins. No authentication. All routes are stateless:
+the client sends all the data with every request.
+
+| Method | Route | Description |
 | --- | --- | --- |
-| `GET /catalogo` | — | `list[CulturaResumo]` + `Vocabulario` |
-| `GET /local/contexto?lat=&lon=` | coordenadas | `ContextoLocal` (município, UF, declividade, solo estimado, janelas ZARC) |
-| `POST /planos/validar` | `{fazenda, plano}` | `list[Alerta]` |
-| `POST /analises` | `RequisicaoAnalise {fazenda, plano_ultimo_ano, plano_atual, prioridades}` | `Analise` (4 estratégias com nota, faixa p10–p90, critérios, confiança, lacunas, evidências, explicação) |
-| `POST /cenarios` | `RequisicaoAnalise` + `{delta_temp_c, delta_chuva_pct}` | `Analise` |
-| `GET /health` | — | status, versão do catálogo e dos dados |
+| GET | `/health` | Service status and whether the data loaded (`ok` / `degradado`) |
+| GET | `/v1/opcoes` | Summer and second-window crops, valid combinations, sowing dates, criteria, default weights, income references, demo fields |
+| GET | `/v1/talhoes/demo` | Demo fields |
+| POST | `/v1/diagnostico` | Terrain, soil, MapBiomas history, detected rotation, climate and risks, yields |
+| POST | `/v1/recomendacao` | Ranking, current rotation, alternatives, eliminated rotations, cards |
+| GET | `/v1/clima` | Climate block only, for a point |
+| GET, POST | `/v1/contexto` | Current conditions (ENSO, SMAP, MJO, pests). Informational: does not change the score |
 
-Um exemplo estático de resposta de `POST /analises` deve ser commitado em `docs/exemplos/analise.json` na
-primeira hora, para a frente 5 começar.
+### Area (shared by `/diagnostico`, `/recomendacao` and `/contexto`)
+
+Exactly one form: `{"talhao_id": "72638"}`, `{"lat": -24.95, "lon": -53.45}` or
+`{"geometry": <GeoJSON Polygon/MultiPolygon/Feature>}` (EPSG:4326, max. 5000 ha). A point becomes a
+1000 m × 1000 m square (~100 ha).
+
+### `POST /v1/recomendacao`
+
+Minimal request:
+
+```json
+{ "area": {"talhao_id": "72638"}, "rotacao_atual": "soja__milho_safrinha" }
+```
+
+Optional fields: `semeadura_safrinha` (second-window sowing date), `pesos {renda, solo, agua, pragas, risco}`
+(weights, 0 to 10), `rotacoes[]`, `ajustes` (prices, costs, yields), `analise_solo` (soil analysis),
+`restricoes` (restrictions), `irrigacao`, `n_alternativas`, `incluir_diagnostico`.
+
+A **rotation** is a pair (summer crop, second-window crop) with id `"<verao>__<segunda>"`.
+
+Response: `ranking[]` and `alternativas[]` with `nota` (score, 0 to 1), `criterios{}`,
+`margem{total_r_ha, incremental_r_ha}` and `card{por_que, evidencias, beneficios, lacunas, riscos, avisos}`;
+`atual` (current rotation); `eliminadas[]` with `motivos[]`; `avisos[]`; `metodologia`.
+
+### Errors
+
+| Status | Body | When |
+| --- | --- | --- |
+| 422 | `{"erro": "fora_da_regiao"}` | Area outside Western Paraná |
+| 422 | validation error | Malformed body |
+| 400 | `{"erro": "entrada_invalida"}` | Restrictions eliminated every rotation, invalid adjustment, etc. |
+| 504 | `{"erro": "timeout_externo"}` | Raised on `ErroConsultaExterna`. Failures of the NASA POWER and SoilGrids clients are handled inside those clients and do not raise it |
+| 500 | `{"erro": "interno"}` | Unexpected error |
+
+Every engine error includes `mensagem` (human-readable text).
+
+### Example responses
+
+Real responses are in [motor_field_shift/api/exemplos/](../motor_field_shift/api/exemplos/).

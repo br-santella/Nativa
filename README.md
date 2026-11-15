@@ -1,74 +1,397 @@
-# Field Shift Brasil — NASA Space Apps 2026
+# Field Shift Brasil 🌱🛰️
 
-Ferramenta web de apoio à decisão para **rotação de culturas** no Brasil, construída para o desafio
+**Crop-rotation decision support for Brazilian farms, built on NASA Earth observation data.**
+
+Developed for the NASA Space Apps Challenge 2026 challenge
 [Field Shift: Adapting Farms with NASA Data](https://www.spaceappschallenge.org/2026/challenges/adapting-farms-with-nasa-data/).
 
-O agricultor informa o **plano de safra** (último ano e plano atual) e os **dados da fazenda**. A plataforma cruza
-essas informações com dados da NASA (POWER, GPM IMERG, SMAP, MODIS/HLS, SRTM) e com bases brasileiras
-(ZARC, MapBiomas, SoilGrids, IBGE, CONAB). O resultado é a comparação de 4 estratégias: último ano, plano atual
-e duas alternativas geradas pelo sistema. Cada estratégia vem com evidências, lacunas, riscos e um semáforo de
-confiança.
+![Python](https://img.shields.io/badge/python-3.13-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/frontend-React%2019%20%2B%20Vite-61DAFB?logo=react&logoColor=black)
+![Region](https://img.shields.io/badge/region-Western%20Paran%C3%A1-2E7D32)
 
-> A ferramenta apoia, mas **não substitui**, a orientação de um engenheiro agrônomo.
+> [!IMPORTANT]
+> Field Shift does not replace the advice of an agronomist. Income and risk figures are estimates. They
+> do not replace ZARC (the official agricultural climate-risk zoning) or a technical recommendation.
 
-A solução **não usa LLM**. A IA é ML clássico e otimização: preenchimento de nuvem, fenologia, Random Forest,
-TOPSIS/Pareto e bootstrap. As explicações são montadas por modelos de frase a partir das evidências calculadas.
+---
 
-## Estrutura
+## Contents
 
-```text
-backend/
-  domain/        modelos Pydantic (Fazenda, PlanoSafra, Cultura, Analise...)   frentes 3 + 4
-  engine/        serviços: validação, viabilidade, busca, simulação, ranking,   frentes 3 + 4
-                 confiança
-  ml/            inferência dos modelos .joblib (nuvem, fenologia, RF, anomalia) frentes 1 + 4
-  explain/       explicações por modelos de frase + decomposição da nota        frente 4
-  data_access/   repositórios: Parquet, catálogo YAML, cliente NASA POWER       frente 1
-  api/           FastAPI: rotas, CORS, injeção de dependências                  frente 4
-catalog/         crops.yaml, vocabulario.yaml, textos.yaml                      frente 2
-ingest/          scripts offline (GEE, POWER, SoilGrids) + treino dos modelos   frente 1
-data/demo/       dados pré-processados da região demo + models/*.joblib         frente 1
-frontend/        React + Vite + TypeScript + MapLibre                           frente 5
-docs/            contratos, fontes NASA, métricas dos modelos, pitch            frente 6
+- [Overview](#overview)
+- [Quick start](#quick-start)
+- [Architecture](#architecture)
+- [Scoring](#scoring)
+- [API](#api)
+- [Data sources](#data-sources)
+- [Repository layout](#repository-layout)
+- [Contributing](#contributing)
+- [Limitations](#limitations)
+- [FAQ](#faq)
+
+---
+
+## Overview
+
+Field Shift ranks crop rotations for a field in Western Paraná. A rotation is a pair: a summer crop
+(soybean or summer corn) followed by a second-window crop (the *safrinha* / off-season).
+
+**Inputs**
+
+1. **An area**: a demo field id, a GeoJSON polygon, or a lat/lon point.
+2. **The current rotation**, for example `soja__milho_safrinha` (soybean → off-season corn).
+3. **Optional farmer data**: soil analysis, yields, prices, costs, available machinery, irrigation, and
+   crops without a buyer.
+
+**Outputs**
+
+- a **diagnosis** of the area: terrain, soil, land-use history, climate risks and municipal yields;
+- a **ranking of up to 22 rotations**. Each one has a 0–1 score, an estimated margin in BRL/ha, and a
+  card with the reasons, evidence, benefits, data gaps and risks;
+- the **eliminated rotations**, each with the rule that eliminated it.
+
+<details>
+<summary><b>📊 Example output for demo field 72638 (~104 ha)</b></summary>
+
+| Rank | Rotation | Score | Margin (BRL/ha) | Income | Soil | Water | Pests | Risk |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | Soybean → corn + brachiaria | **0.814** | 2,116 | 0.98 | 0.71 | 0.84 | 0.65 | 0.78 |
+| 2 | Soybean → off-season corn *(current)* | 0.757 | 2,076 | 0.96 | 0.56 | 0.86 | 0.50 | 0.78 |
+| 3 | Soybean → millet / crotalaria (cover) | 0.756 | 994 | 0.46 | 0.82 | 1.00 | 0.70 | 1.00 |
+
+Full response:
+[`motor_field_shift/api/exemplos/recomendacao_talhao_72638.json`](motor_field_shift/api/exemplos/recomendacao_talhao_72638.json).
+
+</details>
+
+---
+
+## Quick start
+
+Requirements: **Python 3.13 with [uv](https://docs.astral.sh/uv/)** and **Node.js 20.19+ or 22.12+**.
+
+```bash
+git clone https://github.com/br-santella/nasa_space_apps_2026.git
+cd nasa_space_apps_2026
 ```
 
-Regra de dependência: `api` → `engine` / `explain` → `domain`. O `domain` não importa nada do projeto, e o
-`frontend` só conhece a API pelos tipos gerados do OpenAPI. Detalhes em cada `README.md` de pasta.
+<details open>
+<summary><b>1. Backend: engine and API</b> → <code>http://localhost:8000/docs</code></summary>
 
-## Frentes e branches
+```bash
+cd motor_field_shift
+uv sync
+uv run uvicorn field_shift_api.main:app --app-dir api --reload
+```
 
-Cada frente trabalha na própria branch, criada a partir da `main`, e entra na `main` por pull request.
+Health check:
 
-| # | Frente | Branch | Pastas principais |
+```bash
+curl -s localhost:8000/health
+# {"status":"ok","dados_carregados":true,...}
+```
+
+> [!WARNING]
+> The engine reads **~280 MB of local data** from `motor_field_shift/data/raw` and `data/processed`. This
+> data is not in git. Without it the API starts, `/health` reports `"degradado"`, and the engine routes
+> return errors. The data is generated by the scripts in `motor_field_shift/ingest/`. Most of them
+> require NASA Earthdata credentials in `~/.netrc`. File list:
+> [`motor_field_shift/api/README.md`](motor_field_shift/api/README.md#dados-necessários-em-data).
+
+</details>
+
+<details open>
+<summary><b>2. Frontend: NATIVA interface</b> → <code>http://localhost:5173</code></summary>
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+Production build: `npm run build && npm run preview`. The built `index.html` must be served over HTTP, not
+opened through `file://`.
+
+The frontend uses the demo data in `frontend/src/data.ts`. It does not call the API.
+
+</details>
+
+<details>
+<summary><b>3. Tests</b></summary>
+
+```bash
+cd motor_field_shift
+uv run pytest                  # unit tests (fake service, no data needed)
+uv run pytest -m integracao    # integration tests (real service, requires the local data)
+
+cd ../frontend
+npm run build                  # type-check + production build
+```
+
+</details>
+
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph Browser
+        UI["NATIVA frontend<br/>React + Vite + TS"]
+    end
+
+    subgraph API["motor_field_shift (FastAPI, stateless)"]
+        R["/v1 routes<br/>api/field_shift_api"]
+        S["Service layer<br/>motor/servico.py"]
+        E["Engine<br/>app/engine.py<br/>rules · criteria · score · cards"]
+        M["Data modules<br/>clima · solo · regiao · agua · pam · renda · contexto"]
+        R --> S --> E --> M
+    end
+
+    subgraph Local["Local data (not in git)"]
+        D[("Parquet · GeoTIFF · GeoJSON<br/>POWER, NASADEM, MapBiomas,<br/>SoilGrids, IBGE PAM")]
+    end
+
+    subgraph Live["Live sources"]
+        P["NASA POWER API"]
+        SG["SoilGrids REST"]
+        CX["NOAA ENSO · NASA SMAP · MJO · pests"]
+    end
+
+    UI -. "JSON over HTTP" .-> R
+    M --> D
+    M -.-> P
+    M -.-> SG
+    R -. "/v1/contexto" .-> CX
+```
+
+| Component | Description |
+| --- | --- |
+| **API** | Stateless FastAPI service. No authentication and no user database: every request carries all the data needed for the calculation |
+| **Engine** | Hard rules, five scoring criteria, a weighted score, and explanation cards built from the computed values. No language model is used |
+| **Data** | Pre-computed regional files read from disk. NASA POWER and SoilGrids are queried live when a local file does not cover an area inside the region |
+| **Context** | `/v1/contexto` queries current-condition sources at request time and caches the results in `data/cache_contexto/` |
+
+---
+
+## Scoring
+
+```mermaid
+flowchart TD
+    A["Area + current rotation<br/>+ farmer data"] --> B["Resolve area<br/>(demo field · polygon · point)"]
+    B -->|outside Western PR| X["422 fora_da_regiao"]
+    B --> C["Diagnosis<br/>terrain · soil · history · climate · yields"]
+    C --> D{"Hard rules<br/>calendar, law, farmer restrictions"}
+    D -->|fails| EL["eliminadas[] + reason"]
+    D -->|passes| F["5 criteria in 0–1<br/>income · soil · water · pests · risk"]
+    F --> G["Score = Σ wᵢ·criterionᵢ / Σ wᵢ"]
+    G --> H["ranking[] + card<br/>why · evidence · benefits · gaps · risks"]
+```
+
+| Criterion | What it measures | Main inputs |
+| --- | --- | --- |
+| **Income** (`renda`) | Margin of the rotation compared with plain soybean in the municipality | IBGE PAM yields × SEAB/DERAL prices − CONAB costs |
+| **Soil** (`solo`) | Straw, cover and nitrogen benefit | Crop catalog, soil texture |
+| **Water** (`agua`) | Water stress in the second window | FAO-56 daily water balance, soil water capacity |
+| **Pests** (`pragas`) | Pest and disease pressure, for example corn on corn | Catalog rules |
+| **Risk** (`risco`) | Frost and dry-spell probability for the chosen sowing date | NASA POWER, 1991 onwards |
+
+Default weights: income 5, all other criteria 3. Accepted range: 0 to 10 per criterion. If every weight
+is 0, the engine uses equal weights.
+
+<details>
+<summary><b>Hard rules</b></summary>
+
+- **Soybean in the second window** is always eliminated. Soybean sowing is allowed from 01/09 to 31/12,
+  the legal soybean-free period runs from 02/06 to 31/08, and soybean after soybean is not allowed.
+- A second crop that follows the chosen sowing date must be sown **after the summer harvest**
+  (reference harvest dates: soybean ~10/01, summer corn ~05/02).
+- **Sowing windows:** off-season beans 15/01–28/02, sorghum 15/01–15/03 (reference values based on ZARC
+  and IDR-PR).
+- **Farmer restrictions:** excluded crops and crops without a buyer.
+- **Corn on corn** is not eliminated. It receives −0.25 on the pest criterion and a risk warning on the
+  card.
+
+</details>
+
+---
+
+## API
+
+Interactive documentation (Swagger, with pre-filled examples): **`http://localhost:8000/docs`**.
+
+| Method | Route | Description |
+| --- | --- | --- |
+| `GET` | `/health` | Service status and whether the data loaded (`ok` / `degradado`) |
+| `GET` | `/v1/opcoes` | Crops, the 22 combinations, sowing dates, criteria, default weights, income references, demo fields |
+| `GET` | `/v1/talhoes/demo` | Demo fields |
+| `POST` | `/v1/diagnostico` | Full diagnosis of an area |
+| `POST` | `/v1/recomendacao` | Ranked rotations, optionally with the diagnosis |
+| `GET` | `/v1/clima` | Climate block only, for a point |
+| `GET` `POST` | `/v1/contexto` | Current conditions (ENSO, SMAP soil moisture, MJO, pest outbreaks). Informational: does not change the score |
+
+<details>
+<summary><b>▶ Example: minimal recommendation</b></summary>
+
+```bash
+curl -s -X POST localhost:8000/v1/recomendacao \
+  -H 'Content-Type: application/json' \
+  -d '{"area": {"talhao_id": "72638"}, "rotacao_atual": "soja__milho_safrinha"}' | jq '.ranking[:3] | map({posicao, id, nota})'
+```
+
+</details>
+
+<details>
+<summary><b>▶ Example: point, custom weights and farmer data</b></summary>
+
+```bash
+curl -s -X POST localhost:8000/v1/recomendacao \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "area": {"lat": -24.95, "lon": -53.45},
+    "rotacao_atual": "soja__milho_safrinha",
+    "pesos": {"renda": 3, "solo": 8, "agua": 5, "pragas": 5, "risco": 5},
+    "analise_solo": {"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "ph": 5.4},
+    "restricoes": {"sem_comprador": ["trigo"]},
+    "irrigacao": {"disponivel": false},
+    "n_alternativas": 3,
+    "incluir_diagnostico": false
+  }' | jq '{ranking: [.ranking[] | {id, nota, margem: .margem.total_r_ha}], eliminadas: [.eliminadas[] | {id, motivos}]}'
+```
+
+</details>
+
+<details>
+<summary><b>Error responses</b></summary>
+
+| Status | Body | When |
+| --- | --- | --- |
+| 422 | `{"erro": "fora_da_regiao"}` | Area outside Western Paraná |
+| 422 | validation error | Malformed request body |
+| 400 | `{"erro": "entrada_invalida"}` | Invalid adjustment, or restrictions eliminated every rotation |
+| 504 | `{"erro": "timeout_externo"}` | Raised on `ErroConsultaExterna`. Failures of the NASA POWER and SoilGrids clients are handled inside those clients and do not raise it |
+| 500 | `{"erro": "interno"}` | Unexpected error |
+
+Every engine error includes a human-readable `mensagem`.
+
+</details>
+
+References: [`motor_field_shift/api/README.md`](motor_field_shift/api/README.md) (field-by-field) ·
+[`docs/contratos.md`](docs/contratos.md) (contracts) ·
+[`motor_field_shift/api/exemplos/`](motor_field_shift/api/exemplos/) (real responses)
+
+> [!NOTE]
+> Field names, routes and error codes are in Portuguese, as defined in the engine code. Main terms:
+> `area`, `rotacao_atual` (current rotation), `pesos` (weights), `ajustes` (adjustments), `restricoes`
+> (restrictions), `eliminadas` (eliminated), `avisos` (warnings), `margem` (margin).
+
+---
+
+## Data sources
+
+| Source | Provider | Used for | Resolution |
 | --- | --- | --- | --- |
-| 1 | Dados e IA de dados | `frente/dados` | `ingest/`, `data/`, `backend/data_access/`, `backend/ml/` |
-| 2 | Curadoria agronômica | `frente/curadoria` | `catalog/` |
-| 3 | Motor de pontuação | `frente/motor` | `backend/engine/`, `backend/domain/` |
-| 4 | Confiança, explicações e API | `frente/api` | `backend/api/`, `backend/explain/`, `backend/engine/` (confiança) |
-| 5 | Frontend | `frente/frontend` | `frontend/` |
-| 6 | Produto, integração e pitch | `frente/produto` | `docs/`, deploy |
+| **POWER** | NASA | Daily climate since 1991: rain, temperature, ET0, frost and dry spells | ~0.5° × 0.625° |
+| **NASADEM** | NASA | Elevation and slope | 30 m |
+| **SMAP** | NASA | Current soil moisture (context only) | 9 km |
+| **HLS** (NDVI) | NASA / USGS | Observed rotation on demo field 72638 | 30 m |
+| MapBiomas | MapBiomas Brasil | Land-use history, 2019–2024 | 30 m |
+| SoilGrids 2.0 | ISRIC | Clay, sand, organic carbon, pH, soil water capacity | 250 m |
+| PAM | IBGE | Municipal crop yields | Municipality |
+| Prices and costs | SEAB/DERAL, CONAB | Margin estimates | State / reference |
+| INMET | INMET | Validation of POWER climate | Weather stations |
+| ENSO, MJO | NOAA | Current climate context | Global |
+
+Details: [`motor_field_shift/docs/datasets.md`](motor_field_shift/docs/datasets.md).
+
+---
+
+## Repository layout
+
+```text
+.
+├── motor_field_shift/          backend: engine + FastAPI (Python, uv)
+│   ├── api/                    routes, Pydantic schemas, tests, real response examples
+│   ├── src/field_shift/
+│   │   ├── motor/              service layer: diagnosticar(), recomendar(), opcoes()
+│   │   ├── app/                engine: hard rules, criteria, score, explanation cards
+│   │   ├── clima/ solo/ agua/  climate, soil, FAO-56 water balance
+│   │   ├── regiao/ pam/ renda/ region clipping, IBGE yields, income
+│   │   └── contexto/           ENSO, SMAP, MJO, pest alerts
+│   ├── ingest/  scripts/       data download and pre-processing
+│   ├── data/                   local data (raw/ and processed/ are git-ignored)
+│   └── docs/                   engine logic, data architecture
+├── frontend/                   NATIVA interface (React 19 + Vite + TypeScript)
+├── catalog/                    crops.yaml + vocabulario.yaml: agronomic catalog with sources
+└── docs/                       contracts between backend, catalog and frontend
+```
+
+---
+
+## Contributing
+
+Changes go into `main` through pull requests from short-lived branches:
 
 ```bash
 git checkout main && git pull
-git checkout -b frente/<nome>
-# ... trabalho ...
-git push -u origin frente/<nome>
-# abrir pull request para a main
+git checkout -b feat/<topic>        # or fix/<topic>, chore/<topic>, docs/<topic>
+git push -u origin feat/<topic>
+gh pr create --base main
 ```
 
-Boas práticas:
+> [!TIP]
+> - Changes to a contract in [`docs/contratos.md`](docs/contratos.md) update that file in the same PR.
+> - Unit tests use a fake service. Engine changes are validated with `uv run pytest -m integracao` and
+>   the local data.
+> - Keys, credentials, `.env` and `.netrc` are not committed.
 
-- Commits pequenos e frequentes; puxe a `main` para a sua branch com regularidade (`git merge main`).
-- **Contratos primeiro:** quem muda um contrato de [docs/contratos.md](docs/contratos.md) avisa o grupo e atualiza o arquivo no mesmo PR.
-- Até o contrato real ficar pronto, trabalhe com **dados de exemplo (mock)** no formato do contrato.
-- Nunca commite chaves, credenciais ou `.env`.
+---
 
-## Marcos
+## Limitations
 
-| Quando | Marco |
+| Limitation | Effect |
 | --- | --- |
-| 14/11 ~16h | Contratos C1–C3 congelados e JSON de exemplo commitado |
-| 14/11 ~23h | Dados reais da região demo em Parquet; `crops.yaml` v1 |
-| 15/11 ~10h | Primeira execução ponta a ponta com dados reais |
-| 15/11 18h | Freeze de features: só correção de bug e pitch |
-| 15/11 23:59 | Submissão |
+| **Region:** Western Paraná only (50 municipalities, IBGE 4106) | Any other area returns 422 |
+| **Climate cells of ~50 km** (NASA POWER) | Local microclimate is not represented |
+| **Soil water capacity** from Saxton & Rawls (2006), calibrated on temperate soils | Tends to underestimate it in clay-rich tropical Latosols. A farmer soil analysis replaces it |
+| **Income** from municipal averages and reference prices | Farm margins differ; yields, prices and costs can be overridden in the request |
+| **MapBiomas** history covers 2019–2024 | Earlier land use is not considered |
+| Agronomic coefficients marked as estimates | Flagged as `estimativa` in the response |
+| **Catalog:** the engine uses its internal crop list | `catalog/crops.yaml` is not read by the engine. Valid ids are the ones returned by `/v1/opcoes` |
+
+---
+
+## FAQ
+
+<details>
+<summary><b>Is there a login?</b></summary>
+
+No. The API has no accounts or user storage. The sign-up screens in the frontend keep the data in the
+browser session only.
+
+</details>
+
+<details>
+<summary><b>What techniques does the engine use?</b></summary>
+
+NDVI time series to detect the rotation observed on a field, a daily FAO-56 water balance, climate-risk
+statistics from NASA POWER, and multi-criteria weighted ranking. Explanation cards are assembled from the
+computed values. No language model is used.
+
+</details>
+
+<details>
+<summary><b><code>/health</code> reports <code>degradado</code></b></summary>
+
+The local data is missing. The `detalhe` field names the first file that was not found. See the
+[data list](motor_field_shift/api/README.md#dados-necessários-em-data).
+
+</details>
+
+<details>
+<summary><b>Can the frontend be developed without the backend data?</b></summary>
+
+Yes. The files in [`motor_field_shift/api/exemplos/`](motor_field_shift/api/exemplos/) are real API
+responses and can be used as mocks.
+
+</details>

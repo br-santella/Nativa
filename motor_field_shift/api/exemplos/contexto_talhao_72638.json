@@ -1,0 +1,339 @@
+{
+  "consultado_em": "2026-11-14T23:02:15+00:00",
+  "aviso": "Contexto informativo de fontes oficiais (NOAA, NASA, IDR-PR/ADAPAR). Não é previsão para o talhão e não altera o ranking nem a nota das rotações.",
+  "local": {
+    "lat": -24.814725387896058,
+    "lon": -53.55360586650707,
+    "municipio": "Toledo",
+    "celula_clima": "cel_-25.000_-53.7500",
+    "semeadura_safrinha": "01/02"
+  },
+  "enso": {
+    "do_cache": true,
+    "status_alerta": "El Niño Advisory",
+    "fase_atual": "El Niño",
+    "oni_ultimo": {
+      "trimestre": "ASO",
+      "ano": 2026,
+      "oni": 2.46,
+      "classe": "El Niño"
+    },
+    "boletim": {
+      "emitido_em": "12 November 2026",
+      "proximo": "10 December 2026",
+      "sinopse_original_en": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than a 79% chance).",
+      "percentuais_citados": [
+        79
+      ]
+    },
+    "texto": "NOAA/CPC indica El Niño em curso (status do alerta: El Niño Advisory); último ONI ASO 2026 = +2.46. Previsão e status são da NOAA; o ENSO não prevê o clima deste talhão.",
+    "oni_historico_recente": [
+      {
+        "trimestre": "SON",
+        "ano": 2025,
+        "oni": -0.57
+      },
+      {
+        "trimestre": "OND",
+        "ano": 2025,
+        "oni": -0.61
+      },
+      {
+        "trimestre": "NDJ",
+        "ano": 2025,
+        "oni": -0.6
+      },
+      {
+        "trimestre": "DJF",
+        "ano": 2026,
+        "oni": -0.39
+      },
+      {
+        "trimestre": "JFM",
+        "ano": 2026,
+        "oni": -0.21
+      },
+      {
+        "trimestre": "FMA",
+        "ano": 2026,
+        "oni": 0.11
+      },
+      {
+        "trimestre": "MAM",
+        "ano": 2026,
+        "oni": 0.46
+      },
+      {
+        "trimestre": "AMJ",
+        "ano": 2026,
+        "oni": 0.95
+      },
+      {
+        "trimestre": "MJJ",
+        "ano": 2026,
+        "oni": 1.39
+      },
+      {
+        "trimestre": "JJA",
+        "ano": 2026,
+        "oni": 1.8
+      },
+      {
+        "trimestre": "JAS",
+        "ano": 2026,
+        "oni": 2.16
+      },
+      {
+        "trimestre": "ASO",
+        "ano": 2026,
+        "oni": 2.46
+      }
+    ],
+    "historico_por_fase": {
+      "convencao": "ano agrícola Y = jul/Y a jun/Y+1; fase = ONI do trimestre DJF (dez/Y a fev/Y+1); El Niño ONI >= +0,5, La Niña <= -0,5, senão Neutro",
+      "anos_por_fase": {
+        "El Niño": [
+          1991,
+          1994,
+          1997,
+          2002,
+          2004,
+          2006,
+          2009,
+          2014,
+          2015,
+          2018,
+          2019,
+          2023
+        ],
+        "La Niña": [
+          1995,
+          1998,
+          1999,
+          2000,
+          2005,
+          2007,
+          2008,
+          2010,
+          2011,
+          2017,
+          2020,
+          2021,
+          2022
+        ],
+        "Neutro": [
+          1992,
+          1993,
+          1996,
+          2001,
+          2003,
+          2012,
+          2013,
+          2016,
+          2024
+        ]
+      },
+      "indicadores": {
+        "veranico_safrinha": {
+          "rotulo": "veranico no safrinha",
+          "indicador_motor": "veranico_safrinha_ge15",
+          "n_anos_total": 34,
+          "frequencia_media_geral": 0.118,
+          "por_fase": {
+            "El Niño": {
+              "n_anos": 12,
+              "anos_com_evento": 2,
+              "frequencia": 0.167
+            },
+            "La Niña": {
+              "n_anos": 13,
+              "anos_com_evento": 1,
+              "frequencia": 0.077
+            },
+            "Neutro": {
+              "n_anos": 9,
+              "anos_com_evento": 1,
+              "frequencia": 0.111
+            }
+          }
+        },
+        "geada_safrinha": {
+          "rotulo": "geada no safrinha",
+          "indicador_motor": "geada_safrinha_semeadura_0102_le3",
+          "n_anos_total": 34,
+          "frequencia_media_geral": 0.118,
+          "por_fase": {
+            "El Niño": {
+              "n_anos": 12,
+              "anos_com_evento": 2,
+              "frequencia": 0.167
+            },
+            "La Niña": {
+              "n_anos": 13,
+              "anos_com_evento": 2,
+              "frequencia": 0.154
+            },
+            "Neutro": {
+              "n_anos": 9,
+              "anos_com_evento": 0,
+              "frequencia": 0.0
+            }
+          }
+        },
+        "geada_trigo": {
+          "rotulo": "geada no trigo",
+          "indicador_motor": "geada_trigo_le3",
+          "n_anos_total": 34,
+          "frequencia_media_geral": 0.412,
+          "por_fase": {
+            "El Niño": {
+              "n_anos": 12,
+              "anos_com_evento": 5,
+              "frequencia": 0.417
+            },
+            "La Niña": {
+              "n_anos": 13,
+              "anos_com_evento": 7,
+              "frequencia": 0.538
+            },
+            "Neutro": {
+              "n_anos": 9,
+              "anos_com_evento": 2,
+              "frequencia": 0.222
+            }
+          }
+        }
+      }
+    },
+    "frases_historico": [
+      "Em anos de El Niño na série deste talhão, houve veranico no safrinha em 2 de 12 anos (contra 12% na média de 34 anos).",
+      "Em anos de El Niño na série deste talhão, houve geada no safrinha em 2 de 12 anos (contra 12% na média de 34 anos).",
+      "Em anos de El Niño na série deste talhão, houve geada no trigo em 5 de 12 anos (contra 41% na média de 34 anos)."
+    ],
+    "frase_historico": "Em anos de El Niño na série deste talhão, houve veranico no safrinha em 2 de 12 anos (contra 12% na média de 34 anos).",
+    "aviso_historico": "Cerca de 10 anos por fase: diferenças pequenas entre fases podem ser ruído amostral; é frequência histórica, não previsão.",
+    "consultado_em": "2026-11-14T23:02:15+00:00",
+    "fonte": {
+      "nome": "NOAA Climate Prediction Center (CPC) — ENSO Diagnostic Discussion e ONI",
+      "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"
+    },
+    "disponivel": true
+  },
+  "smap": {
+    "do_cache": true,
+    "referencia_utc": "2026-11-10T21:00:00+00:00",
+    "pixel_ease2": {
+      "linha": 1152,
+      "coluna": 1354
+    },
+    "atual": {
+      "sm_rootzone": 0.5106,
+      "sm_rootzone_pctl": 97.4916,
+      "sm_surface": 0.4836,
+      "arquivo": "SMAP_L4_SM_gph_20261110T223000_Vv8013_001"
+    },
+    "ha_7_dias": {
+      "sm_rootzone": 0.5237,
+      "sm_rootzone_pctl": 98.4916,
+      "sm_surface": 0.5162,
+      "arquivo": "SMAP_L4_SM_gph_20261102T223000_Vv8013_001",
+      "referencia_utc": "2026-11-02T21:00:00+00:00"
+    },
+    "classe": "acima do normal",
+    "texto": "SMAP (NASA, 2026-11-10): umidade na zona de raízes em 0.51 m³/m³, percentil 97 da climatologia SMAP (acima do normal). Pixel de ~9 km; modelo de assimilação, não medida no talhão.",
+    "tendencia_7d_percentil": -1.0,
+    "consultado_em": "2026-11-14T23:02:15+00:00",
+    "fonte": {
+      "nome": "NASA SMAP L4 Global 3-hourly 9 km Surface and Root Zone Soil Moisture (SPL4SMGP v8, NSIDC DAAC)",
+      "url": "https://nsidc.org/data/spl4smgp/versions/8"
+    },
+    "disponivel": true
+  },
+  "mjo": {
+    "do_cache": true,
+    "data_ultimo_dado": "2026-11-10",
+    "fase": 4,
+    "fase_calculada": 4,
+    "amplitude": 1.08,
+    "ativa": true,
+    "texto": "NOAA PSL (ROMI) em 2026-11-10: MJO ativa, fase 4 (amplitude 1.08). A MJO modula a chuva no Sul do Brasil em escala de semanas, com efeito modesto que depende da fase e da estação; é só contexto, não previsão para o talhão.",
+    "consultado_em": "2026-11-14T23:02:15+00:00",
+    "fonte": {
+      "nome": "NOAA PSL — ROMI (Real-time OLR MJO Index)",
+      "url": "https://psl.noaa.gov/mjo/mjoindex/romi.cpcolr.1x.txt"
+    },
+    "disponivel": true
+  },
+  "pragas": {
+    "ferrugem_soja": {
+      "do_cache": true,
+      "safra": "2026/2027",
+      "municipio": {
+        "nome": "Toledo",
+        "coletores": 1,
+        "com_esporos": 1,
+        "ultima_deteccao": "03/11/2026"
+      },
+      "mesorregiao_oeste": {
+        "coletores": 52,
+        "com_esporos": 15,
+        "ultima_deteccao": "10/11/2026"
+      },
+      "raio_100_km": {
+        "coletores": 59,
+        "com_esporos": 15,
+        "ultima_deteccao": "10/11/2026"
+      },
+      "coletores_na_safra_no_estado": 158,
+      "texto": "IDR-PR registra esporos de ferrugem asiática em 15 de 59 coletores num raio de 100 km (safra 2026/2027; última detecção em 10/11/2026). Afeta a soja em curso; é só informação de contexto e não altera a nota das rotações.",
+      "consultado_em": "2026-11-14T23:02:15+00:00",
+      "fonte": {
+        "nome": "IDR-Paraná — monitoramento da ferrugem asiática da soja (GeoServer PR)",
+        "url": "https://geoserver.pr.gov.br/geoserver/ows"
+      },
+      "disponivel": true
+    },
+    "alertas_curados": {
+      "curado_manualmente": true,
+      "alertas": [],
+      "alertas_vencidos_ignorados": 0,
+      "como_consultar": [
+        {
+          "nome": "CigarrinhaWeb (mapa de armadilhas, atualização semanal; Seagri/IDR-PR/ADAPAR)",
+          "url": "https://cigarrinhaweb.com.br/"
+        },
+        {
+          "nome": "ADAPAR — Rede de Monitoramento da Cigarrinha do Milho",
+          "url": "https://www.adapar.pr.gov.br/Pagina/Rede-de-Monitoramento-da-Cigarrinha-do-Milho"
+        },
+        {
+          "nome": "ADAPAR — Sistema de Informação de Ocorrência de Pragas em Vegetais",
+          "url": "https://www.adapar.pr.gov.br/Pagina/Sistema-de-Informacao-de-Ocorrencia-de-Pragas-em-Vegetais"
+        }
+      ],
+      "atualizado_em": "2026-11-14",
+      "texto": "Nenhum alerta fitossanitário curado vigente para esta região (arquivo atualizado à mão; consulte a CigarrinhaWeb e a ADAPAR).",
+      "consultado_em": "2026-11-14T23:02:15+00:00",
+      "fonte": {
+        "nome": "ADAPAR / IDR-Paraná (alertas curados manualmente)",
+        "url": "https://cigarrinhaweb.com.br/"
+      },
+      "disponivel": true
+    },
+    "consultado_em": "2026-11-14T23:02:15+00:00",
+    "disponivel": true,
+    "fonte": {
+      "nome": "IDR-PR (WFS) + ADAPAR/IDR-PR (curado)",
+      "url": "https://geoserver.pr.gov.br/geoserver/ows"
+    }
+  },
+  "alertas_inmet": {
+    "disponivel": false,
+    "motivo": "Fonte não implementada: o feed de avisos do INMET não respondeu (conexão encerrada pelo servidor) a partir do ambiente de desenvolvimento e o formato não foi verificado.",
+    "consultado_em": "2026-11-14T23:02:15+00:00",
+    "fonte": {
+      "nome": "INMET — Avisos meteorológicos",
+      "url": "https://alertas2.inmet.gov.br/"
+    }
+  }
+}
