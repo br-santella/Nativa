@@ -1,6 +1,6 @@
 # Field Shift — Entradas do usuário
 
-O que o usuário informa, o que o app preenche sozinho e o que vale informar se ele tiver o dado. Campos da API conferidos em `api/README.md` e `api/field_shift_api/schemas.py`.
+O que o usuário informa, o que o app preenche sozinho e o que vale informar se ele tiver o dado. Data: 2026-11-14. Público: produto, frontend e API. Campos da API conferidos em `api/README.md` e `api/field_shift_api/schemas.py`.
 
 ## Princípio
 
@@ -34,7 +34,7 @@ Mapeamento dos sliders da tela do Nativa (0–100%) para `pesos` (0–10):
 | Rentabilidade | `renda` |
 | Saúde do solo | `solo` |
 | Resiliência climática | `risco` |
-| Economia de água | `agua` (o critério mede se a água atende a demanda da cultura na floração) |
+| Economia de água | `agua` (**PENDENTE**: o nosso critério mede se a água atende a demanda na floração, não economia de água; alinhar o significado) |
 | (sem slider) | `pragas` fica no padrão |
 
 ## 3. Preenchido automaticamente (o usuário só vê e confirma)
@@ -48,26 +48,38 @@ Mapeamento dos sliders da tela do Nativa (0–100%) para `pesos` (0–10):
 | Município e produtividade média | IBGE PAM | Últimos 5 anos | `diagnostico.area.municipio`, `diagnostico.produtividade` |
 | Preço | SEAB/DERAL-PR | Média de 12 meses | `ranking[].margem.itens[].preco` |
 | Custo | CONAB COE (Londrina/Ponta Grossa) | Última safra | `ranking[].margem.itens[].custo` |
-| Regras legais (vazio sanitário, soja sobre soja) | ADAPAR (vazio 02/06–31/08) e Portaria SDA/MAPA 1.124/2024 | Vigente | `eliminadas[]`, `avisos` |
+| Regras legais (vazio sanitário, soja sobre soja) | ADAPAR (vazio 02/06–31/08) e Portaria SDA/MAPA 1.124/2024 | Vigente (conferir antes do pitch) | `eliminadas[]`, `avisos` |
 
 ## 4. Se o usuário tiver o dado, vale informar
 
 Ordenado por impacto.
 
-| Dado próprio | Substitui | Por que melhora | Campo da API |
-|---|---|---|---|
-| Custo de produção por cultura (R$/ha) | CONAB de Londrina | É o que mais varia entre fazendas | `ajustes.custos` (`soja`, `milho`/`milho_2safra`, `trigo`, `aveia`, `milheto_crotalaria`, `braquiaria_consorcio`, `pousio`) |
-| Preço travado ou esperado (contrato, barter, cotação da cooperativa), R$/sc | Média de 12 meses do DERAL | Reflete o que ele realmente vai receber | `ajustes.precos` (`soja`, `milho`, `trigo`) |
-| Linha de custo | `coe` (padrão) | Escolhe o que entra no custo | `ajustes.linha_custo` (`coe`, `cot`, `ct`) |
-| Produtividade própria (sc/ha por cultura) | Média do município (ex.: 70 sc/ha contra 49 do IBGE) | A média municipal esconde a fazenda | `ajustes.produtividade` (`soja`, `milho`/`milho_2safra`, `trigo`; sc/ha > 0). O ano ruim escala proporcionalmente; a soja informada também muda a escala S da renda |
-| Rotação atual e histórico real dos últimos anos | MapBiomas (só vê a cultura de verão) e NDVI (só existe no demo) | Rotação atual e histórico fiéis | `rotacao_atual`. O histórico detalhado dos últimos anos não é aceito |
-| Data de semeadura que ele realmente usa | Padrão 01/02 | Risco de geada e água corretos | `semeadura_safrinha` |
-| Análise de solo (argila, MO, pH, CAD) | SoilGrids e pedotransferência | CAD é a maior incerteza do critério água | `analise_solo` (topo): `argila_pct`, `areia_pct`, `materia_organica_pct` ou `carbono_organico_g_kg`, `ph`, `cad_mm_cm` (opcional), `profundidade_cm` (opcional, padrão 20). Exige argila+areia ou `cad_mm_cm`. Vale também em `POST /v1/diagnostico` |
-| Polígono exato do talhão | Ponto (quadrado de ~100 ha) | Clima, solo e relevo do talhão certo | `area.geometry` |
-| Restrições: culturas que não quer ou não tem como plantar/vender; máquinas (plataforma de milho, semeadora de consórcio); comprador local | Todas as candidatas liberadas | Só aparece o que ele consegue executar | `restricoes` (topo): `culturas_excluidas` (ids `<verao>__<segunda>` ou slugs antigos = soja no verão), `maquinas{plataforma_milho, semeadora_consorcio}`, `sem_comprador` (`milho`, `trigo`, `sorgo`, `feijao`, `aveia_grao`). Para avaliar só algumas rotações, use `rotacoes` (lista de `{verao, segunda}`; ver `docs/motor.md`). Excluída ou sem comprador elimina; máquina `false` só gera aviso e custo extra de terceirização. A viabilidade de mercado (alto/médio/baixo/não se aplica) aparece em `card.mercado` |
-| Irrigação | Motor assume sequeiro | Muda o critério água | `irrigacao` (topo): `disponivel`, `custo_r_mm_ha` (padrão 4,0), `lamina_max_mm_dia` (padrão 6). Irriga milho, milho+braquiária e trigo; o veranico deixa de contar; a margem desconta lâmina × custo. Não modela ganho de produtividade |
+| Dado próprio | Substitui | Por que melhora | Campo da API | Status |
+|---|---|---|---|---|
+| Custo de produção por cultura (R$/ha) | CONAB de Londrina | É o que mais varia entre fazendas | `ajustes.custos` (`soja`, `milho`/`milho_2safra`, `trigo`, `aveia`, `milheto_crotalaria`, `braquiaria_consorcio`, `pousio`) | Já aceito |
+| Preço travado ou esperado (contrato, barter, cotação da cooperativa), R$/sc | Média de 12 meses do DERAL | Reflete o que ele realmente vai receber | `ajustes.precos` (`soja`, `milho`, `trigo`) | Já aceito |
+| Linha de custo | `coe` (padrão) | Escolhe o que entra no custo | `ajustes.linha_custo` (`coe`, `cot`, `ct`) | Já aceito |
+| Produtividade própria (sc/ha por cultura) | Média do município (ex.: 70 sc/ha contra 49 do IBGE) | A média municipal esconde a fazenda | `ajustes.produtividade` (`soja`, `milho`/`milho_2safra`, `trigo`; sc/ha > 0). O ano ruim escala proporcionalmente; a soja informada também muda a escala S da renda | Já aceito |
+| Rotação atual e histórico real dos últimos anos | MapBiomas (só vê a cultura de verão) e NDVI (só existe no demo) | Rotação atual e histórico fiéis | `rotacao_atual` (aceito); histórico detalhado a implementar | Parcial |
+| Data de semeadura que ele realmente usa | Padrão 01/02 | Risco de geada e água corretos | `semeadura_safrinha` | Já aceito |
+| Análise de solo (argila, MO, pH, CAD) | SoilGrids e pedotransferência | CAD é a maior incerteza do critério água | `analise_solo` (topo): `argila_pct`, `areia_pct`, `materia_organica_pct` ou `carbono_organico_g_kg`, `ph`, `cad_mm_cm` (opcional), `profundidade_cm` (opcional, padrão 20). Exige argila+areia ou `cad_mm_cm`. Vale também em `POST /v1/diagnostico` | Já aceito |
+| Polígono exato do talhão | Ponto (quadrado de ~100 ha) | Clima, solo e relevo do talhão certo | `area.geometry` | Já aceito |
+| Restrições: culturas que não quer ou não tem como plantar/vender; máquinas (plataforma de milho, semeadora de consórcio); comprador local | Todas as candidatas liberadas | Só aparece o que ele consegue executar | `restricoes` (topo): `culturas_excluidas` (ids `<verao>__<segunda>` ou slugs antigos = soja no verão), `maquinas{plataforma_milho, semeadora_consorcio}`, `sem_comprador` (`milho`, `trigo`, `sorgo`, `feijao`, `aveia_grao`). Para avaliar só algumas rotações, use `rotacoes` (lista de `{verao, segunda}`; ver `docs/motor.md`). Excluída ou sem comprador elimina; máquina `false` só gera aviso e custo extra de terceirização. A viabilidade de mercado (alto/médio/baixo/não se aplica) aparece em `card.mercado` | Já aceito |
+| Irrigação | Motor assume sequeiro | Muda o critério água | `irrigacao` (topo): `disponivel`, `custo_r_mm_ha` (padrão 4,0), `lamina_max_mm_dia` (padrão 6). Irriga milho, milho+braquiária e trigo; o veranico deixa de contar; a margem desconta lâmina × custo. Não modela ganho de produtividade | Já aceito |
 
-## 5. Exemplos de requisição (`POST /v1/recomendacao`)
+## 5. Como mostrar na tela (sugestão para o frontend)
+
+Bloco "Valores usados" com produtividade, preço e custo por cultura, com fonte e período em cada um. O botão "Usar meus valores" deixa os campos editáveis, já preenchidos com a referência, e recalcula o ranking.
+
+```
+Rentabilidade — valores usados                         [ Usar meus valores ✎ ]
+              Produtividade      Preço              Custo
+Soja          49 sc/ha (IBGE)    R$ 120/sc (DERAL)  R$ 4.824/ha (CONAB)
+Milho 2ª      103 sc/ha (IBGE)   R$ 54/sc (DERAL)   R$ 4.678/ha (CONAB)
+ⓘ Referências públicas. Substitua pelos valores da sua fazenda para um resultado mais preciso.
+```
+
+## 6. Exemplos de requisição (`POST /v1/recomendacao`)
 
 Mínimo (só a área):
 
@@ -96,3 +108,10 @@ Completo (válido no schema atual):
   "n_alternativas": 3
 }
 ```
+
+## 7. Pendências
+
+- Definir o significado de "Economia de água" (slider do Nativa x critério água do motor).
+- Validar com agrônomo/cooperativas as estimativas das entradas novas: custo de terceirização (R$ 250/ha colheita de milho, R$ 80/ha semeadura do consórcio), custo da irrigação (R$ 4/mm/ha), lâmina máxima (6 mm/dia) e os níveis de mercado por cultura.
+- Modelar o ganho de produtividade da irrigação (hoje só o critério água, o risco e o custo mudam).
+- Evolução: preço futuro (B3) e sensibilidade p10–p90.

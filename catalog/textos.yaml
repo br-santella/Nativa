@@ -1,4 +1,5 @@
-# Modelos de frase em pt-BR. {placeholders} são preenchidos com valores das evidências e {fonte}.
+# Modelos de frase em pt-BR — frentes 2 e 6.
+# Use {placeholders} preenchidos apenas com valores das evidências, sempre citando {fonte}.
 criterios: {}
 gatilhos: {}
 encaminhamentos: {}

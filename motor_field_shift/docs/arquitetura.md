@@ -1,58 +1,75 @@
 # Field Shift — Arquitetura de dados e do app
 
-Como o motor obtém cada dado, como os módulos se encaixam e o que fica em disco.
+Como os dados e o app são estruturados: o que é pré-calculado, o que é lido sob demanda e como os módulos se encaixam. Data: 2026-11-14. Piloto: soja → milho safrinha no Oeste do PR.
 
-## 1. Origem de cada dado
+## 1. Princípio
 
-| Dado | Como é obtido | Arquivo / fonte | Gerado por |
-|---|---|---|---|
-| Clima (indicadores NASA POWER) | Pré-calculado por célula da grade (~0,5° × 0,625°) e por município; consulta por lat/lon | `data/processed/clima/indicadores.parquet`, `indicadores_anuais.parquet` | `ingest/clima_oeste_pr.py` |
-| Clima diário (balanço hídrico) | Pré-calculado | `data/processed/clima/power_diario.parquet` | `ingest/clima_oeste_pr.py` |
-| Clima sem célula pré-calculada | NASA POWER ao vivo, com cache em disco | `data/raw/power/power_<lat>_<lon>.json` | `app/engine.py:buscar_power()` |
-| MapBiomas (histórico de uso, 2019–2024) | Raster local recortado para o Oeste do PR | `data/raw/mapbiomas_oeste_pr/coverage_*.tif` | `ingest/mapbiomas_relevo_oeste_pr.py` |
-| NASADEM (altitude e declividade) | Raster local; declividade pré-calculada | `data/raw/nasadem_oeste_pr/elev.tif`, `data/processed/relevo_oeste_pr/slope_pct.tif` | `ingest/mapbiomas_relevo_oeste_pr.py` |
-| SoilGrids (textura, C orgânico, pH) | Raster local; API REST do SoilGrids 2.0 quando o raster não cobre a área | `data/raw/soilgrids_oeste_pr/*.tif` | `ingest/solo_pam_oeste_pr.py` |
-| IBGE PAM (produtividade municipal) | Tabela local | `data/raw/ibge/pam_oeste_pr.parquet`, `pam_extra_oeste_pr.parquet` | `ingest/solo_pam_oeste_pr.py`, `ingest/pam_culturas_extra.py` |
-| Preços e custos | Tabela local versionada | `data/ref/precos_custos.json` | `python -m field_shift.renda.atualizar` |
-| NDVI / HLS (rotação detectada) | Série pré-calculada; existe só para o talhão 72638 | `data/processed/timelapse/ndvi_hls_<id>.csv` | `ingest/timelapse_talhao.py` |
-| Talhões demo (FTW) | Geometrias e histórico locais | `data/processed/ftw/fields_tile_mapbiomas_geo.parquet`, `candidatos_demo.geojson` | `src/field_shift/mapbiomas/join_fields.py` |
-| Região (recorte do Oeste do PR) | GeoJSON local | `data/raw/regiao/oeste_pr.geojson` | `ingest/mapbiomas_relevo_oeste_pr.py` |
-| Regras legais e calendário | Código | `src/field_shift/calendario.py`, `app/engine.py` | — |
-| Contexto atual (ENSO, SMAP, MJO, pragas, alertas INMET) | Consulta ao vivo em `/v1/contexto`, com cache em disco por TTL (ENSO, SMAP e pragas 24 h; MJO 6 h; alertas 30 min) | `data/cache_contexto/`; pragas curadas em `data/contexto/pragas_alertas.json` | `src/field_shift/contexto/` |
+Pré-calcular só o que é pesado de calcular. O que é só ler um pedaço de mapa é lido sob demanda.
 
-`data/raw/` e `data/processed/` não são versionados. A lista com tamanhos está em [`../api/README.md`](../api/README.md).
+## 2. Estratégia por dado
 
-## 2. Fluxo
+| Dado | Estratégia | Por quê |
+|---|---|---|
+| Clima (indicadores NASA POWER) | Pré-calculado, numa tabela por célula da grade (~0,5° × 0,625°) e por município | Cada indicador processa 35 anos de dados diários (1991–2025): ao vivo seriam segundos; pré-calculado é uma consulta de milissegundos. O Brasil inteiro dá ~3–4 mil células e poucas dezenas de MB |
+| MapBiomas | Sob demanda, por leitura em janela de COG | Lê só o retângulo do polígono (~1 s). Hoje via source.coop (o bucket oficial dá 403); num app real, espelhar no próprio bucket |
+| NASADEM (elevação/declividade) | Sob demanda, por COG; declividade calculada no recorte | Leitura de janela é barata e o cálculo da declividade só roda sobre o recorte |
+| SoilGrids | Sob demanda, pela API | Consulta externa leve, sem necessidade de armazenar |
+| SMAP (umidade atual) | Job diário por região; o app só lê o mais recente | O dado muda uma vez por dia e é igual para todos os usuários da região |
+| NDVI / HLS (rotação detectada, solo descoberto) | Tarefa assíncrona (1–3 min) + cache por talhão | Processamento demorado demais para a requisição; o cache evita repeti-lo |
+| Regras legais / ZARC | Tabela local | Dado pequeno e estático |
+| FTW (limites de talhão) | Fora do fluxo por enquanto: o polígono vem do cliente (desenho no mapa/CAR) | O FTW fica só no tile da demo (talhão 72638) |
+
+**Nota:** no hackathon, MapBiomas e NASADEM foram baixados recortados para o Oeste do PR inteiro, para funcionar offline durante o pitch. No app real eles viram leitura sob demanda.
+
+## 3. Fluxo
 
 ```
-[ingest/ (offline)]                     [data/ (disco)]                    [API]
- POWER 1991–2025 → indicadores  ──►  parquet de clima        ─┐
- MapBiomas, NASADEM, SoilGrids  ──►  GeoTIFF recortados       │
- IBGE PAM                       ──►  parquet de PAM           ├─► servico.py ──► FastAPI ──► cliente
- HLS NDVI (talhão demo)         ──►  CSV por talhão           │   diagnosticar()
-                                     precos_custos.json      ─┘   recomendar()
- NOAA, NASA SMAP, IDR-PR/ADAPAR ──── ao vivo + cache ──────────►  /v1/contexto
+[Pipeline offline / jobs]                  [Armazenamento]            [App]
+ POWER 35 anos → indicadores clima  ──►  tabela indicadores   ─┐
+ SMAP diário → umidade atual        ──►  tabela umidade        │
+                                                               ├─► API  ──► Front (mapa)
+ MapBiomas / NASADEM (COG)          ──►  bucket de COGs  ──────┤   "dado o polígono,
+ SoilGrids (API externa)            ──────────────────────────┤    devolve diagnóstico
+ HLS NDVI (tarefa assíncrona)       ──►  cache por talhão ─────┘    e ranking"
+                                         Regras legais / ZARC (tabela local)
 ```
 
-Núcleo: `diagnosticar(area)` devolve relevo, solo, histórico, rotação detectada, clima e produtividade; `recomendar(area, ...)` usa o mesmo contexto e devolve o ranking. Cada módulo de dados recebe o polígono (ou lat/lon) e devolve um dict.
+Núcleo: `diagnostico(poligono) → {clima, solo, relevo, historico, rotacao_detectada}` e depois `ranking(diagnostico, pesos)`. Cada fonte é um módulo com a mesma interface: recebe o polígono (ou lat/lon) e devolve um dict.
 
-## 3. Módulos
+## 4. Módulos
 
 ```
 src/field_shift/
-  motor/      servico.py: opcoes(), diagnosticar(), recomendar(), aquecer()
-  app/        engine.py: regras duras, critérios, nota, cards; mvp.py: app Streamlit
-  calendario.py  datas de semeadura e colheita, regras de calendário
-  clima/      lookup.py (indicadores por lat/lon), indicadores.py, inmet.py (validação), validacao.py
-  regiao/     recorte.py: região, histórico MapBiomas, relevo
-  solo/       solo.py: SoilGrids no polígono, CAD (Saxton & Rawls), análise do produtor
-  agua/       balanco.py: balanço hídrico diário FAO-56
-  pam/        produtividade.py: rendimento municipal
-  renda/      renda.py: margens; atualizar.py: atualização de preços e custos
-  talhoes/    ndvi.py, relevo.py: séries por talhão
-  mapbiomas/  join_fields.py: junção talhões × MapBiomas
-  contexto/   enso.py, smap.py, mjo.py, pragas.py, alertas_inmet.py
-  ftw/        busca e plot de cenas do Fields of The World
+  clima/     indicadores_para(lat, lon)        (em construção)
+  regiao/    historico_mapbiomas(), relevo()   (em construção)
+  solo/      soilgrids(poligono)               (a fazer)
+  ndvi/      rotacao_detectada(poligono)       (hoje em talhoes/ndvi.py)
+  regras/    regras duras + ZARC               (hoje dentro do engine.py)
+  motor/     diagnostico() + ranking()         (sai do app/engine.py atual)
+  app/       Streamlit (hackathon) → API FastAPI + front web
 ```
 
-Lógica do motor: [`motor.md`](motor.md). Entradas do usuário: [`entradas.md`](entradas.md).
+## 5. Espaço em disco (Oeste do PR)
+
+Estimativa; atualizar com os números reais após os downloads.
+
+| Conjunto | Tamanho estimado |
+|---|---|
+| POWER | ~150–250 MB de JSON bruto → ~20–40 MB em parquet |
+| INMET | ~300–500 MB de CSV (zips de 1–2 GB apagados depois de extrair) → parquet diário com poucos MB |
+| MapBiomas 2000–2024 | ~150–250 MB |
+| NASADEM + declividade | ~150–250 MB |
+| **Total** | **~0,7–1,2 GB, com pico de 2–3 GB no download** |
+
+Em produção vai só a tabela de indicadores de clima (poucos MB) mais os rasters recortados (~300–500 MB), ou nada disso se ler os COGs sob demanda. O Paraná inteiro ≈ 9× isso.
+
+## 6. Hackathon vs. app real
+
+- **Até domingo (15/11/2026):** Streamlit + arquivos locais (parquet/GeoTIFF), sem infraestrutura, mas com módulos nas interfaces acima, para que trocar arquivo local por bucket/banco depois não mexa no motor.
+- **App real:** FastAPI + PostGIS (ou parquet/DuckDB) + bucket de COGs + fila para o NDVI. Para expandir a outra região: rodar o pipeline de clima naquela grade e adicionar as regras legais do estado; MapBiomas e NASADEM já cobrem o Brasil.
+- **Fora do escopo agora:** pecuária/gado e expansão do FTW.
+- **Argumento para o pitch:** escala para o Brasil porque o pesado está pré-calculado e o resto é leitura sob demanda.
+
+Lógica do motor: ver docs/motor.md
+
+Entradas do usuário: ver docs/entradas.md
