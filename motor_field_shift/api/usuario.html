@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Shift — simular como produtor</title>
+<style>
+:root{--bg:#f6f5f0;--card:#fff;--ink:#1f2a1f;--mut:#6b756b;--line:#dcdcd2;--green:#2f6b3a;--green2:#e6f0e4;--warn:#9a5b00;--warnbg:#fff4de;--bad:#a02a2a;--badbg:#fbe9e9}
+*{box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--ink);margin:0;line-height:1.45}
+main{max-width:980px;margin:0 auto;padding:1rem}
+h1{font-size:1.4rem;margin:.2rem 0}h2{font-size:1.15rem;margin:1.4rem 0 .5rem}h3{font-size:1rem;margin:.2rem 0}
+.sub{color:var(--mut);margin:0 0 1rem}
+fieldset{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:0 0 .8rem;padding:.7rem .9rem}
+legend{font-weight:600;padding:0 .4rem}
+label{display:block;font-size:.85rem;color:var(--mut);margin:.35rem 0 .1rem}
+input,select,textarea{width:100%;padding:.4rem .5rem;border:1px solid var(--line);border-radius:6px;font:inherit;background:#fff}
+textarea{font-family:monospace;font-size:.8rem;height:6rem}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem}
+.chk{display:flex;gap:.4rem;align-items:center;margin:.2rem 0;color:var(--ink);font-size:.9rem}
+.chk input{width:auto}
+.hint{font-size:.78rem;color:var(--mut);margin:.2rem 0}
+.sl{display:grid;grid-template-columns:9rem 1fr 2rem;gap:.5rem;align-items:center;font-size:.9rem}
+.sl input{padding:0}
+button{font:inherit;border:0;border-radius:8px;padding:.6rem 1.1rem;cursor:pointer;background:var(--green);color:#fff;font-weight:600}
+button.sec{background:#fff;color:var(--green);border:1px solid var(--green)}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0}
+.status{font-size:.85rem;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.8rem .9rem;margin:.6rem 0}
+.card.cur{border-color:var(--green);box-shadow:0 0 0 2px var(--green2)}
+.head{display:flex;justify-content:space-between;gap:.6rem;align-items:baseline;flex-wrap:wrap}
+.pos{background:var(--green);color:#fff;border-radius:50%;width:1.7rem;height:1.7rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;margin-right:.5rem;font-size:.9rem}
+.tag{font-size:.72rem;background:var(--green2);color:var(--green);border-radius:99px;padding:.1rem .5rem;margin-left:.4rem}
+.score{font-size:1.3rem;font-weight:700;color:var(--green)}
+.bar{background:#ececE4;border-radius:4px;height:7px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--green)}
+.crit{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin:.5rem 0;font-size:.78rem;color:var(--mut)}
+.money{font-size:.9rem;margin:.3rem 0}
+ul{margin:.2rem 0;padding-left:1.2rem;font-size:.88rem}
+details{margin:.3rem 0;font-size:.88rem}summary{cursor:pointer;color:var(--green);font-weight:600}
+.box{border-radius:8px;padding:.5rem .7rem;margin:.4rem 0;font-size:.88rem}
+.warn{background:var(--warnbg);color:var(--warn)}.err{background:var(--badbg);color:var(--bad)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.5rem;margin:.4rem 0}
+.kv div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.4rem .6rem;font-size:.85rem}
+.kv b{display:block;font-size:.72rem;color:var(--mut);font-weight:500}
+pre{background:#f0efe8;padding:.6rem;overflow:auto;max-height:50vh;font-size:.75rem}
+.gain{background:var(--green2);border-radius:8px;padding:.4rem .6rem;font-size:.85rem;margin:.4rem 0}
+.elim{font-size:.85rem;border-top:1px dashed var(--line);padding:.3rem 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Field Shift — simular como produtor</h1>
+<p class="sub">Preencha como faria na plataforma e veja a recomendação do motor com dados reais.</p>
+
+<fieldset><legend>Servidor</legend>
+  <div class="row"><div><label for="base">URL da API</label><input id="base" value="http://localhost:8000"></div></div>
+  <p class="status" id="apiStatus">Verificando…</p>
+</fieldset>
+
+<form id="form" onsubmit="return false">
+<fieldset><legend>1. Sua área</legend>
+  <div class="row">
+    <label class="chk"><input type="radio" name="areaMode" value="demo" checked> Talhão de demonstração</label>
+    <label class="chk"><input type="radio" name="areaMode" value="point"> Ponto (lat/lon)</label>
+    <label class="chk"><input type="radio" name="areaMode" value="polygon"> Polígono desenhado (GeoJSON)</label>
+  </div>
+  <div id="areaDemo"><label for="demoId">Talhão</label><select id="demoId"></select></div>
+  <div id="areaPoint" hidden><div class="row">
+    <div><label for="lat">Latitude</label><input id="lat" type="number" step="any" value="-24.95"></div>
+    <div><label for="lon">Longitude</label><input id="lon" type="number" step="any" value="-53.45"></div></div>
+    <p class="hint">Vira um quadrado de ~100 ha ao redor do ponto.</p></div>
+  <div id="areaPoly" hidden><label for="poly">GeoJSON (Polygon, MultiPolygon ou Feature)</label><textarea id="poly"></textarea></div>
+</fieldset>
+
+<fieldset><legend>2. O que você planta hoje</legend>
+  <div class="row">
+    <div><label for="rot">Rotação atual (verão → 2ª safra)</label><select id="rot"></select></div>
+    <div><label for="stage">Em que fase está a cultura de verão?</label><select id="stage"></select></div>
+    <div><label for="harvest">…ou colheita prevista (dd/mm)</label><input id="harvest" placeholder="ex.: 05/01" pattern="\d{2}/\d{2}"></div>
+    <div><label for="refDate">Data de hoje</label><input id="refDate" type="date"></div>
+    <div><label for="sow2">Semeadura da 2ª safra</label><select id="sow2"></select></div>
+  </div>
+  <p class="hint">Sem fase nem colheita, o motor usa premissas de calendário (com aviso).</p>
+</fieldset>
+
+<fieldset><legend>3. Problemas conhecidos na área</legend>
+  <label class="chk"><input type="checkbox" name="prob" value="nematoide"> Nematoide</label>
+  <label class="chk"><input type="checkbox" name="prob" value="mofo_branco"> Mofo-branco</label>
+  <label class="chk"><input type="checkbox" name="prob" value="cigarrinha"> Cigarrinha</label>
+  <label class="chk"><input type="checkbox" name="prob" value="compactacao"> Compactação</label>
+</fieldset>
+
+<fieldset><legend>4. Análise de solo (opcional)</legend>
+  <div class="row" id="soilFields"></div>
+  <p class="hint">Para textura, informe argila e areia (soma ≤ 100). Fertilidade pode ir sozinha. Vazio = SoilGrids / não considerada.</p>
+</fieldset>
+
+<fieldset><legend>5. O que pesa mais na decisão</legend>
+  <div id="weights"></div>
+</fieldset>
+
+<fieldset><legend>6. Seus números e limites (opcional)</legend>
+  <div class="row" id="priceFields"></div>
+  <p class="hint">Preços em R$/saca.</p>
+  <div class="row">
+    <div><label>Não tenho comprador para</label>
+      <label class="chk"><input type="checkbox" name="nobuyer" value="milho"> Milho</label>
+      <label class="chk"><input type="checkbox" name="nobuyer" value="trigo"> Trigo</label>
+      <label class="chk"><input type="checkbox" name="nobuyer" value="sorgo"> Sorgo</label>
+      <label class="chk"><input type="checkbox" name="nobuyer" value="feijao"> Feijão</label></div>
+    <div><label>Máquinas</label>
+      <label class="chk"><input type="checkbox" id="noHeader"> Não tenho plataforma de milho</label>
+      <label class="chk"><input type="checkbox" id="noSeeder"> Não tenho semeadora de consórcio</label>
+      <label class="chk"><input type="checkbox" id="irrigated"> Tenho irrigação</label></div>
+    <div><label for="nAlt">Quantas alternativas mostrar</label><input id="nAlt" type="number" min="1" max="6" value="3"></div>
+  </div>
+</fieldset>
+
+<div class="actions">
+  <button id="go" type="submit">Ver recomendação</button>
+  <button class="sec" type="button" id="example">Preencher exemplo (talhão 72638)</button>
+</div>
+<p class="status" id="info"></p>
+</form>
+
+<div id="result"></div>
+</main>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const baseUrl = () => $("base").value.replace(/\/$/, "");
+let options = null;
+
+// Small DOM helper: h("div", {class:"x"}, child, "text")
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v; else el.setAttribute(k, v);
+  }
+  for (const kid of kids.flat()) {
+    if (kid == null || kid === false) continue;
+    el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+}
+const brl = (v) => v == null ? "—" : "R$ " + Math.round(v).toLocaleString("pt-BR");
+const num = (v, d = 2) => v == null ? "—" : Number(v).toLocaleString("pt-BR", {minimumFractionDigits: d, maximumFractionDigits: d});
+const pct = (v) => Math.round(v * 100) + "%";
+
+const SOIL_FIELDS = [
+  ["argila_pct", "Argila (%)"], ["areia_pct", "Areia (%)"], ["materia_organica_pct", "Mat. orgânica (%)"],
+  ["ph", "pH"], ["p_mg_dm3", "P (mg/dm³)"], ["k_cmolc_dm3", "K (cmolc/dm³)"],
+  ["ca_cmolc_dm3", "Ca (cmolc/dm³)"], ["mg_cmolc_dm3", "Mg (cmolc/dm³)"], ["al_cmolc_dm3", "Al (cmolc/dm³)"],
+  ["v_pct", "V% (sat. bases)"], ["ctc_cmolc_dm3", "CTC (cmolc/dm³)"],
+];
+const PRICE_FIELDS = [["soja", "Soja"], ["milho", "Milho"], ["trigo", "Trigo"], ["feijao", "Feijão"], ["sorgo", "Sorgo"]];
+SOIL_FIELDS.forEach(([k, l]) => $("soilFields").append(h("div", {}, h("label", {for: "s_" + k}, l), h("input", {id: "s_" + k, type: "number", step: "any", "data-k": k}))));
+PRICE_FIELDS.forEach(([k, l]) => $("priceFields").append(h("div", {}, h("label", {for: "p_" + k}, l), h("input", {id: "p_" + k, type: "number", step: "any", min: "0", "data-k": k}))));
+
+function setupWeights(defaults, criteria) {
+  $("weights").replaceChildren();
+  criteria.forEach((c) => {
+    const out = h("span", {}, defaults[c.id]);
+    const inp = h("input", {type: "range", min: "0", max: "10", value: defaults[c.id], "data-k": c.id});
+    inp.oninput = () => { out.textContent = inp.value; };
+    $("weights").append(h("div", {class: "sl"}, h("span", {}, c.nome), inp, out));
+  });
+}
+
+function fillStages() {
+  const rotation = options.combinacoes.find((c) => c.id === $("rot").value);
+  const summer = options.culturas_verao.find((c) => c.id === rotation?.verao);
+  $("stage").replaceChildren(h("option", {value: ""}, "Não sei / não informar"));
+  (summer?.estagios || []).forEach((s) => $("stage").append(h("option", {value: s.id}, `${s.nome} (~${s.dias_ate_colheita} d até colher)`)));
+}
+
+async function loadOptions() {
+  try {
+    const health = await (await fetch(baseUrl() + "/health")).json();
+    $("apiStatus").textContent = health.status === "ok" ? "API conectada (v" + health.versao + ")" : "API degradada: " + (health.detalhe || "");
+    options = await (await fetch(baseUrl() + "/v1/opcoes")).json();
+  } catch (e) {
+    $("apiStatus").textContent = "API indisponível em " + baseUrl() + " (" + e.message + ")";
+    return;
+  }
+  $("demoId").replaceChildren(...options.talhoes_demo.map((t) => h("option", {value: t.id}, `Talhão ${t.id} — ${num(t.area_ha, 0)} ha`)));
+  $("rot").replaceChildren(...options.combinacoes.filter((c) => c.valida).map((c) => h("option", {value: c.id}, c.nome)));
+  $("sow2").replaceChildren(h("option", {value: ""}, "Calcular a partir da colheita"), ...options.semeaduras.map((s) => h("option", {value: s}, s)));
+  setupWeights(options.pesos_padrao, options.criterios);
+  fillStages();
+  $("refDate").value ||= new Date().toISOString().slice(0, 10);
+}
+
+document.querySelectorAll("input[name=areaMode]").forEach((r) => r.onchange = () => {
+  const m = document.querySelector("input[name=areaMode]:checked").value;
+  $("areaDemo").hidden = m !== "demo"; $("areaPoint").hidden = m !== "point"; $("areaPoly").hidden = m !== "polygon";
+});
+$("rot").onchange = fillStages;
+$("base").onchange = loadOptions;
+
+$("example").onclick = () => {
+  document.querySelector("input[name=areaMode][value=demo]").click();
+  $("demoId").value = "72638";
+  $("rot").value = "soja__milho_safrinha"; fillStages();
+  $("stage").value = "enchimento_graos";
+  $("refDate").value = "2026-12-01";
+};
+
+function collectBody() {
+  const mode = document.querySelector("input[name=areaMode]:checked").value;
+  let area;
+  if (mode === "demo") area = {talhao_id: $("demoId").value};
+  else if (mode === "point") area = {lat: parseFloat($("lat").value), lon: parseFloat($("lon").value)};
+  else area = {geometry: JSON.parse($("poly").value)};
+  const body = {area, rotacao_atual: $("rot").value, n_alternativas: parseInt($("nAlt").value) || 3};
+  if ($("stage").value) body.estagio_verao = $("stage").value;
+  if ($("harvest").value) body.colheita_prevista = $("harvest").value;
+  if ($("refDate").value) body.data_referencia = $("refDate").value;
+  if ($("sow2").value) body.semeadura_safrinha = $("sow2").value;
+  const problems = [...document.querySelectorAll("input[name=prob]:checked")].map((i) => i.value);
+  if (problems.length) body.problemas_area = problems;
+  const soil = {};
+  document.querySelectorAll("#soilFields input").forEach((i) => { if (i.value !== "") soil[i.dataset.k] = parseFloat(i.value); });
+  if (Object.keys(soil).length) body.analise_solo = soil;
+  body.pesos = {};
+  document.querySelectorAll("#weights input").forEach((i) => body.pesos[i.dataset.k] = parseInt(i.value));
+  const prices = {};
+  document.querySelectorAll("#priceFields input").forEach((i) => { if (i.value !== "") prices[i.dataset.k] = parseFloat(i.value); });
+  if (Object.keys(prices).length) body.ajustes = {precos: prices};
+  const noBuyer = [...document.querySelectorAll("input[name=nobuyer]:checked")].map((i) => i.value);
+  const restrictions = {};
+  if (noBuyer.length) restrictions.sem_comprador = noBuyer;
+  if ($("noHeader").checked || $("noSeeder").checked) restrictions.maquinas = {plataforma_milho: !$("noHeader").checked, semeadora_consorcio: !$("noSeeder").checked};
+  if (Object.keys(restrictions).length) body.restricoes = restrictions;
+  if ($("irrigated").checked) body.irrigacao = {disponivel: true};
+  return body;
+}
+
+// ---------- rendering ----------
+function bar(v) { return h("div", {class: "bar"}, h("i", {style: `width:${Math.max(0, Math.min(1, v)) * 100}%`})); }
+function list(items) { return items?.length ? h("ul", {}, items.map((t) => h("li", {}, t))) : null; }
+
+function renderItem(x, isCurrent) {
+  const crit = options.criterios.map((c) => h("div", {}, `${c.nome} ${num(x.criterios?.[c.id])}`, bar(x.criterios?.[c.id] ?? 0)));
+  const g = x.ganho_vs_atual;
+  const card = x.card || {};
+  return h("div", {class: "card" + (x.atual || isCurrent ? " cur" : "")},
+    h("div", {class: "head"},
+      h("h3", {}, x.posicao ? h("span", {class: "pos"}, x.posicao) : null, x.rotacao, x.atual ? h("span", {class: "tag"}, "sua rotação atual") : null),
+      h("span", {class: "score"}, x.nota == null ? "eliminada" : num(x.nota))),
+    x.eliminada ? h("div", {class: "box err"}, "Eliminada: ", (x.motivos || []).join(" ")) : null,
+    x.criterios ? h("div", {class: "crit"}, crit) : null,
+    x.margem ? h("div", {class: "money"}, `Margem estimada: ${brl(x.margem.total_r_ha)}/ha/ano`,
+      x.margem.ano_ruim_r_ha != null ? ` • em ano ruim: ${brl(x.margem.ano_ruim_r_ha)}/ha` : "") : null,
+    g ? h("div", {class: "gain"}, `Frente à atual: soja seguinte ${num(g.soja_seguinte_sc, 1)} sc/ha (${brl(g.soja_seguinte_rs)}/ha); 2ª safra ${brl(g.renda_2a_safra?.r_ha)}/ha; `
+      + `margem total ${g.margem_total?.r_ha >= 0 ? "+" : ""}${brl(g.margem_total?.r_ha)}/ha; solo ${g.solo?.dias_descobertos > 0 ? "+" : ""}${g.solo?.dias_descobertos} dias descobertos.`) : null,
+    card.por_que ? h("p", {}, card.por_que) : null,
+    card.mercado ? h("p", {class: "hint"}, `Mercado (${card.mercado.nivel}): ${card.mercado.texto} — ${card.mercado.estimativa}`) : null,
+    card.beneficios?.length ? h("details", {}, h("summary", {}, "Benefícios"), list(card.beneficios)) : null,
+    card.riscos?.length ? h("details", {}, h("summary", {}, "Riscos"), list(card.riscos)) : null,
+    card.evidencias?.length ? h("details", {}, h("summary", {}, "Evidências e contas"), list(card.evidencias)) : null,
+    card.lacunas?.length ? h("details", {}, h("summary", {}, "O que o motor não sabe"), list(card.lacunas)) : null,
+    card.avisos?.length ? h("div", {class: "box warn"}, card.avisos.join(" ")) : null);
+}
+
+function renderBlock(title, subtitle, block, atual) {
+  const out = [h("h2", {}, title), h("p", {class: "sub"}, subtitle)];
+  const ranking = block?.ranking || [];
+  if (!ranking.length) out.push(h("div", {class: "box warn"}, "Nenhuma opção viável neste bloco."));
+  ranking.forEach((x) => out.push(renderItem(x)));
+  if (atual && !ranking.some((x) => x.atual) && title.startsWith("Agora"))
+    out.push(renderItem(atual, true));
+  return out;
+}
+
+function renderDiagnosis(d) {
+  if (!d) return [];
+  const a = d.area || {};
+  const out = [h("h2", {}, "Sobre a sua área"),
+    h("div", {class: "kv"},
+      h("div", {}, h("b", {}, "Município"), a.municipio?.nome || "—"),
+      h("div", {}, h("b", {}, "Área"), a.area_ha ? num(a.area_ha, 1) + " ha" : "—"),
+      h("div", {}, h("b", {}, "Rotação detectada (satélite)"), d.rotacao_detectada?.rotacao || "—"))];
+  [d.relevo?.texto, d.solo?.texto, d.produtividade?.texto, ...(d.clima?.textos || [])].filter(Boolean)
+    .forEach((t) => out.push(h("p", {class: "hint"}, t)));
+  if (d.historico?.length)
+    out.push(h("details", {}, h("summary", {}, "Histórico de uso da terra (MapBiomas)"),
+      h("ul", {}, d.historico.map((y) => h("li", {}, `${y.ano}: ${y.nome_classe}`)))));
+  return out;
+}
+
+function render(res) {
+  const root = $("result");
+  root.replaceChildren();
+  const summary = [h("h2", {}, "Seu cenário")];
+  const kv = h("div", {class: "kv"},
+    h("div", {}, h("b", {}, "Cultura de verão atual"), res.cultura_atual?.nome || "—"),
+    res.estagio_verao ? h("div", {}, h("b", {}, "Fase informada"), res.estagio_verao.nome) : null,
+    h("div", {}, h("b", {}, "Colheita estimada"), res.colheita_estimada ? `${res.colheita_estimada.data} (${res.colheita_estimada.origem})` : "—"),
+    h("div", {}, h("b", {}, "Semeadura da 2ª safra"), res.semeadura_2a ? `${res.semeadura_2a.data} (${res.semeadura_2a.origem})` : "tarde demais para as culturas de data móvel"));
+  summary.push(kv);
+  (res.avisos || []).forEach((w) => summary.push(h("div", {class: "box warn"}, w)));
+  root.append(...summary,
+    ...renderBlock("Agora: o que entra depois desta colheita", "Mesma cultura de verão da sua rotação atual.", res.agora, res.atual),
+    ...renderBlock("Próxima safra: vale mudar a cultura de verão?", "Alternativas com a outra cultura de verão, comparadas à sua rotação atual.", res.proxima_safra, null));
+  if (res.eliminadas?.length)
+    root.append(h("details", {}, h("summary", {}, `${res.eliminadas.length} rotações eliminadas por regra legal/calendário/restrição`),
+      res.eliminadas.map((e) => h("div", {class: "elim"}, h("b", {}, e.rotacao), list(e.motivos)))));
+  root.append(...renderDiagnosis(res.diagnostico),
+    h("p", {class: "hint"}, "Valores estimados com dados públicos (NASA, IBGE, CONAB, SEAB). Não substituem o agrônomo."),
+    h("details", {}, h("summary", {}, "Ver JSON bruto"), h("pre", {}, JSON.stringify(res, null, 2))));
+}
+
+$("form").onsubmit = async (ev) => {
+  ev.preventDefault();
+  $("result").replaceChildren();
+  $("info").textContent = "Calculando…";
+  let body;
+  try { body = collectBody(); } catch (e) { $("info").textContent = "Entrada inválida: " + e.message; return; }
+  const t0 = performance.now();
+  try {
+    const r = await fetch(baseUrl() + "/v1/recomendacao", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify(body)});
+    const data = await r.json();
+    const ms = Math.round(performance.now() - t0);
+    if (!r.ok) {
+      $("info").textContent = `Erro ${r.status} (${ms} ms)`;
+      const msg = data.mensagem || (Array.isArray(data.detail) ? data.detail.map((d) => (d.loc || []).join(".") + ": " + d.msg).join("; ") : JSON.stringify(data));
+      $("result").append(h("div", {class: "box err"}, msg));
+      return;
+    }
+    $("info").textContent = `Pronto em ${ms} ms`;
+    render(data);
+    $("result").scrollIntoView({behavior: "smooth"});
+  } catch (e) {
+    $("info").textContent = "Erro de rede: " + e.message;
+  }
+};
+
+loadOptions();
+</script>
+</body>
+</html>
