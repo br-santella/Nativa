@@ -16,13 +16,15 @@ export type SetupInputs = {
   restricoes: { sem_comprador: string[]; maquinas: { plataforma_milho: boolean; semeadora_consorcio: boolean } };
   irrigacao: { disponivel: boolean };
 };
-const soilFields = [['argila_pct','Argila (%)'],['areia_pct','Areia (%)'],['materia_organica_pct','Matéria orgânica (%)'],['ph','pH'],['p_mg_dm3','Fósforo (mg/dm³)'],['k_cmolc_dm3','Potássio (cmolc/dm³)'],['ca_cmolc_dm3','Cálcio (cmolc/dm³)'],['mg_cmolc_dm3','Magnésio (cmolc/dm³)'],['al_cmolc_dm3','Alumínio (cmolc/dm³)'],['v_pct','Saturação por bases (%)'],['ctc_cmolc_dm3','CTC (cmolc/dm³)']];
+const soilFields = [['argila_pct','Argila (%)'],['silte_pct','Silte (%)'],['areia_pct','Areia (%)'],['materia_organica_pct','Matéria orgânica (%)'],['ph','pH'],['p_mg_dm3','Fósforo (mg/dm³)'],['k_cmolc_dm3','Potássio (cmolc/dm³)'],['ca_cmolc_dm3','Cálcio (cmolc/dm³)'],['mg_cmolc_dm3','Magnésio (cmolc/dm³)'],['al_cmolc_dm3','Alumínio (cmolc/dm³)'],['v_pct','Saturação por bases (%)'],['ctc_cmolc_dm3','CTC (cmolc/dm³)']];
 const soilMax: Record<string, number> = {ph:9, p_mg_dm3:500, k_cmolc_dm3:10, ca_cmolc_dm3:40, mg_cmolc_dm3:20, al_cmolc_dm3:15, ctc_cmolc_dm3:60};
+/** Clay, silt and sand add up to 100%: two typed values fill in the third. Silt is not sent to the engine. */
+const TEXTURE = ['argila_pct', 'silte_pct', 'areia_pct'];
 const commodities = [['soja','Soja'],['milho','Milho'],['trigo','Trigo'],['feijao','Feijão'],['sorgo','Sorgo']];
 const copy = [
  ['Vamos começar','Um novo olhar começa aqui.','Vamos conhecer um pouquinho da sua terra. No seu tempo.'],
  ['Sua lavoura','O que você cultiva hoje?','Começamos com o que já faz parte da sua rotina.'],
- ['Pragas e problemas','Pragas conhecidas','Marque as pragas, doenças ou problemas de solo que já apareceram na sua área.'],
+ ['Sua área','Problemas conhecidos','Marque as pragas, doenças ou problemas de solo que já apareceram na sua área.'],
  ['Seu solo','Vamos olhar para o solo?','Preencha o que souber ou siga sem análise.'],
  ['Seu próximo ciclo','O que importa para você?','Escolha uma prioridade e ajuste se quiser.'],
  ['Tudo pronto','Vamos aos seus cenários?','Os detalhes abaixo são opcionais.'],
@@ -37,6 +39,18 @@ function hectares(vertices: LatLon[]): number {
  return Math.abs(twice) / 2 / 10000;
 }
 type Place = { label: string; lat: number; lon: number };
+/** Square of `ha` hectares centred on a point, as [lat, lon] corners. */
+function square(lat: number, lon: number, ha: number): LatLon[] {
+ const half = Math.sqrt(ha * 10000) / 2, dLat = half / 110540, dLon = half / (111320 * Math.cos(lat * Math.PI / 180));
+ return [[lat - dLat, lon - dLon], [lat - dLat, lon + dLon], [lat + dLat, lon + dLon], [lat + dLat, lon - dLon]];
+}
+/** The engine evaluates fixed second-window sowing dates (dd/mm, Jan–Mar): first one on or after the chosen day. */
+function engineSowing(isoDate: string, allowed: string[]): string {
+ const month = Number(isoDate.slice(5, 7)), day = Number(isoDate.slice(8, 10));
+ if (month >= 8) return allowed[0];
+ const key = month * 100 + day;
+ return allowed.find(x => { const [d, m] = x.split('/').map(Number); return m * 100 + d >= key; }) ?? allowed[allowed.length - 1];
+}
 export default function PropertyWizard({ initial, brand, onHome, onComplete }: { initial: Farm; brand: ReactNode; onHome: () => void; onComplete: (farm: Farm, inputs: SetupInputs) => void }) {
  const { language } = useLanguage();
  const en = language === 'en';
@@ -59,7 +73,9 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
  const [harvest, setHarvest] = useState('');
  const today = useMemo(isoToday, []);
  const [date, setDate] = useState(today);
- const [sowing, setSowing] = useState('');
+ const [sowingDate, setSowingDate] = useState('');
+ const [pointHa, setPointHa] = useState('100');
+ const [textureAuto, setTextureAuto] = useState<string | null>(null), [textureOrder, setTextureOrder] = useState<string[]>([]);
  const [problems, setProblems] = useState<string[]>([]);
  const [soil, setSoil] = useState<Record<string,string>>({});
  const [prices, setPrices] = useState<Record<string,string>>({});
@@ -71,15 +87,38 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
  useEffect(() => { window.scrollTo({ top: 0 }); heading.current?.focus({ preventScroll: true }); }, [step]);
  const toggle = (values: string[], value: string) => values.includes(value) ? values.filter(x => x !== value) : [...values, value];
  const field = (label: string, control: ReactNode) => {
-   const optional = ['Fase da cultura de verão', 'Colheita prevista', 'Cidade de referência', 'Endereço de referência'].includes(label);
+   const optional = ['Fase da cultura de verão', 'Colheita prevista', 'Semeadura da 2ª safra', 'Cidade de referência', 'Endereço de referência'].includes(label);
    return <label className="field"><span className="wizard-field-label">{t(label)}{optional && <span className="wizard-field-optional">{say('opcional','optional')}</span>}</span>{control}</label>;
  };
  const more = (label: string, children: ReactNode) => <section className="wizard-open-section"><h2>{label}</h2><div className="wizard-more-content">{children}</div></section>;
  const choice = (selected: boolean, title: string, description: string, onClick: () => void, icon: string) => <button type="button" className={'wizard-choice-card' + (selected ? ' selected' : '')} aria-pressed={selected} onClick={onClick}><span className="wizard-choice-icon" aria-hidden="true">{icon}</span><span><strong>{title}</strong><span>{description}</span></span><span className="wizard-choice-check" aria-hidden="true">{selected ? '✓' : ''}</span></button>;
+ function setTexture(key: string, value: string) {
+   const order = [...textureOrder.filter(x => x !== key), ...(value !== '' ? [key] : [])];
+   const next = { ...soil, [key]: value };
+   const typed = order.filter(x => x !== textureAuto || x === key).slice(-2);
+   const third = TEXTURE.find(x => !typed.includes(x))!;
+   if (typed.length === 2) {
+     const rest = 100 - typed.reduce((sum, x) => sum + Number(next[x] || 0), 0);
+     next[third] = rest >= 0 ? String(Math.round(rest * 10) / 10) : '';
+     setTextureAuto(third);
+   } else {
+     if (textureAuto && textureAuto !== key) next[textureAuto] = '';
+     setTextureAuto(null);
+   }
+   setTextureOrder(typed);
+   setSoil(next);
+ }
  const numeric = (entries: Record<string,string>) => Object.fromEntries(Object.entries(entries).filter(([,v]) => v !== '').map(([k,v]) => [k, Number(v)]));
  function area(): Area {
    if (mode === 'demo') return { talhao_id: demo };
-   if (mode === 'point') return { lat: Number(farm.latitude), lon: Number(farm.longitude) };
+   if (mode === 'point') {
+     const ha = Number(pointHa);
+     if (!(ha >= 1 && ha <= 10000)) throw Error(say('Informe o tamanho da área entre 1 e 10.000 ha.','Enter a field size between 1 and 10,000 ha.'));
+     // The engine turns a bare point into ~100 ha; any other size is sent as a square around the point.
+     if (ha === 100) return { lat: Number(farm.latitude), lon: Number(farm.longitude) };
+     const corners = square(Number(farm.latitude), Number(farm.longitude), ha);
+     return { geometry: { type: 'Polygon', coordinates: [[...corners, corners[0]].map(([lat, lon]) => [lon, lat])] } };
+   }
    if (vertices.length < 3) throw Error(say('Marque pelo menos 3 cantos da sua área no mapa.','Mark at least 3 corners of your field on the map.'));
    return { geometry: { type: 'Polygon', coordinates: [[...vertices, vertices[0]].map(([lat, lon]) => [lon, lat])] } };
  }
@@ -125,11 +164,12 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      if (step === 4 && !Object.values(weights).some(v => v > 0)) throw Error(say('Dê um peso maior que zero a pelo menos uma prioridade.','Give at least one priority a weight above zero.'));
      if (step < 5) { setStep(step + 1); return; }
      const selected = options.talhoes_demo.find(x => x.id === demo)!;
-     const completed = { ...farm, irrigation: irrigation ? 'Sim' : 'Não', crop: rotation.startsWith('soja__') ? 'Soja' : 'Milho', ...(mode === 'demo' ? {latitude: String(selected.lat), longitude: String(selected.lon), area: String(selected.area_ha), city: `${selected.municipio}, PR`} : mode === 'polygon' ? {latitude: (vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length).toFixed(6), longitude: (vertices.reduce((s, [, lon]) => s + lon, 0) / vertices.length).toFixed(6), area: hectares(vertices).toFixed(1)} : {}), ...(soil.ph ? {ph: soil.ph} : {}), ...(soil.materia_organica_pct ? {organic: soil.materia_organica_pct} : {}) };
+     const { silte_pct: _silt, ...soilForEngine } = soil;
+     const completed = { ...farm, irrigation: irrigation ? 'Sim' : 'Não', crop: rotation.startsWith('soja__') ? 'Soja' : 'Milho', ...(mode === 'demo' ? {latitude: String(selected.lat), longitude: String(selected.lon), area: String(selected.area_ha), city: `${selected.municipio}, PR`} : mode === 'point' ? {area: pointHa} : mode === 'polygon' ? {latitude: (vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length).toFixed(6), longitude: (vertices.reduce((s, [, lon]) => s + lon, 0) / vertices.length).toFixed(6), area: hectares(vertices).toFixed(1)} : {}), ...(soil.ph ? {ph: soil.ph} : {}), ...(soil.materia_organica_pct ? {organic: soil.materia_organica_pct} : {}) };
      onComplete(completed, { area: area(), rotacao_atual: rotation, pesos: weights, n_alternativas: count,
        ...(stage ? {estagio_verao: stage} : {}), ...(harvest ? {colheita_prevista: `${harvest.slice(8, 10)}/${harvest.slice(5, 7)}`} : {}), data_referencia: date,
-       ...(sowing ? {semeadura_safrinha: sowing} : {}), problemas_area: problems,
-       ...(Object.keys(numeric(soil)).length ? {analise_solo: numeric(soil)} : {}),
+       ...(sowingDate ? {semeadura_safrinha: engineSowing(sowingDate, options.semeaduras)} : {}), problemas_area: problems,
+       ...(Object.keys(numeric(soilForEngine)).length ? {analise_solo: numeric(soilForEngine)} : {}),
        ...(Object.keys(numeric(prices)).length ? {ajustes: {precos: numeric(prices)}} : {}),
        restricoes: {sem_comprador: buyers, maquinas: {plataforma_milho: header, semeadora_consorcio: seeder}}, irrigacao: {disponivel: irrigation} });
    } catch (e) { setError((e as Error).message); }
@@ -141,6 +181,10 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
  const sampleFocus = useMemo<MapFocus>(() => ({ lat: sample.lat, lon: sample.lon, zoom: 14, key: Number(sample.id) }), [sample]);
  const number = (value: number, digits = 1) => value.toLocaleString(en ? 'en-US' : 'pt-BR', { maximumFractionDigits: digits });
  const sowingLabel = (ddmm: string) => { const [day, month] = ddmm.split('/').map(Number); return `${day} ${new Date(2026, month - 1, 15).toLocaleDateString(en ? 'en-US' : 'pt-BR', { month: 'short' }).replace('.', '')}`; };
+ const yesNo = (name: string, label: string, value: boolean, set: (v: boolean) => void) => <div className="wizard-buyer-row" key={name}><span>{label}</span><span className="wizard-segmented is-compact" role="radiogroup" aria-label={label}>
+  <label><input type="radio" name={`yn-${name}`} checked={value} onChange={() => set(true)}/><span>{say('Sim','Yes')}</span></label>
+  <label><input type="radio" name={`yn-${name}`} checked={!value} onChange={() => set(false)}/><span>{say('Não','No')}</span></label>
+ </span></div>;
  const goBack = () => { setError(''); if (step === 0) onHome(); else setStep(step - 1); };
  const drawnHa = hectares(vertices);
  return <div className={`signup property-wizard wizard-step-${step}`}>
@@ -180,8 +224,8 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
        <label><input type="radio" name="mark-mode" checked={mode === 'point'} onChange={() => setMode('point')}/><span><span aria-hidden="true">⌖</span>{say('Marcar um ponto','Drop a pin')}</span></label>
        <label><input type="radio" name="mark-mode" checked={mode === 'polygon'} onChange={() => setMode('polygon')}/><span><span aria-hidden="true">⬠</span>{say('Desenhar o contorno','Draw the boundary')}</span></label>
       </div>
-      <LocationMap mode={mode === 'polygon' ? 'polygon' : 'point'} latitude={farm.latitude} longitude={farm.longitude} onChange={(latitude, longitude) => setFarm(current => ({...current, latitude, longitude}))} vertices={vertices} onVerticesChange={setVertices} focus={focus}/>
-      {mode === 'point' && <><div className="wizard-grid">{(['latitude','longitude'] as const).map(k => <div key={k}>{field(k === 'latitude' ? 'Latitude' : 'Longitude', <input required type="number" step="any" min={k === 'latitude' ? -90 : -180} max={k === 'latitude' ? 90 : 180} value={farm[k]} onChange={e => setFarm({...farm,[k]:e.target.value})}/>)}</div>)}</div><p className="wizard-hint">{say('Usaremos uma área aproximada de 100 ha ao redor desse ponto.','We’ll use an area of about 100 ha around this point.')}</p></>}
+      <LocationMap mode={mode === 'polygon' ? 'polygon' : 'point'} latitude={farm.latitude} longitude={farm.longitude} onChange={(latitude, longitude) => setFarm(current => ({...current, latitude, longitude}))} vertices={vertices} onVerticesChange={setVertices} focus={focus} pointHa={Number(pointHa) > 0 ? Number(pointHa) : undefined}/>
+      {mode === 'point' && <><div className="wizard-grid wizard-point-grid">{(['latitude','longitude'] as const).map(k => <div key={k}>{field(k === 'latitude' ? 'Latitude' : 'Longitude', <input required type="number" step="any" min={k === 'latitude' ? -90 : -180} max={k === 'latitude' ? 90 : 180} value={farm[k]} onChange={e => setFarm({...farm,[k]:e.target.value})}/>)}</div>)}<div>{field('Tamanho da área (ha)', <input required type="number" min="1" max="10000" step="any" value={pointHa} onChange={e => setPointHa(e.target.value)}/>)}</div></div><p className="wizard-hint">{say('O quadrado no mapa mostra a área analisada ao redor do ponto. Para o formato exato, desenhe o contorno.','The square on the map shows the area analysed around the point. For the exact shape, draw the boundary.')}</p></>}
       {mode === 'polygon' && <div className="wizard-polygon-bar">
        <span role="status">{vertices.length < 3 ? say(`${vertices.length} de 3 cantos marcados`, `${vertices.length} of 3 corners marked`) : say(`Contorno com ${vertices.length} cantos · cerca de ${number(drawnHa)} ha`, `Boundary with ${vertices.length} corners · about ${number(drawnHa)} ha`)}</span>
        <span><button type="button" className="wizard-inline-link" disabled={!vertices.length} onClick={() => setVertices(vertices.slice(0, -1))}>{say('Desfazer último canto','Undo last corner')}</button><button type="button" className="wizard-inline-link" disabled={!vertices.length} onClick={() => setVertices([])}>{say('Limpar','Clear')}</button></span>
@@ -205,10 +249,12 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      {more(say('O momento da sua lavoura · opcional','Your crop timing · optional'), <>
      {field('Fase da cultura de verão', <select value={stage} onChange={e => setStage(e.target.value)}><option value="">{say('Não sei informar','I’m not sure')}</option>{summer?.estagios.map(x => <option key={x.id} value={x.id}>{t(x.nome)}</option>)}</select>)}
      {field('Colheita prevista', <input type="date" value={harvest} onChange={e => setHarvest(e.target.value)}/>)}
-     <fieldset className="wizard-pills"><legend>{t('Semeadura da 2ª safra')}<span className="wizard-field-optional">{say('opcional','optional')}</span></legend>
-      {['', ...options.semeaduras].map(x => <label key={x || 'auto'}><input type="radio" name="sowing" checked={sowing === x} onChange={() => setSowing(x)}/><span>{x ? sowingLabel(x) : say('Automática','Automatic')}</span></label>)}
-     </fieldset>
-     <p className="wizard-hint">{say('Na opção automática, calculamos a semeadura a partir da colheita do verão. Escolha uma data se você já sabe quando vai semear.','With the automatic option, we work out the sowing date from the summer harvest. Pick a date if you already know when you’ll sow.')}</p>
+     {field('Semeadura da 2ª safra', <div className="wizard-reference-input is-inline"><input type="date" value={sowingDate} onChange={e => setSowingDate(e.target.value)}/>{sowingDate && <button type="button" className="wizard-inline-link" onClick={() => setSowingDate('')}>{say('Deixar automática','Make it automatic')}</button>}</div>)}
+     <p className="wizard-hint" role="status">{!sowingDate
+      ? say('Em branco, calculamos a semeadura a partir da colheita do verão.','If left blank, we work out the sowing date from the summer harvest.')
+      : (() => { const used = engineSowing(sowingDate, options.semeaduras); const exact = `${sowingDate.slice(8, 10)}/${sowingDate.slice(5, 7)}` === used;
+        return exact ? say(`O motor vai avaliar a semeadura em ${sowingLabel(used)}.`, `The engine will evaluate sowing on ${sowingLabel(used)}.`)
+         : say(`O motor avalia a semeadura em datas de referência entre 15 jan e 15 mar. Para essa data, vamos usar ${sowingLabel(used)}.`, `The engine evaluates sowing on reference dates from 15 Jan to 15 Mar. For this date, we’ll use ${sowingLabel(used)}.`); })()}</p>
      <div className="wizard-reference">
       <div><strong>{t('Data de referência')}</strong><p>{say('É o “hoje” da simulação: usamos essa data para saber em que fase a lavoura está e o que ainda dá tempo de plantar. Mude só se quiser simular outra época.','It is the “today” of the simulation: we use it to know where your crop stands and what there is still time to plant. Change it only to simulate another time of year.')}</p></div>
       <div className="wizard-reference-input"><input aria-label={t('Data de referência')} required type="date" value={date} onChange={e => setDate(e.target.value)}/>{date !== today && <button type="button" className="wizard-inline-link" onClick={() => setDate(today)}>{say('Usar hoje','Use today')}</button>}</div>
@@ -217,10 +263,10 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      </>)}
      
     </>}
-    {step === 2 && <><fieldset className="wizard-choices"><legend>{say('Pragas e problemas conhecidos','Known pests and issues')}</legend>{[['nematoide','Nematoide'],['mofo_branco','Mofo-branco'],['cigarrinha','Cigarrinha'],['compactacao','Compactação']].map(([id,label]) => <label key={id}><input type="checkbox" checked={problems.includes(id)} onChange={() => setProblems(toggle(problems,id))}/>{t(label)}</label>)}</fieldset><p className="wizard-hint">{say('Nenhum conhecido? Pode continuar sem marcar nada.','No known issues? You can continue without selecting anything.')}</p></>}
+    {step === 2 && <><fieldset className="wizard-choices"><legend>{say('Problemas conhecidos','Known issues')}</legend>{[['nematoide','Nematoide'],['mofo_branco','Mofo-branco'],['cigarrinha','Cigarrinha'],['compactacao','Compactação']].map(([id,label]) => <label key={id}><input type="checkbox" checked={problems.includes(id)} onChange={() => setProblems(toggle(problems,id))}/>{t(label)}</label>)}</fieldset><p className="wizard-hint">{say('Nenhum conhecido? Pode continuar sem marcar nada.','No known issues? You can continue without selecting anything.')}</p></>}
     {step === 3 && <>
       
-      <div className="wizard-grid wizard-soil-grid">{soilFields.map(([id,label]) => <div key={id}>{field(label, <input type="number" step="any" min={id === 'ph' ? 3 : 0} max={soilMax[id] ?? 100} value={soil[id] ?? ''} onChange={e => setSoil({...soil,[id]:e.target.value})}/>)}</div>)}</div><p className="wizard-hint">{say('Argila e areia: informe as duas, com soma de até 100%.','Clay and sand: enter both, totaling no more than 100%.')}</p>
+      <div className="wizard-grid wizard-soil-grid">{soilFields.map(([id,label]) => <div key={id} className={textureAuto === id ? 'is-calculated' : undefined}>{field(label, <input type="number" step="any" min={id === 'ph' ? 3 : 0} max={soilMax[id] ?? 100} value={soil[id] ?? ''} onChange={e => TEXTURE.includes(id) ? setTexture(id, e.target.value) : setSoil({...soil,[id]:e.target.value})}/>)}{textureAuto === id && <span className="wizard-calculated">{say('calculado','calculated')}</span>}</div>)}</div><p className="wizard-hint">{say('Argila, silte e areia somam 100%: preencha duas e calculamos a terceira.','Clay, silt and sand add up to 100%: fill in two and we work out the third.')}</p>
       <div className="wizard-live-note" role="status">{Object.values(soil).filter(v => v !== '').length ? say(`${Object.values(soil).filter(v => v !== '').length} informações do seu solo adicionadas.`, `${Object.values(soil).filter(v => v !== '').length} soil values added.`) : say('Por enquanto, vamos usar dados públicos de solo quando disponíveis.','For now, we’ll use public soil data where available.')}</div>
     </>}
     {step === 4 && <>
@@ -235,7 +281,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
     {step === 5 && <>
      <div className="wizard-ready"><span>{say('Seu ponto de partida','Your starting point')}</span><strong>{t(options.combinacoes.find(x => x.id === rotation)?.nome ?? rotation)}</strong><p>{priorityName} · {soilCount ? say(`${soilCount} dados de solo`, `${soilCount} soil values`) : say('Solo com dados públicos','Public soil data')}</p></div>
      
-     {more(say('Seus preços · opcional','Your prices · optional'), <><p className="wizard-hint">{say('R$/saca. Em branco, usamos os preços de referência.','BRL per sack. Leave blank to use reference prices.')}</p><div className="wizard-grid">{commodities.map(([id,label]) => <div key={id}>{field(label,<input type="number" min="0" step="any" value={prices[id] ?? ''} onChange={e => setPrices({...prices,[id]:e.target.value})}/>)}</div>)}</div>
+     {more(say('Seus preços · opcional','Your prices · optional'), <><p className="wizard-hint">{say('R$/saca. Em branco, usamos os preços de referência.','BRL per sack. Leave blank to use reference prices.')}</p><div className="wizard-prices">{commodities.map(([id,label]) => <label key={id} className="wizard-price-row"><span>{t(label)}</span><span className="wizard-price-input"><input type="number" min="0" step="any" placeholder={say('referência','reference')} value={prices[id] ?? ''} onChange={e => setPrices({...prices,[id]:e.target.value})}/><small>R$/sc</small></span></label>)}</div>
 </>)}
      {more(say('Comprador para a 2ª safra · opcional','Buyers for the second crop · optional'), <fieldset className="wizard-buyers"><legend>{say('Você tem comprador para…','Do you have a buyer for…')}</legend>
       {commodities.filter(([id]) => id !== 'soja').map(([id,label]) => <div className="wizard-buyer-row" key={id}><span>{t(label)}</span><span className="wizard-segmented is-compact" role="radiogroup" aria-label={say(`Tem comprador para ${label.toLocaleLowerCase('pt-BR')}?`, `Buyer for ${t(label).toLocaleLowerCase('en-US')}?`)}>
@@ -244,10 +290,15 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
       </span></div>)}
       <p className="wizard-hint">{say('Culturas marcadas com “Não” saem das sugestões.','Crops marked “No” are left out of the suggestions.')}</p>
      </fieldset>)}
-     {more(say('Máquinas e irrigação · opcional','Equipment and irrigation · optional'), <>     <fieldset className="wizard-choices"><legend>{say('Equipamentos e água','Equipment and water')}</legend><label><input type="checkbox" checked={!header} onChange={e => setHeader(!e.target.checked)}/>{say('Não tenho plataforma de milho','I don’t have a corn header')}</label><label><input type="checkbox" checked={!seeder} onChange={e => setSeeder(!e.target.checked)}/>{say('Não tenho semeadora de consórcio','I don’t have an intercropping seeder')}</label><label><input type="checkbox" checked={irrigation} onChange={e => setIrrigation(e.target.checked)}/>{say('Tenho irrigação','I have irrigation')}</label></fieldset>
-</>)}
-     {more(say('Escolher quantos cenários ver','Choose how many scenarios to see'), <>     {field('Quantas alternativas mostrar', <input type="number" min="1" max="6" required value={count} onChange={e => setCount(Number(e.target.value))}/>)}
-</>)}
+     {more(say('Máquinas e irrigação · opcional','Equipment and irrigation · optional'), <fieldset className="wizard-buyers"><legend>{say('Você tem…','Do you have…')}</legend>
+      {yesNo('header', say('Plataforma de milho','Corn header'), header, setHeader)}
+      {yesNo('seeder', say('Semeadora de consórcio','Intercropping seeder'), seeder, setSeeder)}
+      {yesNo('irrigation', say('Irrigação','Irrigation'), irrigation, setIrrigation)}
+     </fieldset>)}
+     {more(say('Quantos cenários ver','How many scenarios to see'), <fieldset className="wizard-buyers"><legend>{say('Alternativas à sua rotação atual','Alternatives to your current rotation')}</legend>
+      <div className="wizard-pills">{[1,2,3,4,5,6].map(n => <label key={n}><input type="radio" name="count" checked={count === n} onChange={() => setCount(n)}/><span>{n}</span></label>)}</div>
+      <p className="wizard-hint">{say('O motor mostra até esse número de opções, ordenadas pela nota. Mais opções deixam a comparação mais ampla.','The engine shows up to this many options, sorted by score. More options widen the comparison.')}</p>
+     </fieldset>)}
     </>}
     </div>
     {error && <p className="wizard-error" role="alert">{error}</p>}

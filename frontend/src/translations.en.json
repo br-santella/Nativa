@@ -700,8 +700,9 @@
   "Cidade de referência": "Reference city",
   "Endereço de referência": "Reference address",
   "Colheita prevista": "Expected harvest",
-  "Pragas e problemas": "Pests and issues",
-  "Pragas conhecidas": "Known pests",
   "Marque as pragas, doenças ou problemas de solo que já apareceram na sua área.": "Mark the pests, diseases or soil issues that have already shown up on your land.",
-  "Feijão": "Beans"
+  "Feijão": "Beans",
+  "Problemas conhecidos": "Known issues",
+  "Tamanho da área (ha)": "Field size (ha)",
+  "Silte (%)": "Silt (%)"
 }

@@ -57,9 +57,6 @@
 .wizard-ready p { color: #aaba9f; font-size: 11px; margin: 0; line-height: 1.5; }
 .wizard-step-5 .wizard-fields { grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 18px; }
 .wizard-step-5 .wizard-ready { grid-column: 1/-1; }
-.wizard-step-5 .wizard-open-section:nth-child(3) .wizard-choices { grid-template-columns: 1fr; }
-.wizard-step-5 .wizard-open-section:nth-child(4) .wizard-choices { grid-template-columns: 1fr; }
-.wizard-step-5 .wizard-open-section:nth-child(2) .wizard-grid { grid-template-columns: 1fr; }
 .wizard-actions { display: flex; align-items: center; gap: 18px; margin-top: 24px; }
 .property-wizard .wizard-actions .button { flex: 1; width: auto; margin: 0; padding: 13px 16px; border-radius: 8px; font-size: 13px; background: var(--wizard-yellow); color: #152217; }
 .wizard-back { border: 0; background: transparent; color: #bfceb8; font-size: 12px; padding: 12px 0; }
@@ -81,8 +78,6 @@
  .property-wizard .signup-header { top: 20px; left: 24px; right: 24px; }
  .property-wizard .signup-form h1 { font-size: 28px; }
  .wizard-step-5 .wizard-fields { grid-template-columns: 1fr; }
- .wizard-step-5 .wizard-open-section:nth-child(2) .wizard-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
- .wizard-step-5 .wizard-open-section:nth-child(3) .wizard-choices { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 380px) { .wizard-card-stack, .wizard-slider-grid { grid-template-columns: 1fr; } }
 .wizard-location-map { display: grid; gap: 9px; min-width: 0; }
@@ -168,3 +163,26 @@
  .wizard-buyer-row .wizard-segmented { justify-self: auto; }
  .wizard-buyer-row .wizard-segmented label { flex: 0 0 auto; }
 }
+/* Round 2: point size, satellite layer switch, soil auto-fill, balanced final step. */
+.wizard-point-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.wizard-map-canvas .leaflet-control-layers { background: #10271fe6; color: #e7ecdf; border: 1px solid #365046; border-radius: 8px; font-size: 11px; }
+.wizard-map-canvas .leaflet-control-layers-base label { display: block; padding: 2px 4px; cursor: pointer; }
+.wizard-map-canvas .leaflet-control-layers-selector { accent-color: #ffbf22; }
+.wizard-reference-input.is-inline { display: flex; align-items: center; gap: 12px; justify-items: start; }
+.wizard-reference-input.is-inline input { max-width: 220px; }
+.wizard-fields .wizard-soil-grid .is-calculated input[type=number] { border-style: dashed; border-color: #ffbf2299; }
+.wizard-calculated { display: inline-block; margin-top: 4px; color: #f6d583; font-size: 10px; }
+.wizard-prices { display: grid; gap: 8px; }
+.wizard-price-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 8px 6px 12px; border: 1px solid #365046; border-radius: 8px; background: #10271f; font-size: 13px; cursor: text; }
+.wizard-price-input { display: inline-flex; align-items: center; gap: 6px; }
+.wizard-price-input small { color: #94a99b; font-size: 10px; }
+.wizard-fields .wizard-price-input input { width: 108px; min-height: 34px; padding: 6px 9px; text-align: right; }
+.wizard-buyers .wizard-pills { margin-top: 2px; }
+.wizard-pills label > span { min-width: 40px; text-align: center; }
+@media (max-width: 700px) { .wizard-point-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .wizard-point-grid > div:last-child { grid-column: 1 / -1; } }
+.property-wizard .wizard-map-canvas .leaflet-control-layers { padding: 4px; }
+.property-wizard .wizard-map-canvas .leaflet-control-layers-base { display: flex; gap: 2px; }
+.property-wizard .wizard-map-canvas .leaflet-control-layers-base label { margin: 0; padding: 0; }
+.property-wizard .wizard-map-canvas .leaflet-control-layers-base label > span { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 6px; }
+.property-wizard .wizard-map-canvas .leaflet-control-layers-base label:has(input:checked) > span { background: #ffbf22; color: #152217; }
+.property-wizard .wizard-map-canvas input.leaflet-control-layers-selector { position: absolute; opacity: 0; width: 1px; height: 1px; min-height: 0; margin: 0; padding: 0; }

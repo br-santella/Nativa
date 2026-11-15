@@ -15,9 +15,11 @@ type Props = {
  onVerticesChange?: (vertices: LatLon[]) => void;
  focus?: MapFocus | null;
  zoom?: number;
+ /** Size (ha) of the square drawn around the pin in point mode. */
+ pointHa?: number;
 };
 
-export default function LocationMap({ mode, latitude, longitude, onChange, vertices = [], onVerticesChange, focus, zoom = 12 }: Props) {
+export default function LocationMap({ mode, latitude, longitude, onChange, vertices = [], onVerticesChange, focus, zoom = 12, pointHa }: Props) {
  const { language } = useLanguage();
  const en = language === 'en';
  const container = useRef<HTMLDivElement>(null);
@@ -38,9 +40,16 @@ export default function LocationMap({ mode, latitude, longitude, onChange, verti
   const instance = L.map(container.current, { scrollWheelZoom: true, zoomControl: false }).setView(coordinates.current, zoom);
   map.current = instance;
   L.control.zoom({ zoomInTitle: en ? 'Zoom in' : 'Aproximar', zoomOutTitle: en ? 'Zoom out' : 'Afastar' }).addTo(instance);
-  const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(instance);
-  tiles.on('tileerror', () => setTileError(true));
-  tiles.on('load', () => { if (container.current?.querySelector('.leaflet-tile-loaded')) setTileError(false); });
+  // Satellite imagery (default) with place names on top, or the street map.
+  const imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, maxNativeZoom: 18, attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics' });
+  const places = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, maxNativeZoom: 18 });
+  const satellite = L.layerGroup([imagery, places]).addTo(instance);
+  const streets = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' });
+  L.control.layers({ [en ? 'Satellite' : 'Satélite']: satellite, [en ? 'Map' : 'Mapa']: streets }, undefined, { position: 'topright', collapsed: false }).addTo(instance);
+  for (const tiles of [imagery, streets]) {
+   tiles.on('tileerror', () => setTileError(true));
+   tiles.on('load', () => { if (container.current?.querySelector('.leaflet-tile-loaded')) setTileError(false); });
+  }
   const pin = L.marker(coordinates.current, { draggable: handlers.current.mode === 'point', title: en ? 'Selected location' : 'Localização selecionada', icon: L.divIcon({ className: 'wizard-map-pin', html: '<span></span>', iconSize: [28, 36], iconAnchor: [14, 36] }) });
   marker.current = pin;
   shape.current = L.layerGroup().addTo(instance);
@@ -78,12 +87,18 @@ export default function LocationMap({ mode, latitude, longitude, onChange, verti
   const group = shape.current;
   if (!group) return;
   group.clearLayers();
-  if (mode !== 'polygon' || !vertices.length) return;
   const style = { color: '#ffbf22', weight: 2, fillColor: '#ffbf22', fillOpacity: 0.18 };
+  if (mode === 'point' && valid && pointHa) {
+   const lat = Number(latitude), lon = Number(longitude);
+   const half = Math.sqrt(pointHa * 10000) / 2, dLat = half / 110540, dLon = half / (111320 * Math.cos(lat * Math.PI / 180));
+   L.rectangle([[lat - dLat, lon - dLon], [lat + dLat, lon + dLon]], { ...style, dashArray: '6 4', interactive: false }).addTo(group);
+   return;
+  }
+  if (mode !== 'polygon' || !vertices.length) return;
   if (vertices.length >= 3) L.polygon(vertices, style).addTo(group);
   else if (vertices.length === 2) L.polyline(vertices, style).addTo(group);
   vertices.forEach(v => L.circleMarker(v, { radius: 5, color: '#fff4cc', weight: 2, fillColor: '#ffbf22', fillOpacity: 1, interactive: false }).addTo(group));
- }, [vertices, mode, generation]);
+ }, [vertices, mode, generation, latitude, longitude, valid, pointHa]);
 
  useEffect(() => {
   if (focus && map.current) map.current.setView([focus.lat, focus.lon], focus.zoom);
