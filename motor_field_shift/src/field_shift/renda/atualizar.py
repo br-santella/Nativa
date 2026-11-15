@@ -63,7 +63,11 @@ ESTIM_VALIDAR = "estimativa — validar"
 YIELD_SCALED_CROPS = ("milho_1safra",)
 YIELD_DRIVEN_ITEMS = {"Fertilizantes": "9 - Fertilizantes", "Transporte externo": "14 - Transporte Externo",
                       "Armazenagem": "16 - Despesas de armazenagem", "CESSR": "23 - CESSR"}
-RAZAO_SORGO_MILHO = 0.80  # preço do sorgo ≈ 80% do preço do milho (sem série SEAB/DERAL do sorgo) — estimativa, validar
+# Sorghum price / corn price. There is no SEAB/DERAL or Cepea market series for grain sorghum in Paraná; the only official ratio found is the
+# one between the CONAB/MAPA minimum prices of the 2026/27 crop for Sudeste and Paraná (sorghum R$ 40.19 / corn R$ 53.58 = 75.0%).
+# It is a minimum-price ratio, not a market one: still an estimate.
+RAZAO_SORGO_MILHO = 0.75
+FONTE_RAZAO_SORGO = "relação entre os preços mínimos CONAB/MAPA da safra 2026/27 para Sudeste e Paraná (sorgo R$ 40,19 / milho R$ 53,58)"
 
 
 def _baixar(url: str, nome: str) -> Path:
@@ -91,11 +95,13 @@ def precos() -> dict:
             url=URL_PRECOS, pagina=URL_PAGINA_PRECOS,
             periodo=f"{cols[11].lower()} a {cols[0].lower()} (média de 12 meses)",
             ultimo_mes=round(float(v.iloc[0]), 2))
-    out["feijao"]["fonte"] += ". Feijão = tipo preto (predominante no PR; o feijão de cor tem preço bem maior: validar o tipo)"
+    out["feijao"]["fonte"] += (". Feijão = tipo preto: cerca de dois terços da área de 2ª safra do PR (estimativa do Deral reportada em 2026, data não confirmada); o feijão de cor tem preço bem maior (ex.: carioca/de cor R$ 360 contra preto R$ 320 em Apucarana na semana de 13/11/2026), então o resultado vale para o feijão preto")
     m = out["milho"]
     out["sorgo"] = dict(
         valor=round(m["valor"] * RAZAO_SORGO_MILHO, 2), unidade="R$/sc 60 kg", estimativa=True,
-        fonte=f"{ESTIM_VALIDAR}: a SEAB/DERAL não publica preço do sorgo; usa {RAZAO_SORGO_MILHO:.0%} do preço do milho (média PR, mesmo período)",
+        fonte=f"{ESTIM_VALIDAR}: a SEAB/DERAL não publica preço do sorgo; usa {RAZAO_SORGO_MILHO:.0%} do preço do milho (média PR, mesmo período), "
+              f"razão dos preços mínimos, não de mercado: {FONTE_RAZAO_SORGO}",
+        razao_sobre_milho=RAZAO_SORGO_MILHO,
         url=m["url"], pagina=m["pagina"], periodo=m["periodo"], ultimo_mes=round(m["ultimo_mes"] * RAZAO_SORGO_MILHO, 2))
     return out
 

@@ -87,7 +87,7 @@ Each candidate is a pair (summer crop, second-window crop) in the same agricultu
 | Off-season corn | Grain | the chosen date (15/01–15/03) | frost + dry spell | corn | PAM 2nd season; DERAL; CONAB Londrina |
 | Off-season corn + brachiaria | Intercrop | the chosen date | frost + dry spell | corn | same + brachiaria (estimate) |
 | Wheat | Grain | 01/05 | wheat frost | wheat | PAM; DERAL; CONAB Ponta Grossa |
-| Sorghum (new) | Grain | the chosen date, window 15/01–15/03 | frost (drought tolerant) | sorghum | PAM sorghum (SIDRA 1612); estimated price (80% of DERAL corn); estimated cost (CONAB sorghum Rio Verde-GO) |
+| Sorghum (new) | Grain | the chosen date, window 15/01–15/03 | frost (drought tolerant) | sorghum | PAM sorghum (SIDRA 1612); estimated price (75% of DERAL corn, the CONAB minimum-price ratio); estimated cost (CONAB sorghum Rio Verde-GO) |
 | Off-season beans (new) | Grain | the chosen date, window 15/01–28/02 | frost + dry spell | beans | PAM 2nd-season beans (SIDRA 1002); DERAL black beans; CONAB 2nd-season beans Francisco Beltrão-PR |
 | Oat (cover/straw) | Cover | 01/05 | none | no sale | estimated cost |
 | Millet/crotalaria | Cover | the chosen date | none | no sale | estimated cost |

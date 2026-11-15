@@ -231,5 +231,5 @@ def fonte_preco(i: dict) -> str:
         return "informado pelo usuário"
     p = carregar_referencia()["precos"][CULTURAS_VENDA[i["chave"]]]
     if p.get("estimativa"):
-        return "estimativa — validar: 80% do preço do milho SEAB/DERAL-PR"
+        return f"estimativa — validar: {p.get('razao_sobre_milho', 0.8):.0%} do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)"
     return f"SEAB/DERAL-PR, média PR {p['periodo'].split(' (')[0]}"

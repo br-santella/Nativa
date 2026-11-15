@@ -514,7 +514,7 @@ Engine errors have the format `{"erro": "...", "mensagem": "..."}`.
 - Climate comes from NASA POWER, on a ~50 km grid: neighboring fields share the same cell.
 - Yield, margins, agronomic effects and the detected rotation are **estimates** to be validated.
 - Reference prices and costs come from CONAB (Londrina for soybean and off-season corn, Ponta Grossa for wheat and summer corn, Francisco Beltrão for beans) and SEAB/DERAL; use `ajustes` for the real values.
-- Without an official source, the values are estimates marked "estimate — to be validated" in `data/ref/precos_custos.json`: sorghum price (80% of DERAL corn),
+- Without an official source, the values are estimates marked "estimate — to be validated" in `data/ref/precos_custos.json`: sorghum price (75% of DERAL corn, the CONAB 2026/27 minimum-price ratio),
   sorghum cost (CONAB sheet for Rio Verde-GO; there is none for Paraná) and the cost of forage radish, oat + radish, oat, millet/crotalaria, brachiaria and fallow.
   Also estimates: Kc and critical phase of the new crops, sowing windows, summer harvest dates, rotation bonus and the corn-after-corn penalty.
 - Maximum area per request: 5000 ha.

@@ -12,25 +12,32 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Bean price**: confirm whether the price should be the one for black beans (as it is now) or for colored beans.
   Files: `data/ref/precos_custos.json`, `src/field_shift/renda/`.
-  Status: pending
+  Done (15/11/2026): black beans kept (about two thirds of the Paraná 2nd-season area, Deral via Boca, undated); the price source text now says the margin is for black beans and that colored beans pay much more. See [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md).
+  Status: done
 
 - **Summer harvest dates**: validate the current estimates with an agronomist/Embrapa (soybean on 10/01, summer corn on 05/02).
   Files: `src/field_shift/calendario.py`.
+  Evidence (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): Deral statewide soybean harvest was at 14% on 03/02, 20% on 10/02 and 37% on 23/02 in 2025/26 (23% on 03/02 and 33% on 10/02 in 2025), so 10/01 is the start of the harvest, not a typical date; the Oeste is earlier than the state but no Oeste-only series was found. Soybean sown on 15/10 with a 105–125 day cycle is harvested between ~28/01 and ~17/02. Summer corn (05/02) not checked.
+  Needs a decision, because it changes the default ranking: use a date from the Deral Toledo/Cascavel nucleus bulletins instead of 10/01. The farmer's stage/expected date already overrides it.
   Status: pending
 
 - **Days per summer-corn stage**: validate with an agronomist/Embrapa the estimated length of each stage.
   Files: `src/field_shift/calendario.py`.
-  Status: pending
+  Checked (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): consistent with Embrapa Milho e Sorgo (flowering ~65 days after emergence; 50–60 days from R1 to the end of dry-matter accumulation), so R1 → harvest ≈ 80 days matches. Stage length depends on heat units, so it stays approximate by hybrid and year; the soybean stage days were not checked.
+  Status: partly validated
 
 - **Sorghum price and cost**: estimated values, no confirmed source; validate with an agronomist/Embrapa.
   Files: `data/ref/precos_custos.json`.
-  Status: pending
+  Done in part (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): the price ratio to corn went from 80% to 75% (R$ 43.11 → R$ 40.42/sc), taken from the CONAB/MAPA 2026/27 minimum prices for Sudeste and Paraná (sorghum R$ 40.19 / corn R$ 53.58); it is a minimum-price ratio, not a market one, and there is no SEAB/Cepea market series. The cost (CONAB Rio Verde-GO, R$ 2,807/ha) has no Paraná sheet: nothing new found.
+  Status: pending (price better sourced, still an estimate; cost unchanged)
 
 - **Cost of forage radish and the oat + radish mix**: estimated values, no confirmed source; validate with an agronomist/Embrapa.
   Files: `data/ref/precos_custos.json`.
+  Evidence (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): radish seed ads at R$ 2.50–7.00/kg and 10–12 kg/ha in a mix put the seed at ~R$ 40–105/ha, well below the R$ 275/ha estimate; the sowing operation is the unknown. Values not changed (classified ads, no operation cost). The R$ 275 and R$ 400 are probably high.
   Status: pending
 
 - **Catalog bonuses and penalties**: the per-crop adjustments are estimates; validate with an agronomist/Embrapa.
+  Not researched (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): they are modelling choices; replacing them is the literature survey in `pesquisa_ganho_soja_seguinte_PARCIAL.md`, still paused.
   Status: pending
 
 ## Engine fixes
@@ -127,6 +134,7 @@ This file is the living list of open items for the project (crop-rotation engine
   Sourced (15/11/2026, see [`fontes_estado_area.md`](fontes_estado_area.md); the Manual PR itself could not be opened, its tables are confirmed through SENAR-AR/PR booklets and a UEPG thesis that reproduce them): P classes by clay band (< 250, 250–400, > 400 g/kg, with "condição a evitar"), K (5 classes), V% and Al classes; clay comes from the farmer's `argila_pct`, without it the most demanding band is used and the card says so; liming formula NC = (V2 − V1) × CEC / PRNT (cmolc/dm3, as the code already did); V2 = 60% (Manual PR class 51–70% for corn, wheat, beans, sorghum and soybean; soybean 60% and wheat 60% confirmed); reference PRNT 76.9% (CBPTT 2020, f = 1.3); corn P2O5/K2O doses by class (Manual PR 2017, expected yield < 8 t/ha, midpoints); wheat P2O5/K2O doses (CBPTT 2020, by soil value, midpoints); fertilizer prices (CNA/Cepea Campo Futuro, MT + PR average, 19/09/2025: SSP and KCl; grades 18% and 58% assumed). Acid-sensitivity factors are now equal for the five crops because the Manual groups them in one class.
   Still an estimate (no confirmed source, marked in the code and in the card): P2O5/K2O doses for beans and sorghum; agricultural limestone price (R$ 220/t; no public regional price found); the 6 t/ha cap per application; the 3-year dilution of liming (only a re-analysis interval was found); V2 for corn, beans and sorghum as a single number (only the 51–70% range is confirmed); the assumption that the CONAB cost embeds the "medium" class dose; the penalty and bonus sizes on `solo`.
   Depends on an agronomist: the expected-yield premise (< 8 t/ha for off-season corn in Western Paraná); whether to take V2 = 60% or 70% (Embrapa cites both for soybean); the "correct only when V < 50%" trigger (documented for soybean only, not applied); a regional lime and fertilizer price from a local cooperative/dealer; the Manual PR tables for soybean, beans and sorghum (open the book to replace the estimates and the CBPTT wheat tables); the 2026 fertilizer prices (the quote is from September 2025).
+  Source check (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): no 2026 Campo Futuro quote found and the 2026 signals are inconsistent, so the prices stay at September 2025; the R$ 220/t limestone is plausible (quarry R$ 80–90/t + freight + spreading) but has no regional series; the bean and sorghum P/K doses were not found (only trial papers).
   Status: done
 
 - **Stale worked examples after the 10-year yield window**: the worked examples still quote the old scores and margins (0,814 / 0,757, S = R$ 1.083, incremental 1.033, renda 0,977, totals 2.116 / 2.076). Recompute them from the current `api/exemplos/` output.
