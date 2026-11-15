@@ -119,6 +119,18 @@ This file is the living list of open items for the project (crop-rotation engine
   Depends on an agronomist: the expected-yield premise (< 8 t/ha for off-season corn in Western Paraná); whether to take V2 = 60% or 70% (Embrapa cites both for soybean); the "correct only when V < 50%" trigger (documented for soybean only, not applied); a regional lime and fertilizer price from a local cooperative/dealer; the Manual PR tables for soybean, beans and sorghum (open the book to replace the estimates and the CBPTT wheat tables); the 2026 fertilizer prices (the quote is from September 2025).
   Status: done
 
+- **Stale worked examples after the 10-year yield window**: the worked examples still quote the old scores and margins (0,814 / 0,757, S = R$ 1.083, incremental 1.033, renda 0,977, totals 2.116 / 2.076). Recompute them from the current `api/exemplos/` output.
+  Files: `docs/motor.md` (~lines 245–295), `README.md` (root, lines 58–59), `api/README.md` (~line 466).
+  Status: pending
+
+- **Summer corn cost reference does not match local yield**: `milho_1safra` uses the CONAB Ponta Grossa cost (R$ 9.656/ha, reference 12 t/ha ≈ 200 sc/ha) against the PAM municipal yield (~140 sc/ha in Toledo); break-even is ~179 sc/ha, so every `milho_verao__*` candidate shows a large negative margin. Options: scale the variable cost by local/reference yield, or add an explicit card warning.
+  Files: `data/ref/precos_custos.json`, `src/field_shift/renda/renda.py`.
+  Status: pending
+
+- **Fertility cost only charged on grain second crops**: liming and extra P/K enter only when the 2nd crop is a grain (`V2 = None` for cover crops/fallow), so with fertility informed cover crops gain ~R$ 550/ha in the comparison, and the summer crop (soy vs. summer corn in `proxima_safra`) never carries it. Liming is an area-level need; decide (agronomist) whether it applies to every rotation.
+  Files: `src/field_shift/app/estado_area.py`.
+  Status: pending
+
 ## Research
 
 - **Resume the literature research on the gain on the following soybean**: the survey is paused and the partial results are in [`pesquisa_ganho_soja_seguinte_PARCIAL.md`](pesquisa_ganho_soja_seguinte_PARCIAL.md), with a table of open sources and the "still to research" section. Resume from there (Embrapa Soja, IDR-PR, Fundação ABC) for off-season corn, corn+brachiaria, wheat, oat, millet/crotalaria, sorghum, beans, radish, oat+radish and summer corn, plus corn after corn, beans/white mold, brachiaria/nematodes and NDVI × yield.
