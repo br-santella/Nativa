@@ -1,6 +1,6 @@
 @import "./dashboard-theme.css";
 
-/* Match the Rotation page without changing the overview's structure. */
+/* Keep the Overview card structure with its original dark blue surfaces. */
 .overview-page {
   --overview-surface: var(--agro-panel);
   --overview-field: var(--agro-deep);
@@ -58,7 +58,7 @@
   font-size: 14px;
   font-weight: 500;
 }
-.overview-page .season-card-footer button:hover { background: #264c3c; }
+.overview-page .season-card-footer button:hover { background: #18383e; }
 .overview-page .season-improvement .season-card-footer button,
 .overview-page .plan-banner .button { background: var(--agro-yellow); color: #152217; }
 .overview-page .season-improvement .season-card-footer button:hover,
@@ -76,14 +76,14 @@
 .overview-page .overview-indicators .ndvi-bars i { background: var(--agro-up); }
 .overview-page .overview-indicators .metric-ring circle:first-child { stroke: var(--agro-soft-line); }
 .overview-page .overview-indicators .metric-ring circle:last-child { stroke: var(--agro-up); }
-.overview-page .overview-indicators .metric.is-selected { border-color: var(--agro-yellow); background: #ffbf220f; box-shadow: 0 0 0 1px #ffbf2233; }
+.overview-page .overview-indicators .metric.is-selected { border-color: var(--agro-yellow); background: var(--agro-deep); box-shadow: 0 0 0 1px #ffbf2233; }
 .overview-page .overview-indicators .metric.is-selected .metric-title { border-color: #ffbf2266; }
 @media (hover: hover) {
   .overview-page .overview-indicators .metric:hover { border-color: #ffbf2280; background: var(--agro-panel); }
-  .overview-page .overview-indicators .metric.is-selected:hover { border-color: var(--agro-yellow); background: #ffbf220f; }
+  .overview-page .overview-indicators .metric.is-selected:hover { border-color: var(--agro-yellow); background: var(--agro-deep); }
 }
 
-.live-farm-map :is(.farm-map-layers, .map-farm, .map-controls button, .map-fullscreen) { background: #0b211ce6; border-color: var(--agro-line); border-radius: var(--agro-control-radius); color: var(--agro-up); }
+.live-farm-map :is(.farm-map-layers, .map-farm, .map-controls button, .map-fullscreen) { background: #071719e6; border-color: var(--agro-line); border-radius: var(--agro-control-radius); color: var(--agro-up); }
 .live-farm-map .farm-map-layers :is(select, input[type="date"]) { background: var(--agro-panel); border-color: var(--agro-line); color: var(--agro-text); }
 .live-farm-map .farm-map-layers label,
 .live-farm-map .map-farm small { color: var(--agro-muted); }
