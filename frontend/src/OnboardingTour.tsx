@@ -38,14 +38,8 @@ const STEPS: Step[] = [
     {
         target: '[data-tour="crop-climate"]',
         fallback: MENU,
-        title: "Análise Climática",
-        body: "Chuva, temperatura e umidade do solo ao longo dos anos, para entender o clima da sua região.",
-    },
-    {
-        target: '[data-tour="crop-climate"]',
-        fallback: MENU,
-        title: "Histórico de Cultivo",
-        body: "Registre o que foi plantado em cada safra. Quanto mais completo o histórico, melhores as recomendações.",
+        title: "Histórico",
+        body: "Registre o que foi plantado em cada safra e veja o clima da propriedade ao longo do ano. Quanto mais completo o histórico, melhores as recomendações.",
     },
     {
         target: '[data-tour="settings"]',

@@ -144,6 +144,8 @@ function App() {
     // the setup's weights, or the app's own ones before the setup is done.
     const [freePesos, setFreePesos] = useState<Pesos>(saved?.pesos ?? PRIORITIES[0].pesos);
     const pesos = setupInputs?.pesos ?? freePesos;
+    // Options shown in Rotation Strategies before the setup is done (with a setup it lives in setupInputs.n_alternativas).
+    const [freeCount, setFreeCount] = useState(3);
     const updatePesos = (next: Pesos) => (setupInputs ? setSetupInputs((current) => (current ? { ...current, pesos: next } : current)) : setFreePesos(next));
     // Legacy four % values (water, soil, income, climate risk) kept in the saved state for older readers.
     const weights = useMemo(() => [pesos.agua, pesos.solo, pesos.renda, pesos.risco].map((w) => w * 10), [pesos]);
@@ -163,6 +165,7 @@ function App() {
         setDeletedCrops([]);
         setSetupInputs(undefined);
         setFreePesos(PRIORITIES[0].pesos);
+        setFreeCount(3);
         toast("Dados da propriedade apagados deste navegador.");
     }
     const fahrenheit = settings.temperature.startsWith("Graus Fahrenheit");
@@ -596,7 +599,7 @@ function App() {
             <p>{__text("Compare caminhos para a pr\u00F3xima safra, com as suas prioridades.")}</p>
           </div>
         </div>
-        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} pesos={pesos} onPesosChange={updatePesos} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onSources={() => open("sources")} />
+        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} pesos={pesos} onPesosChange={updatePesos} count={freeCount} onCountChange={(n) => (setupInputs ? setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current)) : setFreeCount(n))} onSources={() => open("sources")} />
       </>);
     }
     function Settings() {
@@ -697,7 +700,7 @@ function App() {
             {([
                 ["engine", "Motor de rota\u00E7\u00E3o", "Estrat\u00E9gias de Rota\u00E7\u00E3o e Safra anual \u2022 para a \u00E1rea cadastrada", true],
                 ["indicators", "Indicadores e mapa", "Vis\u00E3o Geral \u2022 no ponto de refer\u00EAncia da propriedade", true],
-                ["illustrative", "Ilustrativas", "An\u00E1lise Clim\u00E1tica \u2022 s\u00E9ries de exemplo", false],
+                ["illustrative", "Ilustrativas", "Hist\u00F3rico \u2022 s\u00E9ries clim\u00E1ticas de exemplo", false],
             ] as const).map(([key, title, where, live]) => (<section className="panel" key={key}>
                 <h3 className={live ? "" : "warm"}>{__text(title)}</h3>
                 <p>{__text(where)}</p>
@@ -800,75 +803,13 @@ function App() {
             go("overview");
         }} />;
     }
-    function AddCrop() {
-        const [value, setValue] = useState({
-            crop: "Milho",
-            plant: "2027-02-01",
-            harvest: "2027-06-25",
-            area: farm.area,
-            yield: "",
-        });
-        const [error, setError] = useState("");
-        return (<form onSubmit={(e) => {
-                e.preventDefault();
-                if (value.harvest < value.plant) {
-                    setError("A colheita deve ocorrer após o plantio.");
-                    return;
-                }
-                if (Number(value.area) > Number(farm.area)) {
-                    setError("A área cultivada não pode ser maior que a área da propriedade.");
-                    return;
-                }
-                const added = { ...value, id: Date.now(), season: seasonOf(value.plant), status: "" };
-                setCrops((p) => [{ ...added, status: cropStatus(added) }, ...p]);
-                setModal(null);
-                toast("Cultivo adicionado ao histórico.");
-            }}>
-        <h2>{__text("Adicionar cultivo")}</h2>
-        <p>{__text("Registre um exemplo para explorar o hist\u00F3rico da propriedade.")}</p>
-        <div className="fields-grid">
-          <label className="field">
-            <span>{__text("Cultura")}</span>
-            <select value={value.crop} onChange={(e) => setValue((v) => ({ ...v, crop: e.target.value }))}>
-              {__text([
-                "Milho",
-                "Soja",
-                "Sorgo",
-                "Crotalária",
-                "Braquiária",
-                "Trigo",
-            ].map((c) => (<option key={c} value={c}>{__text(c)}</option>)))}
-            </select>
-          </label>
-          <label className="field">
-            <span>{__text("Talh\u00E3o")}</span>
-            <select>
-              <option value={PLOT_NAME}>{__text(PLOT_NAME)}</option>
-            </select>
-          </label>
-          {__text((["plant", "harvest", "area", "yield"] as const).map((key, i) => (<label className="field" key={key}>
-              <span>
-                {__text([
-                    "Data de plantio",
-                    "Data de colheita • prevista",
-                    "Área cultivada (ha)",
-                    "Produtividade (sc/ha) • opcional",
-                ][i])}
-              </span>
-              <input type={i < 2 ? "date" : "number"} min={i > 1 ? 0 : undefined} max={key === "area" ? farm.area : undefined} step={i > 1 ? "any" : undefined} value={value[key]} required={key !== "yield"} onChange={(e) => setValue((v) => ({ ...v, [key]: e.target.value }))}/>
-            </label>)))}
-        </div>
-        {__text(error && (<p className="error" role="alert">
-            {__text(error)}
-          </p>))}
-        <p>{__text("As datas podem coexistir com outros cultivos no mesmo ano.")}</p>
-        <button type="submit" className="button">{__text("Salvar cultivo")}</button>
-        <small>{__text(persisted ? "Fica salvo neste navegador, junto com a propriedade." : "Conclua o cadastro para salvar o hist\u00F3rico neste navegador.")}</small>
-      </form>);
-    }
     function ModalContent() {
         if (modal === "addCrop")
-            return <AddCrop />;
+            return <AddCrop farm={farm} persisted={persisted} onAdd={(crop) => {
+                setCrops((p) => [crop, ...p]);
+                setModal(null);
+                toast("Cultivo adicionado ao histórico.");
+            }} />;
         if (modal === "map")
             return (<>
           <h2>{__text("Minha Propriedade")}</h2>
@@ -981,7 +922,7 @@ function App() {
           </main>
         </div>))}
       {__text(modal !== null && (<Dialog onClose={() => open(null)} wide={modal === "map" || modal === "climate-detail"} labelledBy={modal === "climate-detail" ? "climate-detail-title" : undefined}>
-          {modal === "climate-detail" ? ClimateDetail() : <ModalContent />}
+          {modal === "climate-detail" ? ClimateDetail() : ModalContent()}
         </Dialog>))}
       {tour && page === "overview" && (<OnboardingTour onClose={() => setTour(false)} onFinish={() => { setTour(false); go("rotation"); }}/>)}
       {__text(notice && (<div className="toast" role="status">{__text("\u2713")}{__text(notice)}
@@ -989,6 +930,71 @@ function App() {
         </div>))}
       {__text(inDashboard && <span className="sr-only">{__text("Demonstra\u00E7\u00E3o NATIVA")}</span>)}
     </>);
+}
+/** Form of the "Adicionar cultivo" dialog; top-level so App re-renders (e.g. a toast closing) keep what was typed. */
+function AddCrop({ farm, persisted, onAdd }: { farm: Farm; persisted: boolean; onAdd: (crop: Crop) => void }) {
+    const [value, setValue] = useState({
+        crop: "Milho",
+        plant: "2027-02-01",
+        harvest: "2027-06-25",
+        area: farm.area,
+        yield: "",
+    });
+    const [error, setError] = useState("");
+    return (<form onSubmit={(e) => {
+            e.preventDefault();
+            if (value.harvest < value.plant) {
+                setError("A colheita deve ocorrer após o plantio.");
+                return;
+            }
+            if (Number(value.area) > Number(farm.area)) {
+                setError("A área cultivada não pode ser maior que a área da propriedade.");
+                return;
+            }
+            const added = { ...value, id: Date.now(), season: seasonOf(value.plant), status: "" };
+            onAdd({ ...added, status: cropStatus(added) });
+        }}>
+    <h2>{__text("Adicionar cultivo")}</h2>
+    <p>{__text("Registre um exemplo para explorar o hist\u00F3rico da propriedade.")}</p>
+    <div className="fields-grid">
+      <label className="field">
+        <span>{__text("Cultura")}</span>
+        <select value={value.crop} onChange={(e) => setValue((v) => ({ ...v, crop: e.target.value }))}>
+          {__text([
+            "Milho",
+            "Soja",
+            "Sorgo",
+            "Crotalária",
+            "Braquiária",
+            "Trigo",
+        ].map((c) => (<option key={c} value={c}>{__text(c)}</option>)))}
+        </select>
+      </label>
+      <label className="field">
+        <span>{__text("Talh\u00E3o")}</span>
+        <select>
+          <option value={PLOT_NAME}>{__text(PLOT_NAME)}</option>
+        </select>
+      </label>
+      {__text((["plant", "harvest", "area", "yield"] as const).map((key, i) => (<label className="field" key={key}>
+          <span>
+            {__text([
+                "Data de plantio",
+                "Data de colheita • prevista",
+                "Área cultivada (ha)",
+                "Produtividade (sc/ha) • opcional",
+            ][i])}
+          </span>
+          <input type={i < 2 ? "date" : "number"} min={i > 1 ? 0 : undefined} max={key === "area" ? farm.area : undefined} step={i > 1 ? "any" : undefined} value={value[key]} required={key !== "yield"} onChange={(e) => setValue((v) => ({ ...v, [key]: e.target.value }))}/>
+        </label>)))}
+    </div>
+    {__text(error && (<p className="error" role="alert">
+        {__text(error)}
+      </p>))}
+    <p>{__text("As datas podem coexistir com outros cultivos no mesmo ano.")}</p>
+    <button type="submit" className="button">{__text("Salvar cultivo")}</button>
+    <small>{__text(persisted ? "Fica salvo neste navegador, junto com a propriedade." : "Conclua o cadastro para salvar o hist\u00F3rico neste navegador.")}</small>
+  </form>);
 }
 /** Live status of the NATIVA API, shown next to the engine data sources. */
 function EngineStatus() {

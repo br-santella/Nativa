@@ -83,7 +83,7 @@ export const info = {
   sources: {
     title: "Fontes, escala e incerteza",
     subtitle:
-      "Como cada fonte entra na NATIVA. Indicadores e cenários usam dados reais do ponto cadastrado; as séries da Análise Climática são ilustrativas.",
+      "Como cada fonte entra na NATIVA. Indicadores e cenários usam dados reais do ponto cadastrado; as séries climáticas do Histórico são ilustrativas.",
     items: [
       [
         "NASA POWER",
@@ -153,7 +153,7 @@ export const info = {
       ],
       [
         "Sobre esta demonstração",
-        "Indicadores e cenários usam NASA POWER, MODIS e outras bases públicas para a localização cadastrada. As séries da Análise Climática são ilustrativas.",
+        "Indicadores e cenários usam NASA POWER, MODIS e outras bases públicas para a localização cadastrada. As séries climáticas do Histórico são ilustrativas.",
       ],
     ],
   },
