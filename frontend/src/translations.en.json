@@ -837,5 +837,7 @@
   "Imagem de satélite do mapa": "Satellite imagery for the map",
   "Séries de temperatura e precipitação": "Temperature and precipitation series",
   "Série de umidade superficial do solo": "Surface soil moisture series",
-  "Série de vigor da vegetação (NDVI)": "Vegetation vigor series (NDVI)"
+  "Série de vigor da vegetação (NDVI)": "Vegetation vigor series (NDVI)",
+  "O peso de cada objetivo na nota dos cenários. São as mesmas de Estratégias de Rotação.": "How much each goal weighs in the scenario score. They are the same as in Rotation Strategies.",
+  "• sem irrigação": "• no irrigation"
 }

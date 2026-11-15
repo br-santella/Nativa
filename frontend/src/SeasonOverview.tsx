@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import type { Crop, Farm } from "./data";
 import type { SetupInputs } from "./PropertyWizard";
-import { recomendacao, pesosDosSliders } from "./api";
+import { recomendacao } from "./api";
+import type { Pesos } from "./api";
 import type { Area, Recomendacao } from "./api";
 import { rotacaoDoHistorico } from "./rotacaoAtual";
 import options from "./setup-options.json";
 import { t, useLanguage } from "./i18n";
 
-type Props = { farm: Farm; crops: Crop[]; weights: number[]; setupInputs?: SetupInputs; onNavigate: (page: "farm" | "history" | "rotation") => void };
+type Props = { farm: Farm; crops: Crop[]; pesos: Pesos; setupInputs?: SetupInputs; onNavigate: (page: "farm" | "history" | "rotation") => void };
 
-export default function SeasonOverview({ farm, crops, weights, setupInputs, onNavigate }: Props) {
+export default function SeasonOverview({ farm, crops, pesos, setupInputs, onNavigate }: Props) {
   const { language } = useLanguage();
   const en = language === "en";
   const say = (pt: string, english: string) => en ? english : pt;
@@ -34,14 +35,14 @@ export default function SeasonOverview({ farm, crops, weights, setupInputs, onNa
     const irrigacao = farm.irrigation === "Sim" ? { disponivel: true } : farm.irrigation === "Não" ? { disponivel: false } : undefined;
     recomendacao({
       area, rotacaoAtual: rotationId,
-      pesos: { ...pesosDosSliders(weights), pragas: setupInputs?.pesos.pragas ?? 3 },
+      pesos,
       colheitaPrevista: setupInputs ? setupInputs.colheita_prevista : rotation.colheitaPrevista,
       irrigacao,
     }, en ? "en" : "pt-BR", setupInputs)
       .then(data => { if (active) { setResult(data); setStatus("ready"); } })
       .catch(() => { if (active) setStatus("error"); });
     return () => { active = false; };
-  }, [farm.latitude, farm.longitude, farm.irrigation, setupInputs, weights, rotationId, rotation.colheitaPrevista, en]);
+  }, [farm.latitude, farm.longitude, farm.irrigation, setupInputs, pesos, rotationId, rotation.colheitaPrevista, en]);
 
   const current = result?.atual;
   const alternatives = result?.agora?.alternativas ?? result?.alternativas ?? [];

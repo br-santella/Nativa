@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { Farm } from "./data";
 import { textureFromSoil } from "./data";
-import type { Area } from "./api";
+import type { Area, Pesos } from "./api";
+import PriorityPicker from "./PriorityPicker";
 import type { SetupInputs } from "./PropertyWizard";
 import { PROBLEMS, commodities, hectares, soilFields, soilMax, square } from "./PropertyWizard";
 import LocationMap from "./LocationMap";
@@ -14,19 +15,18 @@ import options from "./setup-options.json";
 type Props = {
     farm: Farm;
     inputs?: SetupInputs;
-    /** Dashboard priority sliders (0–100): water, soil, income, climate resilience. */
-    weights: number[];
+    /** Engine weights (five criteria, 0–10), the same ones Rotation Strategies edits. */
+    pesos: Pesos;
     savedAt: string | null;
     report: File | null;
     onReport: (file: File | null) => void;
-    onSave: (farm: Farm, inputs: SetupInputs | undefined, weights: number[]) => void;
+    onSave: (farm: Farm, inputs: SetupInputs | undefined, pesos: Pesos) => void;
     onRedo: () => void;
     onForget: () => void;
 };
 type Mode = "demo" | "point" | "polygon";
 type Place = { label: string; lat: number; lon: number };
 
-const WEIGHT_LABELS = ["Economia de água", "Saúde do solo", "Rentabilidade", "Resiliência climática"];
 /** Silt is only a helper for the wizard's texture fields; the engine does not receive it. */
 const SOIL_FIELDS = soilFields.filter(([id]) => id !== "silte_pct");
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
@@ -75,12 +75,12 @@ function YesNo({ label, value, onChange }: { label: string; value: boolean; onCh
 }
 
 /** Settings view of the property and of everything entered in the setup; saving re-runs the engine with the new values. */
-export default function PropertySettings({ farm, inputs, weights, savedAt, report, onReport, onSave, onRedo, onForget }: Props) {
+export default function PropertySettings({ farm, inputs, pesos, savedAt, report, onReport, onSave, onRedo, onForget }: Props) {
     useLanguage();
     const initialArea = useMemo(() => areaState(inputs, farm), [inputs, farm]);
     const [draftFarm, setDraftFarm] = useState<Farm>(farm);
     const [draft, setDraft] = useState<SetupInputs | undefined>(inputs);
-    const [draftWeights, setDraftWeights] = useState<number[]>(weights);
+    const [draftPesos, setDraftPesos] = useState<Pesos>(pesos);
     const [mode, setMode] = useState<Mode>(initialArea.mode);
     const [demo, setDemo] = useState(initialArea.demo);
     const [vertices, setVertices] = useState<LatLon[]>(initialArea.vertices);
@@ -102,7 +102,7 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
         : mode === "polygon" ? vertices : [];
     const outsideCoverage = markedPoints.some(([lat, lon]) => !insideParana(lat, lon));
     const areaChanged = !same({ mode, demo, vertices, pointHa }, initialArea);
-    const dirty = areaChanged || !same(draftFarm, farm) || !same(draft, inputs) || !same(draftWeights, weights);
+    const dirty = areaChanged || !same(draftFarm, farm) || !same(draft, inputs) || !same(draftPesos, pesos);
     const rotation = options.combinacoes.find((c) => c.id === draft?.rotacao_atual);
     const soilTest = draft?.analise_solo;
     const testedTexture = soilTest?.argila_pct !== undefined && soilTest?.areia_pct !== undefined ? textureFromSoil(soilTest.argila_pct, soilTest.areia_pct) : null;
@@ -188,24 +188,25 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
         setError("");
         try {
             if (!draftFarm.name.trim()) throw Error(t("Informe o nome da propriedade."));
-            if (!draftWeights.some(Boolean)) throw Error(t("Defina pelo menos uma prioridade maior que zero."));
+            if (!Object.values(draftPesos).some(Boolean)) throw Error(t("Defina pelo menos uma prioridade maior que zero."));
             const soil = draft?.analise_solo ?? {};
             if (("argila_pct" in soil) !== ("areia_pct" in soil)) throw Error(t("Para informar a textura, preencha argila e areia juntas."));
             if ((soil.argila_pct ?? 0) + (soil.areia_pct ?? 0) > 100) throw Error(t("Argila e areia devem somar no máximo 100%."));
             const built = builtArea();
-            if (!draft) return onSave({ ...draftFarm, ...built.farm }, undefined, draftWeights);
-            const [agua, solo, renda, risco] = draftWeights.map((w) => Math.round(w) / 10);
+            if (!draft) return onSave({ ...draftFarm, ...built.farm, ...(draftFarm.irrigation === "Não" ? { irrigationType: "Não se aplica" } : {}) }, undefined, draftPesos);
             // Keep the farm fields other pages read (irrigation, soil, crop) in step with the setup answers.
+            // With a setup, the soil test is the only pH / organic matter input, so the farm fields follow it (also when cleared).
             const nextFarm: Farm = {
                 ...draftFarm,
                 ...built.farm,
                 irrigation: draft.irrigacao.disponivel ? "Sim" : "Não",
+                irrigationType: draft.irrigacao.disponivel ? (draftFarm.irrigationType === "Não se aplica" ? "Não informado" : draftFarm.irrigationType) : "Não se aplica",
                 crop: draft.rotacao_atual.startsWith("soja__") ? "Soja" : "Milho",
                 ...(testedTexture ? { texture: testedTexture } : {}),
-                ...(soil.ph !== undefined ? { ph: String(soil.ph) } : {}),
-                ...(soil.materia_organica_pct !== undefined ? { organic: String(soil.materia_organica_pct) } : {}),
+                ph: soil.ph !== undefined ? String(soil.ph) : "",
+                organic: soil.materia_organica_pct !== undefined ? String(soil.materia_organica_pct) : "",
             };
-            onSave(nextFarm, { ...draft, area: built.area, pesos: { ...draft.pesos, agua, solo, renda, risco } }, draftWeights);
+            onSave(nextFarm, { ...draft, area: built.area, pesos: draftPesos }, draftPesos);
         } catch (e) {
             setError((e as Error).message);
         }
@@ -213,7 +214,7 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
     function discard() {
         setDraftFarm(farm);
         setDraft(inputs);
-        setDraftWeights(weights);
+        setDraftPesos(pesos);
         setMode(initialArea.mode); setDemo(initialArea.demo); setVertices(initialArea.vertices); setPointHa(initialArea.pointHa);
         setCityQuery(farm.city.replace(/,\s*PR$/i, "")); setAddress(farm.address ?? ""); setPlaces([]); setSearchNote("");
         setError("");
@@ -356,7 +357,9 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
             {draft
                 ? <YesNo label="Irrigação" value={draft.irrigacao.disponivel} onChange={(v) => set({ irrigacao: { disponivel: v } })}/>
                 : <Select label="Disponibilidade de irrigação" value={draftFarm.irrigation} values={["Sim", "Não", "Não informado"]} onChange={(v) => field("irrigation", v)}/>}
-            <Select label="Tipo de irrigação" value={draftFarm.irrigationType} values={["Pivô central", "Gotejamento", "Aspersão", "Não se aplica", "Outro"]} onChange={(v) => field("irrigationType", v)}/>
+            {(draft ? draft.irrigacao.disponivel : draftFarm.irrigation === "Sim")
+                ? <Select label="Tipo de irrigação" value={draftFarm.irrigationType === "Não se aplica" ? "Não informado" : draftFarm.irrigationType} values={["Pivô central", "Gotejamento", "Aspersão", "Outro", "Não informado"]} onChange={(v) => field("irrigationType", v)}/>
+                : <Row label="Tipo de irrigação"><span className="settings-derived-value">{t("Não se aplica")} <small className="settings-derived">{t("• sem irrigação")}</small></span></Row>}
             <Row label="Restrições de água">
               <input aria-label={t("Restrições de água")} value={draftFarm.waterRestriction} onChange={(e) => field("waterRestriction", e.target.value)}/>
             </Row>
@@ -365,14 +368,8 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
 
         <section className="panel settings-wide">
           <h2>{t("Prioridades")}</h2>
-          <p>{t("O peso de cada objetivo na nota dos cenários.")}</p>
-          <div className="sliders">
-            {WEIGHT_LABELS.map((label, i) => (<label key={label}>
-                <span>{t(label)}<strong>{draftWeights[i]}%</strong></span>
-                <input type="range" min="0" max="100" step="10" value={draftWeights[i]} aria-label={t(label)} onChange={(e) => setDraftWeights((w) => w.map((v, n) => (n === i ? +e.target.value : v)))}/>
-                <small>{t("Menor")}<span>{t("Maior")}</span></small>
-              </label>))}
-          </div>
+          <p>{t("O peso de cada objetivo na nota dos cenários. São as mesmas de Estratégias de Rotação.")}</p>
+          <PriorityPicker pesos={draftPesos} onChange={setDraftPesos}/>
         </section>
 
         {draft && (<>

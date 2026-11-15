@@ -22,6 +22,8 @@ import PropertySettings from "./PropertySettings";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
 import { loadSaved, persist, clearSaved } from "./storage";
+import { PRIORITIES } from "./priorities";
+import type { Pesos } from "./api";
 const saved = loadSaved();
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
@@ -119,16 +121,19 @@ function App() {
     }, [menu]);
     const [mapView, setMapView] = useState(initialMapView);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
-    // Weights live in setupInputs.pesos (0–10). Settings and the saved state still use the four % values
-    // (water, soil, income, climate risk), derived here so they always match the Rotation page.
-    // Memoised: SeasonOverview re-runs the engine when this array changes.
-    const weights = useMemo(() => setupInputs ? [setupInputs.pesos.agua, setupInputs.pesos.solo, setupInputs.pesos.renda, setupInputs.pesos.risco].map((w) => w * 10) : [50, 50, 50, 50], [setupInputs]);
+    // One set of engine weights (five criteria, 0–10) for Overview, Rotation Strategies and Settings:
+    // the setup's weights, or the app's own ones before the setup is done.
+    const [freePesos, setFreePesos] = useState<Pesos>(saved?.pesos ?? PRIORITIES[0].pesos);
+    const pesos = setupInputs?.pesos ?? freePesos;
+    const updatePesos = (next: Pesos) => (setupInputs ? setSetupInputs((current) => (current ? { ...current, pesos: next } : current)) : setFreePesos(next));
+    // Legacy four % values (water, soil, income, climate risk) kept in the saved state for older readers.
+    const weights = useMemo(() => [pesos.agua, pesos.solo, pesos.renda, pesos.risco].map((w) => w * 10), [pesos]);
     // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
     const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
     useEffect(() => {
         if (persisted)
-            setSavedAt(persist({ farm, setupInputs, weights, crops, settings }));
-    }, [persisted, farm, setupInputs, crops, settings]);
+            setSavedAt(persist({ farm, setupInputs, weights, pesos, crops, settings }));
+    }, [persisted, farm, setupInputs, pesos, crops, settings]);
     function forgetProperty() {
         clearSaved();
         setPersisted(false);
@@ -138,6 +143,7 @@ function App() {
         setCrops(initialCrops);
         setDeletedCrops([]);
         setSetupInputs(undefined);
+        setFreePesos(PRIORITIES[0].pesos);
         toast("Dados da propriedade apagados deste navegador.");
     }
     const fahrenheit = settings.temperature.startsWith("Graus Fahrenheit");
@@ -315,7 +321,7 @@ function App() {
             <MonitoringCards farm={farm} area={setupInputs?.area} fahrenheit={settings.temperature.startsWith("Graus Fahrenheit")} view={mapView} onChange={setMapView} />
           </aside>
         </div>
-        <SeasonOverview onNavigate={go} farm={farm} crops={crops} weights={weights} setupInputs={setupInputs} />
+        <SeasonOverview onNavigate={go} farm={farm} crops={crops} pesos={pesos} setupInputs={setupInputs} />
         <section className="plan-banner">
           <div>
             <h2>{__text("Planeje sua pr\u00F3xima safra.")}</h2>
@@ -615,7 +621,7 @@ function App() {
             <p>{__text("Compare caminhos para a pr\u00F3xima safra, com as suas prioridades.")}</p>
           </div>
         </div>
-        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} onPesosChange={(pesos) => setSetupInputs((current) => (current ? { ...current, pesos } : current))} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onSources={() => open("sources")} />
+        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} pesos={pesos} onPesosChange={updatePesos} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onSources={() => open("sources")} />
       </>);
     }
     function Settings() {
@@ -626,14 +632,15 @@ function App() {
             <p>{__text("Sua propriedade, suas prefer\u00EAncias e a origem dos dados.")}</p>
           </div>
         </div>
-        <PropertySettings key={JSON.stringify([farm, setupInputs])} farm={farm} inputs={setupInputs} weights={weights} savedAt={savedAt} report={report} onReport={(f) => {
+        <PropertySettings key={JSON.stringify([farm, setupInputs, freePesos])} farm={farm} inputs={setupInputs} pesos={pesos} savedAt={savedAt} report={report} onReport={(f) => {
                 setReport(f);
                 if (f)
                     toast("Laudo selecionado localmente. Nenhum arquivo foi enviado.");
-            }} onSave={(nextFarm, inputs) => {
+            }} onSave={(nextFarm, inputs, nextPesos) => {
                 setFarm(nextFarm);
                 setDraft(nextFarm);
                 setSetupInputs(inputs);
+                setFreePesos(nextPesos);
                 setPersisted(true);
                 toast("Alterações salvas. Os cenários foram recalculados.");
             }} onRedo={() => go("demo")} onForget={forgetProperty}/>
