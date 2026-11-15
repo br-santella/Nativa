@@ -1,0 +1,96 @@
+@import "./dashboard-theme.css";
+
+/* Match the Rotation page without changing the overview's structure. */
+.overview-page {
+  --overview-surface: var(--agro-panel);
+  --overview-field: var(--agro-deep);
+  --overview-border: var(--agro-line);
+  --overview-accent: var(--agro-yellow);
+  --overview-green: var(--agro-up);
+  --overview-muted: var(--agro-muted);
+  color: var(--agro-text);
+}
+.overview-page :is(.overview-intro, .season-heading-title p) { color: var(--agro-muted); }
+.overview-page :is(.overview-current-crop, .season-rotation, .season-analysis-card, .plan-banner) {
+  background: var(--agro-panel);
+  border-color: var(--agro-line);
+  border-radius: var(--agro-radius);
+}
+.overview-page :is(.overview-current-crop, .season-rotation) { border-left-color: #5aa36f; }
+.overview-page .overview-current-crop:hover { border-color: var(--agro-line); border-left-color: #5aa36f; }
+.overview-page :is(.overview-current-crop > div > small, .overview-current-crop dt) { color: var(--agro-faint); }
+.overview-page :is(.overview-current-crop h2, .overview-current-crop dd, .season-analysis-card h3, .season-analysis-card dd) { color: var(--agro-text); }
+.overview-page .overview-current-crop h2 { font-weight: 500; letter-spacing: -.4px; }
+.overview-page .property-summary-icon { color: var(--agro-yellow); background: #ffbf2214; border-radius: 50%; }
+.overview-page .season-step { width: 36px; height: 36px; flex-basis: 36px; font-size: 13px; border-color: #ffbf2266; background: #ffbf2212; }
+.overview-page .season-heading-title { gap: 14px; }
+.overview-page .season-heading h2 { font-size: 24px; font-weight: 500; letter-spacing: -.3px; line-height: 1.3; }
+.overview-page .season-heading-title p { margin-top: 5px; font-size: 14px; line-height: 1.6; }
+.overview-page .season-period { background: var(--agro-deep); border-color: var(--agro-line); color: var(--agro-muted); }
+.overview-page .season-rotation h3 { color: var(--agro-text); font-weight: 500; }
+.overview-page .season-rotation > span { color: var(--agro-faint); font-size: 12px; }
+.overview-page .season-analysis-card h3 { font-size: 19px; line-height: 1.3; }
+.overview-page .season-card-ribbon { padding: 8px 16px; background: var(--agro-ribbon); border-color: var(--agro-soft-line); color: #cfdbc9; font-size: 12px; letter-spacing: .3px; }
+.overview-page .season-current .season-card-ribbon { background: var(--agro-reference-ribbon); color: #b7c7c9; }
+.overview-page .season-improvement { border-color: var(--agro-yellow); box-shadow: 0 0 0 1px #ffbf2233; }
+.overview-page .season-improvement .season-card-ribbon { background: var(--agro-yellow); color: #152217; border-color: var(--agro-yellow); }
+.overview-page .season-analysis-card .season-score { font-size: 48px; font-weight: 500; line-height: 1; letter-spacing: -1px; }
+.overview-page .season-current .season-score { color: #a9bcbf; }
+.overview-page .season-improvement .season-score { color: var(--agro-yellow); }
+.overview-page .season-score small { color: var(--agro-muted); font-size: 14px; letter-spacing: 0; }
+.overview-page .season-analysis-card p { font-size: 13px; line-height: 1.65; color: #cfdbc0; }
+.overview-page .season-analysis-card > small { color: var(--agro-muted); font-size: 12px; }
+.overview-page .season-analysis-card dl > div { border-color: var(--agro-soft-line); font-size: 13px; }
+.overview-page .season-analysis-card dt { color: var(--agro-muted); }
+.overview-page .season-attention { border-color: var(--agro-soft-line); }
+.overview-page .season-soil-score progress,
+.overview-page .season-soil-score progress::-webkit-progress-bar { background: var(--agro-soft-line); }
+.overview-page .season-soil-score progress::-webkit-progress-value { background: var(--agro-up); }
+.overview-page .season-soil-score progress::-moz-progress-bar { background: var(--agro-up); }
+.overview-page .season-status { color: var(--agro-muted); font-size: 13px; }
+.overview-page .season-card-footer button,
+.overview-page .plan-banner .button {
+  padding: 11px 12px;
+  border: 0;
+  border-radius: var(--agro-control-radius);
+  background: var(--agro-button);
+  color: var(--agro-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+.overview-page .season-card-footer button:hover { background: #264c3c; }
+.overview-page .season-improvement .season-card-footer button,
+.overview-page .plan-banner .button { background: var(--agro-yellow); color: #152217; }
+.overview-page .season-improvement .season-card-footer button:hover,
+.overview-page .plan-banner .button:hover { background: #ffd066; }
+
+.overview-page .overview-indicators .metric { background: var(--agro-panel); border-color: var(--agro-line); border-radius: var(--agro-radius); grid-template-rows: 32px minmax(54px, 1fr) auto auto; }
+.overview-page .overview-indicators .metric-title { padding: 8px 16px; background: var(--agro-ribbon); border-color: var(--agro-soft-line); color: #cfdbc9; font-size: 12px; line-height: 16px; letter-spacing: .3px; }
+.overview-page .overview-indicators .metric-value strong { color: var(--agro-text); font-size: 36px; font-weight: 500; line-height: 1; letter-spacing: -.6px; }
+.overview-page .overview-indicators .metric:first-child .metric-value strong { color: var(--agro-yellow); }
+.overview-page .overview-indicators .metric-value small { color: var(--agro-muted); font-size: 12px; }
+.overview-page .overview-indicators .metric-source { color: var(--agro-faint); font-size: 11px; line-height: 16px; }
+.overview-page .overview-indicators .delta { color: var(--agro-up); }
+.overview-page .overview-indicators .delta.warm { color: #edca73 !important; }
+.overview-page .overview-indicators .mini-bars i,
+.overview-page .overview-indicators .ndvi-bars i { background: var(--agro-up); }
+.overview-page .overview-indicators .metric-ring circle:first-child { stroke: var(--agro-soft-line); }
+.overview-page .overview-indicators .metric-ring circle:last-child { stroke: var(--agro-up); }
+.overview-page .overview-indicators .metric.is-selected { border-color: var(--agro-yellow); background: #ffbf220f; box-shadow: 0 0 0 1px #ffbf2233; }
+.overview-page .overview-indicators .metric.is-selected .metric-title { border-color: #ffbf2266; }
+@media (hover: hover) {
+  .overview-page .overview-indicators .metric:hover { border-color: #ffbf2280; background: var(--agro-panel); }
+  .overview-page .overview-indicators .metric.is-selected:hover { border-color: var(--agro-yellow); background: #ffbf220f; }
+}
+
+.live-farm-map :is(.farm-map-layers, .map-farm, .map-controls button, .map-fullscreen) { background: #0b211ce6; border-color: var(--agro-line); border-radius: var(--agro-control-radius); color: var(--agro-up); }
+.live-farm-map .farm-map-layers :is(select, input[type="date"]) { background: var(--agro-panel); border-color: var(--agro-line); color: var(--agro-text); }
+.live-farm-map .farm-map-layers label,
+.live-farm-map .map-farm small { color: var(--agro-muted); }
+.live-farm-map .farm-map-layers input[type="range"] { accent-color: var(--agro-yellow); }
+.live-farm-map .map-farm strong { color: var(--agro-text); }
+.live-farm-map :is(.map-controls button, .map-fullscreen):hover:not(:disabled) { background: var(--agro-panel); border-color: var(--agro-yellow); }
+@container dashboard-content (max-width: 500px) {
+  .overview-page .season-heading-title p { font-size: 13px; }
+  .overview-page .season-heading h2 { font-size: 22px; }
+}

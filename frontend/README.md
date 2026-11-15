@@ -35,7 +35,7 @@ To open the built version, serve the `dist/` folder with an HTTP server. Do not 
 
 - `src/main.tsx`: React application, navigation and interactions.
 - `src/styles.css`: visual tokens and responsive layout in plain CSS.
-- `src/crop-climate.css`: scoped styles for Crop & Climate and its indicator details.
+- `src/crop-climate.css`: scoped styles for History and its indicator details.
 - `src/data.ts`: demo data, scenarios and scoring formula.
 - `src/assets.json`: references to the local images and vectors exported from Figma.
 - `public/assets/`: original image and SVG files from the design.
