@@ -192,3 +192,6 @@
 .wizard-dates .wizard-reference-input.is-inline input { max-width: none; flex: 1 1 160px; }
 .wizard-column { display: grid; gap: 18px; align-content: start; min-width: 0; }
 @media (max-width: 480px) { .wizard-dates { grid-template-columns: 1fr; } }
+/* Round 4: final step (summary, prices, scenario count) in one column, prices as a 2-column grid. */
+.wizard-step-6 .wizard-prices { grid-template-columns: repeat(2, minmax(0,1fr)); }
+@media (max-width: 700px) { .wizard-step-6 .wizard-prices { grid-template-columns: 1fr; } }

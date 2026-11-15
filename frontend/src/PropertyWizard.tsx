@@ -27,8 +27,13 @@ const copy = [
  ['Sua área','Problemas conhecidos','Marque as pragas, doenças ou problemas de solo que já apareceram na sua área.'],
  ['Seu solo','Vamos olhar para o solo?','Preencha o que souber ou siga sem análise.'],
  ['Seu próximo ciclo','O que importa para você?','Escolha uma prioridade e ajuste se quiser.'],
+ ['Sua operação','Como é a sua operação?','Responda com sim ou não. Assim sugerimos só o que dá para fazer na sua terra.'],
  ['Tudo pronto','Vamos aos seus cenários?','Os detalhes abaixo são opcionais.'],
 ];
+/** Index of the last step (summary, prices and scenario count). */
+const LAST = copy.length - 1;
+/** Steps the user can skip without filling anything. */
+const OPTIONAL_STEPS = [2, 3, 5, 6];
 const isoToday = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
 /** Approximate area (ha) of a boundary drawn on the map, projected around its centroid. */
 function hectares(vertices: LatLon[]): number {
@@ -162,7 +167,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      if (step === 3 && Object.values(soil).some(v => v !== '') && !['argila_pct','p_mg_dm3','k_cmolc_dm3','ca_cmolc_dm3','mg_cmolc_dm3','al_cmolc_dm3','v_pct','ctc_cmolc_dm3'].some(k => (soil[k] ?? '') !== '')) throw Error(say('Inclua argila e areia ou um dado de fertilidade para usar a análise. Você também pode continuar sem análise.','Include clay and sand or a fertility value to use this test. You can also continue without a soil test.'));
      if (step === 3 && Number(soil.argila_pct || 0) + Number(soil.areia_pct || 0) > 100) throw Error(say('Argila e areia devem somar no máximo 100%.','Clay and sand must total no more than 100%.'));
      if (step === 4 && !Object.values(weights).some(v => v > 0)) throw Error(say('Dê um peso maior que zero a pelo menos uma prioridade.','Give at least one priority a weight above zero.'));
-     if (step < 5) { setStep(step + 1); return; }
+     if (step < LAST) { setStep(step + 1); return; }
      const selected = options.talhoes_demo.find(x => x.id === demo)!;
      const { silte_pct: _silt, ...soilForEngine } = soil;
      const completed = { ...farm, irrigation: irrigation ? 'Sim' : 'Não', crop: rotation.startsWith('soja__') ? 'Soja' : 'Milho', ...(mode === 'demo' ? {latitude: String(selected.lat), longitude: String(selected.lon), area: String(selected.area_ha), city: `${selected.municipio}, PR`} : mode === 'point' ? {area: pointHa} : mode === 'polygon' ? {latitude: (vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length).toFixed(6), longitude: (vertices.reduce((s, [, lon]) => s + lon, 0) / vertices.length).toFixed(6), area: hectares(vertices).toFixed(1)} : {}), ...(soil.ph ? {ph: soil.ph} : {}), ...(soil.materia_organica_pct ? {organic: soil.materia_organica_pct} : {}) };
@@ -191,8 +196,8 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
   <section className="signup-photo"><img src="/assets/hero-br-parana-v1.webp" alt={t('Campos de cultivo')}/>{brand}<div><h1>{t('Sua terra merece')}<br/>{t('um novo olhar.')}</h1><p>{t(copy[step][2])}</p></div></section>
   <section className="signup-form">
    <div className="signup-header wizard-header"><button type="button" className="wizard-top-back" onClick={goBack}><span aria-hidden="true">←</span>{step === 0 ? t('Voltar ao início') : t('Voltar')}</button><LanguageSwitcher/></div>
-   <nav className="wizard-progress" aria-label={say('Etapas do cadastro','Setup steps')}><span>{say('Etapa','Step')} {step + 1} {say('de','of')} 6</span><ol>{copy.map(([label], i) => <li key={label} aria-current={step === i ? 'step' : undefined} className={i <= step ? 'is-active' : ''}><span className="sr-only">{t(label)}</span></li>)}</ol></nav>
-   <small>{t(copy[step][0])}{[2,3,5].includes(step) && <span className="wizard-optional">{say('Etapa opcional','Optional step')}</span>}</small>
+   <nav className="wizard-progress" aria-label={say('Etapas do cadastro','Setup steps')}><span>{say('Etapa','Step')} {step + 1} {say('de','of')} {copy.length}</span><ol>{copy.map(([label], i) => <li key={label} aria-current={step === i ? 'step' : undefined} className={i <= step ? 'is-active' : ''}><span className="sr-only">{t(label)}</span></li>)}</ol></nav>
+   <small>{t(copy[step][0])}{OPTIONAL_STEPS.includes(step) && <span className="wizard-optional">{say('Etapa opcional','Optional step')}</span>}</small>
    <h1 ref={heading} tabIndex={-1}>{t(copy[step][1])}</h1><p>{t(copy[step][2])}</p>
    <form onSubmit={e => { e.preventDefault(); advance(); }}>
     <div className="wizard-fields" key={step}>
@@ -279,34 +284,35 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
       {more(say('Ajuste do seu jeito','Make it your own'), <div className="wizard-slider-grid">{options.criterios.map(({id,nome}) => <label className="wizard-slider" key={id}><span>{t(nome)}<output className="wizard-weight-value">{weights[id as keyof Pesos]}<span>/10</span></output></span><input type="range" min="0" max="10" value={weights[id as keyof Pesos]} onChange={e => {setPriority('custom');setWeights({...weights,[id]:Number(e.target.value)});}}/><span className="wizard-range-labels"><span>{say('Menor prioridade','Lower priority')}</span><span>{say('Maior prioridade','Higher priority')}</span></span></label>)}</div>)}
     </>}
     {step === 5 && <>
-     <div className="wizard-ready"><span>{say('Seu ponto de partida','Your starting point')}</span><strong>{t(options.combinacoes.find(x => x.id === rotation)?.nome ?? rotation)}</strong><p>{priorityName} · {soilCount ? say(`${soilCount} dados de solo`, `${soilCount} soil values`) : say('Solo com dados públicos','Public soil data')}</p></div>
-     
      <div className="wizard-column">
-     {more(say('Seus preços · opcional','Your prices · optional'), <><p className="wizard-hint">{say('R$/saca. Em branco, usamos os preços de referência.','BRL per sack. Leave blank to use reference prices.')}</p><div className="wizard-prices">{commodities.map(([id,label]) => <label key={id} className="wizard-price-row"><span>{t(label)}</span><span className="wizard-price-input"><input type="number" min="0" step="any" placeholder={say('referência','reference')} value={prices[id] ?? ''} onChange={e => setPrices({...prices,[id]:e.target.value})}/><small>R$/sc</small></span></label>)}</div>
-</>)}
-     {more(say('Quantos cenários ver','How many scenarios to see'), <fieldset className="wizard-buyers"><legend>{say('Alternativas à sua rotação atual','Alternatives to your current rotation')}</legend>
-      <div className="wizard-pills">{[1,2,3,4,5,6].map(n => <label key={n}><input type="radio" name="count" checked={count === n} onChange={() => setCount(n)}/><span>{n}</span></label>)}</div>
-      <p className="wizard-hint">{say('O motor mostra até esse número de opções, ordenadas pela nota. Mais opções deixam a comparação mais ampla.','The engine shows up to this many options, sorted by score. More options widen the comparison.')}</p>
-     </fieldset>)}
-     </div>
-     <div className="wizard-column">
-     {more(say('Comprador para a 2ª safra · opcional','Buyers for the second crop · optional'), <fieldset className="wizard-buyers"><legend>{say('Você tem comprador para…','Do you have a buyer for…')}</legend>
+     {more(say('Comprador para a 2ª safra','Buyers for the second crop'), <fieldset className="wizard-buyers"><legend>{say('Você tem comprador para…','Do you have a buyer for…')}</legend>
       {commodities.filter(([id]) => id !== 'soja').map(([id,label]) => <div className="wizard-buyer-row" key={id}><span>{t(label)}</span><span className="wizard-segmented is-compact" role="radiogroup" aria-label={say(`Tem comprador para ${label.toLocaleLowerCase('pt-BR')}?`, `Buyer for ${t(label).toLocaleLowerCase('en-US')}?`)}>
        <label><input type="radio" name={`buyer-${id}`} checked={!buyers.includes(id)} onChange={() => setBuyers(buyers.filter(x => x !== id))}/><span>{say('Sim','Yes')}</span></label>
        <label><input type="radio" name={`buyer-${id}`} checked={buyers.includes(id)} onChange={() => setBuyers([...buyers.filter(x => x !== id), id])}/><span>{say('Não','No')}</span></label>
       </span></div>)}
       <p className="wizard-hint">{say('Culturas marcadas com “Não” saem das sugestões.','Crops marked “No” are left out of the suggestions.')}</p>
      </fieldset>)}
-     {more(say('Máquinas e irrigação · opcional','Equipment and irrigation · optional'), <fieldset className="wizard-buyers"><legend>{say('Você tem…','Do you have…')}</legend>
+     </div>
+     <div className="wizard-column">
+     {more(say('Máquinas e irrigação','Equipment and irrigation'), <fieldset className="wizard-buyers"><legend>{say('Você tem…','Do you have…')}</legend>
       {yesNo('header', say('Plataforma de milho','Corn header'), header, setHeader)}
       {yesNo('seeder', say('Semeadora de consórcio','Intercropping seeder'), seeder, setSeeder)}
       {yesNo('irrigation', say('Irrigação','Irrigation'), irrigation, setIrrigation)}
      </fieldset>)}
      </div>
     </>}
+    {step === LAST && <>
+     <div className="wizard-ready"><span>{say('Seu ponto de partida','Your starting point')}</span><strong>{t(options.combinacoes.find(x => x.id === rotation)?.nome ?? rotation)}</strong><p>{priorityName} · {soilCount ? say(`${soilCount} dados de solo`, `${soilCount} soil values`) : say('Solo com dados públicos','Public soil data')}</p></div>
+     {more(say('Seus preços','Your prices'), <><p className="wizard-hint">{say('R$/saca. Em branco, usamos os preços de referência.','BRL per sack. Leave blank to use reference prices.')}</p><div className="wizard-prices">{commodities.map(([id,label]) => <label key={id} className="wizard-price-row"><span>{t(label)}</span><span className="wizard-price-input"><input type="number" min="0" step="any" placeholder={say('referência','reference')} value={prices[id] ?? ''} onChange={e => setPrices({...prices,[id]:e.target.value})}/><small>R$/sc</small></span></label>)}</div>
+</>)}
+     {more(say('Quantos cenários ver','How many scenarios to see'), <fieldset className="wizard-buyers"><legend>{say('Alternativas à sua rotação atual','Alternatives to your current rotation')}</legend>
+      <div className="wizard-pills">{[1,2,3,4,5,6].map(n => <label key={n}><input type="radio" name="count" checked={count === n} onChange={() => setCount(n)}/><span>{n}</span></label>)}</div>
+      <p className="wizard-hint">{say('O motor mostra até esse número de opções, ordenadas pela nota. Mais opções deixam a comparação mais ampla.','The engine shows up to this many options, sorted by score. More options widen the comparison.')}</p>
+     </fieldset>)}
+    </>}
     </div>
     {error && <p className="wizard-error" role="alert">{error}</p>}
-    <div className="wizard-actions"><button className="button yellow" type="submit">{step === 5 ? say('Explorar meus cenários →','Explore my scenarios →') : step === 2 && !problems.length ? say('Continuar sem marcar →','Continue without selecting →') : step === 3 && !Object.values(soil).some(v => v !== '') ? say('Vamos seguir sem análise →','Let’s continue without a soil test →') : say('Vamos continuar →','Let’s continue →')}</button></div>
+    <div className="wizard-actions"><button className="button yellow" type="submit">{step === LAST ? say('Explorar meus cenários →','Explore my scenarios →') : step === 2 && !problems.length ? say('Continuar sem marcar →','Continue without selecting →') : step === 3 && !Object.values(soil).some(v => v !== '') ? say('Vamos seguir sem análise →','Let’s continue without a soil test →') : say('Vamos continuar →','Let’s continue →')}</button></div>
     <small>{say('Seus dados ficam só nesta sessão.','Your data stays in this session only.')}</small>
    </form>
   </section>
