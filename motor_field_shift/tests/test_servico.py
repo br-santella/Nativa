@@ -65,7 +65,7 @@ def test_ponto_guaira():
 
 
 def test_erros():
-    for a, exc in [({"lat": -25.43, "lon": -49.27}, ForaDaRegiao), ({"talhao_id": "x"}, EntradaInvalida), ({}, EntradaInvalida),
+    for a, exc in [({"lat": -23.55, "lon": -46.63}, ForaDaRegiao), ({"talhao_id": "x"}, EntradaInvalida), ({}, EntradaInvalida),
                    ({"geometry": {"type": "Polygon", "coordinates": [[[-53, -24], [-52, -25], [-53, -25], [-52, -24], [-53, -24]]]}}, EntradaInvalida),
                    ({"geometry": {"type": "Polygon", "coordinates": [[[-54, -24], [-53, -24], [-53, -25], [-54, -25], [-54, -24]]]}}, EntradaInvalida)]:
         try:
@@ -85,7 +85,7 @@ def test_erros():
 
 def test_opcoes_e_atual_eliminada():
     o, _ = _t(opcoes)
-    assert o["regiao"]["n_municipios"] == 50 and o["talhoes_demo"][0]["id"] == "72638"
+    assert o["regiao"]["n_municipios"] == 399 and o["talhoes_demo"][0]["id"] == "72638"
     r, _ = _t(recomendar, {"talhao_id": "72638"}, rotacao_atual="soja_safrinha", incluir_diagnostico=False)  # slug antigo
     assert r["atual"]["eliminada"] and r["atual"]["id"] == "soja__soja_safrinha" and not any(x["atual"] for x in r["ranking"])
 
