@@ -31,6 +31,8 @@ type Props = {
   /** Persists the number of options shown. */
   onCountChange?: (count: number) => void;
   onSources: () => void;
+  /** Reuse only the side-by-side comparison in the Overview. */
+  comparisonOnly?: boolean;
 };
 
 /** Inputs used when the user reaches this page without going through the setup wizard. */
@@ -54,7 +56,7 @@ function fallbackInputs(farm: Farm, crops: Crop[]): SetupInputs {
 
 const score = (v: number | null | undefined) => (v == null ? null : Math.round(v * 100));
 
-export default function RotationStrategies({ inputs, farm, crops, onPesosChange, onCountChange, onSources }: Props) {
+export default function RotationStrategies({ inputs, farm, crops, onPesosChange, onCountChange, onSources, comparisonOnly = false }: Props) {
   const { language } = useLanguage();
   const en = language === "en";
   const lang: Lang = en ? "en" : "pt-BR";
@@ -160,6 +162,27 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
 
   const statusLine = error?.codigo === "sem_conexao" ? null : (loading || pending) && res ? say("Atualizando resultados…", "Updating results…") : null;
 
+  const comparison = res && current && target && <section className="rs-section" ref={compareRef}>
+    <header className="rs-heading">{!comparisonOnly && <span className="rs-step">03</span>}<div>
+     <h2>{say("Compare lado a lado", "Compare side by side")}</h2>
+     <p>{say("Sua rotação de hoje, à esquerda, contra uma das opções, à direita. No meio, o que você ganha e o que perde ao trocar; use as setas para passar pelas opções.", "Your rotation today on the left against one of the options on the right. In the middle, what you gain and lose by switching; use the arrows to go through the options.")}</p>
+    </div></header>
+    <div className="rs-versus">
+     <ScenarioCard item={current} rank={0} current={null} best={false} theme={null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data}
+      evaluated={evaluated} en={en} money={money} compared={false} compact/>
+     <Versus current={current} option={target} rank={options.indexOf(target) + 1} total={options.length} en={en} money={money} signedMoney={signedMoney}
+      onStep={step => { const i = options.indexOf(target); setCompareId(options[(i + step + options.length) % options.length].id); }}/>
+     <ScenarioCard item={target} rank={options.indexOf(target) + 1} current={current} best={false} theme={themes.get(target.id) ?? null} harvest={res.colheita_estimada?.data}
+      sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money} compared compact/>
+    </div>
+   </section>;
+
+  if (comparisonOnly) return <div className="rs rs-overview-comparison">
+    {comparison || (res
+      ? <p className="rs-empty">{say("Não há opções disponíveis para comparar com a rotação atual.", "No options are available to compare with the current rotation.")}</p>
+      : <Placeholder error={error} degraded={api != null && api.status !== "ok"} en={en}/>)}
+  </div>;
+
   return <div className="rs">
    <div className="rs-top">
     {/* Land summary: what the engine is working with. */}
@@ -224,20 +247,8 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
    </section>
 
    {/* 03 · comparison */}
-   {res && current && target && <section className="rs-section" ref={compareRef}>
-    <header className="rs-heading"><span className="rs-step">03</span><div>
-     <h2>{say("Compare lado a lado", "Compare side by side")}</h2>
-     <p>{say("Sua rotação de hoje, à esquerda, contra uma das opções, à direita. No meio, o que você ganha e o que perde ao trocar; use as setas para passar pelas opções.", "Your rotation today on the left against one of the options on the right. In the middle, what you gain and lose by switching; use the arrows to go through the options.")}</p>
-    </div></header>
-    <div className="rs-versus">
-     <ScenarioCard item={current} rank={0} current={null} best={false} theme={null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data}
-      evaluated={evaluated} en={en} money={money} compared={false} compact/>
-     <Versus current={current} option={target} rank={options.indexOf(target) + 1} total={options.length} en={en} money={money} signedMoney={signedMoney}
-      onStep={step => { const i = options.indexOf(target); setCompareId(options[(i + step + options.length) % options.length].id); }}/>
-     <ScenarioCard item={target} rank={options.indexOf(target) + 1} current={current} best={false} theme={themes.get(target.id) ?? null} harvest={res.colheita_estimada?.data}
-      sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money} compared compact/>
-    </div>
-   </section>}
+   {comparison}
+
 
    {/* Notes */}
    {res && res.avisos.length > 0 && <details className="rs-notes">

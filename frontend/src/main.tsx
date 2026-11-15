@@ -294,6 +294,7 @@ function App() {
             {__text([A.imgRotation, A.imgFieldRows, A.imgSprout, A.imgWarmAccent].map((src, i) => (<img key={src} className={"art-" + i} src={src} alt={__text("")}/>)))}
           </div>
         </section>
+        <RotationStrategies comparisonOnly inputs={setupInputs} farm={farm} crops={crops} onSources={() => open("sources")} />
       </div>);
     }
     function Timeline() {
