@@ -1,6 +1,6 @@
 # Field Shift — Lógica do motor de rotação
 
-Como o motor calcula e ordena as opções de rotação. Data: 2026-11-14. Piloto: rotações (verão + 2ª janela) no Oeste do PR; o exemplo resolvido é o do talhão 72638. Código em `src/field_shift/app/engine.py` (catálogo, regras, pontuação), com apoio de `clima/`, `agua/`, `solo/` e `renda/`.
+Como o motor calcula e ordena as opções de rotação. Rotações (verão + 2ª janela) no Oeste do PR; o exemplo resolvido é o do talhão 72638. Código em `src/field_shift/app/engine.py` (catálogo, regras, pontuação), com apoio de `clima/`, `agua/`, `solo/` e `renda/`.
 
 ## 1. Visão geral
 
@@ -107,8 +107,6 @@ Com a semeadura padrão (01/02), milho verão seguido de milho safrinha, milho +
 
 **Milho sobre milho:** o milho verão mantém hospedeiro contínuo da cigarrinha-do-milho (*Dalbulus maidis*) e do enfezamento, da lagarta-do-cartucho e de doenças foliares. A rotação continua válida, mas o critério de pragas perde 0,25 ponto (valor de catálogo, estimativa de referência a validar) e o texto entra em `card.riscos` e `card.evidencias`. Os alertas em curso estão em `/v1/contexto`.
 
-**Atenção:** conferir portarias e datas na ADAPAR/MAPA antes do pitch.
-
 ## 6. Os 5 critérios
 
 Todos em escala absoluta de 0 a 1 (maior = melhor).
@@ -158,7 +156,7 @@ Exemplo, geada no milho safrinha do talhão 72638, por semeadura:
 
 - **Fórmula (margem incremental sobre a soja de verão):** a referência é a soja de verão do município. Incremental = margem da rotação − margem da soja = (margem do verão − margem da soja) + margem da 2ª cultura + bônus na soja seguinte (bônus em sc/ha × preço da soja; é a soma do bônus da 2ª cultura e do bônus do milho verão, se for o caso). Com soja no verão o 1º termo é zero (a fórmula original: a soja é comum a todas e a nota olha só o que a 2ª safra soma ou tira). A escala S é a mesma para todas as candidatas, então a renda é comparável entre soja e milho verão. **renda = clip(0,5 + incremental / (2·S), 0, 1)**, com S = max(margem da soja do município, R$ 1.000/ha; constante `RENDA_ESCALA_MIN`). Incremental = +S dá 1,0; zero dá 0,5; −S dá 0. O piso de R$ 1.000/ha impede que uma soja de margem baixa ou negativa estique a escala.
 - **Margem da cultura** = rendimento do município (IBGE PAM, média de 5 anos) × preço (SEAB/DERAL-PR, média de 12 meses) − custo variável (CONAB COE). Milho verão usa o PAM de milho 1ª safra; sorgo e feijão usam o PAM extra (ou a média do Oeste do PR, sem PAM municipal recente).
-- **Custo:** usa Londrina/Ponta Grossa/Francisco Beltrão, porque não há planilha CONAB do Oeste. O milho 1ª safra do PR só existe em Ponta Grossa (produtividade de referência de 12 t/ha, bem acima da do Oeste): a margem do milho verão tende a ser subestimada e precisa de validação.
+- **Custo:** usa Londrina/Ponta Grossa/Francisco Beltrão, porque não há planilha CONAB do Oeste. O milho 1ª safra do PR só existe em Ponta Grossa (produtividade de referência de 12 t/ha, bem acima da do Oeste): a margem do milho verão tende a ser subestimada.
 - **Coberturas:** margem = −custo de implantação (estimativa). Sem fonte oficial (sorgo: preço e custo; nabo, aveia + nabo e demais coberturas: custo), o JSON marca "estimativa — validar".
 - **Margem da rotação** = verão (soja ou milho verão) + segunda cultura + bônus de palhada/N na soja seguinte (sc/ha × preço da soja; estimativa). É a que o card e a API exibem (`margem.total_r_ha`), junto de `incremental_r_ha` e `escala_S_r_ha`; só o incremental entra na nota.
 - **Por que COE e não COT:** a decisão é marginal. Com COT todas as margens ficam negativas.
