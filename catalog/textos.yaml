@@ -1,5 +1,39 @@
-# Modelos de frase em pt-BR — frentes 2 e 6.
-# Use {placeholders} preenchidos apenas com valores das evidências, sempre citando {fonte}.
-criterios: {}
-gatilhos: {}
-encaminhamentos: {}
+# English-only templates. Use supplied evidence; never invent values or leave unresolved placeholders.
+locale: en
+
+criteria:
+  renda: 'The estimated rotation margin is {margin} per hectare, a difference of {difference} compared with
+    the current rotation. Source: {source}.'
+  solo: 'The soil health score is {score}, based on available soil cover and rotation indicators. Source: {source}.'
+  agua: 'The water score is {score}, based on the calculated water balance for the evaluated scenario. Source:
+    {source}.'
+  pragas: 'The pest cycle disruption score is {score}. This indicator does not predict an infestation. Source:
+    {source}.'
+  risco: 'The assessed climate risk was {risk} over {period}. Historical frequencies do not guarantee next
+    season''s outcome. Source: {source}.'
+
+triggers:
+  general_reference: 'For {crop}, the range of {minimum} to {maximum} {unit} is a general reference. Confirm
+    its applicability to the cultivar and region. Source: {source}.'
+  context_dependent_reference: 'The reference for {crop} applies to this context: {context}. Avoid extrapolating
+    to other scenarios. Source: {source}.'
+  informational_planting_window: 'The planting period from {start_date} to {end_date} for {crop} is indicative.
+    Check the season''s ZARC by municipality, soil and cultivar group before deciding when to plant. Source:
+    {source}.'
+  missing_data: No validated data are available for {field} in {crop}. This value was not treated as zero.
+  contextual_nitrogen_rate: 'The range of {minimum} to {maximum} {unit} is a fertilizer reference for {context},
+    not a universal application rate. Source: {source}.'
+  water_consumption: 'Water consumption of {minimum} to {maximum} {unit} for {crop} is not the required irrigation
+    depth. Account for effective rainfall, soil water and the water balance. Source: {source}.'
+  experimental_data: 'The range of {minimum} to {maximum} {unit} for {crop} contains experimental treatments,
+    not a recommended fertilizer rate range. Source: {source}.'
+  curation_pending: 'The system {system} is mapped, but agronomic curation remains incomplete: {pending_research}.'
+
+referrals:
+  soil_test: Review the soil test and yield target with an agronomist before determining fertilizer rates for
+    {crop}.
+  check_zarc: 'Check the ZARC for {crop} in {municipality}, accounting for the season, soil and cultivar group.
+    Source: {source}.'
+  review_missing_data: Review the missing information for {fields} with an agronomist before using this comparison
+    to make a planting decision.
+  decision_support: This assessment supports decision-making and does not replace advice from an agronomist.

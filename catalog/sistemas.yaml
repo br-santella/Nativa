@@ -1,0 +1,199 @@
+# Engine IDs are mappings, not planting approvals. Pending research is explicit; missing evidence is not zero.
+systems:
+  soja:
+    name: Soybean
+    engine_seasons:
+    - verao
+    purpose: grain
+    components:
+    - soja
+    status: general_reference
+
+  milho_verao:
+    name: First-season maize
+    engine_seasons:
+    - verao
+    purpose: grain
+    components:
+    - milho
+    status: general_reference
+    cycle_days:
+      min: 125
+      max: 180
+      unit: days
+      source: https://www.fao.org/4/s2022e/s2022e07.htm
+      status: general_reference
+      note: 'Table 6: general grain maize range from sowing to harvest, not a season-specific or locally validated
+        cultivar range.'
+    pending_research:
+    - Validate cycle and water values for local cultivars and conditions.
+    - Check ZARC by municipality, soil, cultivar group and season.
+    - Obtain a first-season nitrogen fertilizer reference accounting for soil analysis, previous crop and yield
+      target. Do not apply the second-season rate.
+    water_demand_mm_per_cycle:
+      min: 400
+      max: 700
+      unit: mm/cycle
+      source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/27341/1/Irrigacao-Manejo.pdf
+      status: general_reference
+      note: 'Page 1: full-cycle consumption for medium-cycle dry grain maize. Climate-dependent; not an irrigation
+        depth.'
+    planting_window:
+      start: "01/08"
+      end: "30/09"
+      format: DD/MM
+      use: informational
+      region: Southern Brazil
+      source: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/plantio/espacamento-e-densidade
+      note: August to September is described as usual in Southern Brazil. Dates are month boundaries, not ZARC-approved
+        ten-day periods.
+
+  milho_safrinha:
+    name: Second-season maize (safrinha)
+    engine_seasons:
+    - segunda
+    purpose: grain
+    components:
+    - milho
+    status: context_dependent_reference
+    cycle_days:
+      min: 125
+      max: 180
+      unit: days
+      source: https://www.fao.org/4/s2022e/s2022e07.htm
+      status: general_reference
+      note: 'Table 6: general grain maize range from sowing to harvest, not a season-specific or locally validated
+        cultivar range.'
+    pending_research:
+    - Validate cycle and water values for local cultivars and conditions.
+    - Check ZARC by municipality, soil, cultivar group and season.
+    water_demand_mm_per_cycle:
+      min: 400
+      max: 600
+      unit: mm/cycle
+      source: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1156268/1/Ecofisiologia-do-milho-segunda-safra-para-alta-produtividade.pdf
+      status: context_dependent_reference
+      note: 'Documentos 273, pages 7 and 10: 120-day cultivar scenario. Do not extrapolate to the full cycle
+        range above or interpret as rainfall or irrigation requirements for Western Parana.'
+    soil_requirements:
+      nitrogen:
+        topdressing_fertilizer_rate:
+          min: 45
+          max: 60
+          unit: kg N/ha
+          source: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1127262/1/LV-RecomendacaoSolo-2020-257-260.pdf
+          status: context_dependent_reference
+          note: Topdressing for second-season maize after soybean within the cited manual context. Do not extrapolate
+            to other preceding crops or yield targets.
+    planting_window:
+      start: "01/01"
+      end: "31/03"
+      format: DD/MM
+      use: informational
+      region: General second-season reference for Brazil
+      source: https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/sistemas-diferenciais-de-cultivo/milho-safrinha
+      note: January to March is a general reference. For more southerly and higher-altitude areas, the source
+        advises earlier sowing by January or the first half of February because of frost. Month boundaries
+        are not a ZARC window.
+
+  milho_braquiaria:
+    name: Second-season maize with brachiaria
+    engine_seasons:
+    - segunda
+    purpose: grain
+    components:
+    - milho
+    status: curation_pending
+    pending_research:
+    - Add a brachiaria profile and intercropping-specific references; the maize profile alone does not describe
+      this system.
+
+  trigo:
+    name: Grain wheat
+    engine_seasons:
+    - segunda
+    purpose: grain
+    components:
+    - trigo
+    status: general_reference
+
+  aveia:
+    name: Oat cover crop
+    engine_seasons:
+    - segunda
+    purpose: cover_crop
+    components: []
+    status: curation_pending
+    pending_research:
+    - Specify the oat species and add a cover crop profile. The aveia_branca grain profile is not an equivalent.
+
+  milheto_crotalaria:
+    name: Pearl millet with Crotalaria
+    engine_seasons:
+    - segunda
+    purpose: cover_crop
+    components: []
+    status: curation_pending
+    pending_research:
+    - Specify the Crotalaria species and add component profiles and intercropping references.
+
+  pousio:
+    name: Fallow
+    engine_seasons:
+    - segunda
+    purpose: fallow
+    components: []
+    status: not_applicable
+    note: No crop is grown; do not assign crop-cycle or crop-water requirements.
+
+  soja_safrinha:
+    name: Second-season soybean
+    engine_seasons:
+    - segunda
+    purpose: grain
+    components:
+    - soja
+    status: curation_pending
+    pending_research:
+    - This is an engine option mapping, not a planting recommendation. The current engine excludes this option;
+      do not reuse general soybean values as second-season recommendations.
+
+  sorgo:
+    name: Grain sorghum
+    engine_seasons:
+    - segunda
+    purpose: grain
+    components: []
+    status: curation_pending
+    pending_research:
+    - Add a grain sorghum profile with ranges, units and sources.
+
+  feijao_safrinha:
+    name: Second-season common bean
+    engine_seasons:
+    - segunda
+    purpose: grain
+    components: []
+    status: curation_pending
+    pending_research:
+    - Add a common bean profile; cowpea is not an equivalent species.
+
+  nabo_forrageiro:
+    name: Forage radish cover crop
+    engine_seasons:
+    - segunda
+    purpose: cover_crop
+    components: []
+    status: curation_pending
+    pending_research:
+    - Add a forage radish profile with ranges, units and sources.
+
+  aveia_nabo:
+    name: Oat with forage radish
+    engine_seasons:
+    - segunda
+    purpose: cover_crop
+    components: []
+    status: curation_pending
+    pending_research:
+    - Specify the oat species and add component profiles and intercropping-specific references.

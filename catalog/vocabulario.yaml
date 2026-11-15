@@ -1,31 +1,43 @@
-# Listas fechadas compartilhadas por catálogo, formulário da fazenda e frontend.
-maquinas:
-  - semeadora
-  - pulverizador
-  - colhedora
+# English catalog vocabulary. Criterion and engine season IDs match the API; do not translate them.
+machinery:
+- planter
+- sprayer
+- combine_harvester
 
-irrigacao:
-  - sequeiro
-  - pivo_central
-  - aspersao
-  - gotejamento
+irrigation:
+- rainfed
+- center_pivot
+- sprinkler
+- drip
 
-mao_de_obra:
-  - familiar
-  - contratada
+labor:
+- family
+- hired
 
-texturas:
-  - arenosa
-  - media
-  - argilosa
+textures:
+- sandy
+- medium
+- clayey
 
-finalidades:
-  - graos
-  - cobertura
-  - forragem
+purposes:
+- grain
+- cover_crop
+- forage
+- fallow
 
-criterios:
-  - risco_climatico
-  - cobertura_do_solo
-  - custo
-  - retornos
+criteria:
+- renda
+- solo
+- agua
+- pragas
+- risco
+
+engine_seasons:
+- verao
+- segunda
+
+curation_statuses:
+- general_reference
+- context_dependent_reference
+- curation_pending
+- not_applicable

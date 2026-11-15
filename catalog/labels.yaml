@@ -1,0 +1,13 @@
+# English display labels for API identifiers that must remain unchanged.
+locale: en
+
+criteria:
+  renda: Income
+  solo: Soil health
+  agua: Water
+  pragas: Pest cycle disruption
+  risco: Climate risk
+
+engine_seasons:
+  verao: First season
+  segunda: Second season
