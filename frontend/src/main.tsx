@@ -58,7 +58,32 @@ function App() {
     const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState({
         temperature: "Graus Celsius (°C)",
     });
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
+    const [compactViewport, setCompactViewport] = useState(() => window.matchMedia("(max-width: 1100px)").matches);
+    const sidebarCollapsed = sidebarPreference ?? compactViewport;
+    useEffect(() => {
+        const query = window.matchMedia("(max-width: 1100px)");
+        const update = () => setCompactViewport(query.matches);
+        query.addEventListener("change", update);
+        return () => query.removeEventListener("change", update);
+    }, []);
+    useEffect(() => {
+        if (!menu) return;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        const closeOnEscape = (event: KeyboardEvent) => {
+            if (event.key === "Escape") setMenu(false);
+        };
+        const desktop = window.matchMedia("(min-width: 701px)");
+        const closeOnDesktop = () => { if (desktop.matches) setMenu(false); };
+        desktop.addEventListener("change", closeOnDesktop);
+        window.addEventListener("keydown", closeOnEscape);
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            desktop.removeEventListener("change", closeOnDesktop);
+            window.removeEventListener("keydown", closeOnEscape);
+        };
+    }, [menu]);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>();
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const reduced = useReducedMotion();
@@ -1069,12 +1094,13 @@ function App() {
     return (<DraftContext.Provider value={{ draft, setDraft }}>
       {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className={"dashboard" + (sidebarCollapsed ? " sidebar-collapsed" : "")}>
           {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
-          <aside className={"sidebar " + (menu ? "shown" : "")}>
+          <aside id="dashboard-sidebar" className={"sidebar " + (menu ? "shown" : "")}>
             <div className="sidebar-header">
               <Logo />
-              <button className="sidebar-toggle" aria-expanded={!sidebarCollapsed} aria-controls="dashboard-nav" aria-label={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} title={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} onClick={() => setSidebarCollapsed(v => !v)}>
+              <button className="sidebar-toggle" aria-expanded={!sidebarCollapsed} aria-controls="dashboard-nav" aria-label={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} title={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} onClick={() => setSidebarPreference(!sidebarCollapsed)}>
                 <span aria-hidden="true">{sidebarCollapsed ? "»" : "«"}</span>
               </button>
+              <button className="sidebar-close" aria-label={__text("Fechar navegação")} onClick={() => setMenu(false)}><span aria-hidden="true">×</span></button>
             </div>
             <small className="nav-section">{__text("PRINCIPAL")}</small>
             <nav id="dashboard-nav">
@@ -1096,7 +1122,7 @@ function App() {
           </aside>
           <header className="topbar">
             <LanguageSwitcher />
-            <button className="mobile-menu" aria-label={__text("Abrir navega\u00E7\u00E3o")} onClick={() => setMenu(true)}>{__text("\u2630")}</button>
+            <button className="mobile-menu" aria-expanded={menu} aria-controls="dashboard-sidebar" aria-label={__text("Abrir navega\u00E7\u00E3o")} onClick={() => setMenu(true)}>{__text("\u2630")}</button>
             <span className="mobile-brand">{__text("NATIVA")}</span>
             <button className="property-select" onClick={() => open("property")}>
               {__text(farm.name)}{__text("\u2304")}</button>
