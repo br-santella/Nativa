@@ -3725,3 +3725,9 @@ footer > small:last-child {
   .sidebar-collapsed .sidebar-header .brand { width: 40px; }
   .sidebar-collapsed .sidebar-header .brand-wordmark { visibility: hidden; }
 }
+
+.dashboard .overview-map { grid-template-columns: minmax(0, 1fr); }
+.overview-map > .farm-map { height: clamp(480px, 68svh, 760px); }
+@media (max-width: 700px) {
+  .overview-map > .farm-map { height: clamp(360px, 60svh, 560px); }
+}
