@@ -112,7 +112,7 @@ npm run dev
 ```
 
 Production build: `npm run build && npm run preview`. The built `index.html` must be served over HTTP, not
-opened through `file://`.
+opened through `file://`
 
 The frontend uses the demo data in `frontend/src/data.ts`. It does not call the API.
 

@@ -783,7 +783,7 @@ function App() {
             {__text(busy ? "Comparando…" : "Comparar Estratégias")}
           </button>
         </div>
-        <EngineScenarios setupInputs={setupInputs} weights={applied} latitude={farm.latitude} longitude={farm.longitude} crops={crops} onSources={() => open("sources")} />
+        <EngineScenarios setupInputs={setupInputs} weights={applied} latitude={farm.latitude} longitude={farm.longitude} irrigation={farm.irrigation} crops={crops} onSources={() => open("sources")} />
         <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
       </>);
     }

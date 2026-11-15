@@ -524,7 +524,6 @@
   "(do histórico de cultivo)": "(from the crop history)",
   "(padrão: histórico sem uma safra completa)": "(default: history has no complete season)",
   "ALTERNATIVA PARA EXPLORAR": "ALTERNATIVE TO EXPLORE",
-  "Ajuste a latitude/longitude em Minha Propriedade para um ponto no Oeste do Paraná.": "Adjust the latitude/longitude in My Property to a point in Western Paraná.",
   "Calculando…": "Calculating…",
   "Comparação atualizada.": "Comparison updated.",
   "Comparação dos cinco critérios do motor": "Comparison of the engine's five criteria",
@@ -688,5 +687,14 @@
   "O que importa para você?": "What matters to you?",
   "Escolha uma prioridade e ajuste se quiser.": "Choose a priority and adjust it if you like.",
   "Vamos aos seus cenários?": "Ready to explore your scenarios?",
-  "Os detalhes abaixo são opcionais.": "The details below are optional."
+  "Os detalhes abaixo são opcionais.": "The details below are optional.",
+  "Ajuste a latitude/longitude em Minha Propriedade para um ponto no Paraná.": "Adjust the latitude/longitude in My Property to a point in Paraná.",
+  "Não foi possível conectar à API do motor.": "Could not connect to the engine API.",
+  "semeadura da 2ª janela:": "2nd-window sowing:",
+  "pelo estágio": "from the crop stage",
+  "pela colheita do histórico": "from the harvest in the history",
+  "após a colheita prevista": "after the expected harvest",
+  "premissa do catálogo": "catalog assumption",
+  "Próxima safra: trocar a cultura de verão": "Next season: changing the summer crop",
+  "Avisos do motor": "Engine warnings"
 }

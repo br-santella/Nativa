@@ -4,9 +4,9 @@ import type { SetupInputs } from "./PropertyWizard";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { ApiError, health, pesosDosSliders, recomendacao } from "./api";
-import type { Area, Health, ItemRanking, Recomendacao } from "./api";
+import type { Area, DataOrigem, Health, Irrigacao, ItemRanking, Lang, Recomendacao } from "./api";
 import { rotacaoDoHistorico } from "./rotacaoAtual";
-import { t, locale } from "./i18n";
+import { t, locale, useLanguage } from "./i18n";
 
 // Talhão demo do motor (Toledo, PR): usado só quando a fazenda não tem lat/lon válidas.
 const TALHAO_DEMO = "72638";
@@ -30,6 +30,20 @@ function criteriosCompletos(it: ItemRanking): Criterios | null {
   const c = it.criterios;
   return !it.eliminada && c && CRITERIOS.every(([k]) => typeof c[k] === "number") ? c : null;
 }
+
+/** Farm form "Disponibilidade de irrigação" -> engine `irrigacao` ("Não informado" = omitted, engine default). */
+function irrigacaoDaFazenda(irrigation: string): Irrigacao | undefined {
+  if (irrigation === "Sim") return { disponivel: true };
+  if (irrigation === "Não") return { disponivel: false };
+  return undefined;
+}
+
+const ORIGEM: Record<DataOrigem["origem"], string> = {
+  estagio: "pelo estágio",
+  informada: "pela colheita do histórico",
+  derivada: "após a colheita prevista",
+  premissa: "premissa do catálogo",
+};
 
 function areaDaFazenda(latitude: string, longitude: string): { area: Area; rotulo: string } {
   const lat = Number(latitude), lon = Number(longitude);
@@ -145,14 +159,17 @@ function Card({ item, cor, melhor, rotulo }: { item: ItemRanking; cor: string; m
 }
 
 /** Seção "Compare os cenários" com dados reais do motor: rotação atual + 2 melhores alternativas. */
-export default function EngineScenarios({ weights, latitude, longitude, crops, onSources, setupInputs }: {
+export default function EngineScenarios({ weights, latitude, longitude, irrigation, crops, onSources, setupInputs }: {
   setupInputs?: SetupInputs;
   weights: number[];
   latitude: string;
   longitude: string;
-  crops: { crop: string; plant: string }[];
+  irrigation: string;
+  crops: { crop: string; plant: string; harvest?: string }[];
   onSources: () => void;
 }) {
+  const { language } = useLanguage();
+  const lang: Lang = language === "en" ? "en" : "pt-BR";
   const [api, setApi] = useState<Health | null>(null);
   const [res, setRes] = useState<Recomendacao | null>(null);
   const [erro, setErro] = useState<ApiError | null>(null);
@@ -164,11 +181,22 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
     let ativo = true;
     setCarregando(true);
     setErro(null);
-    health()
+    health(lang)
       .then((h) => {
         if (!ativo) return null;
         setApi(h);
-        return h.status === "ok" ? recomendacao(setupInputs?.area ?? area, setupInputs?.rotacao_atual ?? rotacao.id, { ...pesosDosSliders(weights), pragas: setupInputs?.pesos.pragas ?? 3 }, setupInputs) : null;
+        if (h.status !== "ok") return null;
+        return recomendacao(
+          {
+            area: setupInputs?.area ?? area,
+            rotacaoAtual: setupInputs?.rotacao_atual ?? rotacao.id,
+            pesos: { ...pesosDosSliders(weights), pragas: setupInputs?.pesos.pragas ?? 3 },
+            colheitaPrevista: setupInputs ? setupInputs.colheita_prevista : rotacao.colheitaPrevista,
+            irrigacao: irrigacaoDaFazenda(irrigation),
+          },
+          lang,
+          setupInputs,
+        );
       })
       .then((r) => ativo && setRes(r))
       .catch((e: unknown) => {
@@ -180,7 +208,7 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
     return () => {
       ativo = false;
     };
-  }, [weights, latitude, longitude, rotacao.id, setupInputs]);
+  }, [weights, latitude, longitude, irrigation, rotacao.id, rotacao.colheitaPrevista, lang, setupInputs]);
 
   const degradada = api != null && api.status !== "ok";
   const statusApi =
@@ -197,11 +225,16 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
       {setupInputs ? (emIngles() ? "(provided by you)" : "(informada por você)") : t(rotacao.doHistorico ? "(do histórico de cultivo)" : "(padrão: histórico sem uma safra completa)")} • API:{" "}
       {statusApi}
       {carregando && res ? ` • ${t("recalculando…")}` : ""}
+      {res?.semeadura_2a
+        ? ` • ${t("semeadura da 2ª janela:")} ${res.semeadura_2a.data} (${t(ORIGEM[res.semeadura_2a.origem] ?? res.semeadura_2a.origem)})`
+        : ""}
     </small>
   );
 
   const atual = res?.atual;
-  const itens = res ? [...(atual ? [atual] : []), ...res.alternativas.slice(0, setupInputs?.n_alternativas ?? (atual ? 2 : 3))] : [];
+  const agora = res?.agora ?? (res ? { ranking: res.ranking, alternativas: res.alternativas, eliminadas: res.eliminadas } : null);
+  const itens = agora ? [...(atual ? [atual] : []), ...agora.alternativas.slice(0, setupInputs?.n_alternativas ?? (atual ? 2 : 3))] : [];
+  const proxima = res?.proxima_safra?.alternativas[0];
 
   if (erro || !res || itens.length === 0) {
     let mensagem: ReactNode = <p>{t("Calculando…")}</p>;
@@ -209,8 +242,10 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
       mensagem = (
         <p className="error" role="alert">
           {erro.codigo === "fora_da_regiao"
-            ? `${erro.message} ${t("Ajuste a latitude/longitude em Minha Propriedade para um ponto no Oeste do Paraná.")}`
-            : erro.message}
+            ? `${erro.message} ${t("Ajuste a latitude/longitude em Minha Propriedade para um ponto no Paraná.")}`
+            : erro.codigo === "sem_conexao"
+              ? t("Não foi possível conectar à API do motor.")
+              : erro.message}
         </p>
       );
     else if (degradada)
@@ -278,6 +313,33 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
           </button>
         </section>
       </div>
+      {(proxima || res.avisos.length > 0) && (
+        <section className="panel">
+          {proxima && (
+            <>
+              <h2>{t("Próxima safra: trocar a cultura de verão")}</h2>
+              <p className="body-text">
+                {emIngles()
+                  ? `Best option with another summer crop: ${proxima.rotacao} (score ${pct(proxima.nota)}/100).`
+                  : `Melhor opção com outra cultura de verão: ${proxima.rotacao} (nota ${pct(proxima.nota)}/100).`}
+              </p>
+              {proxima.card?.por_que && <p>{proxima.card.por_que}</p>}
+            </>
+          )}
+          {res.avisos.length > 0 && (
+            <>
+              <h3>{t("Avisos do motor")}</h3>
+              <ul>
+                {res.avisos.map((a) => (
+                  <li key={a}>
+                    <small>{a}</small>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
+      )}
     </>
   );
 }
