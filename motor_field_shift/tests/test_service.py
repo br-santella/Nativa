@@ -46,7 +46,7 @@ def test_field_72638():
     top = r["ranking"][0]["card"]["por_que"]
     assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top
     current = r["atual"]["card"]["por_que"]
-    assert current.startswith("É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
+    assert current.startswith("É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa, milho safrinha + braquiária,")
     print("72638", round(dt, 2), "s", [(x["id"], round(x["nota"], 2)) for x in r["ranking"]])
 
 
