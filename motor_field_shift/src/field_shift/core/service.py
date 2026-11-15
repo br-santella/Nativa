@@ -48,7 +48,10 @@ CRS_M = 32722  # UTM 22S (m), for areas and the point square
 WARNINGS_OUTSIDE_OESTE = [
     "Área fora do Oeste do Paraná: preços (média estadual SEAB/DERAL) e custos (fichas CONAB de Londrina, Ponta Grossa e Francisco "
     "Beltrão) são referências do estado e podem diferir na sua região; informe os seus em `ajustes`. As janelas de semeadura e o "
-    "mercado do catálogo e o backtest de renda são do Oeste do PR; a concordância com o ZARC foi medida no estado todo.",
+    "mercado do catálogo são do Oeste do PR; a renda, o risco e a concordância com o ZARC foram testados no estado todo.",
+    "Fora do Oeste, a cobertura (milheto/crotalária) fica em 1º com mais frequência, pelos critérios de solo e pragas; na renda "
+    "realizada (IBGE PAM, safras passadas) ela perdeu do milho safrinha na média de todas as mesorregiões do PR. Quando a 1ª "
+    "colocada não é a de maior renda, o card diz quanto se abre mão.",
 ]
 
 
@@ -94,8 +97,9 @@ _DESCRIPTION = {  # per 2nd-window crop
 
 _CRITERION_METHOD = {
     "renda": "Margem incremental da 2ª safra (rendimento PAM do município × preço SEAB/DERAL − custo CONAB; cobertura/pousio = "
-             "−custo estimado; mais o bônus de palhada/N na soja seguinte), na escala S = max(margem da soja do município, "
-             "R$ 1.000/ha): renda = clip(0,5 + incremental / (2·S), 0, 1). Incremental +S = 1,0; zero = 0,5; −S = 0.",
+             "−custo estimado; mais o bônus de palhada/N na soja seguinte; milho safrinha, milho + braquiária e trigo pela média realizada das "
+             "últimas 5 safras no município, quando há histórico), na escala S = R$ 1.110/ha, a mesma no Paraná todo (margem mediana da soja no Oeste "
+             "do PR): renda = 0,5 + 0,5·tanh(incremental / S). Incremental zero = 0,5; +S ≈ 0,88; −S ≈ 0,12.",
     "solo": "Média de cobertura de palha, fixação de N e (1 − dias de solo descoberto/180); valores de catálogo "
             "(estimativas de referência, validar com agrônomo/Embrapa).",
     "agua": "Média nos 34 anos (1991–2024) de ΣETa/ΣETc na fase crítica da 2ª cultura, por balanço hídrico diário "
@@ -674,6 +678,36 @@ def technical_tie(items: list[dict]) -> dict | None:
     return dict(ids=[x["id"] for x in tied], diferenca=round(gap, 3), limiar=TECHNICAL_TIE, texto=text)
 
 
+# Income gap (R$/ha/yr) below which two options are treated as earning the same: about one bag of soybean per hectare, the order
+# of the price and cost noise (docs/validation.md §7.5).
+INCOME_GAP_NOTE = 100.0
+
+
+def income_trade_off(items: list[dict]) -> dict | None:
+    """Best-income option of the block (largest incremental margin) and what each option earns less than it
+    (`margem.abaixo_da_maior_renda_r_ha`). The options ranked ABOVE it by more than INCOME_GAP_NOTE get a card warning: they are
+    ahead because of soil, pests, water and risk, which costs income. Returns the block field `maior_renda`, or None."""
+    valid = [x for x in items if x["margem"].get("incremental_r_ha") is not None]
+    if not valid:
+        return None
+    best = max(valid, key=lambda x: x["margem"]["incremental_r_ha"])
+    top_inc = best["margem"]["incremental_r_ha"]
+    for x in valid:
+        x["margem"]["abaixo_da_maior_renda_r_ha"] = float(round(top_inc - x["margem"]["incremental_r_ha"]))
+    best_name = best["rotacao"].replace(".", ",")
+    for x in valid:
+        gap = x["margem"]["abaixo_da_maior_renda_r_ha"]
+        if x["posicao"] < best["posicao"] and gap > INCOME_GAP_NOTE:
+            x["card"]["avisos"].append(Msg(
+                "Renda: esta opção rende R$ {0}/ha/ano a menos que a de maior renda ({1}). Ela fica à frente pelos critérios solo, "
+                "pragas, água e risco; solo e pragas são estimativas de catálogo. Se a renda pesa mais para você, aumente o peso da "
+                "renda.", f"{gap:,.0f}".replace(",", "."), best_name))
+    first = items[0]
+    gap_first = first["margem"].get("abaixo_da_maior_renda_r_ha")
+    return dict(id=best["id"], rotacao=best["rotacao"], incremental_r_ha=top_inc,
+                primeira_abaixo_r_ha=gap_first, primeira_e_maior_renda=bool(gap_first is not None and gap_first <= INCOME_GAP_NOTE))
+
+
 def _recovery_out(r: dict) -> dict:
     """API block `recuperacao_solo` (R$/ha rounded; text already in the card)."""
     rd = lambda x: None if x is None else float(round(x))  # noqa: E731
@@ -769,7 +803,7 @@ def _applied_adjustments(aj: dict, soil, restr, irr) -> list[str]:
     if aj.get("produtividade"):
         items = ", ".join(f"{k} {v:g} sc/ha" for k, v in aj["produtividade"].items())
         o.append(f"Produtividade informada pelo produtor ({items}) substitui o rendimento PAM do município; o ano ruim escala "
-                 "proporcionalmente (próprio × p20/média da PAM); a soja informada também muda a escala S da renda.")
+                 "proporcionalmente (próprio × p20/média da PAM).")
     if soil:
         if "cad_mm_cm" in soil:
             o.append("Análise de solo do produtor substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico (CAD informada diretamente).")
@@ -945,7 +979,7 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
                 "pousio"|"nabo_forrageiro"|"aveia_nabo": R$/ha} ("milho" = 2nd-season corn; "milho_verao" = 1st-season corn)
       "linha_custo": "coe" (variable cost, default) | "cot" | "ct"  (CONAB; applies to soybean, corn and wheat)
       "produtividade": {"soja"|"milho"|"milho_2safra"|"milho_verao"|"trigo"|"feijao"|"sorgo": bags/ha > 0}  replaces the municipality PAM
-                yield; the bad year scales proportionally (own × p20/PAM mean); a given soybean yield also changes the income scale S
+                yield; the bad year scales proportionally (own × p20/PAM mean)
     soil_analysis (optional): {"argila_pct", "areia_pct", "materia_organica_pct"|"carbono_organico_g_kg", "ph", "cad_mm_cm",
       "profundidade_cm"}; requires clay+sand or cad_mm_cm (or fertility only). Replaces SoilGrids in the diagnosis and in the AWC of the
       water balance. Fertility (optional, any subset): p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct,
@@ -1003,7 +1037,7 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
         el = [dict(**_ids(_SLUG_DE[n]), **_summer_second(n), rotacao=n, motivos=list(m)) for n, m in elim.items() if in_now(n) == now]
         tie = technical_tie(items)
         return dict(ranking=items, alternativas=[r for r in items if not r["atual"]][:n_alternatives], eliminadas=el,
-                    empate_tecnico=tie, estabilidade=ranking_stability(items, res["margens"]))
+                    empate_tecnico=tie, estabilidade=ranking_stability(items, res["margens"]), maior_renda=income_trade_off(items))
 
     now, next_ = block(True), block(False)
     if sel is not None and not now["ranking"] and not next_["ranking"]:

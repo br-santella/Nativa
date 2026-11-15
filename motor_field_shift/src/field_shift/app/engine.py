@@ -25,7 +25,7 @@ from field_shift.crop_calendar import PREP_DAYS_2ND, DEFAULT_SOWING, SOWINGS_2ND
 from field_shift.climate.lookup import indicators_for
 from field_shift.pam import productivity as pam_yield
 from field_shift.pam.productivity import text as pam_text
-from field_shift.income import INCOME_SCALE_MIN, compute_margins, cost_source, price_source, yields
+from field_shift.income import compute_margins, cost_source, price_source, yields
 from field_shift.region import inside_region, relief
 from field_shift.region.soybean_free_period import soy_calendar, in_window
 from field_shift.soil import soil as polygon_soil
@@ -639,7 +639,7 @@ def score_rotation(pesos: dict[str, float], risks: dict, adjustments: dict | Non
     # = (summer margin − soybean margin) + 2nd-crop margin (sold: PAM × price − cost; cover: − establishment
     # cost; fallow: − management cost) + bonus in the following soybean (bonus_sc × soybean price). With summer soybean the first
     # term is zero (original formula); summer corn enters with 1st-season corn PAM × corn price − CONAB summer-corn cost.
-    # Income score: 0.5 + 0.5·tanh(incremental / S), S = max(municipal soybean margin, INCOME_SCALE_MIN). Near zero it has the
+    # Income score: 0.5 + 0.5·tanh(incremental / S), S = INCOME_SCALE (fixed statewide, §7.5). Near zero it has the
     # same slope as the old clip(0.5 + incremental / (2·S), 0, 1), but it never saturates, so two good options are never tied
     # at 1.0 (docs/validation.md §6.3). For grain second crops with a municipal track record, the second-crop margin in
     # `incremental` is the 5-season realized margin (income.history.apply_to_income; validated out of sample, §6.2).
@@ -740,13 +740,13 @@ def fmt_margin(m: dict, risks: dict) -> list[str]:
     if m.get("base_renda") == "historico":
         head = Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ {1}/ha, "
                    "com a 2ª safra pela média realizada das últimas safras no município ({2} sc de soja/ha × R$ {3}/sc; "
-                   "a preço atual seria R$ {4}/ha), na escala S = R$ {5}/ha (margem da soja do município, mín. {6})",
+                   "a preço atual seria R$ {4}/ha), na escala S = R$ {5}/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR)",
                    _r(m["total"]), _r(m["incremental"]), str(round(m["historico_sc_soja_ha"], 1)).replace(".", ","),
-                   f"{m['preco_soja']:.2f}", _r(m["incremental_preco_atual"]), _r(m["escala_S"]), _r(INCOME_SCALE_MIN))
+                   f"{m['preco_soja']:.2f}", _r(m["incremental_preco_atual"]), _r(m["escala_S"]))
     else:
         head = Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ {1}/ha, "
-                   "na escala S = R$ {2}/ha (margem da soja do município, mín. {3})",
-                   _r(m["total"]), _r(m["incremental"]), _r(m["escala_S"]), _r(INCOME_SCALE_MIN))
+                   "na escala S = R$ {2}/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR)",
+                   _r(m["total"]), _r(m["incremental"]), _r(m["escala_S"]))
     if m["total_ano_ruim"] is not None:
         lines.append(Msg("{0}; em ano ruim (rendimento p20): R$ {1}/ha/ano.", head, _r(m["total_ano_ruim"])))
     else:

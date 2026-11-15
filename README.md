@@ -33,7 +33,7 @@ Developed for the NASA Space Apps Challenge 2026 challenge
 
 ## Overview
 
-Field Shift ranks crop rotations for a field anywhere in Paraná (399 municipalities; the pilot and the income backtest are Western Paraná). A rotation is a pair: a summer crop
+Field Shift ranks crop rotations for a field anywhere in Paraná (399 municipalities; the pilot is Western Paraná, and the income and risk backtests were repeated for all of Paraná: `motor_field_shift/docs/validation.md` §7). A rotation is a pair: a summer crop
 (soybean or summer corn) followed by a second-window crop (the *safrinha* / off-season).
 
 **Inputs**
@@ -55,11 +55,11 @@ Field Shift ranks crop rotations for a field anywhere in Paraná (399 municipali
 
 | Rank | Rotation | Score | Margin (BRL/ha) | Income | Soil | Water | Pests | Risk |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | Soybean → corn + brachiaria | **0.794** | 2,994 | 0.91 | 0.71 | 0.81 | 0.65 | 0.80 |
-| 2 | Soybean → millet / crotalaria (cover) | 0.757 | 1,103 | 0.46 | 0.82 | 1.00 | 0.70 | 1.00 |
-| 3 | Soybean → off-season corn *(current)* | 0.751 | 2,954 | 0.91 | 0.56 | 0.83 | 0.50 | 0.86 |
+| 1 | Soybean → corn + brachiaria | **0.798** | 2,994 | 0.93 | 0.71 | 0.81 | 0.65 | 0.80 |
+| 2 | Soybean → millet / crotalaria (cover) | 0.756 | 1,103 | 0.46 | 0.82 | 1.00 | 0.70 | 1.00 |
+| 3 | Soybean → off-season corn *(current)* | 0.755 | 2,954 | 0.92 | 0.56 | 0.83 | 0.50 | 0.86 |
 
-Each option also carries its uncertainty (`incerteza`): for corn + brachiaria the income ranges from BRL 60 to 2,943/ha across the last 5 seasons, and the score from 0.679 to 0.817. Repeating each of those seasons, corn + brachiaria would be first in 4 of 5 (`estabilidade`).
+Each option also carries its uncertainty (`incerteza`): for corn + brachiaria the income ranges from BRL 60 to 2,943/ha across the last 5 seasons, and the score from 0.68 to 0.818. Repeating each of those seasons, corn + brachiaria would be first in 4 of 5 (`estabilidade`).
 
 Full response:
 [`motor_field_shift/api/exemplos/recomendacao_talhao_72638.json`](motor_field_shift/api/exemplos/recomendacao_talhao_72638.json).
@@ -358,7 +358,7 @@ gh pr create --base main
 
 | Limitation | Effect |
 | --- | --- |
-| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows, market texts and the income backtest come from Western Paraná | An area outside Paraná returns 422; outside Western Paraná the response warns |
+| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows and market texts come from Western Paraná; outside it the cover crop still ranks first more often (71 % of municipalities, on soil and pests) although it lost to off-season corn on realized income; the card states the income given up (`docs/validation.md` §7) | An area outside Paraná returns 422; outside Western Paraná the response warns |
 | **Climate cells of ~50 km** (NASA POWER) | Local microclimate is not represented |
 | **Soil water capacity** from Saxton & Rawls (2006), calibrated on temperate soils | Tends to underestimate it in clay-rich tropical Latosols. A farmer soil analysis replaces it |
 | **Income** from municipal averages and reference prices | Farm margins differ; yields, prices and costs can be overridden in the request |

@@ -57,3 +57,30 @@ def test_margin_line_without_bad_year():
     risks = {"rend": {"_regionais": [], "_regiao": "Norte Pioneiro do PR"}, "rend_local": "Cornélio Procópio"}
     lines = E.fmt_margin(m, risks)
     assert any("série da PAM curta demais" in x for x in lines)
+
+
+def test_income_scale_is_the_same_statewide():
+    t = recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False)
+    lo = recommend(LONDRINA, current_rotation="soja__milho_safrinha", include_diagnosis=False)
+    scales = {x["margem"]["escala_S_r_ha"] for r in (t, lo) for x in r["agora"]["ranking"]}
+    assert scales == {I.INCOME_SCALE}
+
+
+def test_income_trade_off_block_and_card_warning():
+    t = recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False)["agora"]
+    mr = t["maior_renda"]
+    assert mr["id"] == "soja__milho_braquiaria" and mr["primeira_e_maior_renda"]  # Oeste pilot: the first is the best income
+    gaps = {x["id"]: x["margem"]["abaixo_da_maior_renda_r_ha"] for x in t["ranking"]}
+    assert gaps["soja__milho_braquiaria"] == 0 and all(v >= 0 for v in gaps.values())
+    assert not any(a.startswith("Renda: esta opção rende") for a in t["ranking"][0]["card"]["avisos"])
+
+
+def test_income_trade_off_warns_when_the_first_earns_less():
+    from field_shift.core.service import INCOME_GAP_NOTE, income_trade_off
+    items = [dict(id=i, rotacao=i, posicao=p, margem=dict(incremental_r_ha=inc), card=dict(avisos=[]))
+             for p, (i, inc) in enumerate((("cobertura", -90.0), ("milho", 600.0), ("pousio", -300.0)), start=1)]
+    mr = income_trade_off(items)
+    assert mr["id"] == "milho" and mr["primeira_abaixo_r_ha"] == 690 and not mr["primeira_e_maior_renda"]
+    assert items[0]["card"]["avisos"] and "R$ 690/ha/ano a menos" in items[0]["card"]["avisos"][0]
+    assert not items[2]["card"]["avisos"]  # ranked below the best-income option: no warning
+    assert INCOME_GAP_NOTE == 100.0

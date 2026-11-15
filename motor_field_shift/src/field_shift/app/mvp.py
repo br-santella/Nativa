@@ -168,7 +168,7 @@ st.markdown("**Regras duras** (eliminam): soja sobre soja no mesmo ano agrícola
 st.warning(E.ZARC_WARNING)
 st.caption("As portarias (SDA/MAPA 1.124/2024 e vazio sanitário do PR) ainda precisam ser conferidas nas fontes oficiais. "
            "Preço (SEAB/DERAL) e custo (CONAB) vêm de fontes reais; custos de cobertura/pousio, Kc e bônus de palhada/N são estimativas de referência — validar com agrônomo/Embrapa.")
-source("catálogo fixo de 7 candidatas; todos os critérios em escala absoluta 0–1: renda = margem incremental da 2ª safra (PAM × preço − custo, mais bônus na soja seguinte) na escala da margem da soja do município (0,5 + incremental/2S, limitada a 0–1); "
+source("catálogo fixo de 7 candidatas; todos os critérios em escala absoluta 0–1: renda = margem incremental da 2ª safra (PAM × preço − custo, mais bônus na soja seguinte) na escala S fixa de R$ 1.110/ha (0,5 + 0,5·tanh(incremental/S)); "
      "solo e pragas do catálogo; água = ETa/ETc na fase crítica pelo balanço hídrico diário (NASA POWER + solo SoilGrids; muda com a data de semeadura); risco = 1 − probabilidade; nota = Σ peso × critério. Pesos padrão: renda 5, demais 3.")
 
 # Resultado

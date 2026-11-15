@@ -19,7 +19,7 @@
        "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Irrigation: extra cost R$ 218/ha (mean depth 73 mm/year × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 11/ha/yr.",
+       "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 11/ha/yr.",
        "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 73 mm/year, cost R$ 218/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -55,14 +55,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.049,
-      "renda": 0.196,
+      "renda": 0.199,
       "risco": 0.176,
       "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.275,
-      "renda": 0.666,
+      "renda": 0.677,
       "risco": 1.0,
       "solo": 0.828
      },
@@ -140,7 +140,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.583,
+       0.579,
        null
       ],
       "nota_por_safra": null,
@@ -166,10 +166,11 @@
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": 11.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 411.0,
       "incremental_r_ha": 411.0,
       "itens": [
@@ -209,7 +210,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1603.0
      },
-     "nota": 0.743,
+     "nota": 0.747,
      "posicao": 1,
      "rotacao": "Summer corn → second-season corn + brachiaria",
      "segunda": {
@@ -265,7 +266,7 @@
        "2nd-season corn: 117 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 101 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,000/ha (given by the user) = R$ 2,320/ha (yield CV 27%; bad year, p20 of the same 10-year window = 88 bags/ha → R$ 728/ha).",
        "Irrigation: extra cost R$ 192/ha (mean depth 64 mm/year × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -2/ha/yr.",
+       "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -2/ha/yr.",
        "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 64 mm/year, cost R$ 192/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -291,7 +292,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.19) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -300,14 +301,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.024,
-      "renda": 0.194,
+      "renda": 0.198,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.137,
-      "renda": 0.661,
+      "renda": 0.672,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -385,7 +386,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.51,
+       0.506,
        null
       ],
       "nota_por_safra": null,
@@ -411,10 +412,11 @@
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 14.0,
       "ano_ruim_r_ha": -2.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 481.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 397.0,
       "incremental_r_ha": 397.0,
       "itens": [
@@ -446,7 +448,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1589.0
      },
-     "nota": 0.669,
+     "nota": 0.673,
      "posicao": 2,
      "rotacao": "Summer corn → second-season corn",
      "segunda": {
@@ -506,7 +508,7 @@
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
        "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -748/ha/yr.",
+       "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -748/ha/yr.",
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problem (compaction): favors, criterion soil +0.15 (pearl millet and crotalarias are cited as species with decompaction potential; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication, no measurement of our own).",
@@ -535,14 +537,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.011,
+      "renda": 0.009,
       "risco": 0.176,
       "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.037,
+      "renda": 0.029,
       "risco": 1.0,
       "solo": 0.921
      },
@@ -585,8 +587,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.65,
-       0.65
+       0.648,
+       0.648
       ],
       "nota_por_safra": null,
       "renda": {
@@ -600,10 +602,11 @@
       "risco_climatico": null
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2352.0,
       "ano_ruim_r_ha": -748.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1941.0,
       "incremental_r_ha": -1941.0,
       "itens": [
@@ -627,7 +630,7 @@
       "linha_custo": "coe",
       "total_r_ha": -748.0
      },
-     "nota": 0.65,
+     "nota": 0.648,
      "posicao": 3,
      "rotacao": "Summer corn → pearl millet/sunn hemp (cover)",
      "segunda": {
@@ -694,6 +697,13 @@
     ],
     "texto": "Repeating the realized income of each of the last 5 seasons (2021–2025), with the other criteria fixed, the top option would be (option in number of seasons): milho_verao__milho_braquiaria in 5."
    },
+   "maior_renda": {
+    "id": "milho_verao__milho_braquiaria",
+    "incremental_r_ha": 411.0,
+    "primeira_abaixo_r_ha": 0.0,
+    "primeira_e_maior_renda": true,
+    "rotacao": "Summer corn → second-season corn + brachiaria"
+   },
    "ranking": [
     {
      "atual": false,
@@ -712,7 +722,7 @@
        "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Irrigation: extra cost R$ 218/ha (mean depth 73 mm/year × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 11/ha/yr.",
+       "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 11/ha/yr.",
        "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 73 mm/year, cost R$ 218/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -748,14 +758,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.049,
-      "renda": 0.196,
+      "renda": 0.199,
       "risco": 0.176,
       "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.275,
-      "renda": 0.666,
+      "renda": 0.677,
       "risco": 1.0,
       "solo": 0.828
      },
@@ -834,7 +844,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.583,
+       0.579,
        null
       ],
       "nota_por_safra": null,
@@ -860,10 +870,11 @@
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": 11.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 411.0,
       "incremental_r_ha": 411.0,
       "itens": [
@@ -903,7 +914,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1603.0
      },
-     "nota": 0.743,
+     "nota": 0.747,
      "posicao": 1,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → second-season corn + brachiaria",
@@ -960,7 +971,7 @@
        "2nd-season corn: 117 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 101 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,000/ha (given by the user) = R$ 2,320/ha (yield CV 27%; bad year, p20 of the same 10-year window = 88 bags/ha → R$ 728/ha).",
        "Irrigation: extra cost R$ 192/ha (mean depth 64 mm/year × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -2/ha/yr.",
+       "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -2/ha/yr.",
        "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 64 mm/year, cost R$ 192/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -986,7 +997,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.19) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -995,14 +1006,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.024,
-      "renda": 0.194,
+      "renda": 0.198,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.137,
-      "renda": 0.661,
+      "renda": 0.672,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -1081,7 +1092,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.51,
+       0.506,
        null
       ],
       "nota_por_safra": null,
@@ -1107,10 +1118,11 @@
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 14.0,
       "ano_ruim_r_ha": -2.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 481.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 397.0,
       "incremental_r_ha": 397.0,
       "itens": [
@@ -1142,7 +1154,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1589.0
      },
-     "nota": 0.669,
+     "nota": 0.673,
      "posicao": 2,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → second-season corn",
@@ -1203,7 +1215,7 @@
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
        "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -748/ha/yr.",
+       "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -748/ha/yr.",
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problem (compaction): favors, criterion soil +0.15 (pearl millet and crotalarias are cited as species with decompaction potential; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication, no measurement of our own).",
@@ -1232,14 +1244,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.011,
+      "renda": 0.009,
       "risco": 0.176,
       "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.037,
+      "renda": 0.029,
       "risco": 1.0,
       "solo": 0.921
      },
@@ -1283,8 +1295,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.65,
-       0.65
+       0.648,
+       0.648
       ],
       "nota_por_safra": null,
       "renda": {
@@ -1299,10 +1311,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2352.0,
       "ano_ruim_r_ha": -748.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1941.0,
       "incremental_r_ha": -1941.0,
       "itens": [
@@ -1326,7 +1339,7 @@
       "linha_custo": "coe",
       "total_r_ha": -748.0
      },
-     "nota": 0.65,
+     "nota": 0.648,
      "posicao": 3,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → pearl millet/sunn hemp (cover)",
@@ -1375,7 +1388,7 @@
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
        "Bonus in the following soybean: 5.5 bags/ha × R$ 120.14/bag = R$ 661/ha (3 bags/ha from summer corn in place of soybean + 2.5 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -758/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,951/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -758/ha/yr.",
+       "Rotation total: R$ -758/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,951/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -758/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 69 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -1405,14 +1418,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.115,
-      "renda": 0.011,
+      "renda": 0.008,
       "risco": 0.176,
       "solo": 0.109
      },
      "criterios": {
       "agua": 0.997,
       "pragas": 0.65,
-      "renda": 0.037,
+      "renda": 0.029,
       "risco": 1.0,
       "solo": 0.619
      },
@@ -1456,8 +1469,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.587,
-       0.587
+       0.585,
+       0.585
       ],
       "nota_por_safra": null,
       "renda": {
@@ -1472,10 +1485,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2362.0,
       "ano_ruim_r_ha": -758.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 661.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1951.0,
       "incremental_r_ha": -1951.0,
       "itens": [
@@ -1499,7 +1513,7 @@
       "linha_custo": "coe",
       "total_r_ha": -758.0
      },
-     "nota": 0.587,
+     "nota": 0.585,
      "posicao": 4,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → oat + forage radish (cover)",
@@ -1558,7 +1572,7 @@
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -694/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,886/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -694/ha/yr.",
+       "Rotation total: R$ -694/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,886/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -694/ha/yr.",
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 99% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 63 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problem (compaction): favors, criterion soil +0.15 (forage radish is cited as a species with potential to break compacted layers; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication; in the França et al. trial the black oat + radish intercrop did not reduce strong compaction (> 6 MPa)).",
@@ -1587,14 +1601,14 @@
      "contribuicoes": {
       "agua": 0.175,
       "pragas": 0.106,
-      "renda": 0.012,
+      "renda": 0.01,
       "risco": 0.176,
       "solo": 0.114
      },
      "criterios": {
       "agua": 0.993,
       "pragas": 0.6,
-      "renda": 0.041,
+      "renda": 0.032,
       "risco": 1.0,
       "solo": 0.647
      },
@@ -1638,8 +1652,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.584,
-       0.584
+       0.581,
+       0.581
       ],
       "nota_por_safra": null,
       "renda": {
@@ -1654,10 +1668,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2297.0,
       "ano_ruim_r_ha": -694.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1886.0,
       "incremental_r_ha": -1886.0,
       "itens": [
@@ -1681,7 +1696,7 @@
       "linha_custo": "coe",
       "total_r_ha": -694.0
      },
-     "nota": 0.584,
+     "nota": 0.581,
      "posicao": 5,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → forage radish (cover)",
@@ -1730,7 +1745,7 @@
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -794/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,986/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -794/ha/yr.",
+       "Rotation total: R$ -794/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,986/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -794/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -1751,7 +1766,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "It is the current rotation; it ranked #6 among 10 valid options. The best alternative (Summer corn → second-season corn + brachiaria) has score 0.74. Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "It is the current rotation; it ranked #6 among 10 valid options. The best alternative (Summer corn → second-season corn + brachiaria) has score 0.75. Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1759,14 +1774,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.01,
+      "renda": 0.008,
       "risco": 0.176,
       "solo": 0.11
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.035,
+      "renda": 0.027,
       "risco": 1.0,
       "solo": 0.626
      },
@@ -1779,8 +1794,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.579,
-       0.579
+       0.577,
+       0.577
       ],
       "nota_por_safra": null,
       "renda": {
@@ -1795,10 +1810,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2397.0,
       "ano_ruim_r_ha": -794.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1986.0,
       "incremental_r_ha": -1986.0,
       "itens": [
@@ -1822,7 +1838,7 @@
       "linha_custo": "coe",
       "total_r_ha": -794.0
      },
-     "nota": 0.579,
+     "nota": 0.577,
      "posicao": 6,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → oat (cover/straw)",
@@ -1881,7 +1897,7 @@
        "Sorghum: 60 bags/ha (PAM Western Paraná (mean, the municipality has no recent PAM) 2023–2025 trend projected to the next season; mean 61 bags/ha) × R$ 40.42/bag (estimate — validate: 75% of the SEAB/DERAL-PR corn price (ratio of CONAB minimum prices, not market prices)) − cost R$ 2,807/ha (estimate — validate (CONAB Rio Verde-GO 2026, no PR sheet)) = R$ -369/ha (yield CV 19%; bad year, p20 of the same 10-year window = 57 bags/ha → R$ -486/ha).",
        "Irrigation: extra cost R$ 134/ha (mean depth 45 mm/year × R$ 3.00/mm/ha) = −R$ 134/ha.",
        "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -1,041/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,234/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,159/ha/yr.",
+       "Rotation total: R$ -1,041/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,234/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -1,159/ha/yr.",
        "Water: in the critical phase (sorghum booting/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 45 mm/year, cost R$ 134/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
        "Frost at flowering/grain fill of sorghum sown on 15/01: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
@@ -1911,14 +1927,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.097,
-      "renda": 0.007,
+      "renda": 0.005,
       "risco": 0.176,
       "solo": 0.1
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.55,
-      "renda": 0.023,
+      "renda": 0.018,
       "risco": 1.0,
       "solo": 0.565
      },
@@ -1962,7 +1978,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.555,
+       0.554,
        null
       ],
       "nota_por_safra": null,
@@ -1988,10 +2004,11 @@
       "lamina_media_mm_ano": 44.6
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2645.0,
       "ano_ruim_r_ha": -1159.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 481.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -2234.0,
       "incremental_r_ha": -2234.0,
       "itens": [
@@ -2023,7 +2040,7 @@
       "linha_custo": "coe",
       "total_r_ha": -1041.0
      },
-     "nota": 0.556,
+     "nota": 0.555,
      "posicao": 7,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → sorghum",
@@ -2083,7 +2100,7 @@
        "Wheat: 36 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 40 bags/ha) × R$ 68.44/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,334/ha (CONAB Ponta Grossa-PR, winter 2025 (Nov/2025), variable cost (≈COE)) = R$ -1,900/ha (yield CV 36%; bad year, p20 of the same 10-year window = 27 bags/ha → R$ -2,508/ha).",
        "Irrigation: extra cost R$ 75/ha (mean depth 25 mm/year × R$ 3.00/mm/ha) = −R$ 75/ha.",
        "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -2,513/ha/yr; 2nd-season incremental (without soybean, with the bonus) for the score: R$ -2,767/ha, with the 2nd crop at the realized mean of the last seasons in the municipality (-8.0 soybean bags/ha × R$ 120.14/bag; at the current price it would be R$ -3,706/ha), on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -3,122/ha/yr.",
+       "Rotation total: R$ -2,513/ha/yr; 2nd-season incremental (without soybean, with the bonus) for the score: R$ -2,767/ha, with the 2nd crop at the realized mean of the last seasons in the municipality (-8.0 soybean bags/ha × R$ 120.14/bag; at the current price it would be R$ -3,706/ha), on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -3,122/ha/yr.",
        "Income track record of wheat in the municipality (realized margin, soybean bags/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8.0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. The mean enters the income score instead of the current-price margin (it was more accurate in past seasons).",
        "Water: in the critical phase (wheat heading/grain fill, sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 25 mm/year, cost R$ 75/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -2115,14 +2132,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.003,
+      "renda": 0.002,
       "risco": 0.14,
       "solo": 0.089
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.01,
+      "renda": 0.007,
       "risco": 0.794,
       "solo": 0.504
      },
@@ -2202,14 +2219,14 @@
       ],
       "nota_faixa": [
        0.512,
-       0.53
+       0.527
       ],
       "nota_por_safra": {
-       "2021": 0.517,
+       "2021": 0.516,
        "2022": 0.513,
        "2023": 0.512,
        "2024": 0.512,
-       "2025": 0.53
+       "2025": 0.527
       },
       "renda": {
        "faixa_r_ha": [
@@ -2233,10 +2250,11 @@
       "lamina_media_mm_ano": 24.9
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 3178.0,
       "ano_ruim_r_ha": -3122.0,
       "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 481.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -3706.0,
       "incremental_r_ha": -2767.0,
       "itens": [
@@ -2268,7 +2286,7 @@
       "linha_custo": "coe",
       "total_r_ha": -2513.0
      },
-     "nota": 0.514,
+     "nota": 0.513,
      "posicao": 8,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → wheat",
@@ -2327,7 +2345,7 @@
        "2nd-season beans: 25 bags/ha (PAM Toledo 2013–2021 trend projected to the next season; mean 25 bags/ha) × R$ 174.30/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,453/ha (CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ -63/ha (yield CV 34%; bad year, p20 of the same 10-year window = 15 bags/ha → R$ -1,780/ha).",
        "Irrigation: extra cost R$ 242/ha (mean depth 81 mm/year × R$ 3.00/mm/ha) = −R$ 242/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (3 bags/ha from summer corn in place of soybean + 0 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -964/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,156/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -2,681/ha/yr.",
+       "Rotation total: R$ -964/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,156/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -2,681/ha/yr.",
        "Water: in the critical phase (bean flowering/pod formation, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 75 mm).",
        "Irrigated: mean depth 81 mm/year, cost R$ 242/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
        "Frost at flowering/grain fill of second-season beans sown on 15/01: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
@@ -2358,14 +2376,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.008,
+      "renda": 0.006,
       "risco": 0.176,
       "solo": 0.081
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.026,
+      "renda": 0.02,
       "risco": 1.0,
       "solo": 0.461
      },
@@ -2435,10 +2453,11 @@
       "lamina_media_mm_ano": 80.6
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2567.0,
       "ano_ruim_r_ha": -2681.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -2156.0,
       "incremental_r_ha": -2156.0,
       "itens": [
@@ -2470,7 +2489,7 @@
       "linha_custo": "coe",
       "total_r_ha": -964.0
      },
-     "nota": 0.495,
+     "nota": 0.493,
      "posicao": 9,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → second-season beans",
@@ -2528,7 +2547,7 @@
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Fallow (managed): no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (3 bags/ha from summer corn in place of soybean + 0 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -859/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,051/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -859/ha/yr.",
+       "Rotation total: R$ -859/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,051/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -859/ha/yr.",
        "Water: no crop, no water demand (score 1.00); the cost of fallow shows up in soil.",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -2557,14 +2576,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.009,
+      "renda": 0.007,
       "risco": 0.176,
       "solo": 0.041
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.031,
+      "renda": 0.024,
       "risco": 1.0,
       "solo": 0.233
      },
@@ -2608,8 +2627,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.456,
-       0.456
+       0.454,
+       0.454
       ],
       "nota_por_safra": null,
       "renda": {
@@ -2624,10 +2643,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2462.0,
       "ano_ruim_r_ha": -859.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -2051.0,
       "incremental_r_ha": -2051.0,
       "itens": [
@@ -2651,7 +2671,7 @@
       "linha_custo": "coe",
       "total_r_ha": -859.0
      },
-     "nota": 0.456,
+     "nota": 0.454,
      "posicao": 10,
      "recuperacao_solo": null,
      "rotacao": "Summer corn → fallow",
@@ -2702,7 +2722,7 @@
       "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
       "Irrigation: extra cost R$ 218/ha (mean depth 73 mm/year × R$ 3.00/mm/ha) = −R$ 218/ha.",
       "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 11/ha/yr.",
+      "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 11/ha/yr.",
       "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
       "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
       "Irrigated: mean depth 73 mm/year, cost R$ 218/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -2738,14 +2758,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.049,
-     "renda": 0.196,
+     "renda": 0.199,
      "risco": 0.176,
      "solo": 0.146
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.275,
-     "renda": 0.666,
+     "renda": 0.677,
      "risco": 1.0,
      "solo": 0.828
     },
@@ -2823,7 +2843,7 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.583,
+      0.579,
       null
      ],
      "nota_por_safra": null,
@@ -2849,10 +2869,11 @@
      "lamina_media_mm_ano": 72.7
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 0.0,
      "ano_ruim_r_ha": 11.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": 411.0,
      "incremental_r_ha": 411.0,
      "itens": [
@@ -2892,7 +2913,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1603.0
     },
-    "nota": 0.743,
+    "nota": 0.747,
     "posicao": 1,
     "rotacao": "Summer corn → second-season corn + brachiaria",
     "segunda": {
@@ -2948,7 +2969,7 @@
       "2nd-season corn: 117 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 101 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,000/ha (given by the user) = R$ 2,320/ha (yield CV 27%; bad year, p20 of the same 10-year window = 88 bags/ha → R$ 728/ha).",
       "Irrigation: extra cost R$ 192/ha (mean depth 64 mm/year × R$ 3.00/mm/ha) = −R$ 192/ha.",
       "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -2/ha/yr.",
+      "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -2/ha/yr.",
       "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
       "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
       "Irrigated: mean depth 64 mm/year, cost R$ 192/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -2974,7 +2995,7 @@
       "nivel": "alto",
       "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.19) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -2983,14 +3004,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.024,
-     "renda": 0.194,
+     "renda": 0.198,
      "risco": 0.176,
      "solo": 0.098
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.137,
-     "renda": 0.661,
+     "renda": 0.672,
      "risco": 1.0,
      "solo": 0.556
     },
@@ -3068,7 +3089,7 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.51,
+      0.506,
       null
      ],
      "nota_por_safra": null,
@@ -3094,10 +3115,11 @@
      "lamina_media_mm_ano": 63.9
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 14.0,
      "ano_ruim_r_ha": -2.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 481.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": 397.0,
      "incremental_r_ha": 397.0,
      "itens": [
@@ -3129,7 +3151,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1589.0
     },
-    "nota": 0.669,
+    "nota": 0.673,
     "posicao": 2,
     "rotacao": "Summer corn → second-season corn",
     "segunda": {
@@ -3189,7 +3211,7 @@
       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
       "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
       "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -748/ha/yr.",
+      "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -748/ha/yr.",
       "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Field problem (compaction): favors, criterion soil +0.15 (pearl millet and crotalarias are cited as species with decompaction potential; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication, no measurement of our own).",
@@ -3218,14 +3240,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.124,
-     "renda": 0.011,
+     "renda": 0.009,
      "risco": 0.176,
      "solo": 0.162
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.7,
-     "renda": 0.037,
+     "renda": 0.029,
      "risco": 1.0,
      "solo": 0.921
     },
@@ -3268,8 +3290,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.65,
-      0.65
+      0.648,
+      0.648
      ],
      "nota_por_safra": null,
      "renda": {
@@ -3283,10 +3305,11 @@
      "risco_climatico": null
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2352.0,
      "ano_ruim_r_ha": -748.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -1941.0,
      "incremental_r_ha": -1941.0,
      "itens": [
@@ -3310,7 +3333,7 @@
      "linha_custo": "coe",
      "total_r_ha": -748.0
     },
-    "nota": 0.65,
+    "nota": 0.648,
     "posicao": 3,
     "rotacao": "Summer corn → pearl millet/sunn hemp (cover)",
     "segunda": {
@@ -3360,7 +3383,7 @@
      "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
      "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
      "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-     "Rotation total: R$ -794/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,986/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -794/ha/yr.",
+     "Rotation total: R$ -794/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,986/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -794/ha/yr.",
      "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
      "No 2nd-season climate risk considered (cover species/fallow).",
      "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -3381,7 +3404,7 @@
      "nivel": "não se aplica",
      "texto": "no grain sale; seed available at dealers"
     },
-    "por_que": "It is the current rotation; it ranked #6 among 10 valid options. The best alternative (Summer corn → second-season corn + brachiaria) has score 0.74. Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+    "por_que": "It is the current rotation; it ranked #6 among 10 valid options. The best alternative (Summer corn → second-season corn + brachiaria) has score 0.75. Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
     "riscos": [
      "Confirm the calendar, cultivar and ZARC window with the agronomist."
     ]
@@ -3389,14 +3412,14 @@
    "contribuicoes": {
     "agua": 0.176,
     "pragas": 0.106,
-    "renda": 0.01,
+    "renda": 0.008,
     "risco": 0.176,
     "solo": 0.11
    },
    "criterios": {
     "agua": 1.0,
     "pragas": 0.6,
-    "renda": 0.035,
+    "renda": 0.027,
     "risco": 1.0,
     "solo": 0.626
    },
@@ -3410,8 +3433,8 @@
      "pragas"
     ],
     "nota_faixa": [
-     0.579,
-     0.579
+     0.577,
+     0.577
     ],
     "nota_por_safra": null,
     "renda": {
@@ -3426,10 +3449,11 @@
    },
    "irrigacao": null,
    "margem": {
+    "abaixo_da_maior_renda_r_ha": 2397.0,
     "ano_ruim_r_ha": -794.0,
     "base_renda": "preco_atual",
     "bonus_proxima_soja_r_ha": 601.0,
-    "escala_S_r_ha": 1192.0,
+    "escala_S_r_ha": 1110.0,
     "incremental_preco_atual_r_ha": -1986.0,
     "incremental_r_ha": -1986.0,
     "itens": [
@@ -3454,7 +3478,7 @@
     "total_r_ha": -794.0
    },
    "motivos": [],
-   "nota": 0.579,
+   "nota": 0.577,
    "posicao": 6,
    "recuperacao_solo": null,
    "rotacao": "Summer corn → oat (cover/straw)",
@@ -3953,7 +3977,7 @@
    "criterios": {
     "agua": "Mean over 34 years (1991–2024) of ΣETa/ΣETc in the critical phase of the 2nd crop, by daily water balance (NASA POWER + polygon soil AWC, SoilGrids); depends on the sowing date. Fallow = 1.0.",
     "pragas": "Potential to break the pest and disease cycle per rotation; catalog value (0–1), estimate to validate.",
-    "renda": "Incremental margin of the 2nd season (municipality PAM yield × SEAB/DERAL price − CONAB cost; cover/fallow = −estimated cost; plus the straw/N bonus in the following soybean), on the scale S = max(municipality soybean margin, R$ 1,000/ha): income = clip(0.5 + incremental / (2·S), 0, 1). Incremental +S = 1.0; zero = 0.5; −S = 0.",
+    "renda": "Incremental margin of the 2nd season (municipality PAM yield × SEAB/DERAL price − CONAB cost; cover/fallow = −estimated cost; plus the straw/N bonus in the following soybean; off-season corn, corn + brachiaria and wheat at the realized mean of the last 5 seasons in the municipality, when there is a track record), on the scale S = R$ 1,110/ha, the same in all of Paraná (median soybean margin in Western Paraná): income = 0.5 + 0.5·tanh(incremental / S). Incremental zero = 0.5; +S ≈ 0.88; −S ≈ 0.12.",
     "risco": "Π(1 − p) of the 2nd-crop climate risks in 1991–2024: frost in the critical phase (NASA POWER cell ~50 km) and water deficit in the critical phase (years with ETa/ETc < 0.55 in the daily balance with the area's soil; without soil, dry spell ≥ 15 days in Mar–Apr); no risk considered = 1.0.",
     "solo": "Mean of straw cover, N fixation and (1 − days of bare soil/180); catalog values (reference estimates, validate with an agronomist/Embrapa)."
    },
@@ -3980,7 +4004,7 @@
        "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Irrigation: extra cost R$ 218/ha (mean depth 73 mm/year × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 3,454/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,262/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,862/ha/yr.",
+       "Rotation total: R$ 3,454/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,262/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,862/ha/yr.",
        "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 73 mm/year, cost R$ 218/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -4011,14 +4035,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.115,
-      "renda": 0.288,
+      "renda": 0.289,
       "risco": 0.176,
       "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.65,
-      "renda": 0.978,
+      "renda": 0.983,
       "risco": 1.0,
       "solo": 0.828
      },
@@ -4097,7 +4121,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.836,
+       0.84,
        null
       ],
       "nota_por_safra": null,
@@ -4123,10 +4147,11 @@
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": 1862.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 2262.0,
       "incremental_r_ha": 2262.0,
       "itens": [
@@ -4166,7 +4191,7 @@
       "linha_custo": "coe",
       "total_r_ha": 3454.0
      },
-     "nota": 0.901,
+     "nota": 0.903,
      "posicao": 1,
      "rotacao": "Soybean → second-season corn + brachiaria",
      "segunda": {
@@ -4221,7 +4246,7 @@
        "2nd-season corn: 117 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 101 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,000/ha (given by the user) = R$ 2,320/ha (yield CV 27%; bad year, p20 of the same 10-year window = 88 bags/ha → R$ 728/ha).",
        "Irrigation: extra cost R$ 192/ha (mean depth 64 mm/year × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 3,440/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,248/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,849/ha/yr.",
+       "Rotation total: R$ 3,440/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,248/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,849/ha/yr.",
        "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 64 mm/year, cost R$ 192/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -4252,14 +4277,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.088,
-      "renda": 0.287,
+      "renda": 0.289,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.5,
-      "renda": 0.977,
+      "renda": 0.983,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -4338,7 +4363,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.76,
+       0.764,
        null
       ],
       "nota_por_safra": null,
@@ -4364,10 +4389,11 @@
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 14.0,
       "ano_ruim_r_ha": 1849.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 120.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 2248.0,
       "incremental_r_ha": 2248.0,
       "itens": [
@@ -4399,7 +4425,7 @@
       "linha_custo": "coe",
       "total_r_ha": 3440.0
      },
-     "nota": 0.827,
+     "nota": 0.828,
      "posicao": 2,
      "rotacao": "Soybean → second-season corn",
      "segunda": {
@@ -4456,7 +4482,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,103/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -90/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,103/ha/yr.",
+       "Rotation total: R$ 1,103/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -90/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,103/ha/yr.",
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problem (compaction): favors, criterion soil +0.15 (pearl millet and crotalarias are cited as species with decompaction potential; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication, no measurement of our own).",
@@ -4483,14 +4509,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.136,
+      "renda": 0.135,
       "risco": 0.176,
       "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.463,
+      "renda": 0.46,
       "risco": 1.0,
       "solo": 0.921
      },
@@ -4534,8 +4560,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.775,
-       0.775
+       0.774,
+       0.774
       ],
       "nota_por_safra": null,
       "renda": {
@@ -4549,10 +4575,11 @@
       "risco_climatico": null
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2352.0,
       "ano_ruim_r_ha": 1103.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -90.0,
       "incremental_r_ha": -90.0,
       "itens": [
@@ -4576,7 +4603,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1103.0
      },
-     "nota": 0.775,
+     "nota": 0.774,
      "posicao": 3,
      "rotacao": "Soybean → pearl millet/sunn hemp (cover)",
      "segunda": {
@@ -4644,6 +4671,13 @@
     ],
     "texto": "Repeating the realized income of each of the last 5 seasons (2021–2025), with the other criteria fixed, the top option would be (option in number of seasons): soja__milho_braquiaria in 5."
    },
+   "maior_renda": {
+    "id": "soja__milho_braquiaria",
+    "incremental_r_ha": 2262.0,
+    "primeira_abaixo_r_ha": 0.0,
+    "primeira_e_maior_renda": true,
+    "rotacao": "Soybean → second-season corn + brachiaria"
+   },
    "ranking": [
     {
      "atual": false,
@@ -4663,7 +4697,7 @@
        "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Irrigation: extra cost R$ 218/ha (mean depth 73 mm/year × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 3,454/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,262/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,862/ha/yr.",
+       "Rotation total: R$ 3,454/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,262/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,862/ha/yr.",
        "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 73 mm/year, cost R$ 218/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -4694,14 +4728,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.115,
-      "renda": 0.288,
+      "renda": 0.289,
       "risco": 0.176,
       "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.65,
-      "renda": 0.978,
+      "renda": 0.983,
       "risco": 1.0,
       "solo": 0.828
      },
@@ -4780,7 +4814,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.836,
+       0.84,
        null
       ],
       "nota_por_safra": null,
@@ -4806,10 +4840,11 @@
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": 1862.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 2262.0,
       "incremental_r_ha": 2262.0,
       "itens": [
@@ -4849,7 +4884,7 @@
       "linha_custo": "coe",
       "total_r_ha": 3454.0
      },
-     "nota": 0.901,
+     "nota": 0.903,
      "posicao": 1,
      "recuperacao_solo": null,
      "rotacao": "Soybean → second-season corn + brachiaria",
@@ -4905,7 +4940,7 @@
        "2nd-season corn: 117 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 101 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,000/ha (given by the user) = R$ 2,320/ha (yield CV 27%; bad year, p20 of the same 10-year window = 88 bags/ha → R$ 728/ha).",
        "Irrigation: extra cost R$ 192/ha (mean depth 64 mm/year × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 3,440/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,248/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,849/ha/yr.",
+       "Rotation total: R$ 3,440/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 2,248/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,849/ha/yr.",
        "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 64 mm/year, cost R$ 192/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -4936,14 +4971,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.088,
-      "renda": 0.287,
+      "renda": 0.289,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.5,
-      "renda": 0.977,
+      "renda": 0.983,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -5022,7 +5057,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.76,
+       0.764,
        null
       ],
       "nota_por_safra": null,
@@ -5048,10 +5083,11 @@
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 14.0,
       "ano_ruim_r_ha": 1849.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 120.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 2248.0,
       "incremental_r_ha": 2248.0,
       "itens": [
@@ -5083,7 +5119,7 @@
       "linha_custo": "coe",
       "total_r_ha": 3440.0
      },
-     "nota": 0.827,
+     "nota": 0.828,
      "posicao": 2,
      "recuperacao_solo": null,
      "rotacao": "Soybean → second-season corn",
@@ -5141,7 +5177,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,103/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -90/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,103/ha/yr.",
+       "Rotation total: R$ 1,103/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -90/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,103/ha/yr.",
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problem (compaction): favors, criterion soil +0.15 (pearl millet and crotalarias are cited as species with decompaction potential; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication, no measurement of our own).",
@@ -5168,14 +5204,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.136,
+      "renda": 0.135,
       "risco": 0.176,
       "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.463,
+      "renda": 0.46,
       "risco": 1.0,
       "solo": 0.921
      },
@@ -5219,8 +5255,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.775,
-       0.775
+       0.774,
+       0.774
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5235,10 +5271,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2352.0,
       "ano_ruim_r_ha": 1103.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -90.0,
       "incremental_r_ha": -90.0,
       "itens": [
@@ -5262,7 +5299,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1103.0
      },
-     "nota": 0.775,
+     "nota": 0.774,
      "posicao": 3,
      "recuperacao_solo": null,
      "rotacao": "Soybean → pearl millet/sunn hemp (cover)",
@@ -5307,7 +5344,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
        "Bonus in the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,158/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -35/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,158/ha/yr.",
+       "Rotation total: R$ 1,158/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -35/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,158/ha/yr.",
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 99% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 63 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problem (compaction): favors, criterion soil +0.15 (forage radish is cited as a species with potential to break compacted layers; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication; in the França et al. trial the black oat + radish intercrop did not reduce strong compaction (> 6 MPa)).",
@@ -5334,14 +5371,14 @@
      "contribuicoes": {
       "agua": 0.175,
       "pragas": 0.106,
-      "renda": 0.143,
+      "renda": 0.142,
       "risco": 0.176,
       "solo": 0.114
      },
      "criterios": {
       "agua": 0.993,
       "pragas": 0.6,
-      "renda": 0.485,
+      "renda": 0.484,
       "risco": 1.0,
       "solo": 0.647
      },
@@ -5385,8 +5422,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.715,
-       0.715
+       0.714,
+       0.714
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5401,10 +5438,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2297.0,
       "ano_ruim_r_ha": 1158.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 240.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -35.0,
       "incremental_r_ha": -35.0,
       "itens": [
@@ -5428,7 +5466,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1158.0
      },
-     "nota": 0.715,
+     "nota": 0.714,
      "posicao": 4,
      "recuperacao_solo": null,
      "rotacao": "Soybean → forage radish (cover)",
@@ -5474,7 +5512,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
        "Bonus in the following soybean: 2.5 bags/ha × R$ 120.14/bag = R$ 300/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,093/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,093/ha/yr.",
+       "Rotation total: R$ 1,093/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,093/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 69 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -5502,14 +5540,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.115,
-      "renda": 0.135,
+      "renda": 0.134,
       "risco": 0.176,
       "solo": 0.109
      },
      "criterios": {
       "agua": 0.997,
       "pragas": 0.65,
-      "renda": 0.458,
+      "renda": 0.455,
       "risco": 1.0,
       "solo": 0.619
      },
@@ -5553,8 +5591,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.711,
-       0.711
+       0.71,
+       0.71
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5569,10 +5607,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2362.0,
       "ano_ruim_r_ha": 1093.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 300.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -100.0,
       "incremental_r_ha": -100.0,
       "itens": [
@@ -5596,7 +5635,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1093.0
      },
-     "nota": 0.711,
+     "nota": 0.71,
      "posicao": 5,
      "recuperacao_solo": null,
      "rotacao": "Soybean → oat + forage radish (cover)",
@@ -5653,7 +5692,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
        "Bonus in the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 1,058/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -135/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 1,058/ha/yr.",
+       "Rotation total: R$ 1,058/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -135/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 1,058/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -5680,14 +5719,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.131,
+      "renda": 0.129,
       "risco": 0.176,
       "solo": 0.11
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.444,
+      "renda": 0.44,
       "risco": 1.0,
       "solo": 0.626
      },
@@ -5731,8 +5770,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.7,
-       0.7
+       0.699,
+       0.699
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5747,10 +5786,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2397.0,
       "ano_ruim_r_ha": 1058.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 240.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -135.0,
       "incremental_r_ha": -135.0,
       "itens": [
@@ -5774,7 +5814,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1058.0
      },
-     "nota": 0.7,
+     "nota": 0.699,
      "posicao": 6,
      "recuperacao_solo": null,
      "rotacao": "Soybean → oat (cover/straw)",
@@ -5829,7 +5869,7 @@
        "Sorghum: 60 bags/ha (PAM Western Paraná (mean, the municipality has no recent PAM) 2023–2025 trend projected to the next season; mean 61 bags/ha) × R$ 40.42/bag (estimate — validate: 75% of the SEAB/DERAL-PR corn price (ratio of CONAB minimum prices, not market prices)) − cost R$ 2,807/ha (estimate — validate (CONAB Rio Verde-GO 2026, no PR sheet)) = R$ -369/ha (yield CV 19%; bad year, p20 of the same 10-year window = 57 bags/ha → R$ -486/ha).",
        "Irrigation: extra cost R$ 134/ha (mean depth 45 mm/year × R$ 3.00/mm/ha) = −R$ 134/ha.",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 810/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -382/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 693/ha/yr.",
+       "Rotation total: R$ 810/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -382/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 693/ha/yr.",
        "Water: in the critical phase (sorghum booting/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 45 mm/year, cost R$ 134/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
        "Frost at flowering/grain fill of sorghum sown on 15/01: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
@@ -5857,14 +5897,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.097,
-      "renda": 0.101,
+      "renda": 0.098,
       "risco": 0.176,
       "solo": 0.1
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.55,
-      "renda": 0.345,
+      "renda": 0.334,
       "risco": 1.0,
       "solo": 0.565
      },
@@ -5908,7 +5948,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.638,
+       0.635,
        null
       ],
       "nota_por_safra": null,
@@ -5934,10 +5974,11 @@
       "lamina_media_mm_ano": 44.6
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2644.0,
       "ano_ruim_r_ha": 693.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 120.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -382.0,
       "incremental_r_ha": -382.0,
       "itens": [
@@ -5969,7 +6010,7 @@
       "linha_custo": "coe",
       "total_r_ha": 810.0
      },
-     "nota": 0.651,
+     "nota": 0.648,
      "posicao": 7,
      "recuperacao_solo": null,
      "rotacao": "Soybean → sorghum",
@@ -6024,7 +6065,7 @@
        "2nd-season beans: 25 bags/ha (PAM Toledo 2013–2021 trend projected to the next season; mean 25 bags/ha) × R$ 174.30/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,453/ha (CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ -63/ha (yield CV 34%; bad year, p20 of the same 10-year window = 15 bags/ha → R$ -1,780/ha).",
        "Irrigation: extra cost R$ 242/ha (mean depth 81 mm/year × R$ 3.00/mm/ha) = −R$ 242/ha.",
        "Bonus in the following soybean: 0 bags/ha × R$ 120.14/bag = R$ 0/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 887/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -305/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -830/ha/yr.",
+       "Rotation total: R$ 887/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -305/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -830/ha/yr.",
        "Water: in the critical phase (bean flowering/pod formation, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 75 mm).",
        "Irrigated: mean depth 81 mm/year, cost R$ 242/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
        "Frost at flowering/grain fill of second-season beans sown on 15/01: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
@@ -6053,14 +6094,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.11,
+      "renda": 0.108,
       "risco": 0.176,
       "solo": 0.081
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.375,
+      "renda": 0.366,
       "risco": 1.0,
       "solo": 0.461
      },
@@ -6104,7 +6145,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.497,
+       0.495,
        null
       ],
       "nota_por_safra": null,
@@ -6130,10 +6171,11 @@
       "lamina_media_mm_ano": 80.6
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2567.0,
       "ano_ruim_r_ha": -830.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 0.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -305.0,
       "incremental_r_ha": -305.0,
       "itens": [
@@ -6165,7 +6207,7 @@
       "linha_custo": "coe",
       "total_r_ha": 887.0
      },
-     "nota": 0.597,
+     "nota": 0.595,
      "posicao": 8,
      "recuperacao_solo": null,
      "rotacao": "Soybean → second-season beans",
@@ -6219,7 +6261,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "Fallow (managed): no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Bonus in the following soybean: 0 bags/ha × R$ 120.14/bag = R$ 0/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ 992/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -200/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 992/ha/yr.",
+       "Rotation total: R$ 992/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -200/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 992/ha/yr.",
        "Water: no crop, no water demand (score 1.00); the cost of fallow shows up in soil.",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -6246,14 +6288,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.123,
+      "renda": 0.121,
       "risco": 0.176,
       "solo": 0.041
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.417,
+      "renda": 0.411,
       "risco": 1.0,
       "solo": 0.233
      },
@@ -6297,8 +6339,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.57,
-       0.57
+       0.568,
+       0.568
       ],
       "nota_por_safra": null,
       "renda": {
@@ -6313,10 +6355,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2462.0,
       "ano_ruim_r_ha": 992.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 0.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -200.0,
       "incremental_r_ha": -200.0,
       "itens": [
@@ -6340,7 +6383,7 @@
       "linha_custo": "coe",
       "total_r_ha": 992.0
      },
-     "nota": 0.57,
+     "nota": 0.568,
      "posicao": 9,
      "recuperacao_solo": null,
      "rotacao": "Soybean → fallow",
@@ -6387,7 +6430,7 @@
        "Wheat: 36 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 40 bags/ha) × R$ 68.44/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,334/ha (CONAB Ponta Grossa-PR, winter 2025 (Nov/2025), variable cost (≈COE)) = R$ -1,900/ha (yield CV 36%; bad year, p20 of the same 10-year window = 27 bags/ha → R$ -2,508/ha).",
        "Irrigation: extra cost R$ 75/ha (mean depth 25 mm/year × R$ 3.00/mm/ha) = −R$ 75/ha.",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
-       "Rotation total: R$ -662/ha/yr; 2nd-season incremental (without soybean, with the bonus) for the score: R$ -916/ha, with the 2nd crop at the realized mean of the last seasons in the municipality (-8.0 soybean bags/ha × R$ 120.14/bag; at the current price it would be R$ -1,855/ha), on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,271/ha/yr.",
+       "Rotation total: R$ -662/ha/yr; 2nd-season incremental (without soybean, with the bonus) for the score: R$ -916/ha, with the 2nd crop at the realized mean of the last seasons in the municipality (-8.0 soybean bags/ha × R$ 120.14/bag; at the current price it would be R$ -1,855/ha), on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -1,271/ha/yr.",
        "Income track record of wheat in the municipality (realized margin, soybean bags/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8.0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. The mean enters the income score instead of the current-price margin (it was more accurate in past seasons).",
        "Water: in the critical phase (wheat heading/grain fill, sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
        "Irrigated: mean depth 25 mm/year, cost R$ 75/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -6417,14 +6460,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.052,
+      "renda": 0.047,
       "risco": 0.14,
       "solo": 0.089
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.177,
+      "renda": 0.161,
       "risco": 0.794,
       "solo": 0.504
      },
@@ -6503,15 +6546,15 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.528,
-       0.687
+       0.525,
+       0.689
       ],
       "nota_por_safra": {
-       "2021": 0.606,
-       "2022": 0.55,
-       "2023": 0.528,
-       "2024": 0.531,
-       "2025": 0.687
+       "2021": 0.602,
+       "2022": 0.546,
+       "2023": 0.525,
+       "2024": 0.527,
+       "2025": 0.689
       },
       "renda": {
        "faixa_r_ha": [
@@ -6535,10 +6578,11 @@
       "lamina_media_mm_ano": 24.9
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 3178.0,
       "ano_ruim_r_ha": -1271.0,
       "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 120.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1855.0,
       "incremental_r_ha": -916.0,
       "itens": [
@@ -6570,7 +6614,7 @@
       "linha_custo": "coe",
       "total_r_ha": -662.0
      },
-     "nota": 0.563,
+     "nota": 0.559,
      "posicao": 10,
      "recuperacao_solo": null,
      "rotacao": "Soybean → wheat",
@@ -6632,7 +6676,7 @@
       "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
       "Irrigation: extra cost R$ 218/ha (mean depth 73 mm/year × R$ 3.00/mm/ha) = −R$ 218/ha.",
       "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ 11/ha/yr.",
+      "Rotation total: R$ 1,603/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 411/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 11/ha/yr.",
       "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
       "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
       "Irrigated: mean depth 73 mm/year, cost R$ 218/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -6668,14 +6712,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.049,
-     "renda": 0.196,
+     "renda": 0.199,
      "risco": 0.176,
      "solo": 0.146
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.275,
-     "renda": 0.666,
+     "renda": 0.677,
      "risco": 1.0,
      "solo": 0.828
     },
@@ -6754,7 +6798,7 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.583,
+      0.579,
       null
      ],
      "nota_por_safra": null,
@@ -6780,10 +6824,11 @@
      "lamina_media_mm_ano": 72.7
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 0.0,
      "ano_ruim_r_ha": 11.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": 411.0,
      "incremental_r_ha": 411.0,
      "itens": [
@@ -6823,7 +6868,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1603.0
     },
-    "nota": 0.743,
+    "nota": 0.747,
     "posicao": 1,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → second-season corn + brachiaria",
@@ -6880,7 +6925,7 @@
       "2nd-season corn: 117 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 101 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,000/ha (given by the user) = R$ 2,320/ha (yield CV 27%; bad year, p20 of the same 10-year window = 88 bags/ha → R$ 728/ha).",
       "Irrigation: extra cost R$ 192/ha (mean depth 64 mm/year × R$ 3.00/mm/ha) = −R$ 192/ha.",
       "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -2/ha/yr.",
+      "Rotation total: R$ 1,589/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 397/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -2/ha/yr.",
       "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
       "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
       "Irrigated: mean depth 64 mm/year, cost R$ 192/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -6906,7 +6951,7 @@
       "nivel": "alto",
       "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.19) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks the pest cycle less (0.14 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -6915,14 +6960,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.024,
-     "renda": 0.194,
+     "renda": 0.198,
      "risco": 0.176,
      "solo": 0.098
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.137,
-     "renda": 0.661,
+     "renda": 0.672,
      "risco": 1.0,
      "solo": 0.556
     },
@@ -7001,7 +7046,7 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.51,
+      0.506,
       null
      ],
      "nota_por_safra": null,
@@ -7027,10 +7072,11 @@
      "lamina_media_mm_ano": 63.9
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 14.0,
      "ano_ruim_r_ha": -2.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 481.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": 397.0,
      "incremental_r_ha": 397.0,
      "itens": [
@@ -7062,7 +7108,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1589.0
     },
-    "nota": 0.669,
+    "nota": 0.673,
     "posicao": 2,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → second-season corn",
@@ -7123,7 +7169,7 @@
       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
       "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
       "Bonus in the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -748/ha/yr.",
+      "Rotation total: R$ -748/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,941/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -748/ha/yr.",
       "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Field problem (compaction): favors, criterion soil +0.15 (pearl millet and crotalarias are cited as species with decompaction potential; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication, no measurement of our own).",
@@ -7152,14 +7198,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.124,
-     "renda": 0.011,
+     "renda": 0.009,
      "risco": 0.176,
      "solo": 0.162
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.7,
-     "renda": 0.037,
+     "renda": 0.029,
      "risco": 1.0,
      "solo": 0.921
     },
@@ -7203,8 +7249,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.65,
-      0.65
+      0.648,
+      0.648
      ],
      "nota_por_safra": null,
      "renda": {
@@ -7219,10 +7265,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2352.0,
      "ano_ruim_r_ha": -748.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -1941.0,
      "incremental_r_ha": -1941.0,
      "itens": [
@@ -7246,7 +7293,7 @@
      "linha_custo": "coe",
      "total_r_ha": -748.0
     },
-    "nota": 0.65,
+    "nota": 0.648,
     "posicao": 3,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → pearl millet/sunn hemp (cover)",
@@ -7295,7 +7342,7 @@
       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
       "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
       "Bonus in the following soybean: 5.5 bags/ha × R$ 120.14/bag = R$ 661/ha (3 bags/ha from summer corn in place of soybean + 2.5 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -758/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,951/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -758/ha/yr.",
+      "Rotation total: R$ -758/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,951/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -758/ha/yr.",
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 69 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -7325,14 +7372,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.115,
-     "renda": 0.011,
+     "renda": 0.008,
      "risco": 0.176,
      "solo": 0.109
     },
     "criterios": {
      "agua": 0.997,
      "pragas": 0.65,
-     "renda": 0.037,
+     "renda": 0.029,
      "risco": 1.0,
      "solo": 0.619
     },
@@ -7376,8 +7423,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.587,
-      0.587
+      0.585,
+      0.585
      ],
      "nota_por_safra": null,
      "renda": {
@@ -7392,10 +7439,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2362.0,
      "ano_ruim_r_ha": -758.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 661.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -1951.0,
      "incremental_r_ha": -1951.0,
      "itens": [
@@ -7419,7 +7467,7 @@
      "linha_custo": "coe",
      "total_r_ha": -758.0
     },
-    "nota": 0.587,
+    "nota": 0.585,
     "posicao": 4,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → oat + forage radish (cover)",
@@ -7478,7 +7526,7 @@
       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
       "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
       "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -694/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,886/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -694/ha/yr.",
+      "Rotation total: R$ -694/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,886/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -694/ha/yr.",
       "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 99% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 63 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Field problem (compaction): favors, criterion soil +0.15 (forage radish is cited as a species with potential to break compacted layers; source: Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa); caveat: qualitative indication; in the França et al. trial the black oat + radish intercrop did not reduce strong compaction (> 6 MPa)).",
@@ -7507,14 +7555,14 @@
     "contribuicoes": {
      "agua": 0.175,
      "pragas": 0.106,
-     "renda": 0.012,
+     "renda": 0.01,
      "risco": 0.176,
      "solo": 0.114
     },
     "criterios": {
      "agua": 0.993,
      "pragas": 0.6,
-     "renda": 0.041,
+     "renda": 0.032,
      "risco": 1.0,
      "solo": 0.647
     },
@@ -7558,8 +7606,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.584,
-      0.584
+      0.581,
+      0.581
      ],
      "nota_por_safra": null,
      "renda": {
@@ -7574,10 +7622,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2297.0,
      "ano_ruim_r_ha": -694.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 601.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -1886.0,
      "incremental_r_ha": -1886.0,
      "itens": [
@@ -7601,7 +7650,7 @@
      "linha_custo": "coe",
      "total_r_ha": -694.0
     },
-    "nota": 0.584,
+    "nota": 0.581,
     "posicao": 5,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → forage radish (cover)",
@@ -7650,7 +7699,7 @@
       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
       "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
       "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -794/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,986/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -794/ha/yr.",
+      "Rotation total: R$ -794/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -1,986/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -794/ha/yr.",
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, AWC 75 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -7671,7 +7720,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "It is the current rotation; it ranked #6 among 10 valid options. The best alternative (Summer corn → second-season corn + brachiaria) has score 0.74. Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "It is the current rotation; it ranked #6 among 10 valid options. The best alternative (Summer corn → second-season corn + brachiaria) has score 0.75. Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -7679,14 +7728,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.106,
-     "renda": 0.01,
+     "renda": 0.008,
      "risco": 0.176,
      "solo": 0.11
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.6,
-     "renda": 0.035,
+     "renda": 0.027,
      "risco": 1.0,
      "solo": 0.626
     },
@@ -7699,8 +7748,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.579,
-      0.579
+      0.577,
+      0.577
      ],
      "nota_por_safra": null,
      "renda": {
@@ -7715,10 +7764,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2397.0,
      "ano_ruim_r_ha": -794.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 601.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -1986.0,
      "incremental_r_ha": -1986.0,
      "itens": [
@@ -7742,7 +7792,7 @@
      "linha_custo": "coe",
      "total_r_ha": -794.0
     },
-    "nota": 0.579,
+    "nota": 0.577,
     "posicao": 6,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → oat (cover/straw)",
@@ -7801,7 +7851,7 @@
       "Sorghum: 60 bags/ha (PAM Western Paraná (mean, the municipality has no recent PAM) 2023–2025 trend projected to the next season; mean 61 bags/ha) × R$ 40.42/bag (estimate — validate: 75% of the SEAB/DERAL-PR corn price (ratio of CONAB minimum prices, not market prices)) − cost R$ 2,807/ha (estimate — validate (CONAB Rio Verde-GO 2026, no PR sheet)) = R$ -369/ha (yield CV 19%; bad year, p20 of the same 10-year window = 57 bags/ha → R$ -486/ha).",
       "Irrigation: extra cost R$ 134/ha (mean depth 45 mm/year × R$ 3.00/mm/ha) = −R$ 134/ha.",
       "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -1,041/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,234/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,159/ha/yr.",
+      "Rotation total: R$ -1,041/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,234/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -1,159/ha/yr.",
       "Water: in the critical phase (sorghum booting/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
       "Irrigated: mean depth 45 mm/year, cost R$ 134/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
       "Frost at flowering/grain fill of sorghum sown on 15/01: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
@@ -7831,14 +7881,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.097,
-     "renda": 0.007,
+     "renda": 0.005,
      "risco": 0.176,
      "solo": 0.1
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.55,
-     "renda": 0.023,
+     "renda": 0.018,
      "risco": 1.0,
      "solo": 0.565
     },
@@ -7882,7 +7932,7 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.555,
+      0.554,
       null
      ],
      "nota_por_safra": null,
@@ -7908,10 +7958,11 @@
      "lamina_media_mm_ano": 44.6
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2645.0,
      "ano_ruim_r_ha": -1159.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 481.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -2234.0,
      "incremental_r_ha": -2234.0,
      "itens": [
@@ -7943,7 +7994,7 @@
      "linha_custo": "coe",
      "total_r_ha": -1041.0
     },
-    "nota": 0.556,
+    "nota": 0.555,
     "posicao": 7,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → sorghum",
@@ -8003,7 +8054,7 @@
       "Wheat: 36 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 40 bags/ha) × R$ 68.44/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,334/ha (CONAB Ponta Grossa-PR, winter 2025 (Nov/2025), variable cost (≈COE)) = R$ -1,900/ha (yield CV 36%; bad year, p20 of the same 10-year window = 27 bags/ha → R$ -2,508/ha).",
       "Irrigation: extra cost R$ 75/ha (mean depth 25 mm/year × R$ 3.00/mm/ha) = −R$ 75/ha.",
       "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -2,513/ha/yr; 2nd-season incremental (without soybean, with the bonus) for the score: R$ -2,767/ha, with the 2nd crop at the realized mean of the last seasons in the municipality (-8.0 soybean bags/ha × R$ 120.14/bag; at the current price it would be R$ -3,706/ha), on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -3,122/ha/yr.",
+      "Rotation total: R$ -2,513/ha/yr; 2nd-season incremental (without soybean, with the bonus) for the score: R$ -2,767/ha, with the 2nd crop at the realized mean of the last seasons in the municipality (-8.0 soybean bags/ha × R$ 120.14/bag; at the current price it would be R$ -3,706/ha), on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -3,122/ha/yr.",
       "Income track record of wheat in the municipality (realized margin, soybean bags/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8.0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. The mean enters the income score instead of the current-price margin (it was more accurate in past seasons).",
       "Water: in the critical phase (wheat heading/grain fill, sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 100 mm).",
       "Irrigated: mean depth 25 mm/year, cost R$ 75/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -8035,14 +8086,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.106,
-     "renda": 0.003,
+     "renda": 0.002,
      "risco": 0.14,
      "solo": 0.089
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.6,
-     "renda": 0.01,
+     "renda": 0.007,
      "risco": 0.794,
      "solo": 0.504
     },
@@ -8122,14 +8173,14 @@
      ],
      "nota_faixa": [
       0.512,
-      0.53
+      0.527
      ],
      "nota_por_safra": {
-      "2021": 0.517,
+      "2021": 0.516,
       "2022": 0.513,
       "2023": 0.512,
       "2024": 0.512,
-      "2025": 0.53
+      "2025": 0.527
      },
      "renda": {
       "faixa_r_ha": [
@@ -8153,10 +8204,11 @@
      "lamina_media_mm_ano": 24.9
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 3178.0,
      "ano_ruim_r_ha": -3122.0,
      "base_renda": "historico",
      "bonus_proxima_soja_r_ha": 481.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -3706.0,
      "incremental_r_ha": -2767.0,
      "itens": [
@@ -8188,7 +8240,7 @@
      "linha_custo": "coe",
      "total_r_ha": -2513.0
     },
-    "nota": 0.514,
+    "nota": 0.513,
     "posicao": 8,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → wheat",
@@ -8247,7 +8299,7 @@
       "2nd-season beans: 25 bags/ha (PAM Toledo 2013–2021 trend projected to the next season; mean 25 bags/ha) × R$ 174.30/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,453/ha (CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ -63/ha (yield CV 34%; bad year, p20 of the same 10-year window = 15 bags/ha → R$ -1,780/ha).",
       "Irrigation: extra cost R$ 242/ha (mean depth 81 mm/year × R$ 3.00/mm/ha) = −R$ 242/ha.",
       "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (3 bags/ha from summer corn in place of soybean + 0 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -964/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,156/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -2,681/ha/yr.",
+      "Rotation total: R$ -964/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,156/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -2,681/ha/yr.",
       "Water: in the critical phase (bean flowering/pod formation, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + SoilGrids soil, irrigado, AWC 75 mm).",
       "Irrigated: mean depth 81 mm/year, cost R$ 242/ha (R$ 3.00/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
       "Frost at flowering/grain fill of second-season beans sown on 15/01: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
@@ -8278,14 +8330,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.053,
-     "renda": 0.008,
+     "renda": 0.006,
      "risco": 0.176,
      "solo": 0.081
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.3,
-     "renda": 0.026,
+     "renda": 0.02,
      "risco": 1.0,
      "solo": 0.461
     },
@@ -8355,10 +8407,11 @@
      "lamina_media_mm_ano": 80.6
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2567.0,
      "ano_ruim_r_ha": -2681.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 360.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -2156.0,
      "incremental_r_ha": -2156.0,
      "itens": [
@@ -8390,7 +8443,7 @@
      "linha_custo": "coe",
      "total_r_ha": -964.0
     },
-    "nota": 0.495,
+    "nota": 0.493,
     "posicao": 9,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → second-season beans",
@@ -8448,7 +8501,7 @@
       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
       "Fallow (managed): no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
       "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (3 bags/ha from summer corn in place of soybean + 0 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
-      "Rotation total: R$ -859/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,051/ha, on the scale S = R$ 1,192/ha (municipality's soybean margin, min. 1,000); in a bad year (p20 yield): R$ -859/ha/yr.",
+      "Rotation total: R$ -859/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -2,051/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -859/ha/yr.",
       "Water: no crop, no water demand (score 1.00); the cost of fallow shows up in soil.",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Field problems given (corn leafhopper, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -8477,14 +8530,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.053,
-     "renda": 0.009,
+     "renda": 0.007,
      "risco": 0.176,
      "solo": 0.041
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.3,
-     "renda": 0.031,
+     "renda": 0.024,
      "risco": 1.0,
      "solo": 0.233
     },
@@ -8528,8 +8581,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.456,
-      0.456
+      0.454,
+      0.454
      ],
      "nota_por_safra": null,
      "renda": {
@@ -8544,10 +8597,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2462.0,
      "ano_ruim_r_ha": -859.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 360.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -2051.0,
      "incremental_r_ha": -2051.0,
      "itens": [
@@ -8571,7 +8625,7 @@
      "linha_custo": "coe",
      "total_r_ha": -859.0
     },
-    "nota": 0.456,
+    "nota": 0.454,
     "posicao": 10,
     "recuperacao_solo": null,
     "rotacao": "Summer corn → fallow",
