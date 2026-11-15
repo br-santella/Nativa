@@ -713,5 +713,22 @@
   "Cobertura: somente Paraná (PR).": "Coverage: Paraná (PR) only.",
   "Os dados de solo, relevo, clima e custos usados nas recomendações foram preparados apenas para propriedades no estado.": "The soil, relief, climate and cost data behind the recommendations were prepared only for properties in that state.",
   "A localização precisa estar dentro do Paraná (PR). Nada foi salvo.": "The location must be inside Paraná (PR). Nothing was saved.",
-  "Fora da área de cobertura: informe um ponto dentro do Paraná.": "Outside the coverage area: enter a point inside Paraná."
+  "Fora da área de cobertura: informe um ponto dentro do Paraná.": "Outside the coverage area: enter a point inside Paraná.",
+  "Alterações salvas neste navegador.": "Changes saved in this browser.",
+  "Preferências salvas neste navegador.": "Preferences saved in this browser.",
+  "Dados da propriedade apagados deste navegador.": "Property data deleted from this browser.",
+  "Os dados da propriedade ficam salvos apenas neste navegador. Não há conta real, sincronização ou envio de documentos.": "Property data is saved only in this browser. There is no real account, synchronization or document upload.",
+  "Dados da propriedade": "Property data",
+  "Salvos neste navegador e usados para rodar o modelo.": "Saved in this browser and used to run the model.",
+  "Ainda não salvos: conclua o cadastro ou salve a propriedade para guardá-los.": "Not saved yet: finish the setup or save the property to keep them.",
+  "Propriedade": "Property",
+  "Município": "Municipality",
+  "Localização": "Location",
+  "Polígono desenhado no mapa": "Boundary drawn on the map",
+  "Nenhum": "None",
+  "Irrigação": "Irrigation",
+  "Último salvamento": "Last saved",
+  "Refazer cadastro →": "Redo setup →",
+  "Apagar os dados da propriedade salvos neste navegador?": "Delete the property data saved in this browser?",
+  "Apagar dados salvos": "Delete saved data"
 }

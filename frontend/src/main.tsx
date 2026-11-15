@@ -12,6 +12,9 @@ import type { SetupInputs } from "./PropertyWizard";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
 import { municipalities, findMunicipality, coordinatesInParana } from "./coverage";
+import { loadSaved, persist, clearSaved } from "./storage";
+import setupOptions from "./setup-options.json";
+const saved = loadSaved();
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
 type Page = "about" | "landing" | "demo" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
@@ -81,10 +84,28 @@ function CoverageNotice() {
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState({
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(saved?.weights ?? profiles.soil), [applied, setApplied] = useState<number[]>(saved?.weights ?? profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
-    const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>();
+    const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
+    // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
+    const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
+    useEffect(() => {
+        if (persisted)
+            setSavedAt(persist({ farm, setupInputs, weights: applied, crops, settings }));
+    }, [persisted, farm, setupInputs, applied, crops, settings]);
+    function forgetProperty() {
+        clearSaved();
+        setPersisted(false);
+        setSavedAt(null);
+        setFarm({ ...initialFarm });
+        setDraft({ ...initialFarm });
+        setCrops(initialCrops);
+        setSetupInputs(undefined);
+        setWeights(profiles.soil);
+        setApplied(profiles.soil);
+        toast("Dados da propriedade apagados deste navegador.");
+    }
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const reduced = useReducedMotion();
     useEffect(() => {
@@ -134,7 +155,8 @@ function App() {
             return;
         }
         setFarm({ ...draft });
-        toast("Alterações aplicadas nesta sessão.");
+        setPersisted(true);
+        toast("Alterações salvas neste navegador.");
     }
     function compare() {
         if (!weights.some(Boolean)) {
@@ -815,6 +837,41 @@ function App() {
         <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
       </>);
     }
+    function SavedProperty() {
+        const rotation = setupInputs && setupOptions.combinacoes.find((c) => c.id === setupInputs.rotacao_atual);
+        const plot = setupInputs && "talhao_id" in setupInputs.area ? setupInputs.area.talhao_id : null;
+        const area = setupInputs && "geometry" in setupInputs.area ? __text("Pol\u00EDgono desenhado no mapa") : plot ? `${__text("Talh\u00E3o")} ${plot}` : `${farm.latitude}, ${farm.longitude}`;
+        const yes = (v: boolean) => __text(v ? "Sim" : "N\u00E3o");
+        const p = setupInputs?.pesos;
+        return (<section className="panel">
+          <h2>{__text("Dados da propriedade")}</h2>
+          <p>{__text(savedAt
+                ? "Salvos neste navegador e usados para rodar o modelo."
+                : "Ainda n\u00E3o salvos: conclua o cadastro ou salve a propriedade para guard\u00E1-los.")}</p>
+          <dl className="preferences">
+            <div><dt>{__text("Propriedade")}</dt><dd>{farm.name}</dd></div>
+            <div><dt>{__text("Munic\u00EDpio")}</dt><dd>{farm.city}</dd></div>
+            <div><dt>{__text("\u00C1rea (ha)")}</dt><dd>{farm.area}</dd></div>
+            <div><dt>{__text("Localiza\u00E7\u00E3o")}</dt><dd>{area}</dd></div>
+            {setupInputs && (<>
+              <div><dt>{__text("Rota\u00E7\u00E3o atual")}</dt><dd>{__text(rotation?.nome ?? setupInputs.rotacao_atual)}</dd></div>
+              <div><dt>{__text("Problemas conhecidos")}</dt><dd>{setupInputs.problemas_area.length || __text("Nenhum")}</dd></div>
+              <div><dt>{__text("An\u00E1lise de solo")}</dt><dd>{yes(!!setupInputs.analise_solo && Object.keys(setupInputs.analise_solo).length > 0)}</dd></div>
+              <div><dt>{__text("Irriga\u00E7\u00E3o")}</dt><dd>{yes(setupInputs.irrigacao.disponivel)}</dd></div>
+              {p && (<div><dt>{__text("Prioridades")}</dt><dd>{__text("Renda")} {p.renda} • {__text("Solo")} {p.solo} • {__text("\u00C1gua")} {p.agua}</dd></div>)}
+            </>)}
+            {savedAt && (<div><dt>{__text("\u00DAltimo salvamento")}</dt><dd>{new Date(savedAt).toLocaleString(locale())}</dd></div>)}
+          </dl>
+          <div className="saved-actions">
+            <LinkButton onClick={() => go("farm")}>{__text("Editar propriedade \u2192")}</LinkButton>
+            <LinkButton onClick={() => go("demo")}>{__text("Refazer cadastro \u2192")}</LinkButton>
+            {savedAt && (<LinkButton onClick={() => {
+                    if (confirm(__text("Apagar os dados da propriedade salvos neste navegador?")))
+                        forgetProperty();
+                }}>{__text("Apagar dados salvos")}</LinkButton>)}
+          </div>
+        </section>);
+    }
     function Settings() {
         return (<>
         <div className="page-heading">
@@ -822,7 +879,7 @@ function App() {
             <h1>{__text("Configura\u00E7\u00F5es")}</h1>
             <p>{__text("Controle suas prefer\u00EAncias e a origem dos dados.")}</p>
           </div>
-          <Btn onClick={() => toast("Preferências aplicadas nesta sessão.")}>{__text("Salvar ajustes")}</Btn>
+          <Btn onClick={() => { setPersisted(true); toast("Prefer\u00EAncias salvas neste navegador."); }}>{__text("Salvar ajustes")}</Btn>
         </div>
         <Demo />
         <div className="two-col">
@@ -877,10 +934,11 @@ function App() {
             </section>
           </div>
           <aside className="stack">
+            {SavedProperty()}
             <section className="panel green-panel">
               <h2>{__text("Voc\u00EA est\u00E1 no controle")}</h2>
               <p>{__text("Este \u00E9 um ambiente demonstrativo. A fazenda, os cultivos, os indicadores e os cen\u00E1rios s\u00E3o fict\u00EDcios.")}</p>
-              <p>{__text("As altera\u00E7\u00F5es ficam apenas na mem\u00F3ria desta sess\u00E3o. N\u00E3o h\u00E1 conta real, sincroniza\u00E7\u00E3o ou envio de documentos.")}</p>
+              <p>{__text("Os dados da propriedade ficam salvos apenas neste navegador. N\u00E3o h\u00E1 conta real, sincroniza\u00E7\u00E3o ou envio de documentos.")}</p>
               <small>{__text("NASA Space Apps Challenge 2026")}<br />{__text("Projeto NATIVA")}</small>
             </section>
             <section className="panel">
@@ -966,6 +1024,7 @@ function App() {
             setFarm(nextFarm);
             setDraft(nextFarm);
             setSetupInputs(inputs);
+            setPersisted(true);
             const nextWeights = [inputs.pesos.agua * 10, inputs.pesos.solo * 10, inputs.pesos.renda * 10, inputs.pesos.risco * 10];
             setWeights(nextWeights);
             setApplied(nextWeights);
