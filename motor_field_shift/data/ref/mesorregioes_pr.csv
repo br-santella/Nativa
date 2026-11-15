@@ -1,0 +1,400 @@
+cod_ibge,nome,mesorregiao
+4100103,Abatiá,Norte Pioneiro Paranaense
+4100202,Adrianópolis,Metropolitana de Curitiba
+4100301,Agudos do Sul,Metropolitana de Curitiba
+4100400,Almirante Tamandaré,Metropolitana de Curitiba
+4100459,Altamira do Paraná,Centro Ocidental Paranaense
+4100509,Altônia,Noroeste Paranaense
+4100608,Alto Paraná,Noroeste Paranaense
+4100707,Alto Piquiri,Noroeste Paranaense
+4100806,Alvorada do Sul,Norte Central Paranaense
+4100905,Amaporã,Noroeste Paranaense
+4101002,Ampére,Sudoeste Paranaense
+4101051,Anahy,Oeste Paranaense
+4101101,Andirá,Norte Pioneiro Paranaense
+4101150,Ângulo,Norte Central Paranaense
+4101200,Antonina,Metropolitana de Curitiba
+4101309,Antônio Olinto,Sudeste Paranaense
+4101408,Apucarana,Norte Central Paranaense
+4101507,Arapongas,Norte Central Paranaense
+4101606,Arapoti,Centro Oriental Paranaense
+4101655,Arapuã,Norte Central Paranaense
+4101705,Araruna,Centro Ocidental Paranaense
+4101804,Araucária,Metropolitana de Curitiba
+4101853,Ariranha do Ivaí,Norte Central Paranaense
+4101903,Assaí,Norte Pioneiro Paranaense
+4102000,Assis Chateaubriand,Oeste Paranaense
+4102109,Astorga,Norte Central Paranaense
+4102208,Atalaia,Norte Central Paranaense
+4102307,Balsa Nova,Metropolitana de Curitiba
+4102406,Bandeirantes,Norte Pioneiro Paranaense
+4102505,Barbosa Ferraz,Centro Ocidental Paranaense
+4102604,Barracão,Sudoeste Paranaense
+4102703,Barra do Jacaré,Norte Pioneiro Paranaense
+4102752,Bela Vista da Caroba,Sudoeste Paranaense
+4102802,Bela Vista do Paraíso,Norte Central Paranaense
+4102901,Bituruna,Sudeste Paranaense
+4103008,Boa Esperança,Centro Ocidental Paranaense
+4103024,Boa Esperança do Iguaçu,Sudoeste Paranaense
+4103040,Boa Ventura de São Roque,Centro-Sul Paranaense
+4103057,Boa Vista da Aparecida,Oeste Paranaense
+4103107,Bocaiúva do Sul,Metropolitana de Curitiba
+4103156,Bom Jesus do Sul,Sudoeste Paranaense
+4103206,Bom Sucesso,Norte Central Paranaense
+4103222,Bom Sucesso do Sul,Sudoeste Paranaense
+4103305,Borrazópolis,Norte Central Paranaense
+4103354,Braganey,Oeste Paranaense
+4103370,Brasilândia do Sul,Noroeste Paranaense
+4103404,Cafeara,Norte Central Paranaense
+4103453,Cafelândia,Oeste Paranaense
+4103479,Cafezal do Sul,Noroeste Paranaense
+4103503,Califórnia,Norte Central Paranaense
+4103602,Cambará,Norte Pioneiro Paranaense
+4103701,Cambé,Norte Central Paranaense
+4103800,Cambira,Norte Central Paranaense
+4103909,Campina da Lagoa,Centro Ocidental Paranaense
+4103958,Campina do Simão,Centro-Sul Paranaense
+4104006,Campina Grande do Sul,Metropolitana de Curitiba
+4104055,Campo Bonito,Oeste Paranaense
+4104105,Campo do Tenente,Metropolitana de Curitiba
+4104204,Campo Largo,Metropolitana de Curitiba
+4104253,Campo Magro,Metropolitana de Curitiba
+4104303,Campo Mourão,Centro Ocidental Paranaense
+4104402,Cândido de Abreu,Norte Central Paranaense
+4104428,Candói,Centro-Sul Paranaense
+4104451,Cantagalo,Centro-Sul Paranaense
+4104501,Capanema,Sudoeste Paranaense
+4104600,Capitão Leônidas Marques,Oeste Paranaense
+4104659,Carambeí,Centro Oriental Paranaense
+4104709,Carlópolis,Norte Pioneiro Paranaense
+4104808,Cascavel,Oeste Paranaense
+4104907,Castro,Centro Oriental Paranaense
+4105003,Catanduvas,Oeste Paranaense
+4105102,Centenário do Sul,Norte Central Paranaense
+4105201,Cerro Azul,Metropolitana de Curitiba
+4105300,Céu Azul,Oeste Paranaense
+4105409,Chopinzinho,Sudoeste Paranaense
+4105508,Cianorte,Noroeste Paranaense
+4105607,Cidade Gaúcha,Noroeste Paranaense
+4105706,Clevelândia,Centro-Sul Paranaense
+4105805,Colombo,Metropolitana de Curitiba
+4105904,Colorado,Norte Central Paranaense
+4106001,Congonhinhas,Norte Pioneiro Paranaense
+4106100,Conselheiro Mairinck,Norte Pioneiro Paranaense
+4106209,Contenda,Metropolitana de Curitiba
+4106308,Corbélia,Oeste Paranaense
+4106407,Cornélio Procópio,Norte Pioneiro Paranaense
+4106456,Coronel Domingos Soares,Centro-Sul Paranaense
+4106506,Coronel Vivida,Sudoeste Paranaense
+4106555,Corumbataí do Sul,Centro Ocidental Paranaense
+4106571,Cruzeiro do Iguaçu,Sudoeste Paranaense
+4106605,Cruzeiro do Oeste,Noroeste Paranaense
+4106704,Cruzeiro do Sul,Noroeste Paranaense
+4106803,Cruz Machado,Sudeste Paranaense
+4106852,Cruzmaltina,Norte Central Paranaense
+4106902,Curitiba,Metropolitana de Curitiba
+4107009,Curiúva,Norte Pioneiro Paranaense
+4107108,Diamante do Norte,Noroeste Paranaense
+4107124,Diamante do Sul,Oeste Paranaense
+4107157,Diamante D'Oeste,Oeste Paranaense
+4107207,Dois Vizinhos,Sudoeste Paranaense
+4107256,Douradina,Noroeste Paranaense
+4107306,Doutor Camargo,Norte Central Paranaense
+4107405,Enéas Marques,Sudoeste Paranaense
+4107504,Engenheiro Beltrão,Centro Ocidental Paranaense
+4107520,Esperança Nova,Noroeste Paranaense
+4107538,Entre Rios do Oeste,Oeste Paranaense
+4107546,Espigão Alto do Iguaçu,Centro-Sul Paranaense
+4107553,Farol,Centro Ocidental Paranaense
+4107603,Faxinal,Norte Central Paranaense
+4107652,Fazenda Rio Grande,Metropolitana de Curitiba
+4107702,Fênix,Centro Ocidental Paranaense
+4107736,Fernandes Pinheiro,Sudeste Paranaense
+4107751,Figueira,Norte Pioneiro Paranaense
+4107801,Floraí,Norte Central Paranaense
+4107850,Flor da Serra do Sul,Sudoeste Paranaense
+4107900,Floresta,Norte Central Paranaense
+4108007,Florestópolis,Norte Central Paranaense
+4108106,Flórida,Norte Central Paranaense
+4108205,Formosa do Oeste,Oeste Paranaense
+4108304,Foz do Iguaçu,Oeste Paranaense
+4108320,Francisco Alves,Noroeste Paranaense
+4108403,Francisco Beltrão,Sudoeste Paranaense
+4108452,Foz do Jordão,Centro-Sul Paranaense
+4108502,General Carneiro,Sudeste Paranaense
+4108551,Godoy Moreira,Norte Central Paranaense
+4108601,Goioerê,Centro Ocidental Paranaense
+4108650,Goioxim,Centro-Sul Paranaense
+4108700,Grandes Rios,Norte Central Paranaense
+4108809,Guaíra,Oeste Paranaense
+4108908,Guairaçá,Noroeste Paranaense
+4108957,Guamiranga,Sudeste Paranaense
+4109005,Guapirama,Norte Pioneiro Paranaense
+4109104,Guaporema,Noroeste Paranaense
+4109203,Guaraci,Norte Central Paranaense
+4109302,Guaraniaçu,Oeste Paranaense
+4109401,Guarapuava,Centro-Sul Paranaense
+4109500,Guaraqueçaba,Metropolitana de Curitiba
+4109609,Guaratuba,Metropolitana de Curitiba
+4109658,Honório Serpa,Centro-Sul Paranaense
+4109708,Ibaiti,Norte Pioneiro Paranaense
+4109757,Ibema,Oeste Paranaense
+4109807,Ibiporã,Norte Central Paranaense
+4109906,Icaraíma,Noroeste Paranaense
+4110003,Iguaraçu,Norte Central Paranaense
+4110052,Iguatu,Oeste Paranaense
+4110078,Imbaú,Centro Oriental Paranaense
+4110102,Imbituva,Sudeste Paranaense
+4110201,Inácio Martins,Centro-Sul Paranaense
+4110300,Inajá,Noroeste Paranaense
+4110409,Indianópolis,Noroeste Paranaense
+4110508,Ipiranga,Sudeste Paranaense
+4110607,Iporã,Noroeste Paranaense
+4110656,Iracema do Oeste,Oeste Paranaense
+4110706,Irati,Sudeste Paranaense
+4110805,Iretama,Centro Ocidental Paranaense
+4110904,Itaguajé,Norte Central Paranaense
+4110953,Itaipulândia,Oeste Paranaense
+4111001,Itambaracá,Norte Pioneiro Paranaense
+4111100,Itambé,Norte Central Paranaense
+4111209,Itapejara d'Oeste,Sudoeste Paranaense
+4111258,Itaperuçu,Metropolitana de Curitiba
+4111308,Itaúna do Sul,Noroeste Paranaense
+4111407,Ivaí,Sudeste Paranaense
+4111506,Ivaiporã,Norte Central Paranaense
+4111555,Ivaté,Noroeste Paranaense
+4111605,Ivatuba,Norte Central Paranaense
+4111704,Jaboti,Norte Pioneiro Paranaense
+4111803,Jacarezinho,Norte Pioneiro Paranaense
+4111902,Jaguapitã,Norte Central Paranaense
+4112009,Jaguariaíva,Centro Oriental Paranaense
+4112108,Jandaia do Sul,Norte Central Paranaense
+4112207,Janiópolis,Centro Ocidental Paranaense
+4112306,Japira,Norte Pioneiro Paranaense
+4112405,Japurá,Noroeste Paranaense
+4112504,Jardim Alegre,Norte Central Paranaense
+4112603,Jardim Olinda,Noroeste Paranaense
+4112702,Jataizinho,Norte Pioneiro Paranaense
+4112751,Jesuítas,Oeste Paranaense
+4112801,Joaquim Távora,Norte Pioneiro Paranaense
+4112900,Jundiaí do Sul,Norte Pioneiro Paranaense
+4112959,Juranda,Centro Ocidental Paranaense
+4113007,Jussara,Noroeste Paranaense
+4113106,Kaloré,Norte Central Paranaense
+4113205,Lapa,Metropolitana de Curitiba
+4113254,Laranjal,Centro-Sul Paranaense
+4113304,Laranjeiras do Sul,Centro-Sul Paranaense
+4113403,Leópolis,Norte Pioneiro Paranaense
+4113429,Lidianópolis,Norte Central Paranaense
+4113452,Lindoeste,Oeste Paranaense
+4113502,Loanda,Noroeste Paranaense
+4113601,Lobato,Norte Central Paranaense
+4113700,Londrina,Norte Central Paranaense
+4113734,Luiziana,Centro Ocidental Paranaense
+4113759,Lunardelli,Norte Central Paranaense
+4113809,Lupionópolis,Norte Central Paranaense
+4113908,Mallet,Sudeste Paranaense
+4114005,Mamborê,Centro Ocidental Paranaense
+4114104,Mandaguaçu,Norte Central Paranaense
+4114203,Mandaguari,Norte Central Paranaense
+4114302,Mandirituba,Metropolitana de Curitiba
+4114351,Manfrinópolis,Sudoeste Paranaense
+4114401,Mangueirinha,Centro-Sul Paranaense
+4114500,Manoel Ribas,Norte Central Paranaense
+4114609,Marechal Cândido Rondon,Oeste Paranaense
+4114708,Maria Helena,Noroeste Paranaense
+4114807,Marialva,Norte Central Paranaense
+4114906,Marilândia do Sul,Norte Central Paranaense
+4115002,Marilena,Noroeste Paranaense
+4115101,Mariluz,Noroeste Paranaense
+4115200,Maringá,Norte Central Paranaense
+4115309,Mariópolis,Sudoeste Paranaense
+4115358,Maripá,Oeste Paranaense
+4115408,Marmeleiro,Sudoeste Paranaense
+4115457,Marquinho,Centro-Sul Paranaense
+4115507,Marumbi,Norte Central Paranaense
+4115606,Matelândia,Oeste Paranaense
+4115705,Matinhos,Metropolitana de Curitiba
+4115739,Mato Rico,Centro-Sul Paranaense
+4115754,Mauá da Serra,Norte Central Paranaense
+4115804,Medianeira,Oeste Paranaense
+4115853,Mercedes,Oeste Paranaense
+4115903,Mirador,Noroeste Paranaense
+4116000,Miraselva,Norte Central Paranaense
+4116059,Missal,Oeste Paranaense
+4116109,Moreira Sales,Centro Ocidental Paranaense
+4116208,Morretes,Metropolitana de Curitiba
+4116307,Munhoz de Melo,Norte Central Paranaense
+4116406,Nossa Senhora das Graças,Norte Central Paranaense
+4116505,Nova Aliança do Ivaí,Noroeste Paranaense
+4116604,Nova América da Colina,Norte Pioneiro Paranaense
+4116703,Nova Aurora,Oeste Paranaense
+4116802,Nova Cantu,Centro Ocidental Paranaense
+4116901,Nova Esperança,Norte Central Paranaense
+4116950,Nova Esperança do Sudoeste,Sudoeste Paranaense
+4117008,Nova Fátima,Norte Pioneiro Paranaense
+4117057,Nova Laranjeiras,Centro-Sul Paranaense
+4117107,Nova Londrina,Noroeste Paranaense
+4117206,Nova Olímpia,Noroeste Paranaense
+4117214,Nova Santa Bárbara,Norte Pioneiro Paranaense
+4117222,Nova Santa Rosa,Oeste Paranaense
+4117255,Nova Prata do Iguaçu,Sudoeste Paranaense
+4117271,Nova Tebas,Norte Central Paranaense
+4117297,Novo Itacolomi,Norte Central Paranaense
+4117305,Ortigueira,Centro Oriental Paranaense
+4117404,Ourizona,Norte Central Paranaense
+4117453,Ouro Verde do Oeste,Oeste Paranaense
+4117503,Paiçandu,Norte Central Paranaense
+4117602,Palmas,Centro-Sul Paranaense
+4117701,Palmeira,Centro Oriental Paranaense
+4117800,Palmital,Centro-Sul Paranaense
+4117909,Palotina,Oeste Paranaense
+4118006,Paraíso do Norte,Noroeste Paranaense
+4118105,Paranacity,Noroeste Paranaense
+4118204,Paranaguá,Metropolitana de Curitiba
+4118303,Paranapoema,Noroeste Paranaense
+4118402,Paranavaí,Noroeste Paranaense
+4118451,Pato Bragado,Oeste Paranaense
+4118501,Pato Branco,Sudoeste Paranaense
+4118600,Paula Freitas,Sudeste Paranaense
+4118709,Paulo Frontin,Sudeste Paranaense
+4118808,Peabiru,Centro Ocidental Paranaense
+4118857,Perobal,Noroeste Paranaense
+4118907,Pérola,Noroeste Paranaense
+4119004,Pérola d'Oeste,Sudoeste Paranaense
+4119103,Piên,Metropolitana de Curitiba
+4119152,Pinhais,Metropolitana de Curitiba
+4119202,Pinhalão,Norte Pioneiro Paranaense
+4119251,Pinhal de São Bento,Sudoeste Paranaense
+4119301,Pinhão,Centro-Sul Paranaense
+4119400,Piraí do Sul,Centro Oriental Paranaense
+4119509,Piraquara,Metropolitana de Curitiba
+4119608,Pitanga,Centro-Sul Paranaense
+4119657,Pitangueiras,Norte Central Paranaense
+4119707,Planaltina do Paraná,Noroeste Paranaense
+4119806,Planalto,Sudoeste Paranaense
+4119905,Ponta Grossa,Centro Oriental Paranaense
+4119954,Pontal do Paraná,Metropolitana de Curitiba
+4120002,Porecatu,Norte Central Paranaense
+4120101,Porto Amazonas,Metropolitana de Curitiba
+4120150,Porto Barreiro,Centro-Sul Paranaense
+4120200,Porto Rico,Noroeste Paranaense
+4120309,Porto Vitória,Sudeste Paranaense
+4120333,Prado Ferreira,Norte Central Paranaense
+4120358,Pranchita,Sudoeste Paranaense
+4120408,Presidente Castelo Branco,Norte Central Paranaense
+4120507,Primeiro de Maio,Norte Central Paranaense
+4120606,Prudentópolis,Sudeste Paranaense
+4120655,Quarto Centenário,Centro Ocidental Paranaense
+4120705,Quatiguá,Norte Pioneiro Paranaense
+4120804,Quatro Barras,Metropolitana de Curitiba
+4120853,Quatro Pontes,Oeste Paranaense
+4120903,Quedas do Iguaçu,Centro-Sul Paranaense
+4121000,Querência do Norte,Noroeste Paranaense
+4121109,Quinta do Sol,Centro Ocidental Paranaense
+4121208,Quitandinha,Metropolitana de Curitiba
+4121257,Ramilândia,Oeste Paranaense
+4121307,Rancho Alegre,Norte Pioneiro Paranaense
+4121356,Rancho Alegre D'Oeste,Centro Ocidental Paranaense
+4121406,Realeza,Sudoeste Paranaense
+4121505,Rebouças,Sudeste Paranaense
+4121604,Renascença,Sudoeste Paranaense
+4121703,Reserva,Centro Oriental Paranaense
+4121752,Reserva do Iguaçu,Centro-Sul Paranaense
+4121802,Ribeirão Claro,Norte Pioneiro Paranaense
+4121901,Ribeirão do Pinhal,Norte Pioneiro Paranaense
+4122008,Rio Azul,Sudeste Paranaense
+4122107,Rio Bom,Norte Central Paranaense
+4122156,Rio Bonito do Iguaçu,Centro-Sul Paranaense
+4122172,Rio Branco do Ivaí,Norte Central Paranaense
+4122206,Rio Branco do Sul,Metropolitana de Curitiba
+4122305,Rio Negro,Metropolitana de Curitiba
+4122404,Rolândia,Norte Central Paranaense
+4122503,Roncador,Centro Ocidental Paranaense
+4122602,Rondon,Noroeste Paranaense
+4122651,Rosário do Ivaí,Norte Central Paranaense
+4122701,Sabáudia,Norte Central Paranaense
+4122800,Salgado Filho,Sudoeste Paranaense
+4122909,Salto do Itararé,Norte Pioneiro Paranaense
+4123006,Salto do Lontra,Sudoeste Paranaense
+4123105,Santa Amélia,Norte Pioneiro Paranaense
+4123204,Santa Cecília do Pavão,Norte Pioneiro Paranaense
+4123303,Santa Cruz de Monte Castelo,Noroeste Paranaense
+4123402,Santa Fé,Norte Central Paranaense
+4123501,Santa Helena,Oeste Paranaense
+4123600,Santa Inês,Norte Central Paranaense
+4123709,Santa Isabel do Ivaí,Noroeste Paranaense
+4123808,Santa Izabel do Oeste,Sudoeste Paranaense
+4123824,Santa Lúcia,Oeste Paranaense
+4123857,Santa Maria do Oeste,Centro-Sul Paranaense
+4123907,Santa Mariana,Norte Pioneiro Paranaense
+4123956,Santa Mônica,Noroeste Paranaense
+4124004,Santana do Itararé,Norte Pioneiro Paranaense
+4124020,Santa Tereza do Oeste,Oeste Paranaense
+4124053,Santa Terezinha de Itaipu,Oeste Paranaense
+4124103,Santo Antônio da Platina,Norte Pioneiro Paranaense
+4124202,Santo Antônio do Caiuá,Noroeste Paranaense
+4124301,Santo Antônio do Paraíso,Norte Pioneiro Paranaense
+4124400,Santo Antônio do Sudoeste,Sudoeste Paranaense
+4124509,Santo Inácio,Norte Central Paranaense
+4124608,São Carlos do Ivaí,Noroeste Paranaense
+4124707,São Jerônimo da Serra,Norte Pioneiro Paranaense
+4124806,São João,Sudoeste Paranaense
+4124905,São João do Caiuá,Noroeste Paranaense
+4125001,São João do Ivaí,Norte Central Paranaense
+4125100,São João do Triunfo,Sudeste Paranaense
+4125209,São Jorge d'Oeste,Sudoeste Paranaense
+4125308,São Jorge do Ivaí,Norte Central Paranaense
+4125357,São Jorge do Patrocínio,Noroeste Paranaense
+4125407,São José da Boa Vista,Norte Pioneiro Paranaense
+4125456,São José das Palmeiras,Oeste Paranaense
+4125506,São José dos Pinhais,Metropolitana de Curitiba
+4125555,São Manoel do Paraná,Noroeste Paranaense
+4125605,São Mateus do Sul,Sudeste Paranaense
+4125704,São Miguel do Iguaçu,Oeste Paranaense
+4125753,São Pedro do Iguaçu,Oeste Paranaense
+4125803,São Pedro do Ivaí,Norte Central Paranaense
+4125902,São Pedro do Paraná,Noroeste Paranaense
+4126009,São Sebastião da Amoreira,Norte Pioneiro Paranaense
+4126108,São Tomé,Noroeste Paranaense
+4126207,Sapopema,Norte Pioneiro Paranaense
+4126256,Sarandi,Norte Central Paranaense
+4126272,Saudade do Iguaçu,Sudoeste Paranaense
+4126306,Sengés,Centro Oriental Paranaense
+4126355,Serranópolis do Iguaçu,Oeste Paranaense
+4126405,Sertaneja,Norte Pioneiro Paranaense
+4126504,Sertanópolis,Norte Central Paranaense
+4126603,Siqueira Campos,Norte Pioneiro Paranaense
+4126652,Sulina,Sudoeste Paranaense
+4126678,Tamarana,Norte Central Paranaense
+4126702,Tamboara,Noroeste Paranaense
+4126801,Tapejara,Noroeste Paranaense
+4126900,Tapira,Noroeste Paranaense
+4127007,Teixeira Soares,Sudeste Paranaense
+4127106,Telêmaco Borba,Centro Oriental Paranaense
+4127205,Terra Boa,Centro Ocidental Paranaense
+4127304,Terra Rica,Noroeste Paranaense
+4127403,Terra Roxa,Oeste Paranaense
+4127502,Tibagi,Centro Oriental Paranaense
+4127601,Tijucas do Sul,Metropolitana de Curitiba
+4127700,Toledo,Oeste Paranaense
+4127809,Tomazina,Norte Pioneiro Paranaense
+4127858,Três Barras do Paraná,Oeste Paranaense
+4127882,Tunas do Paraná,Metropolitana de Curitiba
+4127908,Tuneiras do Oeste,Noroeste Paranaense
+4127957,Tupãssi,Oeste Paranaense
+4127965,Turvo,Centro-Sul Paranaense
+4128005,Ubiratã,Centro Ocidental Paranaense
+4128104,Umuarama,Noroeste Paranaense
+4128203,União da Vitória,Sudeste Paranaense
+4128302,Uniflor,Norte Central Paranaense
+4128401,Uraí,Norte Pioneiro Paranaense
+4128500,Wenceslau Braz,Norte Pioneiro Paranaense
+4128534,Ventania,Centro Oriental Paranaense
+4128559,Vera Cruz do Oeste,Oeste Paranaense
+4128609,Verê,Sudoeste Paranaense
+4128625,Alto Paraíso,Noroeste Paranaense
+4128633,Doutor Ulysses,Metropolitana de Curitiba
+4128658,Virmond,Centro-Sul Paranaense
+4128708,Vitorino,Sudoeste Paranaense
+4128807,Xambrê,Noroeste Paranaense

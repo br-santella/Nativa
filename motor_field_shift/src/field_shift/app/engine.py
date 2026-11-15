@@ -229,8 +229,8 @@ def enrich(rk: dict, t: dict, soil_analysis: dict | None = None) -> dict:
     out = {**rk, "solo": None, "pam": None, "agua_ctx": None}
     cod0 = rk["municipio"]["cod_ibge"] if rk.get("modo") == "regiao" else None
     out["calendario_soja"] = soy_calendar(cod0)  # ADAPAR region of the municipality (default region without one)
-    out["rend"] = yields(None if cod0 is None else str(cod0))  # no municipality: Oeste do PR mean (with a warning)
-    out["rend_local"] = rk["municipio"]["nome"] if cod0 is not None else "Oeste do PR (média)"
+    out["rend"] = yields(None if cod0 is None else str(cod0))  # no municipality PAM: mesoregion mean (with a warning)
+    out["rend_local"] = rk["municipio"]["nome"] if cod0 is not None else f"{out['rend']['_regiao']} (média)"
     if rk.get("modo") != "regiao":
         return out
     s = polygon_soil(t["poly"])
@@ -248,7 +248,7 @@ def enrich(rk: dict, t: dict, soil_analysis: dict | None = None) -> dict:
 
 
 def yields_rk(rk: dict) -> dict:
-    """PAM yields for the income score: those from `enrich` (municipality) or, if missing, the Oeste do PR mean."""
+    """PAM yields for the income score: those from `enrich` (municipality) or, if missing, the Paraná mean."""
     return rk.get("rend") or yields(None)
 
 
@@ -558,7 +558,8 @@ def check_rules(c: dict, risks: dict | None = None) -> list[str]:
             reasons.append(f"A colheita de {c['nome_verao'].lower()} é estimada em ~{harv} ({origin}): "
                            f"a semeadura da 2ª cultura em {sow_date} cairia antes dela.")
         if c["janela"] and not (_dm(c["janela"][0]) <= _dm(sow_date) <= _dm(c["janela"][1])):
-            reasons.append(f"Semeadura em {sow_date} fora da janela de {c['nome_segunda']} no Oeste do PR "
+            where = "no Oeste do PR" if in_oeste(risks or {}) else "de referência (Oeste do PR; confira o ZARC do município)"
+            reasons.append(f"Semeadura em {sow_date} fora da janela de {c['nome_segunda']} {where} "
                            f"({c['janela'][0]}–{c['janela'][1]}; estimativa de referência com base no ZARC/IDR-PR, validar).")
     if c["soja_viva_vazio"]:
         reasons.append(f"Há soja viva durante o vazio sanitário da soja ({cs['vazio'][0]}–{cs['vazio'][1]}, {cs['nome'].split(' (')[0]} do PR).")
@@ -686,11 +687,19 @@ def _r(x: float) -> str:
     return f"{x:,.0f}".replace(",", ".")
 
 
+def in_oeste(risks: dict) -> bool:
+    """Is the field's municipality in the Oeste mesoregion (where catalog windows and market texts were written and the engine
+    was validated)? Without a municipality: False."""
+    return (risks.get("rend") or {}).get("_regiao") == "Oeste do PR" and bool(risks.get("municipio"))
+
+
 def local_rend(risks: dict, key: str) -> str:
-    """Origin of a crop's PAM yield: the municipality or, if it lacks enough PAM, the Oeste do PR mean."""
-    if key in (risks.get("rend") or {}).get("_regionais", ()):
-        return "Oeste do PR (média, o município não tem PAM recente)"
-    return risks.get("rend_local") or "Oeste do PR"
+    """Origin of a crop's PAM yield: the municipality or, if it lacks enough PAM, the mean of its mesoregion."""
+    rend = risks.get("rend") or {}
+    region = rend.get("_regiao") or "Paraná"
+    if key in rend.get("_regionais", ()):
+        return Msg("{0} (média, o município não tem PAM recente)", (rend.get(key) or {}).get("regiao") or region)
+    return risks.get("rend_local") or region
 
 
 def fmt_margin(m: dict, risks: dict) -> list[str]:
@@ -713,10 +722,15 @@ def fmt_margin(m: dict, risks: dict) -> list[str]:
         elif i["sc_ha"] is not None:
             orig = (f"tendência da PAM {local} {i['anos']} projetada para a próxima safra; média {i['sc_ha_media']:.0f} sc/ha"
                     if i.get("metodo_rend") == "tendência" and i.get("sc_ha_media") is not None else f"PAM {local} {i['anos']}")
-            lines.append(f"{i['rotulo']}: {i['sc_ha']:.0f} sc/ha ({orig}) × R$ {i['preco']:.2f}/sc ({price_source(i)}) − custo "
-                          f"R$ {_r(i['custo'])}/ha ({cost_source(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha "
-                          f"(CV do rendimento {i['cv']:.0%}; ano ruim, p20 da mesma janela de 10 anos = {i['sc_ha_ruim']:.0f} sc/ha → "
-                          f"R$ {_r(i['margem_ano_ruim'])}/ha).")
+            if i.get("sc_ha_ruim") is not None and i.get("margem_ano_ruim") is not None and i.get("cv") is not None:
+                lines.append(f"{i['rotulo']}: {i['sc_ha']:.0f} sc/ha ({orig}) × R$ {i['preco']:.2f}/sc ({price_source(i)}) − custo "
+                              f"R$ {_r(i['custo'])}/ha ({cost_source(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha "
+                              f"(CV do rendimento {i['cv']:.0%}; ano ruim, p20 da mesma janela de 10 anos = {i['sc_ha_ruim']:.0f} sc/ha → "
+                              f"R$ {_r(i['margem_ano_ruim'])}/ha).")
+            else:  # short PAM series (< 4 years): no variability or bad year to show
+                lines.append(f"{i['rotulo']}: {i['sc_ha']:.0f} sc/ha ({orig}) × R$ {i['preco']:.2f}/sc ({price_source(i)}) − custo "
+                              f"R$ {_r(i['custo'])}/ha ({cost_source(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha "
+                              f"(série da PAM curta demais para estimar a variação e o ano ruim).")
         else:
             lines.append(f"{i['rotulo']}: sem venda, custo de implantação R$ {_r(i['custo'])}/ha ({cost_source(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha.")
     bonus_detail = (f" ({m['bonus_verao_sc']:g} sc/ha do milho verão no lugar da soja + {m['bonus_sc'] - m['bonus_verao_sc']:g} da 2ª cultura)"
@@ -910,7 +924,10 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
         warnings.insert(0, z_warning)
     mer = c["mercado_oeste_pr"]
     mercado = dict(nivel=mer["nivel"], texto=mer["texto"], estimativa=MARKET_ESTIMATE)
-    ev.append(f"Mercado no Oeste do PR: {mer['nivel']}; {mer['texto']} ({MARKET_ESTIMATE}).")
+    if in_oeste(risks):
+        ev.append(f"Mercado no Oeste do PR: {mer['nivel']}; {mer['texto']} ({MARKET_ESTIMATE}).")
+    else:
+        ev.append(f"Mercado (referência do Oeste do PR, confirme na sua região): {mer['nivel']}; {mer['texto']} ({MARKET_ESTIMATE}).")
     return dict(por_que=why, evidencia=ev, beneficios=ben or ["Sem benefício marcante nos critérios avaliados."],
                 lacunas=lacunas, revisar=review, avisos=warnings, mercado=mercado, irrigacao=ir, zarc=zs, historico=hist)
 

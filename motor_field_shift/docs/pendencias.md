@@ -140,7 +140,14 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Connect the API to the whole of Paraná**: the data is already downloaded in `data/**/*_pr` (about 2.0 GB). What remains is switching the region and the paths read by the clipping, climate, soil, yield and water-balance modules.
   Files: `src/field_shift/region/clip.py`, `src/field_shift/climate/lookup.py`, `src/field_shift/soil/soil.py`, `src/field_shift/pam/productivity.py`, `src/field_shift/water/balance.py`.
-  Status: pending
+  Done (15/11/2026, branch `feat/statewide-pr`): region, climate, soil, PAM, ZARC and the ADAPAR calendar already read the `*_pr` data. What was still Oeste-only is fixed:
+  - Yield fallback: a municipality without PAM (or an extra crop without a recent series) uses the mean of its own IBGE mesoregion (`data/ref/mesorregioes_pr.csv`, IBGE localidades API, 399 municipalities, 10 mesoregions), falling back to all of Paraná when no municipality of the mesoregion has the crop. For the Oeste this is the same 50-municipality mean as before, so Oeste answers and the validation are unchanged (golden tests).
+  - Warning outside the Oeste now says what is really regional: prices are the SEAB/DERAL state mean, costs are CONAB sheets of Londrina, Ponta Grossa and Francisco Beltrão; sowing windows, market texts and the income backtest come from the Oeste; the ZARC agreement is statewide.
+  - Card: market text and the 2nd-crop sowing-window reason say "referência do Oeste do PR" outside the Oeste.
+  - Bug: a sold crop with a short PAM series (no p20 bad year) crashed the card (`TypeError` on `None`), seen in Cornélio Procópio; the line now says the series is too short.
+  - Audit on soybean fields (MapBiomas 2024) in Londrina, Ponta Grossa, Guarapuava, Campo Mourão, Pato Branco, Umuarama, Cornélio Procópio, Jacarezinho and Paranavaí: all run end to end. Test: `tests/test_statewide.py`.
+  Still open: the backtest of the income decision (`docs/validation.md` §3, §6.2) only covers the Oeste; the catalog windows and market texts are Oeste references; costs by regional nucleus (item below). Outside the Oeste, cover crops (millet/crotalaria) rank first more often because the realized corn margin is lower (e.g. Cornélio Procópio, Guarapuava with frost risk 0.41): plausible, not validated.
+  Status: done (with the open points above)
 
 - **Slope computed on the fly**: `slope_pct.tif` (1.15 GB) could be computed on demand from the elevation instead of being stored.
   Files: `data/**/slope_pct.tif`, `ingest/mapbiomas_relief_oeste_pr.py`.
@@ -190,7 +197,7 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **PAM for sorghum and 2nd-season beans in all of Paraná**: `pam_extra_oeste_pr.parquet` only covers the 50 Oeste municipalities; there is no `pam_extra_pr`. Outside the Oeste these crops use the Oeste average (listed in `_regionais`, source text "Oeste do PR (média...)"). Extend `ingest/pam_extra_crops.py` to the 399 municipalities.
   Files: `ingest/pam_extra_crops.py`, `src/field_shift/pam/productivity.py`, `src/field_shift/income/income.py`.
-  Done (15/11/2026): `uv run python ingest/pam_extra_crops.py --regiao pr` writes `data/raw/ibge/pam_extra_pr.parquet` (399 municipalities, 119,700 rows, 1974–2025); `pam/productivity.py` reads it in preference to the Oeste-only file. With the engine's own rule (≥ 3 years and last year ≥ 2018), 2nd-season beans now have a municipal series in 273 of 399 municipalities and sorghum in 42 (sorghum has few records in the PAM); the rest keep the Oeste average and the existing `_regionais` warning. Test: `tests/test_pam_extra.py`.
+  Done (15/11/2026): `uv run python ingest/pam_extra_crops.py --regiao pr` writes `data/raw/ibge/pam_extra_pr.parquet` (399 municipalities, 119,700 rows, 1974–2025); `pam/productivity.py` reads it in preference to the Oeste-only file. With the engine's own rule (≥ 3 years and last year ≥ 2018), 2nd-season beans now have a municipal series in 273 of 399 municipalities and sorghum in 42 (sorghum has few records in the PAM); the rest keep the regional average (now the municipality's own mesoregion, see "Connect the API to the whole of Paraná") and the existing `_regionais` warning. Test: `tests/test_pam_extra.py`.
   Caution: small, atypical PAM series now override the regional average (e.g. Londrina beans: 9.4 sc/ha over 3 years); consider a minimum harvested area or a sanity band against the regional average.
   Status: done
 

@@ -8,7 +8,7 @@ Developed for the NASA Space Apps Challenge 2026 challenge
 ![Python](https://img.shields.io/badge/python-3.13-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)
 ![React](https://img.shields.io/badge/frontend-React%2019%20%2B%20Vite-61DAFB?logo=react&logoColor=black)
-![Region](https://img.shields.io/badge/region-Western%20Paran%C3%A1-2E7D32)
+![Region](https://img.shields.io/badge/region-Paran%C3%A1%20(399%20municipalities)-2E7D32)
 
 > [!IMPORTANT]
 > Field Shift does not replace the advice of an agronomist. Income and risk figures are estimates. They
@@ -33,7 +33,7 @@ Developed for the NASA Space Apps Challenge 2026 challenge
 
 ## Overview
 
-Field Shift ranks crop rotations for a field in Western Paraná. A rotation is a pair: a summer crop
+Field Shift ranks crop rotations for a field anywhere in Paraná (399 municipalities; the pilot and the income backtest are Western Paraná). A rotation is a pair: a summer crop
 (soybean or summer corn) followed by a second-window crop (the *safrinha* / off-season).
 
 **Inputs**
@@ -181,7 +181,7 @@ flowchart LR
 ```mermaid
 flowchart TD
     A["Area + current rotation<br/>+ farmer data"] --> B["Resolve area<br/>(demo field · polygon · point)"]
-    B -->|outside Western PR| X["422 fora_da_regiao"]
+    B -->|outside Paraná| X["422 fora_da_regiao"]
     B --> C["Diagnosis<br/>terrain · soil · history · climate · yields"]
     C --> D{"Hard rules<br/>calendar, law, farmer restrictions"}
     D -->|fails| EL["eliminadas[] + reason"]
@@ -272,7 +272,7 @@ curl -s -X POST localhost:8000/v1/recomendacao \
 
 | Status | Body | When |
 | --- | --- | --- |
-| 422 | `{"erro": "fora_da_regiao"}` | Area outside Western Paraná |
+| 422 | `{"erro": "fora_da_regiao"}` | Area outside Paraná |
 | 422 | validation error | Malformed request body |
 | 400 | `{"erro": "entrada_invalida"}` | Invalid adjustment, or restrictions eliminated every rotation |
 | 504 | `{"erro": "timeout_externo"}` | Raised on `ErroConsultaExterna`. Failures of the NASA POWER and SoilGrids clients are handled inside those clients and do not raise it |
@@ -358,7 +358,7 @@ gh pr create --base main
 
 | Limitation | Effect |
 | --- | --- |
-| **Region:** Western Paraná only (50 municipalities, IBGE 4106) | Any other area returns 422 |
+| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows, market texts and the income backtest come from Western Paraná | An area outside Paraná returns 422; outside Western Paraná the response warns |
 | **Climate cells of ~50 km** (NASA POWER) | Local microclimate is not represented |
 | **Soil water capacity** from Saxton & Rawls (2006), calibrated on temperate soils | Tends to underestimate it in clay-rich tropical Latosols. A farmer soil analysis replaces it |
 | **Income** from municipal averages and reference prices | Farm margins differ; yields, prices and costs can be overridden in the request |

@@ -42,10 +42,13 @@ POINT_AREA_HA = 100.0
 CRS_M = 32722  # UTM 22S (m), for areas and the point square
 
 
-# Shown when the area centroid is in Paraná but outside the Oeste mesoregion (the reference region of costs and prices).
+# Shown when the area centroid is in Paraná but outside the Oeste mesoregion: the engine works statewide (climate, soil, PAM of the
+# municipality or its mesoregion, ZARC and the ADAPAR region), but prices/costs are statewide references and the catalog texts
+# (sowing windows, market) and the validation come from the Oeste.
 WARNINGS_OUTSIDE_OESTE = [
-    "Área fora do Oeste do Paraná: os custos de produção e os preços usados na renda são a referência do Oeste do PR "
-    "(SEAB/DERAL e CONAB) e podem diferir na sua região.",
+    "Área fora do Oeste do Paraná: preços (média estadual SEAB/DERAL) e custos (fichas CONAB de Londrina, Ponta Grossa e Francisco "
+    "Beltrão) são referências do estado e podem diferir na sua região; informe os seus em `ajustes`. As janelas de semeadura e o "
+    "mercado do catálogo e o backtest de renda são do Oeste do PR; a concordância com o ZARC foi medida no estado todo.",
 ]
 
 
@@ -374,7 +377,7 @@ def _context(area: dict, sowing: str, soil_analysis: dict | None = None, fert: d
     if rk["solo"] is None:
         warnings.append("Sem dados de solo (SoilGrids) para a área: o critério água usa a estimativa por chuva/ET0 da célula.")
     if rk["rend"]["_origem"].startswith("média"):
-        warnings.append("Sem PAM do município: rendimento = " + rk["rend"]["_origem"] + ".")
+        warnings.append(Msg("Sem PAM do município: rendimento = {0}.", rk["rend"]["_origem"]))
     hist = mapbiomas_history(poly)
     history = [dict(ano=int(r.ano), classe=int(r.classe), nome_classe=r.nome_classe,
                       fracao_dominante=None if pd.isna(r.fracao_dominante) else float(r.fracao_dominante))
