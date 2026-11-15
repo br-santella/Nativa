@@ -3,16 +3,16 @@ import React, { useState, useEffect, useRef, createContext, useContext, } from "
 import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
-import { months, initialFarm, initialCrops, series, scenarios, profiles, score, info, } from "./data";
+import { months, initialFarm, initialCrops, series, profiles, info, } from "./data";
 import type { Farm, Crop } from "./data";
 import "./styles.css";
-import MotorPanel from "./MotorPanel";
+import EngineScenarios from "./EngineScenarios";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
 type Page = "landing" | "signup" | "onboard" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
-type Modal = null | "sources" | "indicators" | "help" | "technology" | "addCrop" | "account" | "property" | "login" | "contact" | "map" | number;
+type Modal = null | "sources" | "indicators" | "help" | "technology" | "addCrop" | "account" | "property" | "login" | "contact" | "map";
 const pages: Page[] = [
     "landing",
     "signup",
@@ -113,8 +113,6 @@ function App() {
             toast("Comparação demonstrativa atualizada.");
         }, 600);
     }
-    const chosen = scenarios.map((s) => score(s.notes, applied));
-    const winner = chosen.indexOf(Math.max(...chosen));
     const navItems: [
         Page,
         string,
@@ -732,27 +730,6 @@ function App() {
         </section>
       </>);
     }
-    function Radar() {
-        const R = assets["3:218"];
-        return (<div className="radar-assets" role="img" aria-label={__text("Compara\u00E7\u00E3o ilustrativa dos quatro crit\u00E9rios")}>
-        <div className="radar-shapes">
-          {__text([
-                R.imgEixoDeComparacao,
-                R.imgEixoDeComparacao1,
-                R.imgEixoDeComparacao2,
-                R.imgEixoDeComparacao3,
-                R.imgEixoDeComparacao4,
-            ].map((src, i) => (<img key={src} className={"radar-axis axis-" + i} src={src} alt={__text("")}/>)))}
-          <img className="radar-current" src={R.imgAreaDoCenario} alt={__text("")}/>
-          <img className="radar-soil" src={R.imgAreaDoCenario1} alt={__text("")}/>
-          <img className="radar-climate" src={R.imgAreaDoCenario2} alt={__text("")}/>
-        </div>
-        <span className="radar-water">{__text("\u00C1gua")}</span>
-        <span className="radar-soil-label">{__text("Solo")}</span>
-        <span className="radar-profit">{__text("Rentabilidade")}</span>
-        <span className="radar-resilience">{__text("Resili\u00EAncia")}</span>
-      </div>);
-    }
     function Rotation() {
         return (<>
         <div className="page-heading">
@@ -796,90 +773,13 @@ function App() {
         <div className="section-heading scenarios-heading">
           <div>
             <h2>{__text("02 Compare os cen\u00E1rios")}</h2>
-            <p>{__text("Pontua\u00E7\u00F5es ilustrativas ponderadas pelos objetivos acima.")}</p>
+            <p>{__text("Notas do motor (0\u2013100) ponderadas pelos objetivos acima, com dados reais da sua fazenda.")}</p>
           </div>
           <button className="button" onClick={compare} disabled={busy}>
             {__text(busy ? "Comparando…" : "Comparar Estratégias")}
           </button>
         </div>
-        <div className="scenario-grid">
-          {__text(scenarios.map((s, i) => (<article className={"scenario panel " + (winner === i ? "recommended" : "")} key={s.name}>
-              <div className="scenario-ribbon">
-                {__text(winner === i
-                    ? "MAIOR ADERÊNCIA AOS SEUS PESOS"
-                    : i === 0
-                        ? "Referência de comparação"
-                        : "Alternativa para explorar")}
-              </div>
-              <h2>{__text(s.name)}</h2>
-              <div className="score">
-                <strong style={{ color: s.color }}>{__text(chosen[i])}</strong>
-                <small>{__text("/ 100")}</small>
-                <small>{__text("ader\u00EAncia ilustrativa \u24D8")}</small>
-              </div>
-              <h3>{__text(s.sequence)}</h3>
-              <small>{__text("CALEND\u00C1RIO DO CEN\u00C1RIO \u2022 12 MESES")}</small>
-              <div className="mini-calendar">
-                {__text(months.map((m, n) => (<div key={n}>
-                    <span>{__text(m[0])}</span>
-                    <i style={{
-                        background: n === 7 || n === 8
-                            ? i === 0
-                                ? "#e8e4d7"
-                                : i === 2
-                                    ? "#e9bc6c"
-                                    : "#a8c477"
-                            : "#365f44",
-                    }}/>
-                  </div>)))}
-              </div>
-              <small>{__text(s.calendar)}</small>
-              <dl>
-                <div>
-                  <dt>{__text("\u00C1gua")}</dt>
-                  <dd>{__text(s.water)}</dd>
-                </div>
-                <div>
-                  <dt>{__text("Solo")}</dt>
-                  <dd>{__text(s.soil)}</dd>
-                </div>
-                <div>
-                  <dt>{__text("Clima")}</dt>
-                  <dd>{__text(s.climate)}</dd>
-                </div>
-              </dl>
-              <div className="benefit">
-                <small>{__text("BENEF\u00CDCIO POTENCIAL")}</small>
-                <p>{__text(s.benefit)}</p>
-              </div>
-              <div className="risk">
-                <small>{__text("PONTO DE ATEN\u00C7\u00C3O")}</small>
-                <p>{__text(s.risk)}</p>
-              </div>
-              <Btn onClick={() => open(i)} secondary={winner !== i}>{__text("Entender este cen\u00E1rio \u2192")}</Btn>
-            </article>)))}
-        </div>
-        <div className="grid-two compare-bottom">
-          <section className="panel">
-            <h2>{__text("Os objetivos, lado a lado")}</h2>
-            <p>{__text("Escala relativa: 0\u2013100 \u2022 maior = maior ader\u00EAncia")}</p>
-            <Radar />
-            <div className="legend">
-              {__text(scenarios.map((s) => (<span key={s.name} style={{ color: s.color }}>{__text("\u25A0")}{__text(s.name)}
-                </span>)))}
-            </div>
-          </section>
-          <section className="panel green-panel">
-            <h2>{__text("Por que esta estrat\u00E9gia foi sugerida?")}</h2>
-            <p className="body-text">
-              {__text(scenarios[winner].name)}{__text("teve maior ader\u00EAncia aos pesos deste exemplo.")}</p>
-            <p>{__text(scenarios[winner].detail)}</p>
-            <h3>{__text("Como a pontua\u00E7\u00E3o funciona")}</h3>
-            <p>{__text("M\u00E9dia ponderada das quatro notas do cen\u00E1rio. Notas e pesos s\u00E3o demonstrativos e n\u00E3o representam um modelo validado.")}</p>
-            <LinkButton onClick={() => open("sources")}>{__text("Ver premissas e limita\u00E7\u00F5es \u2192")}</LinkButton>
-          </section>
-        </div>
-        <MotorPanel weights={applied} latitude={farm.latitude} longitude={farm.longitude} crops={crops} />
+        <EngineScenarios weights={applied} latitude={farm.latitude} longitude={farm.longitude} crops={crops} onSources={() => open("sources")} />
         <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
       </>);
     }
@@ -1251,21 +1151,6 @@ function App() {
           <p>{__text("Camada demonstrativa \u2022 valores e \u00E1reas sem georreferenciamento.")}</p>
           <Map expanded/>
         </>);
-        if (typeof modal === "number") {
-            const s = scenarios[modal];
-            return (<>
-          <h2>{__text(s.name)}</h2>
-          <h3>{__text(s.sequence)}</h3>
-          <h3>{__text("Fundamento agron\u00F4mico")}</h3>
-          <p>{__text(s.detail)}</p>
-          <h3>{__text("Benef\u00EDcio potencial")}</h3>
-          <p>{__text(s.benefit)}</p>
-          <h3>{__text("Riscos e condi\u00E7\u00F5es")}</h3>
-          <p>{__text(s.risk)}</p>
-          <small>{__text("Hip\u00F3teses gerais, sem valida\u00E7\u00E3o para esta propriedade fict\u00EDcia.")}</small>
-          <Btn onClick={() => open(null)}>{__text("Voltar")}</Btn>
-        </>);
-        }
         if (modal === "account")
             return (<>
           <h2>{__text("Sua conta")}</h2>
