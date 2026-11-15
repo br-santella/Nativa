@@ -71,3 +71,5 @@ Em produção vai só a tabela de indicadores de clima (poucos MB) mais os raste
 - **Argumento para o pitch:** escala para o Brasil porque o pesado está pré-calculado e o resto é leitura sob demanda.
 
 Lógica do motor: ver docs/motor.md
+
+Entradas do usuário: ver docs/entradas.md

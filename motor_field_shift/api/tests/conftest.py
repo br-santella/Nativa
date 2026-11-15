@@ -62,13 +62,32 @@ DIAG = {
     "produtividade": {"soja": 58},
     "avisos": [],
 }
+_ITEM = {
+            "posicao": 1,
+            "id": "milho_verao__aveia",
+            "rotacao": "Milho verão → aveia",
+            "nota": 6.1,
+            "atual": False,
+            "criterios": {"renda": 5, "solo": 6, "agua": 7, "pragas": 7, "risco": 6},
+            "contribuicoes": {},
+            "margem": {"total_r_ha": 900.0, "itens": [], "ano_ruim_r_ha": 100.0},
+            "card": {"por_que": "y", "evidencias": [], "beneficios": [], "lacunas": [], "riscos": [], "avisos": []},
+            "ganho_vs_atual": {"comparado_com": "soja__milho_safrinha", "soja_seguinte_sc": 2.0, "soja_seguinte_sc_faixa": [2.0, 2.0], "soja_seguinte_rs": 240.0},
+}
 REC = {
     "entrada": {"semeadura_safrinha": "01/02"},
+    "cultura_atual": {"id": "soja", "nome": "Soja"},
+    "estagio_verao": {"id": "enchimento_graos", "nome": "Enchimento de grãos (R5–R6)", "dias_tipicos_ate_colheita": 32},
+    "colheita_estimada": {"data": "02/01", "origem": "estagio"},
+    "semeadura_2a": {"data": "15/01", "origem": "derivada"},
+    "dias_ate_colheita": 32,
+    "proxima_safra": {"ranking": [_ITEM], "alternativas": [], "eliminadas": []},
     "diagnostico": DIAG,
     "ranking": [
         {
             "posicao": 1,
-            "id": "milho_safrinha",
+            "id": "soja__milho_safrinha",
+            "id_legado": "milho_safrinha",
             "rotacao": "Milho safrinha",
             "nota": 7.4,
             "atual": False,
@@ -86,12 +105,16 @@ REC = {
     ],
     "atual": None,
     "alternativas": [],
-    "eliminadas": [{"id": "soja_safrinha", "rotacao": "Soja safrinha", "motivos": ["soja sobre soja"]}],
+    "eliminadas": [{"id": "soja__soja_safrinha", "rotacao": "Soja safrinha", "motivos": ["soja sobre soja"]}],
     "avisos": [],
     "metodologia": {"formula": "soma ponderada", "criterios": {}, "versao": "0.1"},
 }
+REC["agora"] = {"ranking": REC["ranking"], "alternativas": [], "eliminadas": REC["eliminadas"]}
 OPCOES = {
-    "rotacoes": {"milho_safrinha": "Milho safrinha"},
+    "rotacoes": [{"id": "soja__milho_safrinha", "nome": "Soja → milho safrinha"}],
+    "culturas_verao": [{"id": "soja", "nome": "Soja", "tipo": "grão"}],
+    "culturas_segunda": [{"id": "milho_safrinha", "nome": "Milho safrinha", "tipo": "grão"}],
+    "combinacoes": [{"id": "soja__milho_safrinha", "verao": "soja", "segunda": "milho_safrinha", "valida": True}],
     "semeaduras": ["15/01", "01/02", "15/02", "01/03", "15/03"],
     "semeadura_padrao": "01/02",
     "criterios": ["renda", "solo", "agua", "pragas", "risco"],
@@ -109,8 +132,8 @@ def chamadas():
 
 @pytest.fixture
 def falso(monkeypatch, chamadas):
-    def diagnosticar(area, semeadura_safrinha="01/02"):
-        chamadas.append(("diagnosticar", area, {"semeadura_safrinha": semeadura_safrinha}))
+    def diagnosticar(area, semeadura_safrinha="01/02", **kw):
+        chamadas.append(("diagnosticar", area, {"semeadura_safrinha": semeadura_safrinha, **kw}))
         return DIAG
 
     def recomendar(area, semeadura_safrinha="01/02", **kw):

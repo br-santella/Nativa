@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import math
+from datetime import date
 from functools import lru_cache
 from pathlib import Path
 from urllib.error import URLError
@@ -23,6 +24,7 @@ import requests
 from shapely.geometry import Point, box, shape
 from shapely.geometry.base import BaseGeometry
 
+from field_shift import calendario as cal
 from field_shift.app import engine as E
 from field_shift.clima.lookup import indicadores_para
 from field_shift.pam import produtividade as pam_produtividade
@@ -30,7 +32,7 @@ from field_shift.pam.produtividade import texto as pam_texto
 from field_shift.regiao import dentro_da_regiao, historico_mapbiomas, relevo
 from field_shift.regiao.recorte import REGIAO
 from field_shift.renda import carregar_referencia, fonte_custo, fonte_preco, rendimentos
-from field_shift.solo.solo import texto as solo_texto
+from field_shift.solo.solo import FONTE_ANALISE, texto as solo_texto
 
 VERSAO = "0.1.0"
 AREA_MAX_HA = 5000.0
@@ -62,7 +64,7 @@ ROTACOES: dict[str, str] = {
 }
 _SLUG_DE = {v: k for k, v in ROTACOES.items()}
 
-_DESCRICAO = {
+_DESCRICAO = {  # por cultura da 2ª janela
     "milho_safrinha": "Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR.",
     "milho_braquiaria": "Milho safrinha consorciado com braquiária: grãos mais palhada para o plantio direto.",
     "trigo": "Trigo de inverno após a soja; sensível a geada no florescimento.",
@@ -70,6 +72,10 @@ _DESCRICAO = {
     "milheto_crotalaria": "Cobertura de milheto e crotalária: palhada e fixação de nitrogênio, sem venda de grão.",
     "pousio": "Sem cultura na segunda janela; solo exposto e sem renda adicional.",
     "soja_safrinha": "Soja sobre soja no mesmo ano agrícola; proibida pela regulação (sempre eliminada).",
+    "sorgo": "Sorgo granífero na segunda safra: tolerante à seca, sem cigarrinha do milho; usa o maquinário e o canal de venda de grãos.",
+    "feijao_safrinha": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco.",
+    "nabo_forrageiro": "Cobertura de nabo forrageiro: ciclagem de nutrientes e supressão de daninhas, palha de decomposição rápida; sem venda de grão.",
+    "aveia_nabo": "Mix de cobertura aveia + nabo forrageiro: palha duradoura e ciclagem de nutrientes, sem venda de grão.",
 }
 
 _CRIT_METODO = {
@@ -85,7 +91,8 @@ _CRIT_METODO = {
              "sem risco considerado = 1,0.",
 }
 
-_CUSTO_ALIAS = {"milho": "milho_2safra"}
+_CUSTO_ALIAS = {"milho": "milho_2safra", "milho_verao": "milho_1safra", "feijao": "feijao_2safra"}
+_PRODUTIVIDADE = ("soja", "milho_2safra", "trigo", "milho_1safra", "feijao_2safra", "sorgo")
 
 
 # --------------------------------------------------------------------------- utilidades
@@ -239,13 +246,53 @@ def _validar_semeadura(s) -> str:
     return s
 
 
+def _legado(id_: str | None) -> str | None:
+    """Slug antigo da API (só soja no verão, as 7 rotações originais): soja__milho_safrinha -> milho_safrinha; None para as demais."""
+    return id_.split("__", 1)[1] if id_ in E.LEGADO.values() else None
+
+
+def _ids(id_: str) -> dict:
+    """{'id': id novo} + 'id_legado' (slug antigo) quando existe."""
+    leg = _legado(id_)
+    return dict(id=id_, **({"id_legado": leg} if leg else {}))
+
+
+def _resolver_id(x, campo: str) -> str:
+    """Aceita o id novo ('soja__milho_safrinha') ou o slug antigo ('milho_safrinha' = soja__milho_safrinha)."""
+    if isinstance(x, str) and x in ROTACOES:
+        return x
+    if isinstance(x, str) and x in E.LEGADO:
+        return E.LEGADO[x]
+    raise EntradaInvalida(f"{campo} desconhecida: {x!r}. Opções: {list(ROTACOES)} (ou os slugs antigos {list(E.LEGADO)}).")
+
+
+def _normalizar_rotacoes(r) -> list[str] | None:
+    """Valida `rotacoes` ([{'verao','segunda'}], enums do catálogo, sem duplicatas, não vazia). Devolve os ids na ordem dada, ou None."""
+    if r is None:
+        return None
+    if not isinstance(r, (list, tuple)) or not r:
+        raise EntradaInvalida("'rotacoes' deve ser uma lista não vazia de {'verao', 'segunda'}.")
+    ids = []
+    for x in r:
+        if not isinstance(x, dict) or set(x) != {"verao", "segunda"}:
+            raise EntradaInvalida(f"Cada rotação deve ser {{'verao': ..., 'segunda': ...}} (recebido: {x!r}).")
+        if x["verao"] not in CULTURAS_VERAO:
+            raise EntradaInvalida(f"verao desconhecida: {x['verao']!r}. Opções: {list(CULTURAS_VERAO)}.")
+        if x["segunda"] not in CULTURAS_SEGUNDA:
+            raise EntradaInvalida(f"segunda desconhecida: {x['segunda']!r}. Opções: {list(CULTURAS_SEGUNDA)}.")
+        ids.append(E.id_rotacao(x["verao"], x["segunda"]))
+    if len(set(ids)) != len(ids):
+        raise EntradaInvalida("'rotacoes' tem combinações duplicadas.")
+    return ids
+
+
 def _rotacao_detectada(tid: str | None) -> dict:
     vazio = dict(rotacao=None, fonte=None, dias_solo_descoberto=None)
     if tid is None or not (E.ROOT / f"data/processed/timelapse/ndvi_hls_{tid}.csv").exists():
         return vazio
     nd = E.carregar_ndvi(tid)
     picos = E.picos_por_ano_agricola(nd)
-    return dict(rotacao=_SLUG_DE.get(E.detectar_rotacao(picos)),
+    return dict(rotacao=_legado(_SLUG_DE.get(E.detectar_rotacao(picos))),
                 fonte="NDVI HLS Sentinel-2/Landsat (NASA): picos de verde por ano agrícola (set–ago) = " + json.dumps(picos),
                 dias_solo_descoberto=E.dias_solo_por_ano(nd), picos_por_ano_agricola=picos)
 
@@ -306,6 +353,8 @@ def _contexto(area: dict, semeadura: str) -> dict:
     if a["origem"] == "ponto":
         avisos.append(f"Ponto convertido em quadrado de ~{PONTO_AREA_HA:.0f} ha centrado nele; relevo, histórico e solo "
                       "valem para esse quadrado, não para a lavoura real.")
+    if rk["solo"] is not None:
+        avisos += rk["solo"].get("avisos", [])
     if rk["solo"] is None:
         avisos.append("Sem dados de solo (SoilGrids) para a área: o critério água usa a estimativa por chuva/ET0 da célula.")
     if rk["rend"]["_origem"].startswith("média"):
@@ -326,7 +375,9 @@ def _contexto(area: dict, semeadura: str) -> dict:
         s = rk["solo"]
         solo_out = dict(p30=s["p30"], prof=s["prof"], cad_mm_cm=s["cad_mm_cm"], cad_mm_0_30=s["cad_mm_0_30"],
                         cad_mm_0_60=s["cad_mm_0_60"], classe_textura=s["classe_textura"], cad_metodo=s["cad_metodo"],
-                        texto=solo_texto(s), fonte="SoilGrids (ISRIC), média no polígono")
+                        texto=solo_texto(s), fonte=s.get("fonte") or "SoilGrids (ISRIC), média no polígono")
+        if s.get("fonte") == FONTE_ANALISE:
+            solo_out["profundidade_amostra_cm"] = s["amostra_profundidade_cm"]
     d = rk["diagnostico"]
     cel = rk["celula"]
     clima = dict(
@@ -356,8 +407,9 @@ def _contexto(area: dict, semeadura: str) -> dict:
     return dict(rk=rk, diag=_limpo(diag), dias_solo_ndvi=diag["rotacao_detectada"]["dias_solo_descoberto"])
 
 
-def diagnosticar(area: dict, semeadura_safrinha: str = "01/02") -> dict:
+def diagnosticar(area: dict, semeadura_safrinha: str = "01/02", analise_solo: dict | None = None) -> dict:
     """Diagnóstico da área (relevo, solo 0–30 cm + CAD, histórico MapBiomas, clima da célula, PAM do município).
+    `analise_solo` (opcional, ver `recomendar`) substitui o SoilGrids no bloco solo.
 
     Lança EntradaInvalida (geometria/semeadura/área > 5000 ha), ForaDaRegiao ou ErroConsultaExterna."""
     return _contexto(area, semeadura_safrinha)["diag"]
@@ -388,14 +440,15 @@ def _arredondar_ranking(item: dict) -> dict:
 
 # --------------------------------------------------------------------------- 3. recomendação
 def _normalizar_ajustes(aj) -> dict:
-    """Aceita {"precos": {soja, milho, trigo}, "custos": {soja, milho|milho_2safra, trigo, aveia, milheto_crotalaria,
-    braquiaria_consorcio, pousio}, "linha_custo": coe|cot|ct}; devolve o formato do engine (preco/custo/linha_custo)."""
+    """Aceita {"precos": {soja, milho, trigo, feijao, sorgo}, "custos": {soja, milho|milho_2safra, milho_verao|milho_1safra,
+    trigo, feijao|feijao_2safra, sorgo, aveia, milheto_crotalaria, braquiaria_consorcio, pousio, nabo_forrageiro, aveia_nabo},
+    "linha_custo": coe|cot|ct}; devolve o formato do engine (preco/custo/linha_custo)."""
     if aj is None:
         return {}
     if not isinstance(aj, dict):
         raise EntradaInvalida("'ajustes' deve ser um objeto.")
     ref = carregar_referencia()
-    desconhecidas = set(aj) - {"precos", "custos", "linha_custo"}
+    desconhecidas = set(aj) - {"precos", "custos", "linha_custo", "produtividade"}
     if desconhecidas:
         raise EntradaInvalida(f"Chaves de ajustes desconhecidas: {sorted(desconhecidas)}.")
     out: dict = {}
@@ -408,12 +461,117 @@ def _normalizar_ajustes(aj) -> dict:
         if kk not in ref["custos"]:
             raise EntradaInvalida(f"Custo desconhecido: {k!r}. Opções: {sorted(ref['custos']) + ['milho']}.")
         out.setdefault("custo", {})[kk] = _num(v, f"custo {k}", 0)
+    prod = aj.get("produtividade")
+    if prod is not None:
+        if not isinstance(prod, dict):
+            raise EntradaInvalida("'ajustes.produtividade' deve ser um objeto {cultura: sc/ha}.")
+        if "milho" in prod and "milho_2safra" in prod:
+            raise EntradaInvalida("Informe a produtividade do milho 2ª safra em 'milho' OU 'milho_2safra', não nas duas.")
+        for k, v in prod.items():
+            kk = _CUSTO_ALIAS.get(k, k)
+            if kk not in _PRODUTIVIDADE:
+                raise EntradaInvalida(f"Produtividade desconhecida: {k!r}. Opções: ['soja', 'milho', 'milho_2safra', 'milho_verao', "
+                                      "'milho_1safra', 'trigo', 'feijao', 'feijao_2safra', 'sorgo'].")
+            if kk in out.get("produtividade", {}):
+                raise EntradaInvalida(f"Produtividade de {kk} informada duas vezes (alias).")
+            f = _num(v, f"produtividade {k}", 0, 500)
+            if f <= 0:
+                raise EntradaInvalida(f"produtividade {k} deve ser maior que zero (recebido: {f}).")
+            out.setdefault("produtividade", {})[kk] = f
     lc = aj.get("linha_custo")
     if lc is not None:
         if lc not in ("coe", "cot", "ct"):
             raise EntradaInvalida("linha_custo deve ser 'coe', 'cot' ou 'ct'.")
         out["linha_custo"] = lc
     return out
+
+
+_CAMPOS_SOLO = {"argila_pct", "areia_pct", "materia_organica_pct", "carbono_organico_g_kg", "ph", "cad_mm_cm", "profundidade_cm"}
+
+
+def _normalizar_analise_solo(a) -> dict | None:
+    """Valida a análise de solo do produtor. Devolve {argila_pct, areia_pct, soc_g_kg, ph, cad_mm_cm, profundidade_cm}
+    (só o que veio; `profundidade_cm` padrão 20) ou None. Exige argila+areia OU cad_mm_cm."""
+    if a is None:
+        return None
+    if not isinstance(a, dict):
+        raise EntradaInvalida("'analise_solo' deve ser um objeto.")
+    desc = set(a) - _CAMPOS_SOLO
+    if desc:
+        raise EntradaInvalida(f"Campos desconhecidos em analise_solo: {sorted(desc)}. Opções: {sorted(_CAMPOS_SOLO)}.")
+    a = {k: v for k, v in a.items() if v is not None}
+    out: dict = {}
+    for k in ("argila_pct", "areia_pct"):
+        if k in a:
+            out[k] = _num(a[k], k, 0, 100)
+    if ("argila_pct" in out) != ("areia_pct" in out):
+        raise EntradaInvalida("Informe argila_pct e areia_pct juntos (ou apenas cad_mm_cm).")
+    if "argila_pct" in out and out["argila_pct"] + out["areia_pct"] > 100:
+        raise EntradaInvalida("argila_pct + areia_pct não pode passar de 100.")
+    if "materia_organica_pct" in a and "carbono_organico_g_kg" in a:
+        raise EntradaInvalida("Informe materia_organica_pct OU carbono_organico_g_kg, não os dois.")
+    if "materia_organica_pct" in a:
+        out["soc_g_kg"] = _num(a["materia_organica_pct"], "materia_organica_pct", 0, 100) / 1.724 * 10.0
+    if "carbono_organico_g_kg" in a:
+        out["soc_g_kg"] = _num(a["carbono_organico_g_kg"], "carbono_organico_g_kg", 0, 580)
+    if "ph" in a:
+        out["ph"] = _num(a["ph"], "ph", 3, 9)
+    if "cad_mm_cm" in a:
+        out["cad_mm_cm"] = _num(a["cad_mm_cm"], "cad_mm_cm", 0.3, 3)
+    if "argila_pct" not in out and "cad_mm_cm" not in out:
+        raise EntradaInvalida("analise_solo exige argila_pct e areia_pct, ou cad_mm_cm.")
+    out["profundidade_cm"] = _num(a["profundidade_cm"], "profundidade_cm", 1, 200) if "profundidade_cm" in a else 20.0
+    return out
+
+
+_SEM_COMPRADOR = {"milho": "milho", "milho_2safra": "milho", "trigo": "trigo", "sorgo": "sorgo", "feijao": "feijao", "aveia_grao": "aveia_grao"}
+
+
+def _normalizar_restricoes(r) -> dict | None:
+    """Valida `restricoes`. Devolve {'excluidas': {nomes do catálogo}, 'maquinas': {...}, 'sem_comprador': {...},
+    'eco': formato de entrada normalizado} ou None."""
+    if r is None:
+        return None
+    if not isinstance(r, dict):
+        raise EntradaInvalida("'restricoes' deve ser um objeto.")
+    desc = set(r) - {"culturas_excluidas", "maquinas", "sem_comprador"}
+    if desc:
+        raise EntradaInvalida(f"Campos desconhecidos em restricoes: {sorted(desc)}.")
+    exc = r.get("culturas_excluidas") or []
+    sem = r.get("sem_comprador") or []
+    maq = r.get("maquinas") or {}
+    if not isinstance(exc, list) or not isinstance(sem, list) or not isinstance(maq, dict):
+        raise EntradaInvalida("restricoes: 'culturas_excluidas' e 'sem_comprador' são listas; 'maquinas' é um objeto.")
+    exc = [_resolver_id(x, "Rotação excluída") for x in exc]  # ids novos ou slugs antigos (= soja__<slug>)
+    for x in sem:
+        if x not in _SEM_COMPRADOR:
+            raise EntradaInvalida(f"sem_comprador desconhecido: {x!r}. Opções: {sorted(_SEM_COMPRADOR)}.")
+    for k, v in maq.items():
+        if k not in E.CUSTO_MAQUINA:
+            raise EntradaInvalida(f"Máquina desconhecida: {k!r}. Opções: {sorted(E.CUSTO_MAQUINA)}.")
+        if not isinstance(v, bool):
+            raise EntradaInvalida(f"maquinas.{k} deve ser true ou false.")
+    return dict(excluidas={ROTACOES[x] for x in exc}, maquinas=dict(maq), sem_comprador={_SEM_COMPRADOR[x] for x in sem},
+                eco=dict(culturas_excluidas=list(dict.fromkeys(exc)), maquinas=dict(maq),
+                         sem_comprador=list(dict.fromkeys(sem))))
+
+
+def _normalizar_irrigacao(i) -> dict | None:
+    """Valida `irrigacao`: {disponivel: bool, custo_r_mm_ha (padrão 4,0), lamina_max_mm_dia (padrão 6)}."""
+    if i is None:
+        return None
+    if not isinstance(i, dict):
+        raise EntradaInvalida("'irrigacao' deve ser um objeto.")
+    desc = set(i) - {"disponivel", "custo_r_mm_ha", "lamina_max_mm_dia"}
+    if desc:
+        raise EntradaInvalida(f"Campos desconhecidos em irrigacao: {sorted(desc)}.")
+    if not isinstance(i.get("disponivel"), bool):
+        raise EntradaInvalida("irrigacao.disponivel é obrigatório e deve ser true ou false.")
+    custo = E.CUSTO_IRRIGACAO_PADRAO if i.get("custo_r_mm_ha") is None else _num(i["custo_r_mm_ha"], "custo_r_mm_ha", 0, 100)
+    lam = E.LAMINA_MAX_PADRAO if i.get("lamina_max_mm_dia") is None else _num(i["lamina_max_mm_dia"], "lamina_max_mm_dia", 0, 30)
+    if lam <= 0:
+        raise EntradaInvalida("lamina_max_mm_dia deve ser maior que zero.")
+    return dict(disponivel=i["disponivel"], custo_r_mm_ha=custo, lamina_max_mm_dia=lam)
 
 
 def _normalizar_pesos(pesos) -> dict:
@@ -429,86 +587,285 @@ def _normalizar_pesos(pesos) -> dict:
     return out
 
 
+def _verao_segunda(nome: str) -> dict:
+    c = E.CATALOGO[nome]
+    return dict(verao=dict(id=c["verao"], nome=c["nome_verao"]), segunda=dict(id=c["segunda"], nome=_maiuscula(c["nome_segunda"])))
+
+
 def _item_ranking(pos, nome, linha, marg, atual, rk, dias_ndvi, por_que_cmp=None) -> dict:
     card = E.montar_card(linha, atual, rk, dias_ndvi, marg, por_que_cmp)
     itens = []
     for i in marg["itens"]:
         itens.append(dict(
             cultura=i["rotulo"], rendimento_sc_ha=i["sc_ha"], preco=i["preco"], custo=i["custo"], margem_r_ha=i["margem"],
-            fonte=(f"rendimento IBGE PAM ({rk.get('rend_local')}, {i['anos']}); preço {fonte_preco(i)}; custo {fonte_custo(i, marg['linha_custo'])}"
-                   if i["sc_ha"] is not None else f"custo {fonte_custo(i, marg['linha_custo'])} (sem venda)")))
+            fonte=(f"rendimento informado pelo produtor; preço {fonte_preco(i)}; custo {fonte_custo(i, marg['linha_custo'])}"
+                   if i.get("prod_usuario") else
+                   f"rendimento IBGE PAM ({E.local_rend(rk, i['chave'])}, {i['anos']}); preço {fonte_preco(i)}; custo {fonte_custo(i, marg['linha_custo'])}"
+                   if i["sc_ha"] is not None else
+                   f"custo extra: {i['detalhe']} (sem venda)" if i.get("extra") else
+                   f"custo {fonte_custo(i, marg['linha_custo'])} (sem venda)")))
     avisos = []
     if marg["total"] < 0:
         avisos.append("Margem total negativa com os preços e custos usados.")
     margem = dict(total_r_ha=marg["total"], incremental_r_ha=marg["incremental"], escala_S_r_ha=marg["escala_S"], itens=itens, ano_ruim_r_ha=marg["total_ano_ruim"],
                   bonus_proxima_soja_r_ha=marg["bonus"], linha_custo=marg["linha_custo"])
     return dict(
-        posicao=pos, id=_SLUG_DE[nome], rotacao=nome, nota=float(linha["nota"]), atual=atual,
+        posicao=pos, **_ids(_SLUG_DE[nome]), **_verao_segunda(nome), rotacao=nome, nota=float(linha["nota"]), atual=atual,
         criterios={k: float(linha[k]) for k in E.CRITERIOS},
         contribuicoes={k: float(v) for k, v in linha["contrib"].items()}, margem=margem,
         card=dict(por_que=card["por_que"], evidencias=card["evidencia"], beneficios=card["beneficios"],
-                  lacunas=card["lacunas"], riscos=card["revisar"], avisos=avisos))
+                  lacunas=card["lacunas"], riscos=card["revisar"], avisos=avisos + card["avisos"], mercado=card["mercado"]),
+        **({"irrigacao": dict(lamina_media_mm_ano=round(card["irrigacao"]["lamina_media_mm"], 1),
+                                           custo_r_ha=float(round(card["irrigacao"]["custo_r_ha"])))}
+           if card["irrigacao"] else {}))
 
 
-def recomendar(area: dict, semeadura_safrinha: str = "01/02", pesos: dict | None = None,
+def _ajustes_aplicados(aj: dict, solo, restr, irr) -> list[str]:
+    """Uma frase por ajuste/entrada opcional usada (vai em metodologia.ajustes_aplicados)."""
+    o = []
+    if aj.get("preco"):
+        o.append("Preços informados pelo produtor (" + ", ".join(f"{k} R$ {v:g}/sc" for k, v in aj["preco"].items())
+                 + ") substituem a média de 12 meses da SEAB/DERAL.")
+    if aj.get("custo"):
+        o.append("Custos informados pelo produtor (" + ", ".join(f"{k} R$ {v:g}/ha" for k, v in aj["custo"].items())
+                 + ") substituem o custo CONAB.")
+    if aj.get("linha_custo"):
+        o.append(f"Linha de custo CONAB '{aj['linha_custo']}' em vez do padrão.")
+    if aj.get("produtividade"):
+        o.append("Produtividade informada pelo produtor (" + ", ".join(f"{k} {v:g} sc/ha" for k, v in aj["produtividade"].items())
+                 + ") substitui o rendimento PAM do município; o ano ruim escala proporcionalmente (próprio × p20/média da PAM); "
+                 "a soja informada também muda a escala S da renda.")
+    if solo:
+        o.append("Análise de solo do produtor substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico"
+                 + (" (CAD informada diretamente)." if "cad_mm_cm" in solo else " (CAD por Saxton & Rawls com a análise)."))
+    if restr:
+        e = restr["eco"]
+        if e["culturas_excluidas"]:
+            o.append("Rotações excluídas pelo produtor: " + ", ".join(e["culturas_excluidas"]) + ".")
+        if e["sem_comprador"]:
+            o.append("Sem comprador local (eliminam as rotações que dependem da venda): " + ", ".join(e["sem_comprador"])
+                     + ("; aveia_grao não tem efeito, pois a aveia é tratada como cobertura sem venda." if "aveia_grao" in e["sem_comprador"] else "."))
+        sem = [k for k, v in e["maquinas"].items() if v is False]
+        if sem:
+            o.append("Máquinas que o produtor não tem (" + ", ".join(sem) + "): a rotação não é eliminada, ganha aviso e custo extra "
+                     "de terceirização (estimativas, validar).")
+    if irr and irr["disponivel"]:
+        o.append(f"Irrigação disponível (R$ {irr['custo_r_mm_ha']:g}/mm/ha, lâmina máx. {irr['lamina_max_mm_dia']:g} mm/dia): irriga "
+                 "milho, milho+braquiária, trigo, sorgo e feijão quando a depleção passa de p (0,55; feijão 0,45); água sobe, veranico não conta no risco e a "
+                 "margem desconta lâmina × custo. O ganho de produtividade da irrigação não é modelado; cobertura e pousio não são irrigados.")
+    return o
+
+
+_FONTE_RENDA = "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
+_FONTE_SOLO = "estimativa de catálogo, validar com agrônomo/Embrapa"
+
+
+def _ganho_vs_atual(res: dict, nome: str, nome_atual: str) -> dict | None:
+    """Como a candidata melhora (ou piora) a produção em relação à rotação atual. None se for a própria atual ou se a atual
+    foi eliminada (sem margem para comparar). Valores com sinal: positivo = a candidata ganha."""
+    m, ma = res["margens"].get(nome), res["margens"].get(nome_atual)
+    if nome == nome_atual or m is None or ma is None:
+        return None
+    c, ca = E.CATALOGO[nome], E.CATALOGO[nome_atual]
+    t = res["tabela"].set_index("candidata")
+    sc = c["bonus_sc"] - ca["bonus_sc"]
+    faixa = (c["bonus_sc_faixa"][0] - ca["bonus_sc_faixa"][1], c["bonus_sc_faixa"][1] - ca["bonus_sc_faixa"][0])  # pior e melhor caso
+    renda_2a = sum(i["margem"] for i in m["itens"][1:]) - sum(i["margem"] for i in ma["itens"][1:])
+    return dict(
+        comparado_com=E.ID_DE[nome_atual],
+        soja_seguinte_sc=round(sc, 1), soja_seguinte_sc_faixa=[round(faixa[0], 1), round(faixa[1], 1)],
+        soja_seguinte_rs=float(round(sc * m["preco_soja"])), preco_soja_r_sc=round(m["preco_soja"], 2),
+        fonte=f"soja seguinte: {c['bonus_fonte']} (preço da soja SEAB/DERAL)",
+        renda_2a_safra=dict(r_ha=float(round(renda_2a)), origem=_FONTE_RENDA),
+        margem_total=dict(r_ha=float(round(m["total"] - ma["total"])), origem=_FONTE_RENDA + "; inclui o bônus na soja seguinte"),
+        solo=dict(dias_descobertos=c["dias_descobertos"] - ca["dias_descobertos"],
+                  cobertura=round(c["cobertura"] - ca["cobertura"], 2), origem=_FONTE_SOLO + " (dias negativos = menos solo descoberto)"),
+        agua=dict(criterio=round(float(t.loc[nome, "agua"] - t.loc[nome_atual, "agua"]), 3),
+                  origem="dado: balanço hídrico diário com NASA POWER e CAD do solo"),
+        risco_climatico=dict(criterio=round(float(t.loc[nome, "risco"] - t.loc[nome_atual, "risco"]), 3),
+                             origem="dado: geada e veranico em NASA POWER (1991–2024)"))
+
+
+def _data_referencia(d) -> date | None:
+    if d is None or isinstance(d, date):
+        return d
+    try:
+        return date.fromisoformat(d)
+    except (TypeError, ValueError):
+        raise EntradaInvalida(f"data_referencia deve ser uma data ISO (AAAA-MM-DD); recebido: {d!r}.") from None
+
+
+def recomendar(area: dict, semeadura_safrinha: str | None = None, pesos: dict | None = None,
                rotacao_atual: str | None = None, ajustes: dict | None = None,
-               n_alternativas: int = 3, incluir_diagnostico: bool = True) -> dict:
-    """Ranking das rotações para a área.
+               n_alternativas: int = 3, incluir_diagnostico: bool = True, analise_solo: dict | None = None,
+               restricoes: dict | None = None, irrigacao: dict | None = None, rotacoes: list[dict] | None = None,
+               estagio_verao: str | None = None, colheita_prevista: str | None = None, data_referencia=None) -> dict:
+    """O que pode entrar depois da colheita do verão e como isso melhora a produção, mais o que mudar na próxima safra.
+
+    rotacao_atual (OBRIGATÓRIA): id de ROTACOES ("soja__milho_safrinha") ou slug antigo ("milho_safrinha" = soja__milho_safrinha).
+    estagio_verao (opcional): estágio da cultura de verão da rotação atual (calendario.ESTAGIOS; soja: vegetativo, floracao,
+      formacao_vagens, enchimento_graos, maturacao, colhida; milho verão: vegetativo, pendoamento, grao_leitoso, grao_farinaceo,
+      maturacao, colhida). colheita estimada = data_referencia + dias típicos do estágio.
+    colheita_prevista (opcional, dd/mm): vence o estágio. data_referencia (opcional, date ou ISO; padrão hoje).
+    semeadura_safrinha (opcional): sem ela, é a primeira data de SEMEADURAS >= colheita estimada (+ preparo); com ela, vence a
+      derivada mas não pode ser anterior à colheita. Sem estágio nem colheita: premissa do catálogo (colheita) e 01/02 (semeadura).
+      Colheita depois da última data de SEMEADURAS: as culturas de 2ª janela que seguem a semeadura são eliminadas.
+
+    Saída: `agora` (mesmo verão da atual: ranking, alternativas, eliminadas) e `proxima_safra` (outro verão), cada item com
+    `ganho_vs_atual`. `ranking`, `alternativas` e `eliminadas` no topo são alias de `agora` (eliminadas = união dos dois blocos).
+
+    rotacoes (opcional): [{"verao": "soja"|"milho_verao", "segunda": <cultura da 2ª janela>}]; se vier, avalia e ranqueia só
+      essas (enums fechados do catálogo; não vazia, sem duplicatas); cada par cai no bloco do seu verão. Sem `rotacoes`, avalia
+      todas as combinações do catálogo. Combinação eliminada pelas regras volta em `eliminadas` com motivo (não é erro).
 
     pesos: renda, solo, agua, pragas, risco (0–10; faltantes = padrão {renda 5, demais 3}; todos 0 = pesos iguais).
-    rotacao_atual: slug de ROTACOES; None = detectada pelo NDVI (talhões demo com série) ou "milho_safrinha" com aviso.
     ajustes (todas opcionais):
       "precos": {"soja"|"milho"|"trigo": R$/saca de 60 kg}
-      "custos": {"soja"|"milho"|"trigo"|"aveia"|"milheto_crotalaria"|"braquiaria_consorcio"|"pousio": R$/ha}
-                ("milho" = milho 2ª safra)
+      "custos": {"soja"|"milho"|"milho_verao"|"trigo"|"feijao"|"sorgo"|"aveia"|"milheto_crotalaria"|"braquiaria_consorcio"|
+                "pousio"|"nabo_forrageiro"|"aveia_nabo": R$/ha} ("milho" = milho 2ª safra; "milho_verao" = milho 1ª safra)
       "linha_custo": "coe" (custo variável, padrão) | "cot" | "ct"  (CONAB; vale para soja, milho e trigo)
-    n_alternativas: 1–6 melhores rotações excluindo a atual. Se a atual estiver eliminada pelas regras duras
-    (ex.: soja_safrinha), `atual` traz {"eliminada": True, "motivos": [...]}, sem posição nem nota."""
-    semeadura_safrinha = _validar_semeadura(semeadura_safrinha)
+      "produtividade": {"soja"|"milho"|"milho_2safra"|"milho_verao"|"trigo"|"feijao"|"sorgo": sc/ha > 0}  substitui o rendimento PAM do município; o ano ruim
+                escala proporcionalmente (próprio × p20/média da PAM); a soja informada também muda a escala S da renda
+    analise_solo (opcional): {"argila_pct", "areia_pct", "materia_organica_pct"|"carbono_organico_g_kg", "ph", "cad_mm_cm",
+      "profundidade_cm"}; exige argila+areia ou cad_mm_cm. Substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico.
+    restricoes (opcional): {"culturas_excluidas": [slugs], "maquinas": {"plataforma_milho": bool, "semeadora_consorcio": bool},
+      "sem_comprador": ["milho"|"trigo"|"aveia_grao"]}. Excluída/sem comprador -> eliminada; máquina false -> aviso + custo
+      extra de terceirização (estimativa); máquina omitida = tem.
+    irrigacao (opcional): {"disponivel": bool, "custo_r_mm_ha": 4,0, "lamina_max_mm_dia": 6}. Irriga milho, milho+braquiária,
+      trigo, sorgo e feijão da 2ª janela (não cobertura/pousio nem o verão): água sobe, veranico não conta no risco, margem desconta lâmina × custo. O ganho de
+      produtividade da irrigação NÃO é modelado.
+    n_alternativas: 1–6 melhores rotações de cada bloco, excluindo a atual. Se a atual estiver eliminada pelas regras duras
+    (ex.: soja__soja_safrinha ou colheita tarde demais), `atual` traz {"eliminada": True, "motivos": [...]}, sem posição nem nota
+    (e sem `ganho_vs_atual` nos itens). Com `rotacoes` que não inclui a atual, `atual` traz {"avaliada": False}."""
+    if rotacao_atual is None:
+        raise EntradaInvalida("'rotacao_atual' é obrigatória (id '<verao>__<segunda>', ex.: soja__milho_safrinha).")
+    if semeadura_safrinha is not None:
+        semeadura_safrinha = _validar_semeadura(semeadura_safrinha)
     pesos_n = _normalizar_pesos(pesos)
     aj_n = _normalizar_ajustes(ajustes)
-    if rotacao_atual is not None and rotacao_atual not in ROTACOES:
-        raise EntradaInvalida(f"rotacao_atual desconhecida: {rotacao_atual!r}. Opções: {list(ROTACOES)}.")
+    solo_n = _normalizar_analise_solo(analise_solo)
+    restr_n = _normalizar_restricoes(restricoes)
+    irr_n = _normalizar_irrigacao(irrigacao)
+    sel = _normalizar_rotacoes(rotacoes)
+    rotacao_atual = _resolver_id(rotacao_atual, "rotacao_atual")
     if isinstance(n_alternativas, bool) or not isinstance(n_alternativas, int) or not 1 <= n_alternativas <= 6:
         raise EntradaInvalida("n_alternativas deve ser um inteiro entre 1 e 6.")
-    ctx = _contexto(area, semeadura_safrinha)
+    nome_atual = ROTACOES[rotacao_atual]
+    verao_atual = E.CATALOGO[nome_atual]["verao"]
+    data_ref = _data_referencia(data_referencia) or date.today()
+    try:
+        cron = cal.resolver(verao_atual, estagio_verao, colheita_prevista, data_ref, semeadura_safrinha)
+    except ValueError as e:
+        raise EntradaInvalida(str(e)) from e
+    avisos_cal = []
+    if cron:
+        colheita = dict(data=cron["colheita"], origem=cron["origem"])
+        dias_ate = cron["dias_ate_colheita"]
+        sem_2a = cron["semeadura_2a"]  # None = colheita tarde demais
+        sem_origem = "informada" if semeadura_safrinha else "derivada"
+        if colheita_prevista is not None and estagio_verao is not None:
+            avisos_cal.append("colheita_prevista e estagio_verao informados: vale a colheita_prevista.")
+        if semeadura_safrinha:
+            avisos_cal.append(f"semeadura_safrinha {semeadura_safrinha} informada: vale no lugar da derivada da colheita "
+                              f"(primeira data >= colheita: {cal.semeadura_derivada(cron['data']) or 'nenhuma'}).")
+        if sem_2a is None:
+            avisos_cal.append(f"Colheita de {E.VERAO[verao_atual]['nome'].lower()} estimada em ~{cron['colheita']}, depois da última "
+                              f"semeadura considerada ({E.SEMEADURAS[-1]}): tarde demais para a safrinha; só as culturas de "
+                              "data fixa (inverno e cobertura) seguem avaliadas.")
+    else:
+        colheita = dict(data=E.VERAO[verao_atual]["colheita"], origem="premissa")
+        dias_ate = None
+        sem_2a = semeadura_safrinha or E.SEMEADURA_PADRAO
+        sem_origem = "informada" if semeadura_safrinha else "premissa"
+        avisos_cal.append(f"Sem estagio_verao nem colheita_prevista: colheita de {E.VERAO[verao_atual]['nome'].lower()} assumida em "
+                          f"~{colheita['data']} (premissa do catálogo, estimativa)"
+                          + ("" if semeadura_safrinha else f" e semeadura da 2ª janela em {sem_2a} (padrão)")
+                          + ". Informe o estágio da cultura de verão para uma resposta sobre o que entra depois da colheita.")
+    ctx = _contexto(area, sem_2a or E.SEMEADURAS[-1], solo_n)
     rk, diag = ctx["rk"], ctx["diag"]
-    avisos = list(diag["avisos"])
-    if rotacao_atual is None:
-        det = diag["rotacao_detectada"]["rotacao"]
-        if det:
-            rotacao_atual = det
-        else:
-            rotacao_atual = "milho_safrinha"
-            avisos.append("Rotação atual não informada nem detectável por NDVI para esta área: assumida 'milho_safrinha'.")
+    rk["restr"] = restr_n
+    rk["irrig"] = irr_n if irr_n and irr_n["disponivel"] else None
+    if cron:
+        rk["colheita_produtor"] = dict(verao=verao_atual, colheita=cron["colheita"])
+    avisos = list(diag["avisos"]) + avisos_cal
+    if rk["irrig"] and rk.get("agua_ctx") is None:
+        avisos.append("Irrigação informada, mas sem solo para o balanço hídrico: ignorada.")
     dias = ctx["dias_solo_ndvi"]
     dias = float("nan") if dias is None else dias
-    res = E.pontuar(pesos_n, rk, aj_n)
+    # a atual é sempre avaliada (para o ganho_vs_atual), mesmo fora de `rotacoes`; só aparece se estiver em `rotacoes`
+    avaliar = None if sel is None else list(dict.fromkeys([ROTACOES[i] for i in sel] + [nome_atual]))
+    try:
+        res = E.pontuar(pesos_n, rk, aj_n, avaliar)
+    except E.SemCandidatas as e:
+        if sel is None:
+            raise EntradaInvalida(str(e)) from e
+        res = dict(tabela=pd.DataFrame(columns=["candidata"]), eliminadas=e.eliminadas, margens={}, aviso_renda=None)
     if res["aviso_renda"]:
         avisos.append(res["aviso_renda"])
-    nome_atual = ROTACOES[rotacao_atual]
-    ranking = []
-    for pos, (_, linha) in enumerate(res["tabela"].iterrows(), start=1):
-        n = linha["candidata"]
-        ranking.append(_item_ranking(pos, n, linha, res["margens"][n], n == nome_atual,
-                                     rk, dias if n == nome_atual else float("nan"),
-                                     E.por_que_comparado(res, n, nome_atual)))
-    eliminadas = [dict(id=_SLUG_DE[n], rotacao=n, motivos=list(m)) for n, m in res["eliminadas"].items()]
-    atual = next((r for r in ranking if r["atual"]), None)
-    ranking = [_arredondar_ranking(r) for r in ranking]
-    if atual is not None:
-        atual = next(r for r in ranking if r["atual"])
-    if atual is None:
-        mot = res["eliminadas"].get(nome_atual, [])
-        atual = dict(posicao=None, id=rotacao_atual, rotacao=nome_atual, nota=None, atual=True, eliminada=True, motivos=list(mot))
-        avisos.append(f"A rotação atual ({nome_atual}) é eliminada pelas regras duras: " + " ".join(mot))
+    pedidas = None if sel is None else {ROTACOES[i] for i in sel}
+    mostrar = lambda n: pedidas is None or n in pedidas  # noqa: E731
+    no_agora = lambda n: E.CATALOGO[n]["verao"] == verao_atual  # noqa: E731
+    elim = {n: m for n, m in res["eliminadas"].items() if mostrar(n)}
+
+    def bloco(agora: bool) -> dict:
+        nomes = [n for n in res["tabela"]["candidata"] if mostrar(n) and no_agora(n) == agora]
+        tab = res["tabela"]
+        res_b = dict(res, tabela=tab[tab["candidata"].isin(nomes + ([nome_atual] if not agora and mostrar(nome_atual) else []))]
+                     .reset_index(drop=True))
+        itens = []
+        for pos, (_, linha) in enumerate(res_b["tabela"][res_b["tabela"]["candidata"].isin(nomes)].iterrows(), start=1):
+            n = linha["candidata"]
+            item = _item_ranking(pos, n, linha, res["margens"][n], n == nome_atual, rk, dias if n == nome_atual else float("nan"),
+                                 E.por_que_comparado(res_b, n, nome_atual))
+            item["ganho_vs_atual"] = _ganho_vs_atual(res, n, nome_atual)
+            itens.append(_arredondar_ranking(item))
+        el = [dict(**_ids(_SLUG_DE[n]), **_verao_segunda(n), rotacao=n, motivos=list(m)) for n, m in elim.items() if no_agora(n) == agora]
+        return dict(ranking=itens, alternativas=[r for r in itens if not r["atual"]][:n_alternativas], eliminadas=el)
+
+    agora, proxima = bloco(True), bloco(False)
+    if sel is not None and not agora["ranking"] and not proxima["ranking"]:
+        avisos.append("Todas as rotações pedidas em 'rotacoes' foram eliminadas pelas regras ou restrições (veja 'eliminadas').")
+    atual = next((r for r in agora["ranking"] if r["atual"]), None)
+    if atual is None and nome_atual in res["eliminadas"]:
+        mot = res["eliminadas"][nome_atual]
+        atual = dict(posicao=None, **_ids(rotacao_atual), rotacao=nome_atual, nota=None, atual=True, eliminada=True, motivos=list(mot))
+        avisos.append(f"A rotação atual ({nome_atual}) é eliminada ({'regras duras ou restrições do produtor' if restr_n else 'regras duras'}): "
+                      + " ".join(mot))
+    elif atual is None:
+        atual = dict(posicao=None, **_ids(rotacao_atual), rotacao=nome_atual, nota=None, atual=True, avaliada=False)
+        avisos.append(f"A rotação atual ({nome_atual}) não está em 'rotacoes': não foi avaliada nem comparada.")
+    entrada = dict(semeadura_safrinha=sem_2a, pesos=pesos_n, rotacao_atual=rotacao_atual, estagio_verao=estagio_verao,
+                   colheita_prevista=colheita_prevista, data_referencia=data_ref.isoformat(),
+                   ajustes=ajustes or {}, n_alternativas=n_alternativas)
+    if sel is not None:
+        entrada["rotacoes"] = [dict(verao=E.CATALOGO[ROTACOES[i]]["verao"], segunda=E.CATALOGO[ROTACOES[i]]["segunda"]) for i in sel]
+    if solo_n:
+        entrada["analise_solo"] = {k: v for k, v in dict(solo_n, cad_mm_cm=solo_n.get("cad_mm_cm")).items() if v is not None}
+        if "soc_g_kg" in solo_n:
+            entrada["analise_solo"]["carbono_organico_g_kg"] = round(entrada["analise_solo"].pop("soc_g_kg"), 2)
+    if restr_n:
+        entrada["restricoes"] = restr_n["eco"]
+    if irr_n:
+        entrada["irrigacao"] = irr_n
+    est = None
+    if estagio_verao is not None:
+        e = cal.ESTAGIOS[verao_atual][estagio_verao]
+        est = dict(id=estagio_verao, nome=e["nome"], dias_tipicos_ate_colheita=e["dias"], fonte=cal.FONTE_ESTAGIOS)
     out = dict(
-        entrada=dict(semeadura_safrinha=semeadura_safrinha, pesos=pesos_n, rotacao_atual=rotacao_atual,
-                     ajustes=ajustes or {}, n_alternativas=n_alternativas),
-        ranking=ranking, atual=atual,
-        alternativas=[r for r in ranking if not r["atual"]][:n_alternativas],
-        eliminadas=eliminadas, avisos=avisos,
+        entrada=entrada,
+        cultura_atual=dict(id=verao_atual, nome=E.VERAO[verao_atual]["nome"]),
+        estagio_verao=est,
+        colheita_estimada=colheita,
+        semeadura_2a=None if sem_2a is None else dict(data=sem_2a, origem=sem_origem),
+        dias_ate_colheita=dias_ate,
+        atual=atual,
+        agora=agora, proxima_safra=proxima,
+        ranking=agora["ranking"], alternativas=agora["alternativas"],
+        eliminadas=agora["eliminadas"] + proxima["eliminadas"], avisos=avisos,
         metodologia=dict(formula="Nota = Σ peso_i × critério_i / Σ peso_i", criterios=_CRIT_METODO, versao=VERSAO))
+    aplicados = _ajustes_aplicados(aj_n, solo_n, restr_n, irr_n)
+    if aplicados:
+        out["metodologia"]["ajustes_aplicados"] = aplicados
     if incluir_diagnostico:
         out["diagnostico"] = diag
     return _limpo(out)
@@ -533,14 +890,42 @@ def _ponto_talhao(tid: str) -> dict:
     return dict(area_ha=round(float(row["area_ha"]), 2), lat=round(lat, 5), lon=round(lon, 5))
 
 
+def _maiuscula(t: str) -> str:
+    return t[0].upper() + t[1:]
+
+
+def _combinacoes() -> list[dict]:
+    """Todos os pares (verão, 2ª janela) do catálogo. `semeaduras_validas`: semeaduras da 2ª cultura em que o par passa nas regras de
+    calendário e legais (vazia = sempre eliminado, ex.: soja na 2ª janela)."""
+    out = []
+    for i, nome in ROTACOES.items():
+        c = E.CATALOGO[nome]
+        validas = [x for x in E.SEMEADURAS if not E.checar_regras(c, {"semeadura": x})]
+        out.append(dict(id=i, **({"id_legado": _legado(i)} if _legado(i) else {}), nome=nome, verao=c["verao"], segunda=c["segunda"],
+                        valida=bool(validas), semeaduras_validas=validas,
+                        motivo_se_invalida=None if validas else " ".join(E.checar_regras(c, {"semeadura": E.SEMEADURA_PADRAO}))))
+    return out
+
+
 def opcoes() -> dict:
-    """Catálogo para montar o formulário: rotações, semeaduras, critérios, pesos, referência de renda, região, talhões demo."""
+    """Catálogo para montar o formulário: culturas de verão e da 2ª janela, combinações (rotações), semeaduras, critérios, pesos,
+    referência de renda, região, talhões demo."""
     ref = carregar_referencia()
-    fontes = [dict(item=f"preço {k}", fonte=v["fonte"], periodo=v.get("periodo"), url=v.get("url")) for k, v in ref["precos"].items()]
+    fontes = [dict(item=f"preço {k}", fonte=v["fonte"], periodo=v.get("periodo"), estimativa=v.get("estimativa", False), url=v.get("url"))
+              for k, v in ref["precos"].items()]
     fontes += [dict(item=f"custo {k}", fonte=v["fonte"], estimativa=v.get("estimativa", False), url=v.get("url"))
                for k, v in ref["custos"].items()]
     return _limpo(dict(
-        rotacoes=[dict(id=s, nome=n, descricao_curta=_DESCRICAO[s]) for s, n in ROTACOES.items()],
+        culturas_verao=[dict(id=k, nome=v["nome"], tipo="grão", descricao_curta=v["descricao"],
+                             estagios=[dict(id=e, nome=d["nome"], dias_ate_colheita=d["dias"]) for e, d in cal.ESTAGIOS[k].items()],
+                             colheita_catalogo=v["colheita"]) for k, v in E.VERAO.items()],
+        estagios_fonte=cal.FONTE_ESTAGIOS, dias_preparo_2a=cal.DIAS_PREPARO_2A,
+        culturas_segunda=[dict(id=k, nome=_maiuscula(v["nome"]), tipo=v["tipo"], descricao_curta=_DESCRICAO[k]) for k, v in E.SEGUNDA.items()],
+        combinacoes=_combinacoes(),
+        rotacoes=[dict(id=i, **({"id_legado": _legado(i)} if _legado(i) else {}), nome=n,
+                       descricao_curta=_DESCRICAO[E.CATALOGO[n]["segunda"]] if E.CATALOGO[n]["verao"] == "soja"
+                       else f"{E.CATALOGO[n]['nome_verao']} no verão, depois: {_DESCRICAO[E.CATALOGO[n]['segunda']]}")
+                  for i, n in ROTACOES.items()],
         semeaduras=list(E.SEMEADURAS), semeadura_padrao=E.SEMEADURA_PADRAO,
         criterios=[dict(id=k, nome=v) for k, v in E.CRITERIOS.items()], pesos_padrao=dict(E.PESOS_PADRAO),
         renda_referencia=dict(

@@ -1,7 +1,8 @@
-"""Rendimento municipal (IBGE PAM, SIDRA 1612 e 839), lido de data/raw/ibge/pam_oeste_pr.parquet.
+"""Rendimento municipal (IBGE PAM, SIDRA 1612, 839 e 1002), lido de data/raw/ibge/pam_oeste_pr.parquet e, se existir,
+de data/raw/ibge/pam_extra_oeste_pr.parquet (sorgo e feijão 2ª safra; ingest/pam_culturas_extra.py), mesmo esquema.
 
-produtividade(cod_ibge) -> {cultura: {...}}; culturas: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia.
-Saca = 60 kg (soja, milho, trigo); aveia só em kg/ha. Últimos 5 anos COM dado (até 2025, se existir).
+produtividade(cod_ibge) -> {cultura: {...}}; culturas: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
+Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos 5 anos COM dado (até 2025, se existir).
 CV = desvio padrão / média dos últimos 10 anos. Tendência = inclinação (kg/ha/ano) da regressão linear dos últimos 10 anos.
 """
 from __future__ import annotations
@@ -14,14 +15,18 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 PAM = ROOT / "data/raw/ibge/pam_oeste_pr.parquet"
-SACA_KG = {"soja": 60, "milho_total": 60, "milho_1safra": 60, "milho_2safra": 60, "trigo": 60}
+PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"
+SACA_KG = {"soja": 60, "milho_total": 60, "milho_1safra": 60, "milho_2safra": 60, "trigo": 60, "sorgo": 60, "feijao_2safra": 60}
+ANO_MIN = {"sorgo": 2013, "feijao_2safra": 2013}  # séries antigas/interrompidas do sorgo e do feijão 2ª safra não representam o manejo atual
 NOMES = {"soja": "soja", "milho_total": "milho", "milho_1safra": "milho 1ª safra", "milho_2safra": "milho 2ª safra",
-         "trigo": "trigo", "aveia": "aveia"}
+         "trigo": "trigo", "aveia": "aveia", "sorgo": "sorgo", "feijao_2safra": "feijão 2ª safra"}
 
 
 @lru_cache(maxsize=1)
 def _rend() -> pd.DataFrame:
     d = pd.read_parquet(PAM)
+    if PAM_EXTRA.exists():
+        d = pd.concat([d, pd.read_parquet(PAM_EXTRA)], ignore_index=True)
     d = d[d["variavel"] == "rendimento_kg_ha"]
     return d.pivot_table(index=["cod_ibge", "ano"], columns="cultura", values="valor").sort_index()
 
@@ -33,7 +38,8 @@ def serie(cod_ibge, cultura: str) -> pd.Series:
         s = r.xs(str(int(cod_ibge)), level="cod_ibge")[cultura]
     except KeyError:
         return pd.Series(dtype=float)
-    return s.dropna()
+    s = s.dropna()
+    return s[s.index >= ANO_MIN[cultura]] if cultura in ANO_MIN else s
 
 
 def produtividade(cod_ibge, n_anos: int = 5) -> dict:
