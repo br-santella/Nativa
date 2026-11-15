@@ -97,7 +97,9 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **PAM for sorghum and 2nd-season beans in all of Paraná**: `pam_extra_oeste_pr.parquet` only covers the 50 Oeste municipalities; there is no `pam_extra_pr`. Outside the Oeste these crops use the Oeste average (listed in `_regionais`, source text "Oeste do PR (média...)"). Extend `ingest/pam_culturas_extra.py` to the 399 municipalities.
   Files: `ingest/pam_culturas_extra.py`, `src/field_shift/pam/produtividade.py`, `src/field_shift/renda/renda.py`.
-  Status: pending
+  Done (15/11/2026): `uv run python ingest/pam_culturas_extra.py --regiao pr` writes `data/raw/ibge/pam_extra_pr.parquet` (399 municipalities, 119,700 rows, 1974–2025); `pam/produtividade.py` reads it in preference to the Oeste-only file. With the engine's own rule (≥ 3 years and last year ≥ 2018), 2nd-season beans now have a municipal series in 273 of 399 municipalities and sorghum in 42 (sorghum has few records in the PAM); the rest keep the Oeste average and the existing `_regionais` warning. Test: `tests/test_pam_extra.py`.
+  Caution: small, atypical PAM series now override the regional average (e.g. Londrina beans: 9.4 sc/ha over 3 years); consider a minimum harvested area or a sanity band against the regional average.
+  Status: done
 
 ## Future features
 

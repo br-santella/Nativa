@@ -1,5 +1,5 @@
 """Rendimento municipal (IBGE PAM, SIDRA 1612, 839 e 1002), lido de data/raw/ibge/pam_pr.parquet e, se existir,
-de data/raw/ibge/pam_extra_oeste_pr.parquet (sorgo e feijão 2ª safra; ingest/pam_culturas_extra.py), mesmo esquema.
+de data/raw/ibge/pam_extra_pr.parquet (ou pam_extra_oeste_pr.parquet; sorgo e feijão 2ª safra; ingest/pam_culturas_extra.py), mesmo esquema.
 
 produtividade(cod_ibge) -> {cultura: {...}}; culturas: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
 Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos YIELD_WINDOW_YEARS (10) anos COM dado (até 2025, se existir): média, CV e tendência usam a mesma janela, a mesma do p20
@@ -15,7 +15,8 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 PAM = ROOT / "data/raw/ibge/pam_pr.parquet"
-PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"
+PAM_EXTRA_PR = ROOT / "data/raw/ibge/pam_extra_pr.parquet"  # sorgo e feijão 2ª safra, 399 municípios (ingest/pam_culturas_extra.py --regiao pr)
+PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"  # só os 50 municípios do Oeste; usado se o do PR inteiro não existir
 SACA_KG = {"soja": 60, "milho_total": 60, "milho_1safra": 60, "milho_2safra": 60, "trigo": 60, "sorgo": 60, "feijao_2safra": 60}
 ANO_MIN = {"sorgo": 2013, "feijao_2safra": 2013}  # séries antigas/interrompidas do sorgo e do feijão 2ª safra não representam o manejo atual
 YIELD_WINDOW_YEARS = 10  # single window for mean, CV, trend and the p20 "bad year" (renda._p20_sc)
@@ -26,8 +27,9 @@ NOMES = {"soja": "soja", "milho_total": "milho", "milho_1safra": "milho 1ª safr
 @lru_cache(maxsize=1)
 def _rend() -> pd.DataFrame:
     d = pd.read_parquet(PAM)
-    if PAM_EXTRA.exists():
-        d = pd.concat([d, pd.read_parquet(PAM_EXTRA)], ignore_index=True)
+    extra = PAM_EXTRA_PR if PAM_EXTRA_PR.exists() else PAM_EXTRA  # the state-wide file already contains the Oeste: never read both
+    if extra.exists():
+        d = pd.concat([d, pd.read_parquet(extra)], ignore_index=True)
     d = d[d["variavel"] == "rendimento_kg_ha"]
     return d.pivot_table(index=["cod_ibge", "ano"], columns="cultura", values="valor").sort_index()
 

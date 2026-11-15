@@ -1,12 +1,12 @@
-"""Ingestão IBGE PAM (SIDRA) das culturas extras da 2ª janela: sorgo e feijão 2ª safra, municípios do Oeste do PR.
+"""Ingestão IBGE PAM (SIDRA) das culturas extras da 2ª janela: sorgo e feijão 2ª safra, municípios do Oeste do PR ou do PR inteiro.
 
-Grava data/raw/ibge/pam_extra_oeste_pr.parquet no MESMO esquema de pam_oeste_pr.parquet
+Grava data/raw/ibge/pam_extra_oeste_pr.parquet (--regiao oeste_pr) ou pam_extra_pr.parquet (--regiao pr) no MESMO esquema de pam_oeste_pr.parquet
 (tabela, cod_ibge, ano, variavel, cultura, valor; formato longo). `field_shift.pam.produtividade` lê os dois arquivos.
 
   tabela 1612, classificação 81: 2714 sorgo (em grão)            -> cultura "sorgo"
   tabela 1002, classificação 81: 117992 feijão (em grão) 2ª safra -> cultura "feijao_2safra"
 
-Uso: uv run python ingest/pam_culturas_extra.py [--force]
+Uso: uv run python ingest/pam_culturas_extra.py [--force] [--regiao oeste_pr|pr]
 (Arquivo próprio para não depender de ingest/solo_pam_oeste_pr.py, que baixa o PAM do PR inteiro.)
 """
 import argparse
@@ -19,7 +19,8 @@ import requests
 
 ROOT = Path(__file__).resolve().parents[1]
 REG = ROOT / "data/raw/regiao"
-SAIDA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"
+REGIOES = {"oeste_pr": ("municipios_oeste_pr.geojson", "pam_extra_oeste_pr.parquet"),
+           "pr": ("municipios_pr.geojson", "pam_extra_pr.parquet")}
 SIDRA = "https://apisidra.ibge.gov.br/values"
 VARS = {"109": "area_plantada_ha", "216": "area_colhida_ha", "214": "producao_t", "112": "rendimento_kg_ha"}
 FONTES = [("1612", {"2714": "sorgo"}), ("1002", {"117992": "feijao_2safra"})]
@@ -38,12 +39,14 @@ def _sidra(tabela, vars_, prods, munis):
     raise RuntimeError("SIDRA falhou")
 
 
-def pam_extra(force=False):
+def pam_extra(force=False, regiao="oeste_pr"):
+    geojson, nome = REGIOES[regiao]
+    SAIDA = ROOT / "data/raw/ibge" / nome
     if SAIDA.exists() and not force:
         print("já existe:", SAIDA)
         return
     SAIDA.parent.mkdir(parents=True, exist_ok=True)
-    munis = [str(int(c)) for c in gpd.read_file(REG / "municipios_oeste_pr.geojson")["cod_ibge"]]
+    munis = [str(int(c)) for c in gpd.read_file(REG / geojson)["cod_ibge"]]
     linhas = []
     for tabela, prods in FONTES:
         for i in range(0, len(munis), 10):
@@ -64,4 +67,6 @@ def pam_extra(force=False):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
-    pam_extra(ap.parse_args().force)
+    ap.add_argument("--regiao", choices=list(REGIOES), default="oeste_pr")
+    a = ap.parse_args()
+    pam_extra(a.force, a.regiao)
