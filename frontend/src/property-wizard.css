@@ -104,3 +104,67 @@
 .wizard-rotation-heading > span { font-size: 16px; font-weight: 500; }
 .wizard-rotation-heading > small { color: #a4b59d; font-size: 10px; }
 @media(max-width:440px) { .wizard-rotation > .wizard-grid { grid-template-columns: 1fr; } }
+/* Top back button (replaces the bottom "Voltar" and the "Voltar ao início" link). */
+.property-wizard .wizard-header { justify-content: space-between; }
+.wizard-top-back { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 8px; border: 1px solid #365046; border-radius: 999px; background: #10271f; color: #dfe8d6; font-size: 12px; cursor: pointer; transition: border-color .18s, background .18s; }
+.wizard-top-back > span { color: var(--wizard-yellow); font-size: 15px; line-height: 1; }
+.wizard-top-back:hover { border-color: #ffbf2280; background: #ffbf220c; }
+.wizard-top-back:focus-visible { outline: 2px solid var(--wizard-yellow); outline-offset: 3px; }
+/* Sample field details. */
+.wizard-sample { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); gap: 14px; align-items: stretch; }
+.wizard-sample-facts { display: grid; gap: 10px; margin: 0; padding: 14px; border: 1px solid #365046; border-radius: 10px; background: #10271f; }
+.wizard-sample-facts > div { display: grid; gap: 2px; }
+.wizard-sample-facts dt { color: #94a99b; font-size: 10px; text-transform: uppercase; letter-spacing: .6px; }
+.wizard-sample-facts dd { margin: 0; color: #e7ecdf; font-size: 13px; line-height: 1.5; }
+.wizard-map-canvas.is-view { height: 100%; min-height: 220px; cursor: grab; }
+/* Address search. */
+.wizard-search { display: flex; gap: 8px; min-width: 0; }
+.wizard-search input { flex: 1; }
+.wizard-search button { flex: 0 0 auto; padding: 0 14px; border: 1px solid var(--wizard-yellow); border-radius: 7px; background: transparent; color: var(--wizard-yellow); font-size: 12px; cursor: pointer; }
+.wizard-search button:disabled { opacity: .45; cursor: default; }
+.wizard-places { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.wizard-places button { width: 100%; text-align: left; padding: 10px 12px; border: 1px solid #365046; border-radius: 8px; background: #10271f; color: #dfe8d6; font-size: 12px; line-height: 1.5; cursor: pointer; }
+.wizard-places button:hover, .wizard-places button:focus-visible { border-color: var(--wizard-yellow); outline: none; }
+/* Segmented choice (point / boundary, Yes / No). */
+.wizard-segmented { display: inline-flex; justify-self: start; padding: 3px; gap: 3px; border: 1px solid #365046; border-radius: 999px; background: #0b211c; }
+.wizard-segmented label { position: relative; cursor: pointer; }
+.wizard-segmented input { position: absolute; opacity: 0; pointer-events: none; }
+.wizard-segmented label > span { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 999px; color: #bfceb8; font-size: 12px; transition: background .18s, color .18s; }
+.wizard-segmented label > span > span { color: var(--wizard-yellow); }
+.wizard-segmented input:checked + span { background: var(--wizard-yellow); color: #152217; }
+.wizard-segmented input:checked + span > span { color: #152217; }
+.wizard-segmented input:focus-visible + span { outline: 2px solid var(--wizard-yellow); outline-offset: 2px; }
+.wizard-segmented.is-compact label > span { padding: 6px 14px; min-width: 52px; justify-content: center; }
+.wizard-polygon-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; font-size: 12px; color: #cfdbc0; }
+.wizard-polygon-bar > span:last-child { display: inline-flex; gap: 14px; }
+.wizard-inline-link:disabled { opacity: .4; cursor: default; }
+/* Second-crop sowing as chips. */
+.wizard-pills { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; border: 0; padding: 0; margin: 0; }
+.wizard-pills legend { display: flex; align-items: baseline; gap: 5px; font-size: 12px; line-height: 1.5; margin-bottom: 8px; padding: 0; }
+.wizard-pills label { position: relative; cursor: pointer; }
+.wizard-pills input { position: absolute; opacity: 0; pointer-events: none; }
+.wizard-pills label > span { display: inline-block; padding: 8px 14px; border: 1px solid #365046; border-radius: 999px; background: #10271f; color: #dfe8d6; font-size: 12px; transition: border-color .18s, background .18s; }
+.wizard-pills label:hover > span { border-color: #ffbf2280; }
+.wizard-pills input:checked + span { border-color: var(--wizard-yellow); background: #ffbf2214; color: #ffe3a0; }
+.wizard-pills input:focus-visible + span { outline: 2px solid var(--wizard-yellow); outline-offset: 2px; }
+/* Reference date. */
+.wizard-reference { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 14px; align-items: center; padding: 14px; border: 1px solid #365046; border-left: 2px solid var(--wizard-yellow); border-radius: 10px; background: #10271f; }
+.wizard-reference strong { font-size: 12px; font-weight: 500; color: #e7ecdf; }
+.wizard-reference p { margin: 4px 0 0; color: #a5b8a6; font-size: 11px; line-height: 1.6; }
+.wizard-reference-input { display: grid; gap: 6px; justify-items: end; }
+.wizard-fields .wizard-reference-input input { width: 170px; }
+/* Buyers: Yes / No per crop. */
+.wizard-buyers { display: grid; gap: 8px; min-width: 0; border: 0; padding: 0; margin: 0; }
+.wizard-buyers legend { font-size: 12px; color: #cbd8c4; margin-bottom: 4px; padding: 0; }
+.wizard-buyer-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 12px; border: 1px solid #365046; border-radius: 8px; background: #10271f; font-size: 13px; }
+@media (max-width: 1050px) { .wizard-sample { grid-template-columns: 1fr; } .wizard-map-canvas.is-view { min-height: 200px; } }
+@media (max-width: 700px) {
+ .wizard-reference { grid-template-columns: 1fr; }
+ .wizard-finder { grid-template-columns: 1fr; }
+ .wizard-reference-input { justify-items: start; }
+ .wizard-segmented { justify-self: stretch; }
+ .wizard-segmented label { flex: 1; }
+ .wizard-segmented label > span { width: 100%; justify-content: center; }
+ .wizard-buyer-row .wizard-segmented { justify-self: auto; }
+ .wizard-buyer-row .wizard-segmented label { flex: 0 0 auto; }
+}

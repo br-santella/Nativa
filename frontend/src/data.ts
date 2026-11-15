@@ -27,6 +27,7 @@ export const initialFarm = {
   irrigationType: "Pivô central",
   waterRestriction: "Limite de captação no período seco",
   crop: "Soja",
+  address: "",
 };
 export type Farm = typeof initialFarm;
 export const initialCrops = [

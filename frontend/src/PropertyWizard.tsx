@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Farm } from './data';
 import type { Area, Pesos } from './api';
@@ -6,6 +6,7 @@ import { LanguageSwitcher, t, useLanguage } from './i18n';
 import options from './setup-options.json';
 import './property-wizard.css';
 import LocationMap from './LocationMap';
+import type { LatLon, MapFocus } from './LocationMap';
 
 export type SetupInputs = {
   area: Area; rotacao_atual: string; pesos: Pesos; n_alternativas: number;
@@ -21,11 +22,21 @@ const commodities = [['soja','Soja'],['milho','Milho'],['trigo','Trigo'],['feija
 const copy = [
  ['Vamos começar','Um novo olhar começa aqui.','Vamos conhecer um pouquinho da sua terra. No seu tempo.'],
  ['Sua lavoura','O que você cultiva hoje?','Começamos com o que já faz parte da sua rotina.'],
- ['Seu olhar','Como sua terra tem estado?','Se algo tem preocupado você, pode nos contar.'],
+ ['Pragas e problemas','Pragas conhecidas','Marque as pragas, doenças ou problemas de solo que já apareceram na sua área.'],
  ['Seu solo','Vamos olhar para o solo?','Preencha o que souber ou siga sem análise.'],
  ['Seu próximo ciclo','O que importa para você?','Escolha uma prioridade e ajuste se quiser.'],
  ['Tudo pronto','Vamos aos seus cenários?','Os detalhes abaixo são opcionais.'],
 ];
+const isoToday = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+/** Approximate area (ha) of a boundary drawn on the map, projected around its centroid. */
+function hectares(vertices: LatLon[]): number {
+ if (vertices.length < 3) return 0;
+ const lat0 = vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length * Math.PI / 180;
+ const xy = vertices.map(([lat, lon]) => [lon * 111320 * Math.cos(lat0), lat * 110540]);
+ const twice = xy.reduce((s, [x, y], i) => { const [nx, ny] = xy[(i + 1) % xy.length]; return s + x * ny - nx * y; }, 0);
+ return Math.abs(twice) / 2 / 10000;
+}
+type Place = { label: string; lat: number; lon: number };
 export default function PropertyWizard({ initial, brand, onHome, onComplete }: { initial: Farm; brand: ReactNode; onHome: () => void; onComplete: (farm: Farm, inputs: SetupInputs) => void }) {
  const { language } = useLanguage();
  const en = language === 'en';
@@ -35,13 +46,19 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
  const [farm, setFarm] = useState(initial);
  const [mode, setMode] = useState('demo');
  const [demo, setDemo] = useState('72638');
- const [polygon, setPolygon] = useState('');
+ const [vertices, setVertices] = useState<LatLon[]>([]);
+ const [focus, setFocus] = useState<MapFocus | null>(null);
+ const [cityQuery, setCityQuery] = useState(initial.city.replace(/,\s*PR$/i, ''));
+ const [address, setAddress] = useState(initial.address ?? '');
+ const [places, setPlaces] = useState<Place[]>([]);
+ const [searching, setSearching] = useState(false), [searchNote, setSearchNote] = useState('');
  const [summerCrop, setSummerCrop] = useState('soja');
  const [rotationsByCrop, setRotationsByCrop] = useState<Record<string, string>>({soja: 'soja__milho_safrinha', milho_verao: 'milho_verao__milho_safrinha'});
  const rotation = rotationsByCrop[summerCrop];
  const [stage, setStage] = useState('');
  const [harvest, setHarvest] = useState('');
- const [date, setDate] = useState(() => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' }));
+ const today = useMemo(isoToday, []);
+ const [date, setDate] = useState(today);
  const [sowing, setSowing] = useState('');
  const [problems, setProblems] = useState<string[]>([]);
  const [soil, setSoil] = useState<Record<string,string>>({});
@@ -51,10 +68,10 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
  const [header, setHeader] = useState(true), [seeder, setSeeder] = useState(true), [irrigation, setIrrigation] = useState(false);
  const [count, setCount] = useState(3), [error, setError] = useState('');
  const heading = useRef<HTMLHeadingElement>(null);
- useEffect(() => { heading.current?.focus(); }, [step]);
+ useEffect(() => { window.scrollTo({ top: 0 }); heading.current?.focus({ preventScroll: true }); }, [step]);
  const toggle = (values: string[], value: string) => values.includes(value) ? values.filter(x => x !== value) : [...values, value];
  const field = (label: string, control: ReactNode) => {
-   const optional = ['Fase da cultura de verão', 'Colheita prevista (dia/mês)', 'Semeadura da 2ª safra'].includes(label);
+   const optional = ['Fase da cultura de verão', 'Colheita prevista', 'Cidade de referência', 'Endereço de referência'].includes(label);
    return <label className="field"><span className="wizard-field-label">{t(label)}{optional && <span className="wizard-field-optional">{say('opcional','optional')}</span>}</span>{control}</label>;
  };
  const more = (label: string, children: ReactNode) => <section className="wizard-open-section"><h2>{label}</h2><div className="wizard-more-content">{children}</div></section>;
@@ -63,41 +80,73 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
  function area(): Area {
    if (mode === 'demo') return { talhao_id: demo };
    if (mode === 'point') return { lat: Number(farm.latitude), lon: Number(farm.longitude) };
-   const parsed = JSON.parse(polygon);
-   const geometry = parsed.type === 'Feature' ? parsed.geometry : parsed;
-   if (!geometry || !['Polygon','MultiPolygon'].includes(geometry.type) || !Array.isArray(geometry.coordinates) || !geometry.coordinates.length) throw Error(say('Informe um polígono GeoJSON válido.','Enter a valid GeoJSON polygon.'));
-   return { geometry };
+   if (vertices.length < 3) throw Error(say('Marque pelo menos 3 cantos da sua área no mapa.','Mark at least 3 corners of your field on the map.'));
+   return { geometry: { type: 'Polygon', coordinates: [[...vertices, vertices[0]].map(([lat, lon]) => [lon, lat])] } };
+ }
+ /** Moves the map (and, when marking a point, the pin) to a city or an address. */
+ function place(lat: number, lon: number, zoom: number) {
+   setFocus({ lat, lon, zoom, key: Date.now() });
+   if (mode === 'point') setFarm(current => ({ ...current, latitude: lat.toFixed(6), longitude: lon.toFixed(6) }));
+ }
+ function pickCity(value: string) {
+   setCityQuery(value);
+   const city = options.municipios.find(x => x.nome.toLocaleLowerCase('pt-BR') === value.trim().toLocaleLowerCase('pt-BR'));
+   setFarm(current => ({ ...current, city: city ? `${city.nome}, PR` : value }));
+   if (city) place(city.lat, city.lon, 13);
+ }
+ async function searchAddress() {
+   const query = address.trim();
+   if (!query) return;
+   setSearching(true); setSearchNote(''); setPlaces([]);
+   const city = cityQuery.trim();
+   const params = new URLSearchParams({ q: `${query}${city && !query.toLocaleLowerCase('pt-BR').includes(city.toLocaleLowerCase('pt-BR')) ? `, ${city}` : ''}, Paraná`, format: 'jsonv2', limit: '5', countrycodes: 'br', viewbox: '-54.7,-22.4,-47.9,-26.8', bounded: '1', 'accept-language': en ? 'en' : 'pt-BR' });
+   try {
+     const response = await fetch('https://nominatim.openstreetmap.org/search?' + params);
+     if (!response.ok) throw Error(String(response.status));
+     const found = (await response.json() as { display_name: string; lat: string; lon: string }[]).map(x => ({ label: x.display_name, lat: Number(x.lat), lon: Number(x.lon) }));
+     setPlaces(found);
+     if (!found.length) setSearchNote(say('Não encontramos esse endereço no Paraná. Tente incluir a cidade ou marque direto no mapa.','We couldn’t find this address in Paraná. Try adding the city or mark it on the map.'));
+   } catch {
+     setSearchNote(say('Não foi possível buscar o endereço agora. Marque direto no mapa ou informe as coordenadas.','The address search is unavailable right now. Mark it on the map or enter the coordinates.'));
+   } finally { setSearching(false); }
+ }
+ function choosePlace(found: Place) {
+   setPlaces([]); setSearchNote('');
+   setFarm(current => ({ ...current, address: found.label }));
+   place(found.lat, found.lon, 16);
  }
  function advance() {
    setError('');
    try {
      if (step === 0) area();
-     if (step === 1 && harvest) {
-       const [day, month] = harvest.split('/').map(Number);
-       if (!/^\d{2}\/\d{2}$/.test(harvest) || month < 1 || month > 12 || day < 1 || day > new Date(2028, month, 0).getDate()) throw Error(say('Confira a colheita prevista: use dia/mês, como 05/01.','Check the expected harvest: use day/month, such as 05/01.'));
-     }
      if (step === 3 && ((soil.argila_pct ?? '') === '') !== ((soil.areia_pct ?? '') === '')) throw Error(say('Para informar a textura, preencha argila e areia juntas.','To provide soil texture, enter both clay and sand.'));
      if (step === 3 && Object.values(soil).some(v => v !== '') && !['argila_pct','p_mg_dm3','k_cmolc_dm3','ca_cmolc_dm3','mg_cmolc_dm3','al_cmolc_dm3','v_pct','ctc_cmolc_dm3'].some(k => (soil[k] ?? '') !== '')) throw Error(say('Inclua argila e areia ou um dado de fertilidade para usar a análise. Você também pode continuar sem análise.','Include clay and sand or a fertility value to use this test. You can also continue without a soil test.'));
      if (step === 3 && Number(soil.argila_pct || 0) + Number(soil.areia_pct || 0) > 100) throw Error(say('Argila e areia devem somar no máximo 100%.','Clay and sand must total no more than 100%.'));
      if (step === 4 && !Object.values(weights).some(v => v > 0)) throw Error(say('Dê um peso maior que zero a pelo menos uma prioridade.','Give at least one priority a weight above zero.'));
      if (step < 5) { setStep(step + 1); return; }
      const selected = options.talhoes_demo.find(x => x.id === demo)!;
-     const completed = { ...farm, irrigation: irrigation ? 'Sim' : 'Não', crop: rotation.startsWith('soja__') ? 'Soja' : 'Milho', ...(mode === 'demo' ? {latitude: String(selected.lat), longitude: String(selected.lon), area: String(selected.area_ha)} : mode === 'polygon' ? {latitude: '', longitude: ''} : {}), ...(soil.ph ? {ph: soil.ph} : {}), ...(soil.materia_organica_pct ? {organic: soil.materia_organica_pct} : {}) };
+     const completed = { ...farm, irrigation: irrigation ? 'Sim' : 'Não', crop: rotation.startsWith('soja__') ? 'Soja' : 'Milho', ...(mode === 'demo' ? {latitude: String(selected.lat), longitude: String(selected.lon), area: String(selected.area_ha), city: `${selected.municipio}, PR`} : mode === 'polygon' ? {latitude: (vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length).toFixed(6), longitude: (vertices.reduce((s, [, lon]) => s + lon, 0) / vertices.length).toFixed(6), area: hectares(vertices).toFixed(1)} : {}), ...(soil.ph ? {ph: soil.ph} : {}), ...(soil.materia_organica_pct ? {organic: soil.materia_organica_pct} : {}) };
      onComplete(completed, { area: area(), rotacao_atual: rotation, pesos: weights, n_alternativas: count,
-       ...(stage ? {estagio_verao: stage} : {}), ...(harvest ? {colheita_prevista: harvest} : {}), data_referencia: date,
+       ...(stage ? {estagio_verao: stage} : {}), ...(harvest ? {colheita_prevista: `${harvest.slice(8, 10)}/${harvest.slice(5, 7)}`} : {}), data_referencia: date,
        ...(sowing ? {semeadura_safrinha: sowing} : {}), problemas_area: problems,
        ...(Object.keys(numeric(soil)).length ? {analise_solo: numeric(soil)} : {}),
        ...(Object.keys(numeric(prices)).length ? {ajustes: {precos: numeric(prices)}} : {}),
        restricoes: {sem_comprador: buyers, maquinas: {plataforma_milho: header, semeadora_consorcio: seeder}}, irrigacao: {disponivel: irrigation} });
-   } catch (e) { setError(e instanceof SyntaxError ? say('Confira o GeoJSON antes de continuar.','Check the GeoJSON before continuing.') : (e as Error).message); }
+   } catch (e) { setError((e as Error).message); }
  }
  const priorityName = priority === 'income' ? say('Mais retorno','More return') : priority === 'soil' ? say('Cuidar da terra','Care for the land') : priority === 'risk' ? say('Mais tranquilidade','More peace of mind') : priority === 'custom' ? say('Do seu jeito','Your own balance') : say('Equilíbrio','Balance');
  const soilCount = Object.values(soil).filter(v => v !== '').length;
  const summer = options.culturas_verao.find(x => x.id === options.combinacoes.find(c => c.id === rotation)?.verao);
+ const sample = options.talhoes_demo.find(x => x.id === demo)!;
+ const sampleFocus = useMemo<MapFocus>(() => ({ lat: sample.lat, lon: sample.lon, zoom: 14, key: Number(sample.id) }), [sample]);
+ const number = (value: number, digits = 1) => value.toLocaleString(en ? 'en-US' : 'pt-BR', { maximumFractionDigits: digits });
+ const sowingLabel = (ddmm: string) => { const [day, month] = ddmm.split('/').map(Number); return `${day} ${new Date(2026, month - 1, 15).toLocaleDateString(en ? 'en-US' : 'pt-BR', { month: 'short' }).replace('.', '')}`; };
+ const goBack = () => { setError(''); if (step === 0) onHome(); else setStep(step - 1); };
+ const drawnHa = hectares(vertices);
  return <div className={`signup property-wizard wizard-step-${step}`}>
   <section className="signup-photo"><img src="/assets/hero-br-parana-v1.webp" alt={t('Campos de cultivo')}/>{brand}<div><h1>{t('Sua terra merece')}<br/>{t('um novo olhar.')}</h1><p>{t(copy[step][2])}</p></div></section>
   <section className="signup-form">
-   <div className="signup-header"><button className="back-link" onClick={onHome}>{t('Voltar ao início')}</button><LanguageSwitcher/></div>
+   <div className="signup-header wizard-header"><button type="button" className="wizard-top-back" onClick={goBack}><span aria-hidden="true">←</span>{step === 0 ? t('Voltar ao início') : t('Voltar')}</button><LanguageSwitcher/></div>
    <nav className="wizard-progress" aria-label={say('Etapas do cadastro','Setup steps')}><span>{say('Etapa','Step')} {step + 1} {say('de','of')} 6</span><ol>{copy.map(([label], i) => <li key={label} aria-current={step === i ? 'step' : undefined} className={i <= step ? 'is-active' : ''}><span className="sr-only">{t(label)}</span></li>)}</ol></nav>
    <small>{t(copy[step][0])}{[2,3,5].includes(step) && <span className="wizard-optional">{say('Etapa opcional','Optional step')}</span>}</small>
    <h1 ref={heading} tabIndex={-1}>{t(copy[step][1])}</h1><p>{t(copy[step][2])}</p>
@@ -108,13 +157,37 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
       {choice(mode === 'demo', say('Quero conhecer primeiro','I’d like to explore first'), say('Experimente com uma área de exemplo.','Try things out with a sample field.'), () => setMode('demo'), '✦')}
       {choice(mode !== 'demo', say('Vamos olhar para minha terra','Let’s look at my land'), say('Marque sua área no mapa.','Mark your land on the map.'), () => setMode('point'), '⌖')}
      </div>
-     {mode === 'demo' && more(say('Sua área de exemplo','Your sample field'), field('Talhão', <select value={demo} onChange={e => setDemo(e.target.value)}>{options.talhoes_demo.map(x => <option key={x.id} value={x.id}>{x.id} · {x.area_ha} ha</option>)}</select>))}
+     {mode === 'demo' && more(say('Sua área de exemplo','Your sample field'), <>
+      {field('Talhão', <select value={demo} onChange={e => setDemo(e.target.value)}>{options.talhoes_demo.map(x => <option key={x.id} value={x.id}>{`${say('Talhão','Field')} ${x.id} · ${x.municipio} · ${number(x.area_ha)} ha`}</option>)}</select>)}
+      <div className="wizard-sample">
+       <dl className="wizard-sample-facts">
+        <div><dt>{say('Município','Municipality')}</dt><dd>{sample.municipio}, PR</dd></div>
+        <div><dt>{say('Área','Area')}</dt><dd>{number(sample.area_ha)} ha</dd></div>
+        <div><dt>{say('Coordenadas','Coordinates')}</dt><dd>{number(sample.lat, 4)}, {number(sample.lon, 4)}</dd></div>
+        <div><dt>{say('Origem','Source')}</dt><dd>{say('Contorno real de lavoura, mapeado por satélite (Fields of The World)','Real field boundary mapped from satellite imagery (Fields of The World)')}</dd></div>
+       </dl>
+       <LocationMap mode="view" latitude={String(sample.lat)} longitude={String(sample.lon)} focus={sampleFocus} zoom={14}/>
+      </div>
+     </>)}
      {mode !== 'demo' && <>
-      {mode === 'point' && <><LocationMap latitude={farm.latitude} longitude={farm.longitude} onChange={(latitude, longitude) => setFarm(current => ({...current, latitude, longitude}))}/><div className="wizard-grid">{(['latitude','longitude'] as const).map(k => <div key={k}>{field(k === 'latitude' ? 'Latitude' : 'Longitude', <input required type="number" step="any" min={k === 'latitude' ? -90 : -180} max={k === 'latitude' ? 90 : 180} value={farm[k]} onChange={e => setFarm({...farm,[k]:e.target.value})}/>)}</div>)}</div><p className="wizard-hint">{say('Usaremos uma área aproximada de 100 ha ao redor desse ponto.','We’ll use an area of about 100 ha around this point.')}</p></>}
-      <button className="wizard-inline-link" type="button" onClick={() => setMode(mode === 'polygon' ? 'point' : 'polygon')}>{mode === 'polygon' ? say('Prefiro usar coordenadas','I’d rather use coordinates') : say('Tenho o contorno da área em GeoJSON','I have the field boundary in GeoJSON')}</button>
-      {mode === 'polygon' && field('Polígono GeoJSON', <textarea required value={polygon} onChange={e => setPolygon(e.target.value)} placeholder='{"type":"Polygon","coordinates":[…]}'/>)}
+      <div className="wizard-grid wizard-finder">
+       {field('Cidade de referência', <><input list="wizard-cities" value={cityQuery} onChange={e => pickCity(e.target.value)} placeholder={say('Digite para buscar','Type to search')} autoComplete="off"/><datalist id="wizard-cities">{options.municipios.map(x => <option key={x.id} value={x.nome}/>)}</datalist></>)}
+       {field('Endereço de referência', <div className="wizard-search"><input value={address} onChange={e => setAddress(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); searchAddress(); } }} placeholder={say('Ex.: Linha Gaúcha, km 4','e.g. Linha Gaúcha, km 4')}/><button type="button" onClick={searchAddress} disabled={searching || !address.trim()}>{searching ? say('Buscando…','Searching…') : say('Buscar','Search')}</button></div>)}
+      </div>
+      {places.length > 0 && <ul className="wizard-places" aria-label={say('Endereços encontrados','Addresses found')}>{places.map(x => <li key={`${x.lat},${x.lon}`}><button type="button" onClick={() => choosePlace(x)}>{x.label}</button></li>)}</ul>}
+      {searchNote && <p className="wizard-hint" role="status">{searchNote}</p>}
+      <div className="wizard-segmented" role="radiogroup" aria-label={say('Como marcar sua área','How to mark your field')}>
+       <label><input type="radio" name="mark-mode" checked={mode === 'point'} onChange={() => setMode('point')}/><span><span aria-hidden="true">⌖</span>{say('Marcar um ponto','Drop a pin')}</span></label>
+       <label><input type="radio" name="mark-mode" checked={mode === 'polygon'} onChange={() => setMode('polygon')}/><span><span aria-hidden="true">⬠</span>{say('Desenhar o contorno','Draw the boundary')}</span></label>
+      </div>
+      <LocationMap mode={mode === 'polygon' ? 'polygon' : 'point'} latitude={farm.latitude} longitude={farm.longitude} onChange={(latitude, longitude) => setFarm(current => ({...current, latitude, longitude}))} vertices={vertices} onVerticesChange={setVertices} focus={focus}/>
+      {mode === 'point' && <><div className="wizard-grid">{(['latitude','longitude'] as const).map(k => <div key={k}>{field(k === 'latitude' ? 'Latitude' : 'Longitude', <input required type="number" step="any" min={k === 'latitude' ? -90 : -180} max={k === 'latitude' ? 90 : 180} value={farm[k]} onChange={e => setFarm({...farm,[k]:e.target.value})}/>)}</div>)}</div><p className="wizard-hint">{say('Usaremos uma área aproximada de 100 ha ao redor desse ponto.','We’ll use an area of about 100 ha around this point.')}</p></>}
+      {mode === 'polygon' && <div className="wizard-polygon-bar">
+       <span role="status">{vertices.length < 3 ? say(`${vertices.length} de 3 cantos marcados`, `${vertices.length} of 3 corners marked`) : say(`Contorno com ${vertices.length} cantos · cerca de ${number(drawnHa)} ha`, `Boundary with ${vertices.length} corners · about ${number(drawnHa)} ha`)}</span>
+       <span><button type="button" className="wizard-inline-link" disabled={!vertices.length} onClick={() => setVertices(vertices.slice(0, -1))}>{say('Desfazer último canto','Undo last corner')}</button><button type="button" className="wizard-inline-link" disabled={!vertices.length} onClick={() => setVertices([])}>{say('Limpar','Clear')}</button></span>
+      </div>}
      </>}
-     {more(say('Sua propriedade · opcional','Your farm · optional'), <div className="wizard-grid">{field('Nome da propriedade', <input value={farm.name} onChange={e => setFarm({...farm,name:e.target.value})}/>)}{field('Cidade / UF', <input value={farm.city} onChange={e => setFarm({...farm,city:e.target.value})}/>)}</div>)}
+     {more(say('Sua propriedade · opcional','Your farm · optional'), field('Nome da propriedade', <input value={farm.name} onChange={e => setFarm({...farm,name:e.target.value})}/>))}
     </>}
     {step === 1 && <>
      <fieldset className="wizard-rotation"><legend>{t('Rotação atual (verão → 2ª safra)')}</legend><div className="wizard-grid">
@@ -131,13 +204,20 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      </div></fieldset>
      {more(say('O momento da sua lavoura · opcional','Your crop timing · optional'), <>
      {field('Fase da cultura de verão', <select value={stage} onChange={e => setStage(e.target.value)}><option value="">{say('Não sei informar','I’m not sure')}</option>{summer?.estagios.map(x => <option key={x.id} value={x.id}>{t(x.nome)}</option>)}</select>)}
-     <div className="wizard-grid">{field('Colheita prevista (dia/mês)', <input placeholder="05/01" pattern="\d{2}/\d{2}" value={harvest} onChange={e => setHarvest(e.target.value)}/>)}{field('Data de referência', <input required type="date" value={date} onChange={e => setDate(e.target.value)}/>)}</div>
-     {field('Semeadura da 2ª safra', <select value={sowing} onChange={e => setSowing(e.target.value)}><option value="">{say('Estimar a partir da colheita','Estimate from the harvest')}</option>{options.semeaduras.map(x => <option key={x}>{x}</option>)}</select>)}
+     {field('Colheita prevista', <input type="date" value={harvest} onChange={e => setHarvest(e.target.value)}/>)}
+     <fieldset className="wizard-pills"><legend>{t('Semeadura da 2ª safra')}<span className="wizard-field-optional">{say('opcional','optional')}</span></legend>
+      {['', ...options.semeaduras].map(x => <label key={x || 'auto'}><input type="radio" name="sowing" checked={sowing === x} onChange={() => setSowing(x)}/><span>{x ? sowingLabel(x) : say('Automática','Automatic')}</span></label>)}
+     </fieldset>
+     <p className="wizard-hint">{say('Na opção automática, calculamos a semeadura a partir da colheita do verão. Escolha uma data se você já sabe quando vai semear.','With the automatic option, we work out the sowing date from the summer harvest. Pick a date if you already know when you’ll sow.')}</p>
+     <div className="wizard-reference">
+      <div><strong>{t('Data de referência')}</strong><p>{say('É o “hoje” da simulação: usamos essa data para saber em que fase a lavoura está e o que ainda dá tempo de plantar. Mude só se quiser simular outra época.','It is the “today” of the simulation: we use it to know where your crop stands and what there is still time to plant. Change it only to simulate another time of year.')}</p></div>
+      <div className="wizard-reference-input"><input aria-label={t('Data de referência')} required type="date" value={date} onChange={e => setDate(e.target.value)}/>{date !== today && <button type="button" className="wizard-inline-link" onClick={() => setDate(today)}>{say('Usar hoje','Use today')}</button>}</div>
+     </div>
      <p className="wizard-hint">{say('Se você não souber a fase nem a colheita, usaremos uma estimativa de calendário.','If you don’t know the stage or harvest date, we’ll use a calendar estimate.')}</p>
      </>)}
      
     </>}
-    {step === 2 && <><fieldset className="wizard-choices"><legend>{say('Problemas conhecidos na área','Known issues on your land')}</legend>{[['nematoide','Nematoide'],['mofo_branco','Mofo-branco'],['cigarrinha','Cigarrinha'],['compactacao','Compactação']].map(([id,label]) => <label key={id}><input type="checkbox" checked={problems.includes(id)} onChange={() => setProblems(toggle(problems,id))}/>{t(label)}</label>)}</fieldset><p className="wizard-hint">{say('Nenhum conhecido? Pode continuar sem marcar nada.','No known issues? You can continue without selecting anything.')}</p></>}
+    {step === 2 && <><fieldset className="wizard-choices"><legend>{say('Pragas e problemas conhecidos','Known pests and issues')}</legend>{[['nematoide','Nematoide'],['mofo_branco','Mofo-branco'],['cigarrinha','Cigarrinha'],['compactacao','Compactação']].map(([id,label]) => <label key={id}><input type="checkbox" checked={problems.includes(id)} onChange={() => setProblems(toggle(problems,id))}/>{t(label)}</label>)}</fieldset><p className="wizard-hint">{say('Nenhum conhecido? Pode continuar sem marcar nada.','No known issues? You can continue without selecting anything.')}</p></>}
     {step === 3 && <>
       
       <div className="wizard-grid wizard-soil-grid">{soilFields.map(([id,label]) => <div key={id}>{field(label, <input type="number" step="any" min={id === 'ph' ? 3 : 0} max={soilMax[id] ?? 100} value={soil[id] ?? ''} onChange={e => setSoil({...soil,[id]:e.target.value})}/>)}</div>)}</div><p className="wizard-hint">{say('Argila e areia: informe as duas, com soma de até 100%.','Clay and sand: enter both, totaling no more than 100%.')}</p>
@@ -157,8 +237,13 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      
      {more(say('Seus preços · opcional','Your prices · optional'), <><p className="wizard-hint">{say('R$/saca. Em branco, usamos os preços de referência.','BRL per sack. Leave blank to use reference prices.')}</p><div className="wizard-grid">{commodities.map(([id,label]) => <div key={id}>{field(label,<input type="number" min="0" step="any" value={prices[id] ?? ''} onChange={e => setPrices({...prices,[id]:e.target.value})}/>)}</div>)}</div>
 </>)}
-     {more(say('Sem comprador para · opcional','No buyer for · optional'), <>     <fieldset className="wizard-choices"><legend>{say('Não tenho comprador para','I don’t have a buyer for')}</legend>{commodities.filter(([id]) => id !== 'soja').map(([id,label]) => <label key={id}><input type="checkbox" checked={buyers.includes(id)} onChange={() => setBuyers(toggle(buyers,id))}/>{t(label)}</label>)}</fieldset>
-</>)}
+     {more(say('Comprador para a 2ª safra · opcional','Buyers for the second crop · optional'), <fieldset className="wizard-buyers"><legend>{say('Você tem comprador para…','Do you have a buyer for…')}</legend>
+      {commodities.filter(([id]) => id !== 'soja').map(([id,label]) => <div className="wizard-buyer-row" key={id}><span>{t(label)}</span><span className="wizard-segmented is-compact" role="radiogroup" aria-label={say(`Tem comprador para ${label.toLocaleLowerCase('pt-BR')}?`, `Buyer for ${t(label).toLocaleLowerCase('en-US')}?`)}>
+       <label><input type="radio" name={`buyer-${id}`} checked={!buyers.includes(id)} onChange={() => setBuyers(buyers.filter(x => x !== id))}/><span>{say('Sim','Yes')}</span></label>
+       <label><input type="radio" name={`buyer-${id}`} checked={buyers.includes(id)} onChange={() => setBuyers([...buyers.filter(x => x !== id), id])}/><span>{say('Não','No')}</span></label>
+      </span></div>)}
+      <p className="wizard-hint">{say('Culturas marcadas com “Não” saem das sugestões.','Crops marked “No” are left out of the suggestions.')}</p>
+     </fieldset>)}
      {more(say('Máquinas e irrigação · opcional','Equipment and irrigation · optional'), <>     <fieldset className="wizard-choices"><legend>{say('Equipamentos e água','Equipment and water')}</legend><label><input type="checkbox" checked={!header} onChange={e => setHeader(!e.target.checked)}/>{say('Não tenho plataforma de milho','I don’t have a corn header')}</label><label><input type="checkbox" checked={!seeder} onChange={e => setSeeder(!e.target.checked)}/>{say('Não tenho semeadora de consórcio','I don’t have an intercropping seeder')}</label><label><input type="checkbox" checked={irrigation} onChange={e => setIrrigation(e.target.checked)}/>{say('Tenho irrigação','I have irrigation')}</label></fieldset>
 </>)}
      {more(say('Escolher quantos cenários ver','Choose how many scenarios to see'), <>     {field('Quantas alternativas mostrar', <input type="number" min="1" max="6" required value={count} onChange={e => setCount(Number(e.target.value))}/>)}
@@ -166,7 +251,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
     </>}
     </div>
     {error && <p className="wizard-error" role="alert">{error}</p>}
-    <div className="wizard-actions">{step > 0 && <button type="button" className="wizard-back" onClick={() => {setError('');setStep(step-1);}}>{t('Voltar')}</button>}<button className="button yellow" type="submit">{step === 5 ? say('Explorar meus cenários →','Explore my scenarios →') : step === 2 && !problems.length ? say('Continuar sem marcar →','Continue without selecting →') : step === 3 && !Object.values(soil).some(v => v !== '') ? say('Vamos seguir sem análise →','Let’s continue without a soil test →') : say('Vamos continuar →','Let’s continue →')}</button></div>
+    <div className="wizard-actions"><button className="button yellow" type="submit">{step === 5 ? say('Explorar meus cenários →','Explore my scenarios →') : step === 2 && !problems.length ? say('Continuar sem marcar →','Continue without selecting →') : step === 3 && !Object.values(soil).some(v => v !== '') ? say('Vamos seguir sem análise →','Let’s continue without a soil test →') : say('Vamos continuar →','Let’s continue →')}</button></div>
     <small>{say('Seus dados ficam só nesta sessão.','Your data stays in this session only.')}</small>
    </form>
   </section>
