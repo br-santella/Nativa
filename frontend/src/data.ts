@@ -14,10 +14,10 @@ export const months = [
 ];
 export const initialFarm = {
   name: "Fazenda Boa Vista",
-  city: "Sorriso, MT",
+  city: "Toledo, PR",
   country: "Brasil",
-  latitude: "-12.55",
-  longitude: "-55.72",
+  latitude: "-24.81",
+  longitude: "-53.55",
   area: "120",
   texture: "Argiloso",
   ph: "5.8",
