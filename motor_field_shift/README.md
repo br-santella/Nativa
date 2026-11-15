@@ -1,13 +1,13 @@
 # Rotation engine — Western Paraná
 
-Crop-rotation recommendation engine focused on Western Paraná (50 municipalities, IBGE 4106).
-It is the **MVP backend**: its API is contract C3 in [`../docs/contratos.md`](../docs/contratos.md).
+Crop-rotation recommendation engine for Western Paraná (50 municipalities, IBGE 4106).
+It is the project backend. Its API is contract C3 in [`../docs/contratos.md`](../docs/contratos.md).
+
+Documentation (in Portuguese):
 
 - Engine logic: [`docs/motor.md`](docs/motor.md)
 - Data architecture: [`docs/arquitetura.md`](docs/arquitetura.md) · sources: [`docs/datasets.md`](docs/datasets.md)
-- API (FastAPI) and how to use it: [`api/README.md`](api/README.md)
-
-These linked docs are still in Portuguese.
+- API (FastAPI) and usage: [`api/README.md`](api/README.md)
 
 ## How to run
 
