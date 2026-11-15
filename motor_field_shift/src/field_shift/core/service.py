@@ -27,6 +27,7 @@ from shapely.geometry.base import BaseGeometry
 from field_shift import crop_calendar as cal
 from field_shift.app import engine as E
 from field_shift.app import field_state as EA
+from field_shift.i18n import Join, Msg
 from field_shift.climate.lookup import indicators_for
 from field_shift.pam import productivity as pam_yield
 from field_shift.pam.productivity import text as pam_text
@@ -659,10 +660,11 @@ def technical_tie(items: list[dict]) -> dict | None:
         return None
     names = [x["rotacao"] for x in tied]
     gap = top - tied[-1]["nota"]
-    text = (f"Empate técnico: {', '.join(names[:-1])} e {names[-1]} estão a menos de {TECHNICAL_TIE:.2f} ponto da melhor nota "
-             f"(diferença {gap:.3f})".replace(".", ",")
-             + ". Variações pequenas nas estimativas (preços, quebra de ciclo de pragas, cobertura, bônus na soja) trocam a "
-               "ordem entre elas; escolha pelo que pesa mais na sua realidade (renda, máquinas, mercado, histórico da área).")
+    text = Msg("Empate técnico: {0} estão a menos de {1} ponto da melhor nota (diferença {2}). Variações pequenas nas "
+               "estimativas (preços, quebra de ciclo de pragas, cobertura, bônus na soja) trocam a ordem entre elas; escolha pelo "
+               "que pesa mais na sua realidade (renda, máquinas, mercado, histórico da área).",
+               Join([n.replace(".", ",") for n in names], ", ", last=" e "),
+               f"{TECHNICAL_TIE:.2f}".replace(".", ","), f"{gap:.3f}".replace(".", ","))
     for x in tied:
         x["card"]["avisos"].insert(0, text)
     return dict(ids=[x["id"] for x in tied], diferenca=round(gap, 3), limiar=TECHNICAL_TIE, texto=text)
@@ -674,12 +676,13 @@ def _item_ranking(pos, nome, line, marg_, current, rk, ndvi_days, why_cmp=None) 
     for i in marg_["itens"]:
         items.append(dict(
             cultura=i["rotulo"], rendimento_sc_ha=i["sc_ha"], preco=i["preco"], custo=i["custo"], margem_r_ha=i["margem"],
-            fonte=(f"rendimento informado pelo produtor; preço {price_source(i)}; custo {cost_source(i, marg_['linha_custo'])}"
+            fonte=(Msg("rendimento informado pelo produtor; preço {0}; custo {1}", price_source(i), cost_source(i, marg_["linha_custo"]))
                    if i.get("prod_usuario") else
-                   f"rendimento IBGE PAM ({E.local_rend(rk, i['chave'])}, {i['anos']}); preço {price_source(i)}; custo {cost_source(i, marg_['linha_custo'])}"
+                   Msg("rendimento IBGE PAM ({0}, {1}); preço {2}; custo {3}", E.local_rend(rk, i["chave"]), str(i["anos"]),
+                       price_source(i), cost_source(i, marg_["linha_custo"]))
                    if i["sc_ha"] is not None else
-                   f"custo extra: {i['detalhe']} (sem venda)" if i.get("extra") else
-                   f"custo {cost_source(i, marg_['linha_custo'])} (sem venda)")))
+                   Msg("custo extra: {0} (sem venda)", i["detalhe"]) if i.get("extra") else
+                   Msg("custo {0} (sem venda)", cost_source(i, marg_["linha_custo"])))))
     warnings = []
     if marg_["total"] < 0:
         warnings.append("Margem total negativa com os preços e custos usados.")

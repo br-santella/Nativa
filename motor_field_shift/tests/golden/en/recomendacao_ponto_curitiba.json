@@ -22,7 +22,7 @@
        "Water: rain covers on average 100% of the demand (second-season corn + brachiaria, Kc 0.90; NASA POWER 1991–2024, FAO-56).",
        "Frost at flowering/grain fill of corn sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell.",
        "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 40% (100% of the soil classes; Port.407_de_28-08-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 40% (100% of the soil classes; Port.407_de_28-08-2025).",
        "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -38,7 +38,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks the pest cycle better (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -201,7 +201,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks the pest cycle better (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -330,7 +330,7 @@
        "Rotation total: R$ 1,067/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 822/ha/year.",
        "Water: rain covers on average 100% of the demand (oat + forage radish (cover), Kc 0.85; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: not indicated.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -346,7 +346,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), betterbreaks the pest cycle  (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), breaks the pest cycle better (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -508,7 +508,7 @@
        "Water: rain covers on average 100% of the demand (second-season corn + brachiaria, Kc 0.90; NASA POWER 1991–2024, FAO-56).",
        "Frost at flowering/grain fill of corn sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell.",
        "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 40% (100% of the soil classes; Port.407_de_28-08-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 40% (100% of the soil classes; Port.407_de_28-08-2025).",
        "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -524,7 +524,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks the pest cycle better (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -688,7 +688,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks the pest cycle better (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -814,7 +814,7 @@
        "Water: rain covers on average 100% of the demand (second-season corn, Kc 0.85; NASA POWER 1991–2024, FAO-56).",
        "Frost at flowering/grain fill of corn sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell.",
        "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn em 15/01: indicated, risco 40% (100% of the soil classes; Port.393_de_26-08-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 40% (100% of the soil classes; Port.393_de_26-08-2025).",
        "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -830,7 +830,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0,79. Largest contributions to the score: Renda (0,21) and Água (0,18).",
+      "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.79. Largest contributions to the score: Income (0.21) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -940,7 +940,7 @@
        "Rotation total: R$ 1,067/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 822/ha/year.",
        "Water: rain covers on average 100% of the demand (oat + forage radish (cover), Kc 0.85; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: not indicated.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -956,7 +956,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), betterbreaks the pest cycle  (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), breaks the pest cycle better (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1097,7 +1097,7 @@
        "Rotation total: R$ 1,032/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -135/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 787/ha/year.",
        "Water: rain covers on average 100% of the demand (oat (cover/straw), Kc 0.70; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: not indicated.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1113,7 +1113,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 623/ha in the 2nd season (−R$ 135/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 623/ha in the 2nd season (−R$ 135/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1267,7 +1267,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 523/ha in the 2nd season (−R$ 35/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 523/ha in the 2nd season (−R$ 35/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1392,7 +1392,7 @@
        "Rotation total: R$ 918/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -249/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 556/ha/year.",
        "Water: rain covers on average 100% of the demand (sorghum, Kc 0.77; NASA POWER 1991–2024, FAO-56).",
        "Frost at flowering/grain fill of sorghum sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season sorghum em 15/01: indicated, risco 20% (100% of the soil classes; Port.132_de_12-05-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season sorghum on 15/01: indicated, risk 20% (100% of the soil classes; Port.132_de_12-05-2025).",
        "Market in Western Paraná: medium; animal feed and cooperatives, with lower demand than corn (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1408,7 +1408,7 @@
        "nivel": "médio",
        "texto": "animal feed and cooperatives, with lower demand than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 737/ha in the 2nd season (−R$ 249/ha against R$ 489/ha) and betterbreaks the pest cycle  (0.55 against 0.50). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 737/ha in the 2nd season (−R$ 249/ha against R$ 489/ha) and breaks the pest cycle better (0.55 against 0.50). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1545,7 +1545,7 @@
        "Water: rain covers on average 100% of the demand (second-season beans, Kc 0.84; NASA POWER 1991–2024, FAO-56).",
        "Frost at flowering/grain fill of second-season beans sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
        "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season beans em 15/01: indicated, risco 20% (83% of the soil classes; Port.250_de_30-05-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season beans on 15/01: indicated, risk 20% (83% of the soil classes; Port.250_de_30-05-2025).",
        "Market in Western Paraná: medium; grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1561,7 +1561,7 @@
        "nivel": "médio",
        "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 510/ha in the 2nd season (−R$ 21/ha against R$ 489/ha), lessbreaks the pest cycle  (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 510/ha in the 2nd season (−R$ 21/ha against R$ 489/ha), breaks the pest cycle less (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1713,7 +1713,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 689/ha in the 2nd season (−R$ 200/ha against R$ 489/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 689/ha in the 2nd season (−R$ 200/ha against R$ 489/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and breaks the pest cycle less (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Many days of exposed soil: risk of erosion and weeds."
@@ -1841,10 +1841,10 @@
        "Wheat: 40 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 40 bags/ha) × R$ 68.44/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,334/ha (CONAB Ponta Grossa-PR, winter 2025 (Nov/2025), variable cost (≈COE)) = R$ -1,570/ha (yield CV 26%; bad year, p20 of the same 10-year window = 31 bags/ha → R$ -2,203/ha).",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -283/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -1,450/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,161/ha/year.",
-       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2003: -10, 2004: -14, 2005: -20, 2024: -6; mean -12,7; negative margin in 4 of 4. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2003: -10, 2004: -14, 2005: -20, 2024: -6; mean -12.7; negative margin in 4 of 4. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
        "Water: rain covers on average 100% of the demand (wheat, Kc 0.75; NASA POWER 1991–2024, FAO-56).",
        "Frost (≤ 3 °C) at wheat flowering (15/08–30/09): 13 of 34 years (38%), NASA POWER 1991–2024, ~50 km cell.",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); trigo em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); wheat on 01/05: not indicated.",
        "Market in Western Paraná: medium; cooperatives and mills, with lower liquidity than corn (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1860,7 +1860,7 @@
        "nivel": "médio",
        "texto": "cooperatives and mills, with lower liquidity than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,939/ha in the 2nd season (−R$ 1,450/ha against R$ 489/ha), increases the climate risk (some adverse event in 38% of the years against 9%) and betterbreaks the pest cycle  (0.60 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.11).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,939/ha in the 2nd season (−R$ 1,450/ha against R$ 489/ha), increases the climate risk (some adverse event in 38% of the years against 9%) and breaks the pest cycle better (0.60 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.11).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Frost at wheat flowering in 38% of the years."
@@ -2035,7 +2035,7 @@
       "Water: rain covers on average 100% of the demand (second-season corn + brachiaria, Kc 0.90; NASA POWER 1991–2024, FAO-56).",
       "Frost at flowering/grain fill of corn sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell.",
       "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 40% (100% of the soil classes; Port.407_de_28-08-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 40% (100% of the soil classes; Port.407_de_28-08-2025).",
       "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -2051,7 +2051,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks the pest cycle better (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -2214,7 +2214,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks the pest cycle better (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -2343,7 +2343,7 @@
       "Rotation total: R$ 1,067/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 822/ha/year.",
       "Water: rain covers on average 100% of the demand (oat + forage radish (cover), Kc 0.85; NASA POWER 1991–2024, FAO-56).",
       "No 2nd-season climate risk considered (cover species/fallow).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: not indicated.",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: not indicated.",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -2359,7 +2359,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), betterbreaks the pest cycle  (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), breaks the pest cycle better (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -2496,7 +2496,7 @@
      "Water: rain covers on average 100% of the demand (second-season corn, Kc 0.85; NASA POWER 1991–2024, FAO-56).",
      "Frost at flowering/grain fill of corn sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell.",
      "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-     "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn em 15/01: indicated, risco 40% (100% of the soil classes; Port.393_de_26-08-2025).",
+     "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 40% (100% of the soil classes; Port.393_de_26-08-2025).",
      "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
     ],
     "lacunas": [
@@ -2512,7 +2512,7 @@
      "nivel": "alto",
      "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
     },
-    "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0,79. Largest contributions to the score: Renda (0,21) and Água (0,18).",
+    "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.79. Largest contributions to the score: Income (0.21) and Water (0.18).",
     "riscos": [
      "Confirm the calendar, cultivar and ZARC window with the agronomist."
     ]
@@ -3076,13 +3076,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
        "Bonus in the following soybean: 5.5 bags/ha × R$ 120.14/bag = R$ 661/ha (3 bags/ha from summer corn in place of soybean + 2.5 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -1,055/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,222/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,252/ha/year.",
        "Water: rain covers on average 100% of the demand (oat + forage radish (cover), Kc 0.85; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: not indicated.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -3099,7 +3099,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,710/ha in the 2nd season (−R$ 2,222/ha against R$ 489/ha), betterbreaks the pest cycle  (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,710/ha in the 2nd season (−R$ 2,222/ha against R$ 489/ha), breaks the pest cycle better (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3160,7 +3160,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -3235,13 +3235,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~40 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -1,090/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,257/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,287/ha/year.",
        "Water: rain covers on average 100% of the demand (oat (cover/straw), Kc 0.70; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: not indicated.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -3258,7 +3258,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,745/ha in the 2nd season (−R$ 2,257/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,745/ha in the 2nd season (−R$ 2,257/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3319,7 +3319,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -3391,13 +3391,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -990/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,157/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,187/ha/year.",
        "Water: rain covers on average 100% of the demand (forage radish (cover), Kc 0.90; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn em 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -3414,7 +3414,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,645/ha in the 2nd season (−R$ 2,157/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,645/ha in the 2nd season (−R$ 2,157/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3475,7 +3475,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -3649,13 +3649,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
        "Bonus in the following soybean: 5.5 bags/ha × R$ 120.14/bag = R$ 661/ha (3 bags/ha from summer corn in place of soybean + 2.5 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -1,055/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,222/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,252/ha/year.",
        "Water: rain covers on average 100% of the demand (oat + forage radish (cover), Kc 0.85; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: not indicated.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -3672,7 +3672,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,710/ha in the 2nd season (−R$ 2,222/ha against R$ 489/ha), betterbreaks the pest cycle  (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,710/ha in the 2nd season (−R$ 2,222/ha against R$ 489/ha), breaks the pest cycle better (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3735,7 +3735,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -3810,13 +3810,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~40 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -1,090/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,257/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,287/ha/year.",
        "Water: rain covers on average 100% of the demand (oat (cover/straw), Kc 0.70; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: not indicated.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -3833,7 +3833,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,745/ha in the 2nd season (−R$ 2,257/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,745/ha in the 2nd season (−R$ 2,257/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3896,7 +3896,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -3968,13 +3968,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -990/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,157/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,187/ha/year.",
        "Water: rain covers on average 100% of the demand (forage radish (cover), Kc 0.90; NASA POWER 1991–2024, FAO-56).",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn em 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -3991,7 +3991,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,645/ha in the 2nd season (−R$ 2,157/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,645/ha in the 2nd season (−R$ 2,157/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4054,7 +4054,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -4116,14 +4116,14 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~70 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Wheat: 40 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 40 bags/ha) × R$ 68.44/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,334/ha (CONAB Ponta Grossa-PR, winter 2025 (Nov/2025), variable cost (≈COE)) = R$ -1,570/ha (yield CV 26%; bad year, p20 of the same 10-year window = 31 bags/ha → R$ -2,203/ha).",
        "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -2,405/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -3,572/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -3,235/ha/year.",
-       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2003: -10, 2004: -14, 2005: -20, 2024: -6; mean -12,7; negative margin in 4 of 4. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2003: -10, 2004: -14, 2005: -20, 2024: -6; mean -12.7; negative margin in 4 of 4. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
        "Water: rain covers on average 100% of the demand (wheat, Kc 0.75; NASA POWER 1991–2024, FAO-56).",
        "Frost (≤ 3 °C) at wheat flowering (15/08–30/09): 13 of 34 years (38%), NASA POWER 1991–2024, ~50 km cell.",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); trigo em 01/05: not indicated.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); wheat on 01/05: not indicated.",
        "Market in Western Paraná: medium; cooperatives and mills, with lower liquidity than corn (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -4140,7 +4140,7 @@
        "nivel": "médio",
        "texto": "cooperatives and mills, with lower liquidity than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 4,061/ha in the 2nd season (−R$ 3,572/ha against R$ 489/ha), increases the climate risk (some adverse event in 38% of the years against 9%) and betterbreaks the pest cycle  (0.60 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.11).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 4,061/ha in the 2nd season (−R$ 3,572/ha against R$ 489/ha), increases the climate risk (some adverse event in 38% of the years against 9%) and breaks the pest cycle better (0.60 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.11).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Frost at wheat flowering in 38% of the years."
@@ -4234,7 +4234,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -4305,13 +4305,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~150 days.",
-       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
+       "Summer corn (1st season): 121 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 139 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 7,820/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,315/ha (yield CV 23%; bad year, p20 of the same 10-year window = 117 bags/ha → R$ -1,513/ha).",
        "Fallow (managed): no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (3 bags/ha from summer corn in place of soybean + 0 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -1,155/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,322/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,353/ha/year.",
        "Water: no crop, no water demand (score 1.00); the cost of fallow shows up in soil.",
        "No 2nd-season climate risk considered (cover species/fallow).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn em 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no production in the 2nd window (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -4328,7 +4328,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,811/ha in the 2nd season (−R$ 2,322/ha against R$ 489/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,811/ha in the 2nd season (−R$ 2,322/ha against R$ 489/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and breaks the pest cycle less (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Many days of exposed soil: risk of erosion and weeds."
@@ -4392,7 +4392,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 7820.0,
-        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Curitiba, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (121 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1315.0,
         "preco": 53.89,
         "rendimento_sc_ha": 120.7
@@ -4462,7 +4462,7 @@
       "Water: rain covers on average 100% of the demand (second-season corn + brachiaria, Kc 0.90; NASA POWER 1991–2024, FAO-56).",
       "Frost at flowering/grain fill of corn sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell.",
       "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 40% (100% of the soil classes; Port.407_de_28-08-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 40% (100% of the soil classes; Port.407_de_28-08-2025).",
       "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -4478,7 +4478,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks the pest cycle better (0.65 against 0.50) and adds R$ 529/ha against R$ 489/ha in the 2nd season (+8%). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Income (0.21) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -4642,7 +4642,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 578/ha in the 2nd season (−R$ 90/ha against R$ 489/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks the pest cycle better (0.70 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -4768,7 +4768,7 @@
       "Water: rain covers on average 100% of the demand (second-season corn, Kc 0.85; NASA POWER 1991–2024, FAO-56).",
       "Frost at flowering/grain fill of corn sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell.",
       "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn em 15/01: indicated, risco 40% (100% of the soil classes; Port.393_de_26-08-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 40% (100% of the soil classes; Port.393_de_26-08-2025).",
       "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -4784,7 +4784,7 @@
       "nivel": "alto",
       "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
      },
-     "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0,79. Largest contributions to the score: Renda (0,21) and Água (0,18).",
+     "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.79. Largest contributions to the score: Income (0.21) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -4894,7 +4894,7 @@
       "Rotation total: R$ 1,067/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 822/ha/year.",
       "Water: rain covers on average 100% of the demand (oat + forage radish (cover), Kc 0.85; NASA POWER 1991–2024, FAO-56).",
       "No 2nd-season climate risk considered (cover species/fallow).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: not indicated.",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: not indicated.",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -4910,7 +4910,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), betterbreaks the pest cycle  (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 588/ha in the 2nd season (−R$ 100/ha against R$ 489/ha), breaks the pest cycle better (0.65 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5051,7 +5051,7 @@
       "Rotation total: R$ 1,032/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -135/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 787/ha/year.",
       "Water: rain covers on average 100% of the demand (oat (cover/straw), Kc 0.70; NASA POWER 1991–2024, FAO-56).",
       "No 2nd-season climate risk considered (cover species/fallow).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: not indicated.",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: not indicated.",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -5067,7 +5067,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 623/ha in the 2nd season (−R$ 135/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 623/ha in the 2nd season (−R$ 135/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5221,7 +5221,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 523/ha in the 2nd season (−R$ 35/ha against R$ 489/ha), betterbreaks the pest cycle  (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 523/ha in the 2nd season (−R$ 35/ha against R$ 489/ha), breaks the pest cycle better (0.60 against 0.50) and reduces the climate risk (some adverse event in 0% of the years against 9%). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5346,7 +5346,7 @@
       "Rotation total: R$ 918/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -249/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 556/ha/year.",
       "Water: rain covers on average 100% of the demand (sorghum, Kc 0.77; NASA POWER 1991–2024, FAO-56).",
       "Frost at flowering/grain fill of sorghum sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season sorghum em 15/01: indicated, risco 20% (100% of the soil classes; Port.132_de_12-05-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season sorghum on 15/01: indicated, risk 20% (100% of the soil classes; Port.132_de_12-05-2025).",
       "Market in Western Paraná: medium; animal feed and cooperatives, with lower demand than corn (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -5362,7 +5362,7 @@
       "nivel": "médio",
       "texto": "animal feed and cooperatives, with lower demand than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 737/ha in the 2nd season (−R$ 249/ha against R$ 489/ha) and betterbreaks the pest cycle  (0.55 against 0.50). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 737/ha in the 2nd season (−R$ 249/ha against R$ 489/ha) and breaks the pest cycle better (0.55 against 0.50). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5499,7 +5499,7 @@
       "Water: rain covers on average 100% of the demand (second-season beans, Kc 0.84; NASA POWER 1991–2024, FAO-56).",
       "Frost at flowering/grain fill of second-season beans sown on 15/01: 3 of 34 years (9%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
       "Dry spell ≥ 15 days in Mar–Apr: 0 of 34 years (0%), NASA POWER 1991–2024, ~50 km cell.",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season beans em 15/01: indicated, risco 20% (83% of the soil classes; Port.250_de_30-05-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season beans on 15/01: indicated, risk 20% (83% of the soil classes; Port.250_de_30-05-2025).",
       "Market in Western Paraná: medium; grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -5515,7 +5515,7 @@
       "nivel": "médio",
       "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 510/ha in the 2nd season (−R$ 21/ha against R$ 489/ha), lessbreaks the pest cycle  (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 510/ha in the 2nd season (−R$ 21/ha against R$ 489/ha), breaks the pest cycle less (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Water (0.18) and Climate risk (0.16).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5667,7 +5667,7 @@
       "nivel": "não se aplica",
       "texto": "no production in the 2nd window"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 689/ha in the 2nd season (−R$ 200/ha against R$ 489/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 689/ha in the 2nd season (−R$ 200/ha against R$ 489/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and breaks the pest cycle less (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Many days of exposed soil: risk of erosion and weeds."
@@ -5795,10 +5795,10 @@
       "Wheat: 40 bags/ha (PAM Curitiba 2016–2025 trend projected to the next season; mean 40 bags/ha) × R$ 68.44/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,334/ha (CONAB Ponta Grossa-PR, winter 2025 (Nov/2025), variable cost (≈COE)) = R$ -1,570/ha (yield CV 26%; bad year, p20 of the same 10-year window = 31 bags/ha → R$ -2,203/ha).",
       "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
       "Rotation total: R$ -283/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -1,450/ha, on the scale S = R$ 1,167/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,161/ha/year.",
-      "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2003: -10, 2004: -14, 2005: -20, 2024: -6; mean -12,7; negative margin in 4 of 4. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+      "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2003: -10, 2004: -14, 2005: -20, 2024: -6; mean -12.7; negative margin in 4 of 4. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
       "Water: rain covers on average 100% of the demand (wheat, Kc 0.75; NASA POWER 1991–2024, FAO-56).",
       "Frost (≤ 3 °C) at wheat flowering (15/08–30/09): 13 of 34 years (38%), NASA POWER 1991–2024, ~50 km cell.",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); trigo em 01/05: not indicated.",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Curitiba: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); wheat on 01/05: not indicated.",
       "Market in Western Paraná: medium; cooperatives and mills, with lower liquidity than corn (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -5814,7 +5814,7 @@
       "nivel": "médio",
       "texto": "cooperatives and mills, with lower liquidity than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,939/ha in the 2nd season (−R$ 1,450/ha against R$ 489/ha), increases the climate risk (some adverse event in 38% of the years against 9%) and betterbreaks the pest cycle  (0.60 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.11).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,939/ha in the 2nd season (−R$ 1,450/ha against R$ 489/ha), increases the climate risk (some adverse event in 38% of the years against 9%) and breaks the pest cycle better (0.60 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.11).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Frost at wheat flowering in 38% of the years."

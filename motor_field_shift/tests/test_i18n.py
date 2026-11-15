@@ -99,3 +99,18 @@ def test_translator_balanced_values():
 def test_pt_br_is_untouched():
     obj = {"a": ["Custo de soja: R$ 1.234,5/ha."]}
     assert i18n.translate(obj, "pt-BR") is obj
+
+
+def test_msg_is_the_ptbr_text_and_renders_english_from_its_template():
+    from field_shift.i18n import Join, Msg, translator
+    m = Msg("Maiores contribuições para a nota: {0}.", Join([Msg("{0} ({1})", "Água", "0,18"), Msg("{0} ({1})", "Risco climático", "0,18")], " e "))
+    assert m == "Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18)."
+    en = translator().translate(m)
+    assert en.startswith("Largest contributions to the score: ")
+    assert "0.18" in en and " and " in en and "Água" not in en
+
+
+def test_structural_templates_are_not_used_as_patterns():
+    from field_shift.i18n import translator
+    # "{0} ({1})" is only for Msg: a plain string must not be matched by it
+    assert translator().text("xyzzy (plugh)") == "xyzzy (plugh)"

@@ -53,12 +53,19 @@ This file is the living list of open items for the project (crop-rotation engine
   CEC for CTC, and the card sentences. Bibliographic titles and official names (ZARC crops, ordinances) were kept in Portuguese.
   Files: `src/field_shift/i18n/en.json`.
   Status: open
-- **Residual Portuguese in English answers**: texts built by concatenation are translated by matching templates and splitting
-  on separators; a few fragments still come out in Portuguese (e.g. some "custo extra: ..." lines and rotation names inside the
-  technical-tie warning). Translation is checked by the English goldens, but not every string. Two ways out: (1) keep turning
-  concatenations into whole f-strings (no pt-BR change); (2) the plan's original design, engine emits message keys + params
-  rendered per language at the edge (bigger refactor of `engine.py`, `field_state.py`, `service.py`).
-  Files: `src/field_shift/i18n/__init__.py`, `src/field_shift/app/*.py`, `src/field_shift/core/service.py`.
+- **Residual Portuguese in English answers**: fixed on 15/11/2026. Composite texts (margin breakdown and total, "why" comparison and
+  largest contributions, technical tie, cost/price sources, income history, ZARC lines, fertility costs) are now built with
+  `i18n.Msg(template, *values)` / `i18n.Join(items, sep, last)`: the object *is* the pt-BR string (goldens unchanged) and keeps
+  its template, so the route renders the English piece by piece instead of guessing from the text. Leftovers: the request's own
+  field keys inside `ajustes_aplicados` (e.g. `milho_2safra 110 bags/ha`) stay as codes.
+  Files: `src/field_shift/i18n/__init__.py`, `src/field_shift/app/engine.py`, `src/field_shift/app/field_state.py`,
+  `src/field_shift/core/service.py`, `src/field_shift/income/*.py`, `src/field_shift/zarc.py`.
+  Status: done
+- **English fragment in the pt-BR answer** (pre-existing, from commit e805dc2): `field_state._NO_SOURCE = "no confirmed source"`
+  is user-facing, so the pt-BR P/K fertilization detail reads "doses: doses no confirmed source (estimativa, sem fonte
+  confirmada; ...)". Fix = `"sem fonte confirmada"` (and drop the duplicated "doses"); it changes the pt-BR goldens, so it waits for
+  an explicit OK.
+  Files: `src/field_shift/app/field_state.py`.
   Status: open
 
 ## Engine fixes

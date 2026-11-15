@@ -78,12 +78,14 @@ async def _response_language(request: Request, call_next):
 
     The engine always writes pt-BR; English is produced here, at the edge, so the pt-BR response is untouched."""
     locale = i18n.resolve_locale(request.query_params.get("lang"), request.headers.get("accept-language"))
+    state = i18n.start_request(locale)  # the routes translate their own result (i18n.localize) while texts keep templates
     response = await call_next(request)
     if request.url.path.startswith(_UNTRANSLATED_PATHS):
         return response
     response.headers["Content-Language"] = locale
     response.headers["Vary"] = "Accept-Language"
-    if locale == i18n.DEFAULT_LOCALE or not response.headers.get("content-type", "").startswith("application/json"):
+    if (locale == i18n.DEFAULT_LOCALE or state["localized"]
+            or not response.headers.get("content-type", "").startswith("application/json")):
         return response
     body = b"".join([chunk async for chunk in response.body_iterator])
     translated = i18n.translate(json.loads(body), locale)

@@ -19,6 +19,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 
+from field_shift.i18n import Msg
 from field_shift.pam import productivity as pam_yield
 from field_shift.pam.productivity import PAM, YIELD_WINDOW_YEARS, series
 
@@ -223,12 +224,12 @@ def cost_source(i: dict, line: str) -> str:
     if i["custo_usuario"]:
         return "informado pelo usuário"
     c = load_reference()["costs"][i["chave"]]
-    text = c["short"] if c["estimate"] else f"{c['short']}, {COST_LINE_NAME[line]}"
+    text = c["short"] if c["estimate"] else Msg("{0}, {1}", c["short"], COST_LINE_NAME[line])
     f = i.get("fator_escala_custo")
     if f is not None:
         ref_sc = c["yield_scale"]["reference_sc_ha"]
-        text += (f"; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local "
-                  f"({i['sc_ha']:.0f} sc/ha contra {ref_sc:.0f} sc/ha da referência CONAB) — estimativa, validar")
+        text = Msg("{0}; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local "
+                   "({1} sc/ha contra {2} sc/ha da referência CONAB) — estimativa, validar", text, f"{i['sc_ha']:.0f}", f"{ref_sc:.0f}")
     return text
 
 
@@ -239,5 +240,6 @@ def price_source(i: dict) -> str:
         return "informado pelo usuário"
     p = load_reference()["prices"][CASH_CROPS[i["chave"]]]
     if p.get("estimate"):
-        return f"estimativa — validar: {p.get('ratio_to_corn', 0.8):.0%} do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)"
-    return f"SEAB/DERAL-PR, média PR {p['period'].split(' (')[0]}"
+        return Msg("estimativa — validar: {0} do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)",
+                   f"{p.get('ratio_to_corn', 0.8):.0%}")
+    return Msg("SEAB/DERAL-PR, média PR {0}", p["period"].split(" (")[0])

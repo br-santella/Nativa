@@ -21,7 +21,7 @@
        "P/K fertilization above/below the reference: extra cost R$ 409/ha (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 409/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ 2,395/ha/year; 2nd-season increment (without soybean, with the bonus): R$ 1,202/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 803/ha/year.",
-       "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8,7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+       "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 84% of the demand; in 8 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
        "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
        "Water deficit in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01): soil water below 55% of the demand in 2 of 34 years (6%); daily water balance NASA POWER + soil, AWC 87 mm.",
@@ -34,7 +34,7 @@
        "Fertility: criterion soil +0.08 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
        "Fertility: P/K fertilization above/below the reference +R$ 409/ha/year (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 20% (100% of the soil classes; Port.407_de_28-08-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
        "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -50,7 +50,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
+      "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -180,7 +180,7 @@
        {
         "cultura": "P/K fertilization above/below the reference",
         "custo": 409.0,
-        "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+        "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
         "margem_r_ha": -409.0,
         "preco": null,
         "rendimento_sc_ha": null
@@ -273,7 +273,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -416,7 +416,7 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil +0.06 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -433,7 +433,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -603,7 +603,7 @@
        "P/K fertilization above/below the reference: extra cost R$ 409/ha (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 409/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ 2,395/ha/year; 2nd-season increment (without soybean, with the bonus): R$ 1,202/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 803/ha/year.",
-       "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8,7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+       "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 84% of the demand; in 8 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
        "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
        "Water deficit in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01): soil water below 55% of the demand in 2 of 34 years (6%); daily water balance NASA POWER + soil, AWC 87 mm.",
@@ -616,7 +616,7 @@
        "Fertility: criterion soil +0.08 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
        "Fertility: P/K fertilization above/below the reference +R$ 409/ha/year (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 20% (100% of the soil classes; Port.407_de_28-08-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
        "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -632,7 +632,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
+      "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -763,7 +763,7 @@
        {
         "cultura": "P/K fertilization above/below the reference",
         "custo": 409.0,
-        "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+        "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
         "margem_r_ha": -409.0,
         "preco": null,
         "rendimento_sc_ha": null
@@ -856,7 +856,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -991,7 +991,7 @@
        "P/K fertilization above/below the reference: extra cost R$ 409/ha (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 409/ha.",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ 2,354/ha/year; 2nd-season increment (without soybean, with the bonus): R$ 1,162/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 763/ha/year.",
-       "Income history of second-season corn in the municipality (realized margin, bags of soybean/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10,4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+       "Income history of second-season corn in the municipality (realized margin, bags of soybean/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
        "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 86% of the demand; in 7 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
        "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
        "Water deficit in the critical phase (corn flowering/grain fill, sowing on 15/01): soil water below 55% of the demand in 2 of 34 years (6%); daily water balance NASA POWER + soil, AWC 87 mm.",
@@ -1002,7 +1002,7 @@
        "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
        "Fertility: P/K fertilization above/below the reference +R$ 409/ha/year (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn em 15/01: indicated, risco 20% (100% of the soil classes; Port.393_de_26-08-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 20% (100% of the soil classes; Port.393_de_26-08-2025).",
        "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1018,7 +1018,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0,81. Largest contributions to the score: Renda (0,29) and Climate risk (0,16).",
+      "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.81. Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -1110,7 +1110,7 @@
        {
         "cultura": "P/K fertilization above/below the reference",
         "custo": 409.0,
-        "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+        "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
         "margem_r_ha": -409.0,
         "preco": null,
         "rendimento_sc_ha": null
@@ -1185,7 +1185,7 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil +0.06 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1202,7 +1202,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -1374,7 +1374,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,387/ha in the 2nd season (−R$ 225/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and bettermeets the water demand  (0.99 against 0.86). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,387/ha in the 2nd season (−R$ 225/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and meets the water demand better (0.99 against 0.86). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -1517,7 +1517,7 @@
        "Fertility given by the farmer (P 4, K 0.1, Ca 2.5, Mg 0.8, Al 0.9, V% 37.7778, CTC 9; V% 38 derived from (Ca+Mg+K)/CEC); classes: P low, K low, V medium, AL medium (Paraná Fertilization and Liming Manual (SBCS/NEPAR, Pauletti & Motta), Tables 4–6 reproduced in SENAR-AR/PR, PR.0420 (2026)).",
        "P class by clay >400 g/kg (given).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1532,7 +1532,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,487/ha in the 2nd season (−R$ 325/ha against R$ 1,162/ha), improves soil health (0.63 against 0.48; ~40 days of bare soil against 60) and bettermeets the water demand  (1.00 against 0.86). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,487/ha in the 2nd season (−R$ 325/ha against R$ 1,162/ha), improves soil health (0.63 against 0.48; ~40 days of bare soil against 60) and meets the water demand better (1.00 against 0.86). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -1674,7 +1674,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "Sorghum: 60 bags/ha (PAM Western Paraná (mean, the municipality has no recent PAM) 2023–2025 trend projected to the next season; mean 61 bags/ha) × R$ 40.42/bag (estimate — validate: 75% of the SEAB/DERAL-PR corn price (ratio of CONAB minimum prices, not market prices)) − cost R$ 2,807/ha (estimate — validate (CONAB Rio Verde-GO 2026, no PR sheet)) = R$ -369/ha (yield CV 19%; bad year, p20 of the same 10-year window = 57 bags/ha → R$ -486/ha).",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa) = −R$ 191/ha.",
-       "P/K fertilization above/below the reference: extra cost R$ 230/ha (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 230/ha.",
+       "P/K fertilization above/below the reference: extra cost R$ 230/ha (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 230/ha.",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ 523/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -669/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 406/ha/year.",
        "Water: in the critical phase (sorghum booting/grain fill, sowing on 15/01), soil water met on average 89% of the demand; in 5 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
@@ -1685,8 +1685,8 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
-       "Fertility: P/K fertilization above/below the reference +R$ 230/ha/year (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season sorghum em 15/01: indicated, risco 20% (100% of the soil classes; Port.132_de_12-05-2025).",
+       "Fertility: P/K fertilization above/below the reference +R$ 230/ha/year (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season sorghum on 15/01: indicated, risk 20% (100% of the soil classes; Port.132_de_12-05-2025).",
        "Market in Western Paraná: medium; animal feed and cooperatives, with lower demand than corn (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -1702,7 +1702,7 @@
        "nivel": "médio",
        "texto": "animal feed and cooperatives, with lower demand than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,832/ha in the 2nd season (−R$ 669/ha against R$ 1,162/ha), reduces the climate risk (some adverse event in 6% of the years against 11%) and betterbreaks the pest cycle  (0.25 against 0.20). Largest contributions to the score: Climate risk (0.17) and Water (0.16).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,832/ha in the 2nd season (−R$ 669/ha against R$ 1,162/ha), reduces the climate risk (some adverse event in 6% of the years against 11%) and breaks the pest cycle better (0.25 against 0.20). Largest contributions to the score: Climate risk (0.17) and Water (0.16).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -1790,7 +1790,7 @@
        {
         "cultura": "P/K fertilization above/below the reference",
         "custo": 230.0,
-        "fonte": "cost extra: P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+        "fonte": "extra cost: P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
         "margem_r_ha": -230.0,
         "preco": null,
         "rendimento_sc_ha": null
@@ -1876,7 +1876,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,553/ha in the 2nd season (−R$ 391/ha against R$ 1,162/ha), worsens soil health (0.12 against 0.48; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.00 against 0.20). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,553/ha in the 2nd season (−R$ 391/ha against R$ 1,162/ha), worsens soil health (0.12 against 0.48; ~150 days of bare soil against 60) and breaks the pest cycle less (0.00 against 0.20). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report.",
@@ -2008,7 +2008,7 @@
        "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
        "2nd-season beans: 25 bags/ha (PAM Toledo 2013–2021 trend projected to the next season; mean 25 bags/ha) × R$ 174.30/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,453/ha (CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ -63/ha (yield CV 34%; bad year, p20 of the same 10-year window = 15 bags/ha → R$ -1,780/ha).",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa) = −R$ 191/ha.",
-       "P/K fertilization above/below the reference: extra cost R$ 384/ha (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 384/ha.",
+       "P/K fertilization above/below the reference: extra cost R$ 384/ha (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 384/ha.",
        "Bonus in the following soybean: 0 bags/ha × R$ 120.14/bag = R$ 0/ha (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ 555/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -637/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,162/ha/year.",
        "Water: in the critical phase (bean flowering/pod formation, sowing on 15/01), soil water met on average 89% of the demand; in 2 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 65 mm).",
@@ -2022,8 +2022,8 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
-       "Fertility: P/K fertilization above/below the reference +R$ 384/ha/year (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season beans em 15/01: indicated, risco 20% (100% of the soil classes; Port.250_de_30-05-2025).",
+       "Fertility: P/K fertilization above/below the reference +R$ 384/ha/year (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season beans on 15/01: indicated, risk 20% (100% of the soil classes; Port.250_de_30-05-2025).",
        "Market in Western Paraná: medium; grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -2039,7 +2039,7 @@
        "nivel": "médio",
        "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,799/ha in the 2nd season (−R$ 637/ha against R$ 1,162/ha), lessbreaks the pest cycle  (0.00 against 0.20) and worsens soil health (0.38 against 0.48; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.16).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,799/ha in the 2nd season (−R$ 637/ha against R$ 1,162/ha), breaks the pest cycle less (0.00 against 0.20) and worsens soil health (0.38 against 0.48; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.16).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -2127,7 +2127,7 @@
        {
         "cultura": "P/K fertilization above/below the reference",
         "custo": 384.0,
-        "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+        "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
         "margem_r_ha": -384.0,
         "preco": null,
         "rendimento_sc_ha": null
@@ -2195,7 +2195,7 @@
        "P/K fertilization above/below the reference: extra cost R$ 292/ha (P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 292/ha.",
        "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -1,071/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,263/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,679/ha/year.",
-       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8,0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8.0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
        "Water: in the critical phase (wheat heading/grain fill, sowing on 01/05), soil water met on average 97% of the demand; in 1 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
        "Frost (≤ 3 °C) at wheat flowering (15/08–30/09): 14 of 34 years (41%), NASA POWER 1991–2024, ~50 km cell.",
        "Field problem (white mold): penalizes, criterion pests -0.15 (soybean is a host of white mold (rotation with non-host species is recommended); source: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -2205,7 +2205,7 @@
        "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
        "Fertility: P/K fertilization above/below the reference +R$ 292/ha/year (P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); trigo em 01/05: indicated, risco 20% (100% of the soil classes; Port.440_de_29-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); wheat on 01/05: indicated, risk 20% (100% of the soil classes; Port.440_de_29-10-2025).",
        "Market in Western Paraná: medium; cooperatives and mills, with lower liquidity than corn (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -2220,7 +2220,7 @@
        "nivel": "médio",
        "texto": "cooperatives and mills, with lower liquidity than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,425/ha in the 2nd season (−R$ 2,263/ha against R$ 1,162/ha), increases the climate risk (some adverse event in 41% of the years against 11%) and bettermeets the water demand  (0.97 against 0.86). Largest contributions to the score: Water (0.17) and Climate risk (0.10).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,425/ha in the 2nd season (−R$ 2,263/ha against R$ 1,162/ha), increases the climate risk (some adverse event in 41% of the years against 11%) and meets the water demand better (0.97 against 0.86). Largest contributions to the score: Water (0.17) and Climate risk (0.10).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report.",
@@ -2344,7 +2344,7 @@
        {
         "cultura": "P/K fertilization above/below the reference",
         "custo": 292.0,
-        "fonte": "cost extra: P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+        "fonte": "extra cost: P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
         "margem_r_ha": -292.0,
         "preco": null,
         "rendimento_sc_ha": null
@@ -2416,7 +2416,7 @@
       "P/K fertilization above/below the reference: extra cost R$ 409/ha (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 409/ha.",
       "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
       "Rotation total: R$ 2,395/ha/year; 2nd-season increment (without soybean, with the bonus): R$ 1,202/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 803/ha/year.",
-      "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8,7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+      "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
       "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 84% of the demand; in 8 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
       "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
       "Water deficit in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01): soil water below 55% of the demand in 2 of 34 years (6%); daily water balance NASA POWER + soil, AWC 87 mm.",
@@ -2429,7 +2429,7 @@
       "Fertility: criterion soil +0.08 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
       "Fertility: P/K fertilization above/below the reference +R$ 409/ha/year (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 20% (100% of the soil classes; Port.407_de_28-08-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
       "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -2445,7 +2445,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
+     "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -2575,7 +2575,7 @@
       {
        "cultura": "P/K fertilization above/below the reference",
        "custo": 409.0,
-       "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+       "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
        "margem_r_ha": -409.0,
        "preco": null,
        "rendimento_sc_ha": null
@@ -2668,7 +2668,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -2811,7 +2811,7 @@
       "P class by clay >400 g/kg (given).",
       "Fertility: criterion soil +0.06 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -2828,7 +2828,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -2974,7 +2974,7 @@
      "P/K fertilization above/below the reference: extra cost R$ 409/ha (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 409/ha.",
      "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
      "Rotation total: R$ 2,354/ha/year; 2nd-season increment (without soybean, with the bonus): R$ 1,162/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 763/ha/year.",
-     "Income history of second-season corn in the municipality (realized margin, bags of soybean/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10,4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+     "Income history of second-season corn in the municipality (realized margin, bags of soybean/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
      "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 86% of the demand; in 7 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
      "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
      "Water deficit in the critical phase (corn flowering/grain fill, sowing on 15/01): soil water below 55% of the demand in 2 of 34 years (6%); daily water balance NASA POWER + soil, AWC 87 mm.",
@@ -2985,7 +2985,7 @@
      "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
      "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
      "Fertility: P/K fertilization above/below the reference +R$ 409/ha/year (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-     "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn em 15/01: indicated, risco 20% (100% of the soil classes; Port.393_de_26-08-2025).",
+     "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 20% (100% of the soil classes; Port.393_de_26-08-2025).",
      "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
     ],
     "lacunas": [
@@ -3001,7 +3001,7 @@
      "nivel": "alto",
      "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
     },
-    "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0,81. Largest contributions to the score: Renda (0,29) and Climate risk (0,16).",
+    "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.81. Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
     "riscos": [
      "Confirm the calendar, cultivar and ZARC window with the agronomist.",
      "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -3094,7 +3094,7 @@
      {
       "cultura": "P/K fertilization above/below the reference",
       "custo": 409.0,
-      "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+      "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
       "margem_r_ha": -409.0,
       "preco": null,
       "rendimento_sc_ha": null
@@ -4230,7 +4230,7 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)) = −R$ 191/ha.",
        "Bonus in the following soybean: 5.5 bags/ha × R$ 120.14/bag = R$ 661/ha (3 bags/ha from summer corn in place of soybean + 2.5 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
@@ -4242,7 +4242,7 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil +0.06 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -4261,7 +4261,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,303/ha in the 2nd season (−R$ 2,141/ha against R$ 1,162/ha), betterbreaks the pest cycle  (0.65 against 0.20) and improves soil health (0.68 against 0.48; ~35 days of bare soil against 60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,303/ha in the 2nd season (−R$ 2,141/ha against R$ 1,162/ha), breaks the pest cycle better (0.65 against 0.20) and improves soil health (0.68 against 0.48; ~35 days of bare soil against 60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -4323,7 +4323,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -4405,7 +4405,7 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~40 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)) = −R$ 191/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
@@ -4416,7 +4416,7 @@
        "Fertility given by the farmer (P 4, K 0.1, Ca 2.5, Mg 0.8, Al 0.9, V% 37.7778, CTC 9; V% 38 derived from (Ca+Mg+K)/CEC); classes: P low, K low, V medium, AL medium (Paraná Fertilization and Liming Manual (SBCS/NEPAR, Pauletti & Motta), Tables 4–6 reproduced in SENAR-AR/PR, PR.0420 (2026)).",
        "P class by clay >400 g/kg (given).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -4433,7 +4433,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,339/ha in the 2nd season (−R$ 2,176/ha against R$ 1,162/ha), betterbreaks the pest cycle  (0.60 against 0.20) and improves soil health (0.63 against 0.48; ~40 days of bare soil against 60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,339/ha in the 2nd season (−R$ 2,176/ha against R$ 1,162/ha), breaks the pest cycle better (0.60 against 0.20) and improves soil health (0.63 against 0.48; ~40 days of bare soil against 60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -4495,7 +4495,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -4575,7 +4575,7 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)) = −R$ 191/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
@@ -4588,7 +4588,7 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil +0.10 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn em 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -4606,7 +4606,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,239/ha in the 2nd season (−R$ 2,076/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.45 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,239/ha in the 2nd season (−R$ 2,076/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.45 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -4668,7 +4668,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -4849,7 +4849,7 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)) = −R$ 191/ha.",
        "Bonus in the following soybean: 5.5 bags/ha × R$ 120.14/bag = R$ 661/ha (3 bags/ha from summer corn in place of soybean + 2.5 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
@@ -4861,7 +4861,7 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil +0.06 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -4880,7 +4880,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,303/ha in the 2nd season (−R$ 2,141/ha against R$ 1,162/ha), betterbreaks the pest cycle  (0.65 against 0.20) and improves soil health (0.68 against 0.48; ~35 days of bare soil against 60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,303/ha in the 2nd season (−R$ 2,141/ha against R$ 1,162/ha), breaks the pest cycle better (0.65 against 0.20) and improves soil health (0.68 against 0.48; ~35 days of bare soil against 60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -4944,7 +4944,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -5026,7 +5026,7 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~40 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)) = −R$ 191/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
@@ -5037,7 +5037,7 @@
        "Fertility given by the farmer (P 4, K 0.1, Ca 2.5, Mg 0.8, Al 0.9, V% 37.7778, CTC 9; V% 38 derived from (Ca+Mg+K)/CEC); classes: P low, K low, V medium, AL medium (Paraná Fertilization and Liming Manual (SBCS/NEPAR, Pauletti & Motta), Tables 4–6 reproduced in SENAR-AR/PR, PR.0420 (2026)).",
        "P class by clay >400 g/kg (given).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -5054,7 +5054,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,339/ha in the 2nd season (−R$ 2,176/ha against R$ 1,162/ha), betterbreaks the pest cycle  (0.60 against 0.20) and improves soil health (0.63 against 0.48; ~40 days of bare soil against 60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,339/ha in the 2nd season (−R$ 2,176/ha against R$ 1,162/ha), breaks the pest cycle better (0.60 against 0.20) and improves soil health (0.63 against 0.48; ~40 days of bare soil against 60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -5118,7 +5118,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -5198,7 +5198,7 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~35 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)) = −R$ 191/ha.",
        "Bonus in the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
@@ -5211,7 +5211,7 @@
        "P class by clay >400 g/kg (given).",
        "Fertility: criterion soil +0.10 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn em 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -5229,7 +5229,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,239/ha in the 2nd season (−R$ 2,076/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.45 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,239/ha in the 2nd season (−R$ 2,076/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.45 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -5293,7 +5293,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -5362,13 +5362,13 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~70 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Wheat: 36 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 40 bags/ha) × R$ 68.44/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,334/ha (CONAB Ponta Grossa-PR, winter 2025 (Nov/2025), variable cost (≈COE)) = R$ -1,900/ha (yield CV 36%; bad year, p20 of the same 10-year window = 27 bags/ha → R$ -2,508/ha).",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa) = −R$ 191/ha.",
        "P/K fertilization above/below the reference: extra cost R$ 292/ha (P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 292/ha.",
        "Bonus in the following soybean: 4 bags/ha × R$ 120.14/bag = R$ 481/ha (3 bags/ha from summer corn in place of soybean + 1 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
        "Rotation total: R$ -2,922/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -4,114/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -3,530/ha/year.",
-       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8,0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+       "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8.0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
        "Water: in the critical phase (wheat heading/grain fill, sowing on 01/05), soil water met on average 97% of the demand; in 1 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
        "Frost (≤ 3 °C) at wheat flowering (15/08–30/09): 14 of 34 years (41%), NASA POWER 1991–2024, ~50 km cell.",
        "Field problems given (white mold, nematode, compaction): no effect with a confirmed source in this rotation (neutral).",
@@ -5377,7 +5377,7 @@
        "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
        "Fertility: P/K fertilization above/below the reference +R$ 292/ha/year (P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% das classes de solo; Port.187_de_27-05-2025); trigo em 01/05: indicated, risco 20% (100% of the soil classes; Port.440_de_29-10-2025).",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); wheat on 01/05: indicated, risk 20% (100% of the soil classes; Port.440_de_29-10-2025).",
        "Market in Western Paraná: medium; cooperatives and mills, with lower liquidity than corn (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -5394,7 +5394,7 @@
        "nivel": "médio",
        "texto": "cooperatives and mills, with lower liquidity than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 5,276/ha in the 2nd season (−R$ 4,114/ha against R$ 1,162/ha), betterbreaks the pest cycle  (0.60 against 0.20) and increases the climate risk (some adverse event in 41% of the years against 11%). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 5,276/ha in the 2nd season (−R$ 4,114/ha against R$ 1,162/ha), breaks the pest cycle better (0.60 against 0.20) and increases the climate risk (some adverse event in 41% of the years against 11%). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report.",
@@ -5494,7 +5494,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -5518,7 +5518,7 @@
        {
         "cultura": "P/K fertilization above/below the reference",
         "custo": 292.0,
-        "fonte": "cost extra: P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+        "fonte": "extra cost: P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
         "margem_r_ha": -292.0,
         "preco": null,
         "rendimento_sc_ha": null
@@ -5581,7 +5581,7 @@
       ],
       "evidencias": [
        "Days of bare soil/year (catalog): ~150 days.",
-       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
+       "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Fallow (managed): no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)) = −R$ 191/ha.",
        "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (3 bags/ha from summer corn in place of soybean + 0 from the 2nd crop) (straw/N and disease-cycle break, reference estimate).",
@@ -5592,7 +5592,7 @@
        "Fertility given by the farmer (P 4, K 0.1, Ca 2.5, Mg 0.8, Al 0.9, V% 37.7778, CTC 9; V% 38 derived from (Ca+Mg+K)/CEC); classes: P low, K low, V medium, AL medium (Paraná Fertilization and Liming Manual (SBCS/NEPAR, Pauletti & Motta), Tables 4–6 reproduced in SENAR-AR/PR, PR.0420 (2026)).",
        "P class by clay >400 g/kg (given).",
        "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn em 01/10: indicated, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
+       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no production in the 2nd window (estimate to validate with local cooperatives/dealers)."
       ],
       "lacunas": [
@@ -5609,7 +5609,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,404/ha in the 2nd season (−R$ 2,242/ha against R$ 1,162/ha), worsens soil health (0.12 against 0.48; ~150 days of bare soil against 60) and bettermeets the water demand  (1.00 against 0.86). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,404/ha in the 2nd season (−R$ 2,242/ha against R$ 1,162/ha), worsens soil health (0.12 against 0.48; ~150 days of bare soil against 60) and meets the water demand better (1.00 against 0.86). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report.",
@@ -5674,7 +5674,7 @@
        {
         "cultura": "Summer corn (1st season)",
         "custo": 8043.0,
-        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), cost variável (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
+        "fonte": "IBGE PAM yield (Toledo, 2016–2025); price SEAB/DERAL-PR, PR mean Nov/25 to Oct/26; cost CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate",
         "margem_r_ha": -1019.0,
         "preco": 53.89,
         "rendimento_sc_ha": 130.3
@@ -5751,7 +5751,7 @@
       "P/K fertilization above/below the reference: extra cost R$ 409/ha (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 409/ha.",
       "Bonus in the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break, reference estimate).",
       "Rotation total: R$ 2,395/ha/year; 2nd-season increment (without soybean, with the bonus): R$ 1,202/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 803/ha/year.",
-      "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8,7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+      "Income history of second-season corn + brachiaria in the municipality (realized margin, bags of soybean/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
       "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 84% of the demand; in 8 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
       "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
       "Water deficit in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01): soil water below 55% of the demand in 2 of 34 years (6%); daily water balance NASA POWER + soil, AWC 87 mm.",
@@ -5764,7 +5764,7 @@
       "Fertility: criterion soil +0.08 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
       "Fertility: P/K fertilization above/below the reference +R$ 409/ha/year (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn + brachiaria em 15/01: indicated, risco 20% (100% of the soil classes; Port.407_de_28-08-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
       "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -5780,7 +5780,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
+     "por_que": "Compared with the current one (second-season corn): improves soil health (0.86 against 0.48; ~30 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Same climate risk (some adverse event in 11% of the years). Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -5911,7 +5911,7 @@
       {
        "cultura": "P/K fertilization above/below the reference",
        "custo": 409.0,
-       "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+       "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
        "margem_r_ha": -409.0,
        "preco": null,
        "rendimento_sc_ha": null
@@ -6004,7 +6004,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,442/ha in the 2nd season (−R$ 280/ha against R$ 1,162/ha), improves soil health (1.00 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.55 against 0.20). Largest contributions to the score: Soil health (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -6139,7 +6139,7 @@
       "P/K fertilization above/below the reference: extra cost R$ 409/ha (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 409/ha.",
       "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
       "Rotation total: R$ 2,354/ha/year; 2nd-season increment (without soybean, with the bonus): R$ 1,162/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 763/ha/year.",
-      "Income history of second-season corn in the municipality (realized margin, bags of soybean/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10,4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+      "Income history of second-season corn in the municipality (realized margin, bags of soybean/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
       "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 86% of the demand; in 7 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
       "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
       "Water deficit in the critical phase (corn flowering/grain fill, sowing on 15/01): soil water below 55% of the demand in 2 of 34 years (6%); daily water balance NASA POWER + soil, AWC 87 mm.",
@@ -6150,7 +6150,7 @@
       "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
       "Fertility: P/K fertilization above/below the reference +R$ 409/ha/year (P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season corn em 15/01: indicated, risco 20% (100% of the soil classes; Port.393_de_26-08-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 20% (100% of the soil classes; Port.393_de_26-08-2025).",
       "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -6166,7 +6166,7 @@
       "nivel": "alto",
       "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
      },
-     "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0,81. Largest contributions to the score: Renda (0,29) and Climate risk (0,16).",
+     "por_que": "It is the current rotation; it ranked #3 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.81. Largest contributions to the score: Income (0.29) and Climate risk (0.16).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -6258,7 +6258,7 @@
       {
        "cultura": "P/K fertilization above/below the reference",
        "custo": 409.0,
-       "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+       "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+35 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: Paraná Manual 2017 (Tables 2 and 3, expected yield < 8 t/ha, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
        "margem_r_ha": -409.0,
        "preco": null,
        "rendimento_sc_ha": null
@@ -6333,7 +6333,7 @@
       "P class by clay >400 g/kg (given).",
       "Fertility: criterion soil +0.06 (recycles K/P on soil with low P or K; the size of the bonus is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -6350,7 +6350,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,452/ha in the 2nd season (−R$ 290/ha against R$ 1,162/ha), improves soil health (0.68 against 0.48; ~35 days of bare soil against 60) and breaks the pest cycle better (0.35 against 0.20). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -6522,7 +6522,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,387/ha in the 2nd season (−R$ 225/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and bettermeets the water demand  (0.99 against 0.86). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,387/ha in the 2nd season (−R$ 225/ha against R$ 1,162/ha), improves soil health (0.77 against 0.48; ~35 days of bare soil against 60) and meets the water demand better (0.99 against 0.86). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -6665,7 +6665,7 @@
       "Fertility given by the farmer (P 4, K 0.1, Ca 2.5, Mg 0.8, Al 0.9, V% 37.7778, CTC 9; V% 38 derived from (Ca+Mg+K)/CEC); classes: P low, K low, V medium, AL medium (Paraná Fertilization and Liming Manual (SBCS/NEPAR, Pauletti & Motta), Tables 4–6 reproduced in SENAR-AR/PR, PR.0420 (2026)).",
       "P class by clay >400 g/kg (given).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa; liming is a need of the area and is also charged to cover crops/fallow, so as not to favor them (modeling assumption, validate with an agronomist)).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicated, risco 20% (100% of the soil classes; Port.416_de_15-10-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -6680,7 +6680,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,487/ha in the 2nd season (−R$ 325/ha against R$ 1,162/ha), improves soil health (0.63 against 0.48; ~40 days of bare soil against 60) and bettermeets the water demand  (1.00 against 0.86). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,487/ha in the 2nd season (−R$ 325/ha against R$ 1,162/ha), improves soil health (0.63 against 0.48; ~40 days of bare soil against 60) and meets the water demand better (1.00 against 0.86). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -6822,7 +6822,7 @@
       "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
       "Sorghum: 60 bags/ha (PAM Western Paraná (mean, the municipality has no recent PAM) 2023–2025 trend projected to the next season; mean 61 bags/ha) × R$ 40.42/bag (estimate — validate: 75% of the SEAB/DERAL-PR corn price (ratio of CONAB minimum prices, not market prices)) − cost R$ 2,807/ha (estimate — validate (CONAB Rio Verde-GO 2026, no PR sheet)) = R$ -369/ha (yield CV 19%; bad year, p20 of the same 10-year window = 57 bags/ha → R$ -486/ha).",
       "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa) = −R$ 191/ha.",
-      "P/K fertilization above/below the reference: extra cost R$ 230/ha (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 230/ha.",
+      "P/K fertilization above/below the reference: extra cost R$ 230/ha (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 230/ha.",
       "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
       "Rotation total: R$ 523/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -669/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ 406/ha/year.",
       "Water: in the critical phase (sorghum booting/grain fill, sowing on 15/01), soil water met on average 89% of the demand; in 5 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
@@ -6833,8 +6833,8 @@
       "P class by clay >400 g/kg (given).",
       "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
-      "Fertility: P/K fertilization above/below the reference +R$ 230/ha/year (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season sorghum em 15/01: indicated, risco 20% (100% of the soil classes; Port.132_de_12-05-2025).",
+      "Fertility: P/K fertilization above/below the reference +R$ 230/ha/year (P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season sorghum on 15/01: indicated, risk 20% (100% of the soil classes; Port.132_de_12-05-2025).",
       "Market in Western Paraná: medium; animal feed and cooperatives, with lower demand than corn (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -6850,7 +6850,7 @@
       "nivel": "médio",
       "texto": "animal feed and cooperatives, with lower demand than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,832/ha in the 2nd season (−R$ 669/ha against R$ 1,162/ha), reduces the climate risk (some adverse event in 6% of the years against 11%) and betterbreaks the pest cycle  (0.25 against 0.20). Largest contributions to the score: Climate risk (0.17) and Water (0.16).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,832/ha in the 2nd season (−R$ 669/ha against R$ 1,162/ha), reduces the climate risk (some adverse event in 6% of the years against 11%) and breaks the pest cycle better (0.25 against 0.20). Largest contributions to the score: Climate risk (0.17) and Water (0.16).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -6938,7 +6938,7 @@
       {
        "cultura": "P/K fertilization above/below the reference",
        "custo": 230.0,
-       "fonte": "cost extra: P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+       "fonte": "extra cost: P low (+12 kg P2O5/ha), K low (+18 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
        "margem_r_ha": -230.0,
        "preco": null,
        "rendimento_sc_ha": null
@@ -7024,7 +7024,7 @@
       "nivel": "não se aplica",
       "texto": "no production in the 2nd window"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,553/ha in the 2nd season (−R$ 391/ha against R$ 1,162/ha), worsens soil health (0.12 against 0.48; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.00 against 0.20). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,553/ha in the 2nd season (−R$ 391/ha against R$ 1,162/ha), worsens soil health (0.12 against 0.48; ~150 days of bare soil against 60) and breaks the pest cycle less (0.00 against 0.20). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report.",
@@ -7156,7 +7156,7 @@
       "Soybean: 50 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 53 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 1,192/ha (yield CV 30%; bad year, p20 of the same 10-year window = 50 bags/ha → R$ 1,192/ha).",
       "2nd-season beans: 25 bags/ha (PAM Toledo 2013–2021 trend projected to the next season; mean 25 bags/ha) × R$ 174.30/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,453/ha (CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ -63/ha (yield CV 34%; bad year, p20 of the same 10-year window = 15 bags/ha → R$ -1,780/ha).",
       "Liming: extra cost R$ 191/ha (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa) = −R$ 191/ha.",
-      "P/K fertilization above/below the reference: extra cost R$ 384/ha (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 384/ha.",
+      "P/K fertilization above/below the reference: extra cost R$ 384/ha (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 384/ha.",
       "Bonus in the following soybean: 0 bags/ha × R$ 120.14/bag = R$ 0/ha (straw/N and disease-cycle break, reference estimate).",
       "Rotation total: R$ 555/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -637/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,162/ha/year.",
       "Water: in the critical phase (bean flowering/pod formation, sowing on 15/01), soil water met on average 89% of the demand; in 2 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 65 mm).",
@@ -7170,8 +7170,8 @@
       "P class by clay >400 g/kg (given).",
       "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
-      "Fertility: P/K fertilization above/below the reference +R$ 384/ha/year (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); 2nd-season beans em 15/01: indicated, risco 20% (100% of the soil classes; Port.250_de_30-05-2025).",
+      "Fertility: P/K fertilization above/below the reference +R$ 384/ha/year (P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season beans on 15/01: indicated, risk 20% (100% of the soil classes; Port.250_de_30-05-2025).",
       "Market in Western Paraná: medium; grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -7187,7 +7187,7 @@
       "nivel": "médio",
       "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,799/ha in the 2nd season (−R$ 637/ha against R$ 1,162/ha), lessbreaks the pest cycle  (0.00 against 0.20) and worsens soil health (0.38 against 0.48; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.16).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,799/ha in the 2nd season (−R$ 637/ha against R$ 1,162/ha), breaks the pest cycle less (0.00 against 0.20) and worsens soil health (0.38 against 0.48; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.16).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report."
@@ -7275,7 +7275,7 @@
       {
        "cultura": "P/K fertilization above/below the reference",
        "custo": 384.0,
-       "fonte": "cost extra: P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+       "fonte": "extra cost: P low (+20 kg P2O5/ha), K low (+30 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
        "margem_r_ha": -384.0,
        "preco": null,
        "rendimento_sc_ha": null
@@ -7343,7 +7343,7 @@
       "P/K fertilization above/below the reference: extra cost R$ 292/ha (P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed) = −R$ 292/ha.",
       "Bonus in the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break, reference estimate).",
       "Rotation total: R$ -1,071/ha/year; 2nd-season increment (without soybean, with the bonus): R$ -2,263/ha, on the scale S = R$ 1,192/ha (municipality soybean margin, min. 1,000); in a bad year (p20 yield): R$ -1,679/ha/year.",
-      "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8,0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
+      "Income history of wheat in the municipality (realized margin, bags of soybean/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; mean -8.0; negative margin in 4 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not part of the score.",
       "Water: in the critical phase (wheat heading/grain fill, sowing on 01/05), soil water met on average 97% of the demand; in 1 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 87 mm).",
       "Frost (≤ 3 °C) at wheat flowering (15/08–30/09): 14 of 34 years (41%), NASA POWER 1991–2024, ~50 km cell.",
       "Field problem (white mold): penalizes, criterion pests -0.15 (soybean is a host of white mold (rotation with non-host species is recommended); source: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -7353,7 +7353,7 @@
       "Fertility: criterion soil -0.08 (crop sensitive to acidity (Al medium, V% medium); severity 1; Paraná Manual classes, the size of the penalty is a modeling choice (estimate, no confirmed source; validate with an agronomist/Embrapa)).",
       "Fertility: Liming +R$ 191/ha/year (LR = (60 − V% 38)/100 × CEC 9 / ECCE 77% = 2.6 t/ha × R$ 220/t, spread over 3 years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of CBPTT 2020 (Wheat and Triticale), f = 1.3 for ground limestone of unknown ECCE; V2: 60% (51–70% range of the Paraná Manual; soybean 60% and wheat 60% in Embrapa Soja Doc. 417 and CBPTT 2020); limestone price, 6 t/ha cap and 3-year spread: estimate, no confirmed source; validate with an agronomist/Embrapa).",
       "Fertility: P/K fertilization above/below the reference +R$ 292/ha/year (P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed).",
-      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% das classes de solo; Port.375_de_26-06-2025); trigo em 01/05: indicated, risco 20% (100% of the soil classes; Port.440_de_29-10-2025).",
+      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); wheat on 01/05: indicated, risk 20% (100% of the soil classes; Port.440_de_29-10-2025).",
       "Market in Western Paraná: medium; cooperatives and mills, with lower liquidity than corn (estimate to validate with local cooperatives/dealers)."
      ],
      "lacunas": [
@@ -7368,7 +7368,7 @@
       "nivel": "médio",
       "texto": "cooperatives and mills, with lower liquidity than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 3,425/ha in the 2nd season (−R$ 2,263/ha against R$ 1,162/ha), increases the climate risk (some adverse event in 41% of the years against 11%) and bettermeets the water demand  (0.97 against 0.86). Largest contributions to the score: Water (0.17) and Climate risk (0.10).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 3,425/ha in the 2nd season (−R$ 2,263/ha against R$ 1,162/ha), increases the climate risk (some adverse event in 41% of the years against 11%) and meets the water demand better (0.97 against 0.86). Largest contributions to the score: Water (0.17) and Climate risk (0.10).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Fertility: confirm the liming and fertilization rates with the agronomist and the full lab report.",
@@ -7492,7 +7492,7 @@
       {
        "cultura": "P/K fertilization above/below the reference",
        "custo": 292.0,
-       "fonte": "cost extra: P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (sem venda)",
+       "fonte": "extra cost: P low (+25 kg P2O5/ha), K low (+0 kg K2O/ha) relative to the medium class, which we ASSUME is built into the CONAB cost (assumption without a source); rates: CBPTT 2020 (Tables 7 and 8, midpoint of the range); prices: CNA/Cepea Campo Futuro (MT and PR mean) on 19/09/2025: SSP R$ 2,104.7/t and KCl R$ 2,898.8/t; contents of 18% P2O5 and 58% K2O assumed (no sale)",
        "margem_r_ha": -292.0,
        "preco": null,
        "rendimento_sc_ha": null

@@ -19,6 +19,8 @@ from pathlib import Path
 
 import yaml
 
+from field_shift.i18n import Join, Msg
+
 ESTIMATE_SOURCE = "estimativa, sem fonte confirmada; validar com agrônomo/Embrapa"
 _NO_SOURCE = "no confirmed source"
 
@@ -314,7 +316,7 @@ def _dose_delta(sec_: str, fert: dict) -> tuple[float, float, list[str], str] | 
         ex = PK_DEMAND[sec_]
         dp = (P2O5_DOSE_ESTIMATE[cl["p"]] - P2O5_DOSE_ESTIMATE["medio"]) * ex if "p" in cl else None
         dk = (K2O_DOSE_ESTIMATE[cl["k"]] - K2O_DOSE_ESTIMATE["medio"]) * ex if "k" in cl else None
-        src = f"doses {_NO_SOURCE} ({ESTIMATE_SOURCE})"
+        src = Msg("doses {0} ({1})", _NO_SOURCE, ESTIMATE_SOURCE)
     else:
         return None
     if dp is None and dk is None:
@@ -349,8 +351,8 @@ def costs(c: dict, state: dict | None) -> list[dict]:
         dp, dk, parts, src = dd
         delta = dp * P2O5_PRICE_R_KG + dk * K2O_PRICE_R_KG
         out.append(dict(chave="adubacao_pk", rotulo="Adubação P/K acima/abaixo da referência" if delta >= 0 else "Economia de adubação P/K",
-                        custo=delta, detalhe=f"{', '.join(parts)} em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa "
-                                             f"sem fonte); doses: {src}; preços: {PRICE_SOURCE}"))
+                        custo=delta, detalhe=Msg("{0} em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa "
+                                                 "sem fonte); doses: {1}; preços: {2}", Join(parts, ", "), src, PRICE_SOURCE)))
     return out
 
 
@@ -427,7 +429,8 @@ def card(c: dict, state: dict | None) -> dict:
         for e in (x for x in aj["efeitos"] if x["origem"] == "fertilidade"):
             ev.append(f"Fertilidade: critério {e['criterio']} {e['delta']:+.2f} ({e['motivo']}).")
         for it in costs(c, state):
-            ev.append(f"Fertilidade: {it['rotulo']} {'+' if it['custo'] >= 0 else '−'}R$ {abs(it['custo']):.0f}/ha/ano ({it['detalhe']}).")
+            ev.append(Msg("Fertilidade: {0} {1}R$ {2}/ha/ano ({3}).", it["rotulo"], "+" if it["custo"] >= 0 else "−",
+                          f"{abs(it['custo']):.0f}", it["detalhe"]))
         if _nc_t_ha(fert, V2.get(c["segunda"], V2_AREA)) is None:
             gap.append("Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.")
         if fert["ausentes"]:

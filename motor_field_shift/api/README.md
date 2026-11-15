@@ -109,6 +109,10 @@ curl -s -X POST "http://localhost:8000/v1/recomendacao?lang=en" -H 'Content-Type
   and adds the new ones to `en.json` with `null`; write the English and run the tests. `--prune` drops templates no longer used.
 - `tests/test_i18n.py` fails when a template has no English, when the placeholders differ, or when the code has a text that is
   not in the catalog. `tests/golden/en/` holds the English responses, checked against the pt-BR ones (same keys, ids and numbers).
+- Texts assembled from pieces (a sentence with a list, a line whose wording depends on a condition) are built with
+  `field_shift.i18n.Msg("... {0} ...", value)` and `Join(items, ", ", last=" e ")` instead of f-strings/concatenation: they are
+  the same pt-BR string, but keep the template, so the English is rendered from the template and the translated values. Routes
+  return through `i18n.localize(...)`, which does this while those objects are still alive (before JSON serialization).
 - Bibliographic titles (Embrapa, papers) and official names (ZARC crop names, ordinances) are kept as published.
 
 ### `area` object (shared by `/diagnostico` and `/recomendacao`)

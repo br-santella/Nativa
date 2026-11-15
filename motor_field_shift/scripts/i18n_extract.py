@@ -74,6 +74,11 @@ def from_code() -> dict[str, str]:
                 if isinstance(n, ast.Call):  # OpenAPI texts (Field/route descriptions): the schema stays in Portuguese
                     skip.update(id(k.value) for k in n.keywords if k.arg in {"description", "summary"})
             for n in ast.walk(tree):
+                # Msg("template", *values): the template is always a catalog key, even without Portuguese words
+                if isinstance(n, ast.Call) and getattr(n.func, "id", getattr(n.func, "attr", "")) == "Msg" and n.args \
+                        and isinstance(n.args[0], ast.Constant) and isinstance(n.args[0].value, str):
+                    out.setdefault(n.args[0].value, f"{f.relative_to(ROOT).as_posix()}:{n.lineno}")
+                    skip.add(id(n.args[0]))
                 if id(n) in skip:
                     continue
                 t = template(n)

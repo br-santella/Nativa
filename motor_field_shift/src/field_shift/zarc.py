@@ -15,6 +15,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from field_shift.i18n import Join, Msg
+
 ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "data/raw/zarc"
 RAW_CSV = RAW_DIR / "tabua_2025_2026.csv"
@@ -126,9 +128,10 @@ def warning_text(zs: dict, municipality: str) -> str | None:
     fora = [x for x in zs["culturas"] if not x["indicado"]]
     if not fora:
         return None
-    parts = [f"{x['cultura']} semeado(a) em {x['semeadura']} ({x['motivo']})" for x in fora]
-    return (f"Fora do {SOURCE.split(' (')[0]} em {municipality}: {'; '.join(parts)}. Sem ZARC não há acesso ao crédito rural com "
-            "juros controlados, ao Proagro nem ao seguro rural subvencionado (aviso informativo: não muda a nota).")
+    parts = [Msg("{0} semeado(a) em {1} ({2})", x["cultura"], x["semeadura"], x["motivo"]) for x in fora]
+    return Msg("Fora do {0} em {1}: {2}. Sem ZARC não há acesso ao crédito rural com juros controlados, ao Proagro nem ao "
+               "seguro rural subvencionado (aviso informativo: não muda a nota).", SOURCE.split(" (")[0], municipality,
+               Join(parts, "; "))
 
 
 def evidence_text(zs: dict, municipality: str) -> str | None:
@@ -138,10 +141,10 @@ def evidence_text(zs: dict, municipality: str) -> str | None:
     parts = []
     for x in zs["culturas"]:
         if x["indicado"]:
-            parts.append(f"{x['cultura']} em {x['semeadura']}: indicado, risco {x['risco_pct']}% "
-                          f"({x['solos_indicados_pct']}% das classes de solo; {x['portaria']})")
+            parts.append(Msg("{0} em {1}: indicado, risco {2}% ({3}% das classes de solo; {4})", x["cultura"], x["semeadura"],
+                             str(x["risco_pct"]), str(x["solos_indicados_pct"]), str(x["portaria"])))
         else:
-            parts.append(f"{x['cultura']} em {x['semeadura']}: não indicado")
+            parts.append(Msg("{0} em {1}: não indicado", x["cultura"], x["semeadura"]))
     if zs["segunda_sem_zoneamento"]:
-        return f"{SOURCE}, {municipality}: {'; '.join(parts)}. A cobertura da 2ª janela não tem zoneamento ZARC."
-    return f"{SOURCE}, {municipality}: {'; '.join(parts)}."
+        return Msg("{0}, {1}: {2}. A cobertura da 2ª janela não tem zoneamento ZARC.", SOURCE, municipality, Join(parts, "; "))
+    return Msg("{0}, {1}: {2}.", SOURCE, municipality, Join(parts, "; "))

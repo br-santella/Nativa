@@ -19,6 +19,7 @@ from field_shift.app import field_state
 from field_shift.water import critical_phase_water
 from field_shift.water.balance import DEFICIT_THRESHOLD, WHEAT_SOWING
 from field_shift import zarc
+from field_shift.i18n import Join, Msg
 from field_shift.income import history as income_history
 from field_shift.crop_calendar import PREP_DAYS_2ND, DEFAULT_SOWING, SOWINGS_2ND
 from field_shift.climate.lookup import indicators_for
@@ -644,9 +645,9 @@ def fmt_margin(m: dict, risks: dict) -> list[str]:
         local = local_rend(risks, i["chave"])
         if i.get("extra"):
             if i["custo"] >= 0:
-                lines.append(f"{i['rotulo']}: custo extra R$ {_r(i['custo'])}/ha ({i['detalhe']}) = {_rs(i['margem'])}.")
+                lines.append(Msg("{0}: custo extra R$ {1}/ha ({2}) = {3}.", i["rotulo"], _r(i["custo"]), i["detalhe"], _rs(i["margem"])))
             else:
-                lines.append(f"{i['rotulo']}: economia R$ {_r(-i['custo'])}/ha ({i['detalhe']}) = {_rs(i['margem'])}.")
+                lines.append(Msg("{0}: economia R$ {1}/ha ({2}) = {3}.", i["rotulo"], _r(-i["custo"]), i["detalhe"], _rs(i["margem"])))
         elif i["sc_ha"] is not None and i.get("prod_usuario"):
             rz = i.get("razao_p20")
             bad = (f"ano ruim: rendimento próprio × p20/média da PAM ({rz:.2f}) = {i['sc_ha_ruim']:.0f} sc/ha → R$ {_r(i['margem_ano_ruim'])}/ha"
@@ -667,11 +668,14 @@ def fmt_margin(m: dict, risks: dict) -> list[str]:
                      if m["bonus_verao_sc"] else "")
     lines.append(f"Bônus na soja seguinte: {m['bonus_sc']:g} sc/ha × R$ {m['preco_soja']:.2f}/sc = R$ {_r(m['bonus'])}/ha{bonus_detail} "
                   f"(palhada/N e quebra de ciclo de doença, estimativa de referência).")
-    t = (f"Total da rotação: R$ {_r(m['total'])}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ {_r(m['incremental'])}/ha, "
-         f"na escala S = R$ {_r(m['escala_S'])}/ha (margem da soja do município, mín. {_r(INCOME_SCALE_MIN)})")
+    values = [_r(m["total"]), _r(m["incremental"]), _r(m["escala_S"]), _r(INCOME_SCALE_MIN)]
     if m["total_ano_ruim"] is not None:
-        t += f"; em ano ruim (rendimento p20): R$ {_r(m['total_ano_ruim'])}/ha/ano"
-    lines.append(t + ".")
+        lines.append(Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ {1}/ha, "
+                         "na escala S = R$ {2}/ha (margem da soja do município, mín. {3}); em ano ruim (rendimento p20): R$ {4}/ha/ano.",
+                         *values, _r(m["total_ano_ruim"])))
+    else:
+        lines.append(Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ {1}/ha, "
+                         "na escala S = R$ {2}/ha (margem da soja do município, mín. {3}).", *values))
     return lines
 
 
@@ -695,20 +699,24 @@ def _criterion_text(k: str, alt: str, cur: str, res: dict, d: float) -> str:
     if k == "renda":
         a, b = m[alt]["incremental"], m[cur]["incremental"]
         if wins:
-            pct = f" (+{(a - b) / abs(b):.0%})" if b > 0 else ""
-            return f"soma {_rs(a)} contra {_rs(b)} na 2ª safra{pct}"
-        return f"abre mão de {_rs(b - a)} na 2ª safra ({_rs(a)} contra {_rs(b)})"
+            if b > 0:
+                return Msg("soma {0} contra {1} na 2ª safra (+{2})", _rs(a), _rs(b), f"{(a - b) / abs(b):.0%}")
+            return Msg("soma {0} contra {1} na 2ª safra", _rs(a), _rs(b))
+        return Msg("abre mão de {0} na 2ª safra ({1} contra {2})", _rs(b - a), _rs(a), _rs(b))
     if k == "solo":
         da, db = CATALOG[alt]["dias_descobertos"], CATALOG[cur]["dias_descobertos"]
-        return (f"{'melhora' if wins else 'piora'} a saúde do solo ({_c2(ca['solo'])} contra {_c2(cb['solo'])}; "
-                f"~{da} dias de solo descoberto contra {db})")
+        return Msg("melhora a saúde do solo ({0} contra {1}; ~{2} dias de solo descoberto contra {3})" if wins else
+                   "piora a saúde do solo ({0} contra {1}; ~{2} dias de solo descoberto contra {3})",
+                   _c2(ca["solo"]), _c2(cb["solo"]), str(da), str(db))
     if k == "agua":
-        return f"{'atende melhor' if wins else 'atende pior'} a demanda de água ({_c2(ca['agua'])} contra {_c2(cb['agua'])})"
+        return Msg("atende melhor a demanda de água ({0} contra {1})" if wins else "atende pior a demanda de água ({0} contra {1})",
+                   _c2(ca["agua"]), _c2(cb["agua"]))
     if k == "pragas":
-        return f"{'quebra melhor' if wins else 'quebra menos'} o ciclo de pragas ({_c2(ca['pragas'])} contra {_c2(cb['pragas'])})"
+        return Msg("quebra melhor o ciclo de pragas ({0} contra {1})" if wins else "quebra menos o ciclo de pragas ({0} contra {1})",
+                   _c2(ca["pragas"]), _c2(cb["pragas"]))
     pa, pb = 1 - ca["risco"], 1 - cb["risco"]
-    return (f"{'reduz' if wins else 'aumenta'} o risco climático (algum evento adverso em {pa:.0%} dos anos "
-            f"contra {pb:.0%})")
+    return Msg("reduz o risco climático (algum evento adverso em {0} dos anos contra {1})" if wins else
+               "aumenta o risco climático (algum evento adverso em {0} dos anos contra {1})", f"{pa:.0%}", f"{pb:.0%}")
 
 
 def why_compared(res: dict, nome: str, current: str | None) -> str | None:
@@ -721,25 +729,22 @@ def why_compared(res: dict, nome: str, current: str | None) -> str | None:
         pos, n = names.index(current) + 1, len(names)
         if pos == 1:
             o = tab.iloc[1]
-            return (f"É a rotação atual; ficou em 1º lugar entre {n} opções válidas. A 2ª melhor ({_short_name(o['candidata'])}) "
-                    f"tem nota {_c2(o['nota'])}.")
+            return Msg("É a rotação atual; ficou em 1º lugar entre {0} opções válidas. A 2ª melhor ({1}) tem nota {2}.",
+                       str(n), _short_name(o["candidata"]), _c2(o["nota"]))
         b = tab.iloc[0]
-        return (f"É a rotação atual; ficou em {pos}º lugar entre {n} opções válidas. A melhor alternativa "
-                f"({_short_name(b['candidata'])}) tem nota {_c2(b['nota'])}.")
+        return Msg("É a rotação atual; ficou em {0}º lugar entre {1} opções válidas. A melhor alternativa ({2}) tem nota {3}.",
+                   str(pos), str(n), _short_name(b["candidata"]), _c2(b["nota"]))
     t = tab.set_index("candidata")
     w = res["pesos_norm"]
     diff_ = {k: w[k] * (t.loc[nome, k] - t.loc[current, k]) for k in CRITERIA}
     tops = [k for k, v in sorted(diff_.items(), key=lambda kv: -abs(kv[1]))[:3] if abs(v) >= 0.005]
     phrases = [_criterion_text(k, nome, current, res, diff_[k]) for k in tops]
-    cab = f"Em relação à atual ({_short_name(current)}): "
     if not phrases:
-        txt = cab + "desempenho praticamente igual nos cinco critérios."
-    elif len(phrases) == 1:
-        txt = cab + phrases[0] + "."
+        txt = Msg("Em relação à atual ({0}): desempenho praticamente igual nos cinco critérios.", _short_name(current))
     else:
-        txt = cab + ", ".join(phrases[:-1]) + " e " + phrases[-1] + "."
+        txt = Msg("Em relação à atual ({0}): {1}.", _short_name(current), Join(phrases, ", ", last=" e "))
     if "risco" not in tops and 1 - t.loc[nome, "risco"] > 0.005:
-        txt += f" Risco climático igual (algum evento adverso em {1 - t.loc[nome, 'risco']:.0%} dos anos)."
+        txt = Msg("{0} Risco climático igual (algum evento adverso em {1} dos anos).", txt, f"{1 - t.loc[nome, 'risco']:.0%}")
     return txt
 
 
@@ -748,12 +753,8 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
     """`why_cmp`: text from `why_compared` (comparison with the current rotation); if None, only the largest contributions."""
     c = CATALOG[line["candidata"]]
     top = sorted(line["contrib"].items(), key=lambda kv: -kv[1])[:2]
-    if len(top) == 2:
-        (k1, v1), (k2, v2) = top
-        contribs = f"Maiores contribuições para a nota: {CRITERIA[k1]} ({_c2(v1)}) e {CRITERIA[k2]} ({_c2(v2)})."
-    else:
-        contribs = "Maiores contribuições para a nota: " + " e ".join(f"{CRITERIA[k]} ({_c2(v)})" for k, v in top) + "."
-    why = f"{why_cmp} {contribs}" if why_cmp else contribs
+    contribs = Msg("Maiores contribuições para a nota: {0}.", Join([Msg("{0} ({1})", CRITERIA[k], _c2(v)) for k, v in top], " e "))
+    why = Join([why_cmp, contribs], " ") if why_cmp else contribs
     ev = [f"Dias de solo descoberto/ano (catálogo): ~{c['dias_descobertos']} dias."]
     if current and not np.isnan(ndvi_bare_soil_days):
         ev.append(f"NDVI observado (NASA HLS): ~{ndvi_bare_soil_days:.0f} dias/ano com NDVI<{SOIL_THRESHOLD}.")

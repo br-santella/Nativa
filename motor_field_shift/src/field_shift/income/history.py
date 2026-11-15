@@ -22,6 +22,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from field_shift.i18n import Msg
 from field_shift.pam.productivity import series
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -124,6 +125,9 @@ def text(tr: dict | None) -> str | None:
     if tr is None:
         return None
     years = ", ".join(f"{r['ano']}: {r['margem_sc_soja_ha']:+.0f}" for r in tr["safras"]).replace(".", ",")
-    neg = f"; margem negativa em {tr['negativas']} de {len(tr['safras'])}" if tr["negativas"] else ""
-    return (f"Histórico de renda do {tr['cultura']} no município (margem realizada, sc de soja/ha): {years}; média "
-            f"{tr['media_sc_soja_ha']:.1f}".replace(".", ",") + f"{neg}. Fonte: {tr['fonte']}. Informativo: não entra na nota.")
+    values = [tr["cultura"].replace(".", ","), years, f"{tr['media_sc_soja_ha']:.1f}".replace(".", ","), tr["fonte"]]
+    if tr["negativas"]:
+        return Msg("Histórico de renda do {0} no município (margem realizada, sc de soja/ha): {1}; média {2}; margem negativa em "
+                   "{4} de {5}. Fonte: {3}. Informativo: não entra na nota.", *values, str(tr["negativas"]), str(len(tr["safras"])))
+    return Msg("Histórico de renda do {0} no município (margem realizada, sc de soja/ha): {1}; média {2}. Fonte: {3}. "
+               "Informativo: não entra na nota.", *values)

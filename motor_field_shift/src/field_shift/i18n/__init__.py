@@ -14,6 +14,7 @@ JSON keys, enum values, ids and dates are never translated: the response shape i
 """
 from __future__ import annotations
 
+import contextvars
 import json
 import re
 from functools import lru_cache
@@ -69,6 +70,34 @@ def resolve_locale(query: str | None, accept_language: str | None) -> str:
 
 def _unescape(s: str) -> str:
     return s.replace("{{", "{").replace("}}", "}")
+
+
+class Msg(str):
+    """A user text built from a catalog template: it *is* the pt-BR string (so the pt-BR response is unchanged), and it
+    remembers the template and its values, so the English is rendered piece by piece instead of guessed from the text.
+
+        Msg("{0} em {1}: não indicado", crop, sowing)   # == f"{crop} em {sowing}: não indicado"
+
+    Values are already formatted strings (or Msg/Join). The template is a catalog key (`scripts/i18n_extract.py` finds it)."""
+
+    def __new__(cls, template: str, *args: str):
+        obj = super().__new__(cls, template.format(*args))
+        obj.template, obj.args = template, args
+        return obj
+
+
+class Join(str):
+    """Texts joined by a separator ("; ", ", ") and optionally a different last one (" e "), translated item by item."""
+
+    def __new__(cls, items, sep: str = ", ", last: str | None = None):
+        items = list(items)
+        if last is not None and len(items) > 1:
+            text = sep.join(items[:-1]) + last + items[-1]
+        else:
+            text = sep.join(items)
+        obj = super().__new__(cls, text)
+        obj.items, obj.sep, obj.last = items, sep, last
+        return obj
 
 
 class _Template:
@@ -132,6 +161,7 @@ class _Template:
 
 class Translator:
     def __init__(self, catalog: dict[str, str | None]):
+        self.templates = {k: v for k, v in catalog.items() if v is not None}  # for Msg (exact template lookup)
         self.exact: dict[str, str] = {}
         self.by_prefix: dict[str, list[_Template]] = {}
         self.open: list[_Template] = []  # templates starting with a placeholder
@@ -139,6 +169,8 @@ class Translator:
             if not _PLACEHOLDER.search(pt):
                 self.exact[_unescape(pt)] = _unescape(en)
                 continue
+            if not _LETTERS.search(_PLACEHOLDER.sub("", pt)):
+                continue  # structural templates ("{0} ({1})") are only for Msg: as patterns they would match anything
             t = _Template(pt, en)
             (self.by_prefix.setdefault(t.prefix, []) if t.prefix else self.open).append(t)
         self.exact_lower = {k.lower(): v for k, v in self.exact.items()}
@@ -275,7 +307,26 @@ class Translator:
         # "\0" marks a run that already carries the separator before it: drop that separator
         return _MARKED_SEPARATOR.sub("", best[0][2]).replace("\0", "")
 
+    def structured(self, obj: str) -> str:
+        """English of a Msg/Join, rendered from its template and values; plain strings go through `text`."""
+        if isinstance(obj, Msg):
+            en = self.templates.get(obj.template)
+            if en is None:  # template not translated yet (test_i18n fails): keep it, still translate the values
+                en = obj.template
+            values = [self.structured(a) if isinstance(a, (Msg, Join)) else self._value(str(a)) for a in obj.args]
+            en = en.replace("{{", "\0").replace("}}", "\1")
+            return _PLACEHOLDER.sub(lambda m: values[int(m.group(1))], en).replace("\0", "{").replace("\1", "}")
+        if isinstance(obj, Join):
+            items = [self.structured(i) for i in obj.items]
+            sep = _SEPARATOR_EN.get(obj.sep, obj.sep)
+            if obj.last is not None and len(items) > 1:
+                return sep.join(items[:-1]) + _SEPARATOR_EN.get(obj.last, obj.last) + items[-1]
+            return sep.join(items)
+        return self._value(obj) if obj else obj
+
     def translate(self, obj: Any) -> Any:
+        if isinstance(obj, (Msg, Join)):
+            return self.structured(obj)
         if isinstance(obj, str):
             return obj if _CODE.fullmatch(obj) else self.text(obj)
         if isinstance(obj, dict):
@@ -357,3 +408,23 @@ def translate(obj: Any, locale: str) -> Any:
     if locale == DEFAULT_LOCALE:
         return obj
     return translator().translate(obj)
+
+
+# Request language, set by the API middleware. The route translates the service result while its Msg/Join texts still carry
+# their templates (`localize`); the middleware then only translates what did not go through a route (errors, validation).
+_REQUEST: contextvars.ContextVar[dict | None] = contextvars.ContextVar("field_shift_request_locale", default=None)
+
+
+def start_request(locale: str) -> dict:
+    state = {"locale": locale, "localized": False}
+    _REQUEST.set(state)
+    return state
+
+
+def localize(obj: Any) -> Any:
+    """Translate a route result to the request language (no-op outside a request or in pt-BR)."""
+    state = _REQUEST.get()
+    if state is None:
+        return obj
+    state["localized"] = True
+    return translate(obj, state["locale"])

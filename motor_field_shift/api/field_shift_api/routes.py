@@ -6,6 +6,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query, Request
 
+from field_shift import i18n
 from field_shift.core import service
 
 from . import __version__
@@ -54,12 +55,12 @@ def health(request: Request) -> HealthOut:
     operation_id="opcoes_v1_opcoes_get",  # kept from the Portuguese function name: public OpenAPI contract
 )
 def options() -> dict[str, Any]:
-    return service.options()
+    return i18n.localize(service.options())
 
 
 @router.get("/talhoes/demo", tags=["metadados"], summary="Talhões de demonstração", operation_id="talhoes_demo_v1_talhoes_demo_get")
 def demo_fields() -> Any:
-    return service.options().get("talhoes_demo", [])
+    return i18n.localize(service.options().get("talhoes_demo", []))
 
 
 @router.post(
@@ -74,7 +75,7 @@ def diagnosis(body: DiagnosticoIn) -> dict[str, Any]:
     extra = {}
     if body.analise_solo is not None:
         extra["soil_analysis"] = body.analise_solo.model_dump(exclude_none=True)
-    return service.diagnose(body.area.to_service(), sowing_second=body.semeadura_safrinha, **extra)
+    return i18n.localize(service.diagnose(body.area.to_service(), sowing_second=body.semeadura_safrinha, **extra))
 
 
 @router.post(
@@ -88,7 +89,7 @@ def diagnosis(body: DiagnosticoIn) -> dict[str, Any]:
 def recommendation(body: RecomendacaoIn) -> dict[str, Any]:
     pesos = body.pesos.model_dump(exclude_none=True) if body.pesos else None
     adjustments = body.ajustes.model_dump(exclude_none=True) if body.ajustes else None
-    return service.recommend(
+    return i18n.localize(service.recommend(
         body.area.to_service(),
         sowing_second=body.semeadura_safrinha,
         pesos=pesos or None,
@@ -104,7 +105,7 @@ def recommendation(body: RecomendacaoIn) -> dict[str, Any]:
         constraints=_dump(body.restricoes),
         irrigation=_dump(body.irrigacao),
         area_problems=body.problemas_area or None,
-    )
+    ))
 
 
 
@@ -122,14 +123,14 @@ def climate(
     sowing_second: Sowing = Query("01/02", alias="semeadura_safrinha"),
 ) -> dict[str, Any]:
     diag = service.diagnose({"lat": lat, "lon": lon}, sowing_second=sowing_second)
-    return diag["clima"]
+    return i18n.localize(diag["clima"])
 
 
 def _area_context(area: dict[str, Any], sowing: str) -> dict[str, Any]:
     from field_shift import context
 
     a = service._resolver_area(area)  # same validations and errors (400/422) as the recommendation
-    return context.build(a["lat"], a["lon"], sowing)
+    return i18n.localize(context.build(a["lat"], a["lon"], sowing))
 
 
 @router.post(
