@@ -4627,3 +4627,15 @@ small.error.full {
 .property-settings .rs-priority-picker {
   margin-top: 18px;
 }
+/* Settings "Operation": same question rows and Yes / No switches as the setup wizard. */
+.settings-operation .wizard-buyers {
+  margin-top: 18px;
+}
+.settings-operation .wizard-hint {
+  margin: 2px 0 0;
+  color: var(--agro-muted);
+  font-size: 12px;
+}
+.property-settings .preferences dd:has(.wizard-segmented) {
+  display: flex;
+}

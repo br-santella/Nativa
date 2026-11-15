@@ -65,13 +65,21 @@ function Select({ label, value, values, onChange }: { label: string; value: stri
     </Row>);
 }
 
+/** Yes / No pill switch, the same control as the setup wizard. */
+function YesNoSwitch({ name, label, value, onChange }: { name: string; label: string; value: boolean; onChange: (v: boolean) => void }) {
+    return (<span className="wizard-segmented is-compact" role="radiogroup" aria-label={label}>
+      <label><input type="radio" name={`settings-yn-${name}`} checked={value} onChange={() => onChange(true)}/><span>{t("Sim")}</span></label>
+      <label><input type="radio" name={`settings-yn-${name}`} checked={!value} onChange={() => onChange(false)}/><span>{t("Não")}</span></label>
+    </span>);
+}
+
 function YesNo({ label, value, onChange }: { label: string; value: boolean; onChange: (v: boolean) => void }) {
-    return (<Row label={label}>
-      <select aria-label={t(label)} value={value ? "yes" : "no"} onChange={(e) => onChange(e.target.value === "yes")}>
-        <option value="yes">{t("Sim")}</option>
-        <option value="no">{t("Não")}</option>
-      </select>
-    </Row>);
+    return (<Row label={label}><YesNoSwitch name={label} label={t(label)} value={value} onChange={onChange}/></Row>);
+}
+
+/** A question row as in the setup wizard: label on the left, Yes / No switch on the right. */
+function YesNoRow({ name, label, value, onChange }: { name: string; label: string; value: boolean; onChange: (v: boolean) => void }) {
+    return (<div className="wizard-buyer-row"><span>{label}</span><YesNoSwitch name={name} label={label} value={value} onChange={onChange}/></div>);
 }
 
 /** Settings view of the property and of everything entered in the setup; saving re-runs the engine with the new values. */
@@ -384,13 +392,19 @@ export default function PropertySettings({ farm, inputs, pesos, savedAt, report,
             </div>
           </section>
 
-          <section className="panel">
+          <section className="panel settings-operation">
             <h2>{t("Operação")}</h2>
-            <dl className="preferences">
-              {commodities.filter(([id]) => id !== "soja").map(([id, label]) => (<YesNo key={id} label={`${t("Comprador para")} ${t(label).toLocaleLowerCase(locale())}`} value={!draft.restricoes.sem_comprador.includes(id)} onChange={(has) => set({ restricoes: { ...draft.restricoes, sem_comprador: has ? draft.restricoes.sem_comprador.filter((x) => x !== id) : [...draft.restricoes.sem_comprador, id] } })}/>))}
-              <YesNo label="Plataforma de milho" value={draft.restricoes.maquinas.plataforma_milho} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, plataforma_milho: v } } })}/>
-              <YesNo label="Semeadora de consórcio" value={draft.restricoes.maquinas.semeadora_consorcio} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, semeadora_consorcio: v } } })}/>
-            </dl>
+            <p>{t("O que limita as rotações sugeridas. São as mesmas perguntas do cadastro.")}</p>
+            <fieldset className="wizard-buyers">
+              <legend>{t("Você tem comprador para…")}</legend>
+              {commodities.filter(([id]) => id !== "soja").map(([id, label]) => (<YesNoRow key={id} name={`buyer-${id}`} label={t(label)} value={!draft.restricoes.sem_comprador.includes(id)} onChange={(has) => set({ restricoes: { ...draft.restricoes, sem_comprador: has ? draft.restricoes.sem_comprador.filter((x) => x !== id) : [...draft.restricoes.sem_comprador, id] } })}/>))}
+              <p className="wizard-hint">{t("Culturas marcadas com “Não” saem das sugestões.")}</p>
+            </fieldset>
+            <fieldset className="wizard-buyers">
+              <legend>{t("Você tem…")}</legend>
+              <YesNoRow name="header" label={t("Plataforma de milho")} value={draft.restricoes.maquinas.plataforma_milho} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, plataforma_milho: v } } })}/>
+              <YesNoRow name="seeder" label={t("Semeadora de consórcio")} value={draft.restricoes.maquinas.semeadora_consorcio} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, semeadora_consorcio: v } } })}/>
+            </fieldset>
           </section>
         </>)}
 

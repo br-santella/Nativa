@@ -853,5 +853,9 @@
   "Plantio:": "Planted:",
   "Colheita prevista:": "Expected harvest:",
   "Fica salvo neste navegador, junto com a propriedade.": "Saved in this browser, together with the property.",
-  "Cultivo adicionado.": "Crop added."
+  "Cultivo adicionado.": "Crop added.",
+  "O que limita as rotações sugeridas. São as mesmas perguntas do cadastro.": "What limits the suggested rotations. These are the same questions as in the setup.",
+  "Você tem comprador para…": "Do you have a buyer for…",
+  "Você tem…": "Do you have…",
+  "Culturas marcadas com “Não” saem das sugestões.": "Crops marked “No” are left out of the suggestions."
 }
