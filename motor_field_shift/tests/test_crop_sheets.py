@@ -60,8 +60,25 @@ def test_ph_card_same_sheet_once_and_crop_without_sheet():
     assert not any("não comparado" in g for g in out["lacunas"])
 
 
+def test_bundled_copy_matches_catalog():
+    """data/ref/crops.yaml is the copy used when catalog/ is absent (Docker image): it must equal the repo catalog."""
+    if not CS.CATALOG_PATH.exists():
+        pytest.skip("repo catalog not available")
+    assert CS.BUNDLED_PATH.read_bytes() == CS.CATALOG_PATH.read_bytes(), "copy catalog/crops.yaml to data/ref/crops.yaml"
+
+
+def test_falls_back_to_bundled_copy(monkeypatch, tmp_path):
+    monkeypatch.setattr(CS, "CATALOG_PATH", tmp_path / "missing.yaml")
+    CS.sheets.cache_clear()
+    try:
+        assert "soja" in CS.sheets()
+    finally:
+        CS.sheets.cache_clear()
+
+
 def test_missing_catalog_degrades(monkeypatch, tmp_path):
     monkeypatch.setattr(CS, "CATALOG_PATH", tmp_path / "missing.yaml")
+    monkeypatch.setattr(CS, "BUNDLED_PATH", tmp_path / "missing_too.yaml")
     CS.sheets.cache_clear()
     try:
         assert CS.sheets() == {}

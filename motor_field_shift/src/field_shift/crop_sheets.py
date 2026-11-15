@@ -6,7 +6,10 @@ Two uses, both informative (they never change the score):
    the source of each number.
 
 The engine's crop ids differ from the catalog's (and the catalog covers fewer crops): `ENGINE_TO_SHEET` maps them; an engine
-crop without a sheet maps to None. If the catalog file is missing (engine-only deploy), there are no sheets and the card says so.
+crop without a sheet maps to None.
+
+Source file: the repo's `catalog/crops.yaml`; when it is absent (the Docker image is built from `motor_field_shift/` only), the
+identical copy `data/ref/crops.yaml` (tests/test_crop_sheets.py checks they are equal). Without either, there are no sheets.
 """
 from __future__ import annotations
 
@@ -17,7 +20,9 @@ import yaml
 
 from field_shift.i18n import Msg
 
-CATALOG_PATH = Path(__file__).resolve().parents[3] / "catalog" / "crops.yaml"
+_ENGINE_ROOT = Path(__file__).resolve().parents[2]  # motor_field_shift/ (or /app in the Docker image)
+CATALOG_PATH = _ENGINE_ROOT.parent / "catalog" / "crops.yaml"
+BUNDLED_PATH = _ENGINE_ROOT / "data" / "ref" / "crops.yaml"  # copy shipped with the engine
 
 # Engine crop id (summer or 2nd window) -> catalog sheet id. Missing / None: the catalog has no sheet for that crop.
 ENGINE_TO_SHEET: dict[str, str | None] = {
@@ -43,12 +48,13 @@ WATER_PH_UNIT = "pH em água"  # unit of the farmer's report (`analise_solo.ph`)
 
 @lru_cache(maxsize=1)
 def sheets() -> dict[str, dict]:
-    """All sheets by catalog id ({} if the catalog file is missing or unreadable)."""
-    try:
-        data = yaml.safe_load(CATALOG_PATH.read_text(encoding="utf-8"))
-        return dict(data["culturas"])
-    except (OSError, KeyError, TypeError, yaml.YAMLError):
-        return {}
+    """All sheets by catalog id: the repo catalog, else the bundled copy; {} if neither is readable."""
+    for path in (CATALOG_PATH, BUNDLED_PATH):
+        try:
+            return dict(yaml.safe_load(path.read_text(encoding="utf-8"))["culturas"])
+        except (OSError, KeyError, TypeError, yaml.YAMLError):
+            continue
+    return {}
 
 
 def sheet_id(engine_crop: str) -> str | None:
