@@ -100,9 +100,9 @@
     "imgIconeAjuda": "/assets/f9582.svg"
   },
   "13:16": {
-    "imgFotografiaComZoomSuave": "/assets/4b1b7.png",
-    "imgFotografiaComZoomSuave1": "/assets/59981.png",
-    "imgFotografiaComZoomSuave2": "/assets/69a9c.png",
+    "imgFotografiaComZoomSuave": "/assets/4b1b7-ia.webp",
+    "imgFotografiaComZoomSuave1": "/assets/59981-ia.webp",
+    "imgFotografiaComZoomSuave2": "/assets/69a9c-ia.webp",
     "imgLogoNoProduto": "/assets/3ad4b.png",
     "imgMapaAgricola": "/assets/24289.png",
     "imgControleDeJanela": "/assets/c4a77.svg",
@@ -115,7 +115,7 @@
     "imgIconeDoPasso3": "/assets/f5f93.svg"
   },
   "13:34": {
-    "imgSuaTerraEmDestaque": "/assets/69a9c.png",
+    "imgSuaTerraEmDestaque": "/assets/69a9c-ia.webp",
     "imgLogoNativa": "/assets/3ad4b.png"
   },
   "13:478": {
