@@ -707,5 +707,11 @@
   "Silte (%)": "Silt (%)",
   "Sua operação": "Your operation",
   "Como é a sua operação?": "How does your operation work?",
-  "Responda com sim ou não. Assim sugerimos só o que dá para fazer na sua terra.": "Answer yes or no, so we only suggest what you can actually do on your land."
+  "Responda com sim ou não. Assim sugerimos só o que dá para fazer na sua terra.": "Answer yes or no, so we only suggest what you can actually do on your land.",
+  "Município (PR)": "Municipality (PR)",
+  "Escolha um município do Paraná na lista.": "Pick a municipality in Paraná from the list.",
+  "Cobertura: somente Paraná (PR).": "Coverage: Paraná (PR) only.",
+  "Os dados de solo, relevo, clima e custos usados nas recomendações foram preparados apenas para propriedades no estado.": "The soil, relief, climate and cost data behind the recommendations were prepared only for properties in that state.",
+  "A localização precisa estar dentro do Paraná (PR). Nada foi salvo.": "The location must be inside Paraná (PR). Nothing was saved.",
+  "Fora da área de cobertura: informe um ponto dentro do Paraná.": "Outside the coverage area: enter a point inside Paraná."
 }

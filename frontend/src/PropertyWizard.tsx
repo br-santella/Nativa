@@ -7,6 +7,7 @@ import options from './setup-options.json';
 import './property-wizard.css';
 import LocationMap from './LocationMap';
 import type { LatLon, MapFocus } from './LocationMap';
+import { insideParana } from './coverage';
 
 export type SetupInputs = {
   area: Area; rotacao_atual: string; pesos: Pesos; n_alternativas: number;
@@ -114,8 +115,19 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
    setSoil(next);
  }
  const numeric = (entries: Record<string,string>) => Object.fromEntries(Object.entries(entries).filter(([,v]) => v !== '').map(([k,v]) => [k, Number(v)]));
+ /** Points that must fall inside Paraná (MVP coverage) for the marked area, or [] in demo mode. */
+ function markedPoints(): LatLon[] {
+   if (mode === 'point') {
+     const lat = Number(farm.latitude), lon = Number(farm.longitude), ha = Number(pointHa);
+     return ha > 0 ? [[lat, lon], ...square(lat, lon, ha)] : [[lat, lon]];
+   }
+   return mode === 'polygon' ? vertices : [];
+ }
+ const outsideCoverage = markedPoints().some(([lat, lon]) => !insideParana(lat, lon))
+   && !(mode === 'point' && (!farm.latitude.trim() || !farm.longitude.trim()));
  function area(): Area {
    if (mode === 'demo') return { talhao_id: demo };
+   if (outsideCoverage) throw Error(say('Sua área está fora da cobertura: nesta versão só analisamos propriedades no Paraná (PR). Ajuste o ponto ou o contorno para dentro do estado.','Your field is outside our coverage: this version only analyses properties in Paraná (PR). Move the pin or the boundary inside the state.'));
    if (mode === 'point') {
      const ha = Number(pointHa);
      if (!(ha >= 1 && ha <= 10000)) throw Error(say('Informe o tamanho da área entre 1 e 10.000 ha.','Enter a field size between 1 and 10,000 ha.'));
@@ -202,6 +214,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
    <form onSubmit={e => { e.preventDefault(); advance(); }}>
     <div className="wizard-fields" key={step}>
     {step === 0 && <>
+     <p className="coverage-notice" role="note"><strong>{say('Cobertura: somente Paraná (PR).','Coverage: Paraná (PR) only.')}</strong> {say('Os dados de solo, relevo, clima e custos usados nas recomendações foram preparados apenas para propriedades no estado.','The soil, relief, climate and cost data behind the recommendations were prepared only for properties in that state.')}</p>
      <div className="wizard-card-stack">
       {choice(mode === 'demo', say('Quero conhecer primeiro','I’d like to explore first'), say('Experimente com uma área de exemplo.','Try things out with a sample field.'), () => setMode('demo'), '✦')}
       {choice(mode !== 'demo', say('Vamos olhar para minha terra','Let’s look at my land'), say('Marque sua área no mapa.','Mark your land on the map.'), () => setMode('point'), '⌖')}
@@ -230,7 +243,8 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
        <label><input type="radio" name="mark-mode" checked={mode === 'polygon'} onChange={() => setMode('polygon')}/><span><span aria-hidden="true">⬠</span>{say('Desenhar o contorno','Draw the boundary')}</span></label>
       </div>
       <LocationMap mode={mode === 'polygon' ? 'polygon' : 'point'} latitude={farm.latitude} longitude={farm.longitude} onChange={(latitude, longitude) => setFarm(current => ({...current, latitude, longitude}))} vertices={vertices} onVerticesChange={setVertices} focus={focus} pointHa={Number(pointHa) > 0 ? Number(pointHa) : undefined}/>
-      {mode === 'point' && <><div className="wizard-grid wizard-point-grid">{(['latitude','longitude'] as const).map(k => <div key={k}>{field(k === 'latitude' ? 'Latitude' : 'Longitude', <input required type="number" step="any" min={k === 'latitude' ? -90 : -180} max={k === 'latitude' ? 90 : 180} value={farm[k]} onChange={e => setFarm({...farm,[k]:e.target.value})}/>)}</div>)}<div>{field('Tamanho da área (ha)', <input required type="number" min="1" max="10000" step="any" value={pointHa} onChange={e => setPointHa(e.target.value)}/>)}</div></div><p className="wizard-hint">{say('O quadrado no mapa mostra a área analisada ao redor do ponto. Para o formato exato, desenhe o contorno.','The square on the map shows the area analysed around the point. For the exact shape, draw the boundary.')}</p></>}
+      {mode === 'point' && <><div className="wizard-grid wizard-point-grid">{(['latitude','longitude'] as const).map(k => <div key={k}>{field(k === 'latitude' ? 'Latitude' : 'Longitude', <input required type="number" step="any" min={k === 'latitude' ? -27 : -55} max={k === 'latitude' ? -22 : -48} value={farm[k]} onChange={e => setFarm({...farm,[k]:e.target.value})}/>)}</div>)}<div>{field('Tamanho da área (ha)', <input required type="number" min="1" max="10000" step="any" value={pointHa} onChange={e => setPointHa(e.target.value)}/>)}</div></div><p className="wizard-hint">{say('O quadrado no mapa mostra a área analisada ao redor do ponto. Para o formato exato, desenhe o contorno.','The square on the map shows the area analysed around the point. For the exact shape, draw the boundary.')}</p></>}
+      {outsideCoverage && <p className="wizard-error" role="alert">{say('Fora da área de cobertura: marque um ponto ou contorno dentro do Paraná.','Outside the coverage area: mark a pin or boundary inside Paraná.')}</p>}
       {mode === 'polygon' && <div className="wizard-polygon-bar">
        <span role="status">{vertices.length < 3 ? say(`${vertices.length} de 3 cantos marcados`, `${vertices.length} of 3 corners marked`) : say(`Contorno com ${vertices.length} cantos · cerca de ${number(drawnHa)} ha`, `Boundary with ${vertices.length} corners · about ${number(drawnHa)} ha`)}</span>
        <span><button type="button" className="wizard-inline-link" disabled={!vertices.length} onClick={() => setVertices(vertices.slice(0, -1))}>{say('Desfazer último canto','Undo last corner')}</button><button type="button" className="wizard-inline-link" disabled={!vertices.length} onClick={() => setVertices([])}>{say('Limpar','Clear')}</button></span>
