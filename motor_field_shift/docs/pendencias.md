@@ -140,9 +140,11 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Stale `__all__` after the English migration** (found in the docs review, 15/11/2026): the `__init__.py` of `core`, `income`, `pam`,
   `region`, `soil` and `water` still list the old Portuguese names (`CULTURAS_VENDA`, `ErroConsultaExterna`, `agua_fase_critica`, `solo`...),
-  so `from field_shift.<package> import *` raises `AttributeError`. Fix: list the English names; enable ruff F822 so it cannot come back.
-  Files: `src/field_shift/{core,income,pam,region,soil,water}/__init__.py`, `pyproject.toml`.
-  Status: open
+  so `from field_shift.<package> import *` raises `AttributeError`.
+  Files: `src/field_shift/{core,income,pam,region,soil,water}/__init__.py`.
+  Done (15/11/2026): `__all__` lists the English names; `tests/test_package_exports.py` checks every package (ruff F822 does not
+  look at `__init__.py` outside preview mode, so a test guards it instead).
+  Status: done
 
 - **Unit tests that need the local data**: without `data/raw` and `data/processed`, 75 tests of the default `uv run pytest` fail
   (`test_service.py`, `test_rotations.py`, `test_statewide.py`, `test_crop_calendar.py`...); with the data all 362 pass. Mark them
