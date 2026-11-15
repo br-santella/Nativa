@@ -1,1 +1,848 @@
-{"rotacoes":[{"id":"milho_safrinha","nome":"Soja → milho safrinha","descricao_curta":"Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR."},{"id":"milho_braquiaria","nome":"Soja → milho safrinha + braquiária","descricao_curta":"Milho safrinha consorciado com braquiária: grãos mais palhada para o plantio direto."},{"id":"trigo","nome":"Soja → trigo","descricao_curta":"Trigo de inverno após a soja; sensível a geada no florescimento."},{"id":"aveia","nome":"Soja → aveia (cobertura/palha)","descricao_curta":"Aveia para cobertura/palha (e eventual grão) no inverno."},{"id":"milheto_crotalaria","nome":"Soja → milheto/crotalária (cobertura)","descricao_curta":"Cobertura de milheto e crotalária: palhada e fixação de nitrogênio, sem venda de grão."},{"id":"pousio","nome":"Soja → pousio","descricao_curta":"Sem cultura na segunda janela; solo exposto e sem renda adicional."},{"id":"soja_safrinha","nome":"Soja → soja safrinha","descricao_curta":"Soja sobre soja no mesmo ano agrícola; proibida pela regulação (sempre eliminada)."}],"semeaduras":["15/01","01/02","15/02","01/03","15/03"],"semeadura_padrao":"01/02","criterios":[{"id":"renda","nome":"Renda"},{"id":"solo","nome":"Saúde do solo"},{"id":"agua","nome":"Água"},{"id":"pragas","nome":"Quebra de pragas"},{"id":"risco","nome":"Risco climático"}],"pesos_padrao":{"renda":5,"solo":3,"agua":3,"pragas":3,"risco":3},"renda_referencia":{"precos":{"soja":120.14,"milho":53.89,"trigo":68.44},"custos":{"soja":{"coe":4823.57,"cot":6366.75,"ct":7898.06},"milho_2safra":{"coe":4678.1,"cot":6218.1,"ct":7676.89},"trigo":{"coe":4333.52,"cot":5139.01,"ct":7489.11},"aveia":{"coe":375.0,"cot":375.0,"ct":375.0},"milheto_crotalaria":{"coe":450.0,"cot":450.0,"ct":450.0},"braquiaria_consorcio":{"coe":200.0,"cot":200.0,"ct":200.0},"pousio":{"coe":200.0,"cot":200.0,"ct":200.0}},"linha_custo_padrao":"coe","fontes":[{"item":"preço soja","fonte":"SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)","periodo":"nov/25 a out/26 (média de 12 meses)","url":"https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"},{"item":"preço milho","fonte":"SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)","periodo":"nov/25 a out/26 (média de 12 meses)","url":"https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"},{"item":"preço trigo","fonte":"SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)","periodo":"nov/25 a out/26 (média de 12 meses)","url":"https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"},{"item":"custo soja","fonte":"CONAB, soja OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 1ª safra 2026/27 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores","estimativa":false,"url":"https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/serie-historica-custos-soja-1997-a-2026.xls"},{"item":"custo milho_2safra","fonte":"CONAB, milho 2ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 2026 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores","estimativa":false,"url":"https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_2a_safra_serie_historica_2005-2026.xls"},{"item":"custo trigo","fonte":"CONAB, trigo plantio direto alta tecnologia, agricultura empresarial, Ponta Grossa-PR, safra de inverno 2025 (ex-post, nov/2025). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores","estimativa":false,"url":"https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/seriehistoricacustostrigo1998a2025.xls"},{"item":"custo aveia","fonte":"estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): aveia como cobertura (semente + operação): faixa R$ 300–450/ha","estimativa":true,"url":null},{"item":"custo milheto_crotalaria","fonte":"estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): milheto/crotalária (semente + operação): milheto ~R$ 300–450, crotalária ~R$ 400–600/ha","estimativa":true,"url":null},{"item":"custo braquiaria_consorcio","fonte":"estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): braquiária em consórcio com o milho, adicional ao custo do milho: faixa R$ 150–250/ha","estimativa":true,"url":null},{"item":"custo pousio","fonte":"estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): pousio: dessecação/manejo de plantas daninhas, faixa R$ 150–250/ha","estimativa":true,"url":null}]},"regiao":{"nome":"Oeste do Paraná (IBGE 4106)","bbox":[-54.6202,-25.6971,-52.5847,-23.9814],"n_municipios":50},"talhoes_demo":[{"id":"72638","area_ha":103.87,"lat":-24.81473,"lon":-53.55361},{"id":"40654","area_ha":177.01,"lat":-24.74886,"lon":-53.43628},{"id":"76250","area_ha":152.21,"lat":-24.82724,"lon":-53.34544},{"id":"72240","area_ha":150.75,"lat":-24.77353,"lon":-53.40623},{"id":"116542","area_ha":18.19,"lat":-25.03338,"lon":-53.29224},{"id":"157700","area_ha":10.53,"lat":-25.28308,"lon":-53.354},{"id":"142056","area_ha":8.88,"lat":-25.30558,"lon":-53.64734},{"id":"36552","area_ha":15.13,"lat":-24.68781,"lon":-53.72114},{"id":"140590","area_ha":14.54,"lat":-25.24939,"lon":-53.57575},{"id":"143175","area_ha":5.55,"lat":-25.15123,"lon":-53.4454},{"id":"116671","area_ha":49.6,"lat":-25.03844,"lon":-53.28868},{"id":"120426","area_ha":34.09,"lat":-24.96122,"lon":-53.03864},{"id":"120195","area_ha":28.89,"lat":-24.95698,"lon":-53.04889},{"id":"43520","area_ha":28.75,"lat":-24.65968,"lon":-53.27612},{"id":"43411","area_ha":25.25,"lat":-24.65603,"lon":-53.28393},{"id":"108724","area_ha":71.33,"lat":-24.97345,"lon":-53.53584},{"id":"1127","area_ha":70.47,"lat":-24.4339,"lon":-53.82065}]}
+{
+  "culturas_verao": [
+    {
+      "id": "soja",
+      "nome": "Soja",
+      "tipo": "grão",
+      "descricao_curta": "Soja no verão: a cultura mais comum do Oeste do PR; semeadura de 01/09 a 31/12."
+    },
+    {
+      "id": "milho_verao",
+      "nome": "Milho verão",
+      "tipo": "grão",
+      "descricao_curta": "Milho de 1ª safra no lugar da soja: quebra ciclo de doença e nematoide e deixa mais palhada."
+    }
+  ],
+  "culturas_segunda": [
+    {
+      "id": "milho_safrinha",
+      "nome": "Milho safrinha",
+      "tipo": "grão",
+      "descricao_curta": "Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR."
+    },
+    {
+      "id": "milho_braquiaria",
+      "nome": "Milho safrinha + braquiária",
+      "tipo": "grão",
+      "descricao_curta": "Milho safrinha consorciado com braquiária: grãos mais palhada para o plantio direto."
+    },
+    {
+      "id": "trigo",
+      "nome": "Trigo",
+      "tipo": "grão",
+      "descricao_curta": "Trigo de inverno após a soja; sensível a geada no florescimento."
+    },
+    {
+      "id": "aveia",
+      "nome": "Aveia (cobertura/palha)",
+      "tipo": "cobertura",
+      "descricao_curta": "Aveia para cobertura/palha (e eventual grão) no inverno."
+    },
+    {
+      "id": "milheto_crotalaria",
+      "nome": "Milheto/crotalária (cobertura)",
+      "tipo": "cobertura",
+      "descricao_curta": "Cobertura de milheto e crotalária: palhada e fixação de nitrogênio, sem venda de grão."
+    },
+    {
+      "id": "pousio",
+      "nome": "Pousio",
+      "tipo": "pousio",
+      "descricao_curta": "Sem cultura na segunda janela; solo exposto e sem renda adicional."
+    },
+    {
+      "id": "soja_safrinha",
+      "nome": "Soja safrinha",
+      "tipo": "grão",
+      "descricao_curta": "Soja sobre soja no mesmo ano agrícola; proibida pela regulação (sempre eliminada)."
+    },
+    {
+      "id": "sorgo",
+      "nome": "Sorgo",
+      "tipo": "grão",
+      "descricao_curta": "Sorgo granífero na segunda safra: tolerante à seca, sem cigarrinha do milho; usa o maquinário e o canal de venda de grãos."
+    },
+    {
+      "id": "feijao_safrinha",
+      "nome": "Feijão safrinha",
+      "tipo": "grão",
+      "descricao_curta": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco."
+    },
+    {
+      "id": "nabo_forrageiro",
+      "nome": "Nabo forrageiro (cobertura)",
+      "tipo": "cobertura",
+      "descricao_curta": "Cobertura de nabo forrageiro: ciclagem de nutrientes e supressão de daninhas, palha de decomposição rápida; sem venda de grão."
+    },
+    {
+      "id": "aveia_nabo",
+      "nome": "Aveia + nabo forrageiro (cobertura)",
+      "tipo": "cobertura",
+      "descricao_curta": "Mix de cobertura aveia + nabo forrageiro: palha duradoura e ciclagem de nutrientes, sem venda de grão."
+    }
+  ],
+  "combinacoes": [
+    {
+      "id": "soja__milho_safrinha",
+      "id_legado": "milho_safrinha",
+      "nome": "Soja → milho safrinha",
+      "verao": "soja",
+      "segunda": "milho_safrinha",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__milho_braquiaria",
+      "id_legado": "milho_braquiaria",
+      "nome": "Soja → milho safrinha + braquiária",
+      "verao": "soja",
+      "segunda": "milho_braquiaria",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__trigo",
+      "id_legado": "trigo",
+      "nome": "Soja → trigo",
+      "verao": "soja",
+      "segunda": "trigo",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__aveia",
+      "id_legado": "aveia",
+      "nome": "Soja → aveia (cobertura/palha)",
+      "verao": "soja",
+      "segunda": "aveia",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__milheto_crotalaria",
+      "id_legado": "milheto_crotalaria",
+      "nome": "Soja → milheto/crotalária (cobertura)",
+      "verao": "soja",
+      "segunda": "milheto_crotalaria",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__pousio",
+      "id_legado": "pousio",
+      "nome": "Soja → pousio",
+      "verao": "soja",
+      "segunda": "pousio",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__soja_safrinha",
+      "id_legado": "soja_safrinha",
+      "nome": "Soja → soja safrinha",
+      "verao": "soja",
+      "segunda": "soja_safrinha",
+      "valida": false,
+      "semeaduras_validas": [],
+      "motivo_se_invalida": "Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024). Soja na 2ª janela (semeadura em 01/02) fica fora da janela legal de semeadura da soja (01/09–31/12). Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+    },
+    {
+      "id": "soja__sorgo",
+      "nome": "Soja → sorgo",
+      "verao": "soja",
+      "segunda": "sorgo",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__feijao_safrinha",
+      "nome": "Soja → feijão safrinha",
+      "verao": "soja",
+      "segunda": "feijao_safrinha",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__nabo_forrageiro",
+      "nome": "Soja → nabo forrageiro (cobertura)",
+      "verao": "soja",
+      "segunda": "nabo_forrageiro",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "soja__aveia_nabo",
+      "nome": "Soja → aveia + nabo forrageiro (cobertura)",
+      "verao": "soja",
+      "segunda": "aveia_nabo",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__milho_safrinha",
+      "nome": "Milho verão → milho safrinha",
+      "verao": "milho_verao",
+      "segunda": "milho_safrinha",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__milho_braquiaria",
+      "nome": "Milho verão → milho safrinha + braquiária",
+      "verao": "milho_verao",
+      "segunda": "milho_braquiaria",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__trigo",
+      "nome": "Milho verão → trigo",
+      "verao": "milho_verao",
+      "segunda": "trigo",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__aveia",
+      "nome": "Milho verão → aveia (cobertura/palha)",
+      "verao": "milho_verao",
+      "segunda": "aveia",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__milheto_crotalaria",
+      "nome": "Milho verão → milheto/crotalária (cobertura)",
+      "verao": "milho_verao",
+      "segunda": "milheto_crotalaria",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__pousio",
+      "nome": "Milho verão → pousio",
+      "verao": "milho_verao",
+      "segunda": "pousio",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__soja_safrinha",
+      "nome": "Milho verão → soja safrinha",
+      "verao": "milho_verao",
+      "segunda": "soja_safrinha",
+      "valida": false,
+      "semeaduras_validas": [],
+      "motivo_se_invalida": "Soja na 2ª janela (semeadura em 01/02) fica fora da janela legal de semeadura da soja (01/09–31/12). Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+    },
+    {
+      "id": "milho_verao__sorgo",
+      "nome": "Milho verão → sorgo",
+      "verao": "milho_verao",
+      "segunda": "sorgo",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__feijao_safrinha",
+      "nome": "Milho verão → feijão safrinha",
+      "verao": "milho_verao",
+      "segunda": "feijao_safrinha",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/02"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__nabo_forrageiro",
+      "nome": "Milho verão → nabo forrageiro (cobertura)",
+      "verao": "milho_verao",
+      "segunda": "nabo_forrageiro",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    },
+    {
+      "id": "milho_verao__aveia_nabo",
+      "nome": "Milho verão → aveia + nabo forrageiro (cobertura)",
+      "verao": "milho_verao",
+      "segunda": "aveia_nabo",
+      "valida": true,
+      "semeaduras_validas": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+      ],
+      "motivo_se_invalida": null
+    }
+  ],
+  "rotacoes": [
+    {
+      "id": "soja__milho_safrinha",
+      "id_legado": "milho_safrinha",
+      "nome": "Soja → milho safrinha",
+      "descricao_curta": "Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR."
+    },
+    {
+      "id": "soja__milho_braquiaria",
+      "id_legado": "milho_braquiaria",
+      "nome": "Soja → milho safrinha + braquiária",
+      "descricao_curta": "Milho safrinha consorciado com braquiária: grãos mais palhada para o plantio direto."
+    },
+    {
+      "id": "soja__trigo",
+      "id_legado": "trigo",
+      "nome": "Soja → trigo",
+      "descricao_curta": "Trigo de inverno após a soja; sensível a geada no florescimento."
+    },
+    {
+      "id": "soja__aveia",
+      "id_legado": "aveia",
+      "nome": "Soja → aveia (cobertura/palha)",
+      "descricao_curta": "Aveia para cobertura/palha (e eventual grão) no inverno."
+    },
+    {
+      "id": "soja__milheto_crotalaria",
+      "id_legado": "milheto_crotalaria",
+      "nome": "Soja → milheto/crotalária (cobertura)",
+      "descricao_curta": "Cobertura de milheto e crotalária: palhada e fixação de nitrogênio, sem venda de grão."
+    },
+    {
+      "id": "soja__pousio",
+      "id_legado": "pousio",
+      "nome": "Soja → pousio",
+      "descricao_curta": "Sem cultura na segunda janela; solo exposto e sem renda adicional."
+    },
+    {
+      "id": "soja__soja_safrinha",
+      "id_legado": "soja_safrinha",
+      "nome": "Soja → soja safrinha",
+      "descricao_curta": "Soja sobre soja no mesmo ano agrícola; proibida pela regulação (sempre eliminada)."
+    },
+    {
+      "id": "soja__sorgo",
+      "nome": "Soja → sorgo",
+      "descricao_curta": "Sorgo granífero na segunda safra: tolerante à seca, sem cigarrinha do milho; usa o maquinário e o canal de venda de grãos."
+    },
+    {
+      "id": "soja__feijao_safrinha",
+      "nome": "Soja → feijão safrinha",
+      "descricao_curta": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco."
+    },
+    {
+      "id": "soja__nabo_forrageiro",
+      "nome": "Soja → nabo forrageiro (cobertura)",
+      "descricao_curta": "Cobertura de nabo forrageiro: ciclagem de nutrientes e supressão de daninhas, palha de decomposição rápida; sem venda de grão."
+    },
+    {
+      "id": "soja__aveia_nabo",
+      "nome": "Soja → aveia + nabo forrageiro (cobertura)",
+      "descricao_curta": "Mix de cobertura aveia + nabo forrageiro: palha duradoura e ciclagem de nutrientes, sem venda de grão."
+    },
+    {
+      "id": "milho_verao__milho_safrinha",
+      "nome": "Milho verão → milho safrinha",
+      "descricao_curta": "Milho verão no verão, depois: Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR."
+    },
+    {
+      "id": "milho_verao__milho_braquiaria",
+      "nome": "Milho verão → milho safrinha + braquiária",
+      "descricao_curta": "Milho verão no verão, depois: Milho safrinha consorciado com braquiária: grãos mais palhada para o plantio direto."
+    },
+    {
+      "id": "milho_verao__trigo",
+      "nome": "Milho verão → trigo",
+      "descricao_curta": "Milho verão no verão, depois: Trigo de inverno após a soja; sensível a geada no florescimento."
+    },
+    {
+      "id": "milho_verao__aveia",
+      "nome": "Milho verão → aveia (cobertura/palha)",
+      "descricao_curta": "Milho verão no verão, depois: Aveia para cobertura/palha (e eventual grão) no inverno."
+    },
+    {
+      "id": "milho_verao__milheto_crotalaria",
+      "nome": "Milho verão → milheto/crotalária (cobertura)",
+      "descricao_curta": "Milho verão no verão, depois: Cobertura de milheto e crotalária: palhada e fixação de nitrogênio, sem venda de grão."
+    },
+    {
+      "id": "milho_verao__pousio",
+      "nome": "Milho verão → pousio",
+      "descricao_curta": "Milho verão no verão, depois: Sem cultura na segunda janela; solo exposto e sem renda adicional."
+    },
+    {
+      "id": "milho_verao__soja_safrinha",
+      "nome": "Milho verão → soja safrinha",
+      "descricao_curta": "Milho verão no verão, depois: Soja sobre soja no mesmo ano agrícola; proibida pela regulação (sempre eliminada)."
+    },
+    {
+      "id": "milho_verao__sorgo",
+      "nome": "Milho verão → sorgo",
+      "descricao_curta": "Milho verão no verão, depois: Sorgo granífero na segunda safra: tolerante à seca, sem cigarrinha do milho; usa o maquinário e o canal de venda de grãos."
+    },
+    {
+      "id": "milho_verao__feijao_safrinha",
+      "nome": "Milho verão → feijão safrinha",
+      "descricao_curta": "Milho verão no verão, depois: Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco."
+    },
+    {
+      "id": "milho_verao__nabo_forrageiro",
+      "nome": "Milho verão → nabo forrageiro (cobertura)",
+      "descricao_curta": "Milho verão no verão, depois: Cobertura de nabo forrageiro: ciclagem de nutrientes e supressão de daninhas, palha de decomposição rápida; sem venda de grão."
+    },
+    {
+      "id": "milho_verao__aveia_nabo",
+      "nome": "Milho verão → aveia + nabo forrageiro (cobertura)",
+      "descricao_curta": "Milho verão no verão, depois: Mix de cobertura aveia + nabo forrageiro: palha duradoura e ciclagem de nutrientes, sem venda de grão."
+    }
+  ],
+  "semeaduras": [
+    "15/01",
+    "01/02",
+    "15/02",
+    "01/03",
+    "15/03"
+  ],
+  "semeadura_padrao": "01/02",
+  "criterios": [
+    {
+      "id": "renda",
+      "nome": "Renda"
+    },
+    {
+      "id": "solo",
+      "nome": "Saúde do solo"
+    },
+    {
+      "id": "agua",
+      "nome": "Água"
+    },
+    {
+      "id": "pragas",
+      "nome": "Quebra de pragas"
+    },
+    {
+      "id": "risco",
+      "nome": "Risco climático"
+    }
+  ],
+  "pesos_padrao": {
+    "renda": 5,
+    "solo": 3,
+    "agua": 3,
+    "pragas": 3,
+    "risco": 3
+  },
+  "renda_referencia": {
+    "precos": {
+      "soja": 120.14,
+      "milho": 53.89,
+      "trigo": 68.44,
+      "feijao": 174.3,
+      "sorgo": 43.11
+    },
+    "custos": {
+      "soja": {
+        "coe": 4823.57,
+        "cot": 6366.75,
+        "ct": 7898.06
+      },
+      "milho_2safra": {
+        "coe": 4678.1,
+        "cot": 6218.1,
+        "ct": 7676.89
+      },
+      "trigo": {
+        "coe": 4333.52,
+        "cot": 5139.01,
+        "ct": 7489.11
+      },
+      "milho_1safra": {
+        "coe": 9656.06,
+        "cot": 11787.99,
+        "ct": 13288.91
+      },
+      "feijao_2safra": {
+        "coe": 4452.6,
+        "cot": 6545.64,
+        "ct": 8768.11
+      },
+      "sorgo": {
+        "coe": 2807.0,
+        "cot": 3806.76,
+        "ct": 4788.11
+      },
+      "aveia": {
+        "coe": 375.0,
+        "cot": 375.0,
+        "ct": 375.0
+      },
+      "milheto_crotalaria": {
+        "coe": 450.0,
+        "cot": 450.0,
+        "ct": 450.0
+      },
+      "braquiaria_consorcio": {
+        "coe": 200.0,
+        "cot": 200.0,
+        "ct": 200.0
+      },
+      "pousio": {
+        "coe": 200.0,
+        "cot": 200.0,
+        "ct": 200.0
+      },
+      "nabo_forrageiro": {
+        "coe": 275.0,
+        "cot": 275.0,
+        "ct": 275.0
+      },
+      "aveia_nabo": {
+        "coe": 400.0,
+        "cot": 400.0,
+        "ct": 400.0
+      }
+    },
+    "linha_custo_padrao": "coe",
+    "fontes": [
+      {
+        "item": "preço soja",
+        "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)",
+        "periodo": "nov/25 a out/26 (média de 12 meses)",
+        "estimativa": false,
+        "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+      },
+      {
+        "item": "preço milho",
+        "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)",
+        "periodo": "nov/25 a out/26 (média de 12 meses)",
+        "estimativa": false,
+        "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+      },
+      {
+        "item": "preço trigo",
+        "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)",
+        "periodo": "nov/25 a out/26 (média de 12 meses)",
+        "estimativa": false,
+        "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+      },
+      {
+        "item": "preço feijao",
+        "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente). Feijão = tipo preto (predominante no PR; o feijão de cor tem preço bem maior: validar o tipo)",
+        "periodo": "nov/25 a out/26 (média de 12 meses)",
+        "estimativa": false,
+        "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+      },
+      {
+        "item": "preço sorgo",
+        "fonte": "estimativa — validar: a SEAB/DERAL não publica preço do sorgo; usa 80% do preço do milho (média PR, mesmo período)",
+        "periodo": "nov/25 a out/26 (média de 12 meses)",
+        "estimativa": true,
+        "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+      },
+      {
+        "item": "custo soja",
+        "fonte": "CONAB, soja OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 1ª safra 2026/27 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+        "estimativa": false,
+        "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/serie-historica-custos-soja-1997-a-2026.xls"
+      },
+      {
+        "item": "custo milho_2safra",
+        "fonte": "CONAB, milho 2ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 2026 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+        "estimativa": false,
+        "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_2a_safra_serie_historica_2005-2026.xls"
+      },
+      {
+        "item": "custo trigo",
+        "fonte": "CONAB, trigo plantio direto alta tecnologia, agricultura empresarial, Ponta Grossa-PR, safra de inverno 2025 (ex-post, nov/2025). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+        "estimativa": false,
+        "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/seriehistoricacustostrigo1998a2025.xls"
+      },
+      {
+        "item": "custo milho_1safra",
+        "fonte": "CONAB, milho 1ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Ponta Grossa-PR, 2026/27 (estimado, mar/2026; produtividade de referência 12 t/ha, acima da média do Oeste do PR). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+        "estimativa": false,
+        "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_1a_safra_serie_historica_1997-2026.xls"
+      },
+      {
+        "item": "custo feijao_2safra",
+        "fonte": "CONAB, feijão 2ª safra plantio direto alta tecnologia, agricultura familiar, Francisco Beltrão-PR, 2026 (estimado, mar/2026; a planilha de Cascavel-PR só vai até 2021). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+        "estimativa": false,
+        "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/feijao/feijao_2_e_3_safras_serie_historica_2013-2026.xls"
+      },
+      {
+        "item": "custo sorgo",
+        "fonte": "estimativa — validar: não há planilha CONAB do sorgo no PR; usa CONAB, sorgo granífero 2ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Rio Verde-GO, 2026 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+        "estimativa": true,
+        "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/seriehistoricacustossorgo2013a2026.xls"
+      },
+      {
+        "item": "custo aveia",
+        "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): aveia como cobertura (semente + operação): faixa R$ 300–450/ha",
+        "estimativa": true,
+        "url": null
+      },
+      {
+        "item": "custo milheto_crotalaria",
+        "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): milheto/crotalária (semente + operação): milheto ~R$ 300–450, crotalária ~R$ 400–600/ha",
+        "estimativa": true,
+        "url": null
+      },
+      {
+        "item": "custo braquiaria_consorcio",
+        "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): braquiária em consórcio com o milho, adicional ao custo do milho: faixa R$ 150–250/ha",
+        "estimativa": true,
+        "url": null
+      },
+      {
+        "item": "custo pousio",
+        "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): pousio: dessecação/manejo de plantas daninhas, faixa R$ 150–250/ha",
+        "estimativa": true,
+        "url": null
+      },
+      {
+        "item": "custo nabo_forrageiro",
+        "fonte": "estimativa — validar: nabo forrageiro como cobertura (10–15 kg/ha de semente + semeadura): faixa R$ 200–350/ha",
+        "estimativa": true,
+        "url": null
+      },
+      {
+        "item": "custo aveia_nabo",
+        "fonte": "estimativa — validar: mix aveia + nabo forrageiro como cobertura (semente das duas + semeadura): faixa R$ 350–450/ha",
+        "estimativa": true,
+        "url": null
+      }
+    ]
+  },
+  "regiao": {
+    "nome": "Oeste do Paraná (IBGE 4106)",
+    "bbox": [
+      -54.6202,
+      -25.6971,
+      -52.5847,
+      -23.9814
+    ],
+    "n_municipios": 50
+  },
+  "talhoes_demo": [
+    {
+      "id": "72638",
+      "area_ha": 103.87,
+      "lat": -24.81473,
+      "lon": -53.55361
+    },
+    {
+      "id": "40654",
+      "area_ha": 177.01,
+      "lat": -24.74886,
+      "lon": -53.43628
+    },
+    {
+      "id": "76250",
+      "area_ha": 152.21,
+      "lat": -24.82724,
+      "lon": -53.34544
+    },
+    {
+      "id": "72240",
+      "area_ha": 150.75,
+      "lat": -24.77353,
+      "lon": -53.40623
+    },
+    {
+      "id": "116542",
+      "area_ha": 18.19,
+      "lat": -25.03338,
+      "lon": -53.29224
+    },
+    {
+      "id": "157700",
+      "area_ha": 10.53,
+      "lat": -25.28308,
+      "lon": -53.354
+    },
+    {
+      "id": "142056",
+      "area_ha": 8.88,
+      "lat": -25.30558,
+      "lon": -53.64734
+    },
+    {
+      "id": "36552",
+      "area_ha": 15.13,
+      "lat": -24.68781,
+      "lon": -53.72114
+    },
+    {
+      "id": "140590",
+      "area_ha": 14.54,
+      "lat": -25.24939,
+      "lon": -53.57575
+    },
+    {
+      "id": "143175",
+      "area_ha": 5.55,
+      "lat": -25.15123,
+      "lon": -53.4454
+    },
+    {
+      "id": "116671",
+      "area_ha": 49.6,
+      "lat": -25.03844,
+      "lon": -53.28868
+    },
+    {
+      "id": "120426",
+      "area_ha": 34.09,
+      "lat": -24.96122,
+      "lon": -53.03864
+    },
+    {
+      "id": "120195",
+      "area_ha": 28.89,
+      "lat": -24.95698,
+      "lon": -53.04889
+    },
+    {
+      "id": "43520",
+      "area_ha": 28.75,
+      "lat": -24.65968,
+      "lon": -53.27612
+    },
+    {
+      "id": "43411",
+      "area_ha": 25.25,
+      "lat": -24.65603,
+      "lon": -53.28393
+    },
+    {
+      "id": "108724",
+      "area_ha": 71.33,
+      "lat": -24.97345,
+      "lon": -53.53584
+    },
+    {
+      "id": "1127",
+      "area_ha": 70.47,
+      "lat": -24.4339,
+      "lon": -53.82065
+    }
+  ]
+}

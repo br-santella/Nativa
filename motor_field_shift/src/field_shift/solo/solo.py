@@ -99,7 +99,51 @@ def solo(poligono) -> dict | None:
                 classe_textura=classe)
 
 
+FONTE_ANALISE = "análise de solo do produtor"
+MO_PADRAO_PCT = 2.0  # MO assumida só se a análise não traz MO/C orgânico, não há CAD informada e não há SoilGrids (estimativa)
+
+
+def solo_de_analise(a: dict, soc_fallback_g_kg: float | None = None) -> dict:
+    """Monta o bloco `solo` (mesmo formato de `solo()`) a partir da análise do produtor, já validada pelo serviço.
+
+    `a`: argila_pct, areia_pct (ambos ou nenhum), soc_g_kg (C orgânico, g/kg; opcional), ph, cad_mm_cm, profundidade_cm.
+    CAD: `cad_mm_cm` informada vale direto; senão Saxton & Rawls com areia, argila e MO (se a análise não trouxe MO, usa a do
+    SoilGrids passada em `soc_fallback_g_kg`, ou 2% de MO). A amostra (padrão 0–20 cm) é tomada como representativa de todas as
+    camadas (0–60 cm). Devolve dict com a chave extra `avisos` (lista) e `fonte`."""
+    avisos = []
+    argila, areia, soc = a.get("argila_pct"), a.get("areia_pct"), a.get("soc_g_kg")
+    if a.get("cad_mm_cm") is not None:
+        cad_v, metodo = float(a["cad_mm_cm"]), "CAD informada pelo produtor (mm/cm)"
+    else:
+        if soc is None:
+            if soc_fallback_g_kg is not None:
+                soc = float(soc_fallback_g_kg)
+                avisos.append("A análise não traz matéria orgânica: usado o C orgânico do SoilGrids na CAD (Saxton & Rawls).")
+            else:
+                soc = MO_PADRAO_PCT / 1.724 * 10.0
+                avisos.append(f"A análise não traz matéria orgânica: assumido {MO_PADRAO_PCT:g}% de MO na CAD (Saxton & Rawls).")
+        cad_v = float(cad_mm_cm(areia, argila, soc))
+        metodo = "Saxton & Rawls (2006) com areia, argila e MO da análise do produtor"
+    cad = {d: cad_v for d in PROFS}
+    cad["0-30"] = cad["0-60"] = cad_v
+    silt = None if argila is None else 100.0 - argila - areia
+    props = dict(clay=argila, sand=areia, silt=silt, soc=soc if a.get("soc_g_kg") is not None else None,
+                 phh2o=a.get("ph"), bdod=None)
+    prof = {k: {d: v for d in PROFS} for k, v in props.items()}
+    classe = None if argila is None else ("muito argiloso" if argila >= 60 else "argiloso" if argila >= 35
+                                          else "médio" if argila >= 15 else "arenoso")
+    return dict(prof=prof, p30=dict(props), p60=dict(props), cad_mm_cm=cad, cad_mm_0_30=cad_v * 30, cad_mm_0_60=cad_v * 60,
+                cad_metodo=metodo, classe_textura=classe, fonte=FONTE_ANALISE, amostra_profundidade_cm=a.get("profundidade_cm", 20.0),
+                avisos=avisos)
+
+
 def texto(s: dict) -> str:
     p = s["p30"]
+    if s.get("fonte") == FONTE_ANALISE:
+        partes = [f"{n} {p[k]:.{d}f}{u}" for n, k, d, u in (("argila", "clay", 0, "%"), ("areia", "sand", 0, "%"),
+                                                            ("C orgânico", "soc", 1, " g/kg"), ("pH", "phh2o", 1, ""))
+                  if p.get(k) is not None]
+        return (f"Análise do produtor ({s['amostra_profundidade_cm']:g} cm, extrapolada ao perfil): " + ", ".join(partes)
+                + (", " if partes else "") + f"CAD {s['cad_mm_cm']['0-30']:.2f} mm/cm ({s['cad_mm_0_60']:.0f} mm em 60 cm).")
     return (f"Argila {p['clay']:.0f}%, areia {p['sand']:.0f}%, C orgânico {p['soc']:.1f} g/kg, pH {p['phh2o']:.1f} (0–30 cm); "
             f"CAD {s['cad_mm_cm']['0-30']:.2f} mm/cm ({s['cad_mm_0_60']:.0f} mm em 60 cm).")
