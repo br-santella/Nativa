@@ -1,7 +1,12 @@
-# catalog — frente 2 (curadoria agronômica)
+# catalog
 
-- `crops.yaml`: culturas do MVP (8). Todo número é faixa `min`/`max` com `fonte`.
-- `vocabulario.yaml`: listas fechadas compartilhadas (máquinas, irrigação, mão de obra, texturas...).
-- `textos.yaml`: modelos de frase em pt-BR para explicações, motivos de confiança e encaminhamentos.
+Agronomic catalog in YAML.
 
-Fontes aceitas: Embrapa, FAO-56, ZARC (MAPA), CONAB, CEPEA, IBGE. Nunca opinião do time.
+- `crops.yaml`: soybean, corn, wheat, white oat, barley and annual ryegrass. Every numeric attribute is a
+  range (`min`/`max`) with a unit and a `fonte` (source URL).
+- `vocabulario.yaml`: closed lists for machinery, irrigation, labor and soil textures.
+- `textos.yaml`: sentence templates in Portuguese for explanations. Its sections are empty.
+
+Sources used: Embrapa, FAO (Ecocrop, FAO-56), ZARC (MAPA), CONAB, CEPEA, IBGE.
+
+The engine in `motor_field_shift/` does not read these files.

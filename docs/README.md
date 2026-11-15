@@ -1,7 +1,6 @@
-# docs — frente 6
+# docs
 
-- `contratos.md`: contratos entre backend (motor), catálogo e frontend (C1–C3)
-- Documentação técnica do motor: `../motor_field_shift/docs/` e `../motor_field_shift/api/README.md`
-- `exemplos/`: JSON de exemplo para desenvolvimento com mock (os do motor ficam em `../motor_field_shift/api/exemplos/`)
-- `fontes.md`: datasets NASA e brasileiros usados, com links e data de acesso
-- Declaração de uso de IA e material do pitch
+- [`contratos.md`](contratos.md): interfaces between the backend (engine), the catalog and the frontend (C1–C3)
+- Engine technical documentation: [`../motor_field_shift/docs/`](../motor_field_shift/docs/) and
+  [`../motor_field_shift/api/README.md`](../motor_field_shift/api/README.md)
+- Real API responses: [`../motor_field_shift/api/exemplos/`](../motor_field_shift/api/exemplos/)

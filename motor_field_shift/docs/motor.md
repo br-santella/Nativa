@@ -1,304 +1,305 @@
-# Field Shift — Lógica do motor de rotação
+# Field Shift — Rotation engine logic
 
-Como o motor calcula e ordena as opções de rotação. Data: 2026-11-14. Piloto: rotações (verão + 2ª janela) no Oeste do PR; o exemplo resolvido é o do talhão 72638. Código em `src/field_shift/app/engine.py` (catálogo, regras, pontuação), com apoio de `clima/`, `agua/`, `solo/` e `renda/`.
+How the engine computes and ranks the rotation options. Date: 2026-11-14. Pilot: rotations (summer + second window) in Western Paraná; the worked example is field 72638. Code in `src/field_shift/app/engine.py` (catalog, rules, scoring), supported by `clima/`, `agua/`, `solo/` and `renda/`.
 
-## 1. Visão geral
+Units: 1 bag (sc) = 60 kg. Monetary values are in BRL.
 
-O motor recomenda por **regras + pontuação explicável**, não por ML de ponta a ponta. Não existe rótulo "a rotação X foi boa no talhão Y" para treinar um modelo, e cada nota aponta para um dado que o produtor pode conferir.
+## 1. Overview
 
-A saída é sempre a **rotação atual + as melhores alternativas** (3 por padrão), cada uma com o porquê, evidências, benefícios, lacunas e riscos.
-Uma rotação é um par **(cultura de verão, cultura da 2ª janela)**, com id estável `"<verao>__<segunda>"` (ex.: `soja__milho_safrinha`).
+The engine recommends through **rules + explainable scoring**, not end-to-end ML. There is no "rotation X was good on field Y" label to train a model on, and every score points to data the farmer can check.
 
-## 2. Fluxo
+The output is always the **current rotation + the best alternatives** (3 by default), each with the why, evidence, benefits, gaps and risks.
+A rotation is a pair **(summer crop, second-window crop)**, with a stable id `"<verao>__<segunda>"` (e.g. `soja__milho_safrinha`).
+
+## 2. Flow
 
 ```
-ENTRADA                       DIAGNÓSTICO                  DECISÃO
-polígono / ponto / ID demo    clima (POWER, célula 50 km)  regras duras
-data de semeadura safrinha ─► solo (SoilGrids)          ─► (eliminam, com motivo)
-pesos do produtor             relevo (NASADEM)                  │
-rotação atual                 histórico (MapBiomas, NDVI)       ▼
-preços/custos (opcional)      produtividade (IBGE PAM)     5 critérios, escala 0–1
+INPUT                         DIAGNOSIS                     DECISION
+polygon / point / demo ID     climate (POWER, 50 km cell)   hard rules
+off-season sowing date     ─► soil (SoilGrids)           ─► (eliminate, with reason)
+farmer weights                terrain (NASADEM)                 │
+current rotation              history (MapBiomas, NDVI)         ▼
+prices/costs (optional)       yield (IBGE PAM)              5 criteria, 0–1 scale
                                                                 │
                                                                 ▼
-                                                      nota ponderada ─► ranking ─► cards
+                                                      weighted score ─► ranking ─► cards
 ```
 
-## 3. Entradas
+## 3. Inputs
 
-| Entrada | Padrão | Efeito |
+| Input | Default | Effect |
 |---|---|---|
-| Talhão | Polígono no Oeste do PR, ponto ou ID demo (72638) | Define a célula de clima, o solo, o relevo e o município (PAM) |
-| Semeadura da 2ª cultura ("safrinha") | 01/02 (opções: 15/01, 01/02, 15/02, 01/03, 15/03) | Muda risco de geada e água do milho, sorgo, feijão e milheto/crotalária, e vale nas regras de calendário (seção 5) |
-| Pesos 0–10 | renda 5, solo 3, água 3, pragas 3, risco 3 | Pesam os 5 critérios na nota final |
-| Rotação atual | Detectada por NDVI nos talhões demo; senão, informada | Aparece como referência para comparar |
-| Rotações a avaliar (`rotacoes`) | Todas as combinações do catálogo (22) | Lista de `{verao, segunda}` (enums fechados): o motor avalia e ranqueia só essas; a eliminada pelas regras volta em `eliminadas`, com motivo. Lista vazia, duplicada ou fora do enum é erro de validação (422) |
-| Preços/custos | Referência (SEAB/DERAL e CONAB) | Valores informados sobrescrevem a referência no cálculo da renda |
-| Produtividade própria (`ajustes.produtividade`) | PAM do município | **Renda:** substitui o rendimento PAM na margem (soja, milho 2ª safra, milho verão, trigo, feijão, sorgo); o ano ruim escala por rendimento próprio × p20/média da PAM; a soja informada muda a escala S |
-| Análise de solo (`analise_solo`) | SoilGrids | **Água:** a CAD vem da análise (`cad_mm_cm` direto, ou Saxton & Rawls com areia, argila e MO informadas), uniforme em 0–60 cm. O bloco `solo` do diagnóstico passa a citar "análise de solo do produtor" |
-| Restrições (`restricoes`) | Nenhuma | **Regras duras:** rotações excluídas (id novo, ou slug antigo = soja no verão) e sem comprador local (milho, trigo, sorgo, feijão; vale para o verão também) eliminam a rotação. **Renda:** máquina ausente (plataforma de milho, uma por colheita de milho; semeadora de consórcio) não elimina, soma custo de terceirização (estimativas: R$ 250/ha e R$ 80/ha) e aviso no card. Cada candidata mostra o `mercado_oeste_pr` (alto/médio/baixo/não se aplica; estimativa a validar) |
-| Irrigação (`irrigacao`) | Sequeiro | **Água:** o balanço irriga milho, milho+braquiária, trigo, sorgo e feijão da 2ª janela quando Dr > p·TAW (p = 0,55; feijão 0,45), repondo até a capacidade, limitado pela lâmina máxima diária, no ciclo todo; o critério sobe. **Risco:** o veranico deixa de contar nessas candidatas (a geada continua). **Renda:** desconta lâmina média × custo (R$/mm/ha). Não muda o rendimento esperado; cobertura e pousio não são irrigados |
+| Field | Polygon in Western Paraná, point or demo ID (72638) | Defines the climate cell, soil, terrain and municipality (PAM) |
+| Sowing date of the second crop ("safrinha") | 01/02 (options: 15/01, 01/02, 15/02, 01/03, 15/03) | Changes the frost risk and water for corn, sorghum, beans and millet/crotalaria, and applies in the calendar rules (section 5) |
+| Weights 0–10 | income 5, soil 3, water 3, pests 3, risk 3 | Weight the 5 criteria in the final score |
+| Current rotation | Detected by NDVI on the demo fields; otherwise provided | Shown as the comparison baseline |
+| Rotations to evaluate (`rotacoes`) | All catalog combinations (22) | List of `{verao, segunda}` (closed enums): the engine evaluates and ranks only those; one eliminated by the rules comes back in `eliminadas`, with the reason. An empty, duplicated or out-of-enum list is a validation error (422) |
+| Prices/costs | Reference (SEAB/DERAL and CONAB) | Provided values override the reference in the income calculation |
+| Own yield (`ajustes.produtividade`) | Municipal PAM | **Income:** replaces the PAM yield in the margin (soybean, 2nd-season corn, summer corn, wheat, beans, sorghum); the bad year scales by own yield × p20/PAM average; the soybean value changes the scale S |
+| Soil analysis (`analise_solo`) | SoilGrids | **Water:** the available water capacity comes from the analysis (`cad_mm_cm` directly, or Saxton & Rawls with the provided sand, clay and organic matter), uniform over 0–60 cm. The diagnosis `solo` block then cites "farmer's soil analysis" |
+| Restrictions (`restricoes`) | None | **Hard rules:** excluded rotations (new id, or legacy slug = soybean in summer) and no local buyer (corn, wheat, sorghum, beans; also applies to the summer crop) eliminate the rotation. **Income:** a missing machine (corn header, one per corn harvest; intercrop seeder) does not eliminate; it adds an outsourcing cost (estimates: BRL 250/ha and BRL 80/ha) and a warning on the card. Each candidate shows `mercado_oeste_pr` (high/medium/low/not applicable; estimate to be validated) |
+| Irrigation (`irrigacao`) | Rainfed | **Water:** the balance irrigates second-window corn, corn+brachiaria, wheat, sorghum and beans when Dr > p·TAW (p = 0.55; beans 0.45), refilling up to capacity, limited by the maximum daily depth, over the whole cycle; the criterion goes up. **Risk:** dry spells stop counting for those candidates (frost still counts). **Income:** subtracts average depth × cost (BRL/mm/ha). Does not change the expected yield; cover crops and fallow are not irrigated |
 
-## 4. Candidatas: verão + 2ª janela
+## 4. Candidates: summer + second window
 
-Cada candidata é um par (cultura de verão, cultura da 2ª janela) no mesmo ano agrícola: 2 × 11 = 22 combinações.
+Each candidate is a pair (summer crop, second-window crop) in the same agricultural year: 2 × 11 = 22 combinations.
 
-**Verão:** `soja` e `milho_verao`.
+**Summer:** `soja` and `milho_verao`.
 
-| Verão | Colheita estimada | Bônus na soja seguinte | Renda |
+| Summer | Estimated harvest | Bonus on the following soybean | Income |
 |---|---|---|---|
-| Soja | ~10/01 (soja precoce; premissa que o motor já tinha) | 0 | PAM soja × preço DERAL − custo CONAB soja |
-| Milho verão | ~05/02 (semeadura 15/09–15/10, ciclo médio) | +3 sc/ha (quebra de ciclo de doença e nematoide, mais palhada) | PAM milho 1ª safra (SIDRA 839) × preço DERAL do milho − custo CONAB milho 1ª safra |
+| Soybean | ~10/01 (early soybean; the assumption the engine already had) | 0 | PAM soybean × DERAL price − CONAB soybean cost |
+| Summer corn | ~05/02 (sowing 15/09–15/10, medium cycle) | +3 bags/ha (breaks the disease and nematode cycle, plus straw) | PAM 1st-season corn (SIDRA 839) × DERAL corn price − CONAB 1st-season corn cost |
 
-**2ª janela:**
+**Second window:**
 
-| Cultura | Tipo | Semeadura | Risco climático | Venda | Fonte de produtividade, preço e custo |
+| Crop | Type | Sowing | Climate risk | Sale | Source of yield, price and cost |
 |---|---|---|---|---|---|
-| Milho safrinha | Grão | a escolhida (15/01–15/03) | geada + veranico | milho | PAM 2ª safra; DERAL; CONAB Londrina |
-| Milho safrinha + braquiária | Consórcio | a escolhida | geada + veranico | milho | idem + braquiária (estimativa) |
-| Trigo | Grão | 01/05 | geada no trigo | trigo | PAM; DERAL; CONAB Ponta Grossa |
-| Sorgo (novo) | Grão | a escolhida, janela 15/01–15/03 | geada (tolerante a seca) | sorgo | PAM sorgo (SIDRA 1612); preço estimativa (80% do milho DERAL); custo estimativa (CONAB sorgo Rio Verde-GO) |
-| Feijão safrinha (novo) | Grão | a escolhida, janela 15/01–28/02 | geada + veranico | feijão | PAM feijão 2ª safra (SIDRA 1002); DERAL feijão preto; CONAB feijão 2ª safra Francisco Beltrão-PR |
-| Aveia (cobertura/palha) | Cobertura | 01/05 | nenhum | sem venda | custo estimado |
-| Milheto/crotalária | Cobertura | a escolhida | nenhum | sem venda | custo estimado |
-| Nabo forrageiro (novo) | Cobertura | 01/04 | nenhum | sem venda | custo estimado |
-| Aveia + nabo (novo) | Cobertura (mix) | 01/05 (aveia) e 01/04 (nabo) | nenhum | sem venda | custo estimado |
-| Pousio | Sem cultura | n/d | nenhum | sem venda | custo estimado |
-| Soja safrinha | Grão | a escolhida | veranico | n/d | barrada pelas regras (sempre eliminada) |
+| Off-season corn | Grain | the chosen date (15/01–15/03) | frost + dry spell | corn | PAM 2nd season; DERAL; CONAB Londrina |
+| Off-season corn + brachiaria | Intercrop | the chosen date | frost + dry spell | corn | same + brachiaria (estimate) |
+| Wheat | Grain | 01/05 | wheat frost | wheat | PAM; DERAL; CONAB Ponta Grossa |
+| Sorghum (new) | Grain | the chosen date, window 15/01–15/03 | frost (drought tolerant) | sorghum | PAM sorghum (SIDRA 1612); estimated price (80% of DERAL corn); estimated cost (CONAB sorghum Rio Verde-GO) |
+| Off-season beans (new) | Grain | the chosen date, window 15/01–28/02 | frost + dry spell | beans | PAM 2nd-season beans (SIDRA 1002); DERAL black beans; CONAB 2nd-season beans Francisco Beltrão-PR |
+| Oat (cover/straw) | Cover | 01/05 | none | no sale | estimated cost |
+| Millet/crotalaria | Cover | the chosen date | none | no sale | estimated cost |
+| Forage radish (new) | Cover | 01/04 | none | no sale | estimated cost |
+| Oat + radish (new) | Cover (mix) | 01/05 (oat) and 01/04 (radish) | none | no sale | estimated cost |
+| Fallow | No crop | n/a | none | no sale | estimated cost |
+| Off-season soybean | Grain | the chosen date | dry spell | n/a | blocked by the rules (always eliminated) |
 
-Só entram culturas de grãos e coberturas que usam o maquinário de grãos, o mesmo canal de venda e cabem no calendário. Girassol, canola e trigo duplo propósito ficam de fora.
-Milho safrinha, milho + braquiária e milho verão exigem plataforma de milho (custo de terceirização por colheita, se o produtor não tem).
+Only grain crops and cover crops that use grain machinery, the same sales channel and fit the calendar are included. Sunflower, canola and dual-purpose wheat are left out.
+Off-season corn, corn + brachiaria and summer corn require a corn header (outsourcing cost per harvest if the farmer does not have one).
 
-Valores de catálogo das culturas novas (todas **estimativas de referência, validar com agrônomo/Embrapa**):
+Catalog values for the new crops (all **reference estimates, to be validated with an agronomist/Embrapa**):
 
-| Cultura | Solo: cobertura / N / dias descobertos | Pragas | Bônus na soja (sc/ha) | Kc médio |
+| Crop | Soil: cover / N / bare days | Pests | Soybean bonus (bags/ha) | Mean Kc |
 |---|---|---|---|---|
-| Sorgo | 0,70 / 0,3 / 55 | 0,55 | 1 | 0,77 |
-| Feijão safrinha | 0,40 / 0,4 / 75 | 0,30 (hospedeiro do mofo-branco, que ataca a soja) | 0 | 0,84 |
-| Nabo forrageiro | 0,65 / 0,1 / 35 | 0,60 | 2 | 0,90 |
-| Aveia + nabo | 0,85 / 0,2 / 35 | 0,65 | 2,5 | 0,85 |
+| Sorghum | 0.70 / 0.3 / 55 | 0.55 | 1 | 0.77 |
+| Off-season beans | 0.40 / 0.4 / 75 | 0.30 (host of white mold, which attacks soybean) | 0 | 0.84 |
+| Forage radish | 0.65 / 0.1 / 35 | 0.60 | 2 | 0.90 |
+| Oat + radish | 0.85 / 0.2 / 35 | 0.65 | 2.5 | 0.85 |
 
-Balanço hídrico das culturas novas (FAO-56, Allen et al., 1998, tabelas 11, 12 e 22; raiz e fase crítica estimadas):
+Water balance of the new crops (FAO-56, Allen et al., 1998, tables 11, 12 and 22; root depth and critical phase estimated):
 
-| Cultura | Kc (ini / mid / end) | Estágios (d) | p | Raiz | Fase crítica (dias após a semeadura) |
+| Crop | Kc (ini / mid / end) | Stages (d) | p | Root | Critical phase (days after sowing) |
 |---|---|---|---|---|---|
-| Sorgo | 0,30 / 1,05 / 0,55 (tab. 12: mid 1,00–1,10) | 20/35/40/30 | 0,55 | 0,8 m | emborrachamento a enchimento (+50 a +90) |
-| Feijão | 0,40 / 1,15 / 0,35 | 20/30/40/20 | 0,45 | 0,6 m | floração e vagens (+30 a +65) |
-| Nabo forrageiro | 0,50 / 1,10 / 0,95 (aproximado pelo nabo, "turnip", da FAO; forrageiro não está na tabela) | 15/25/35/20 | 0,55 | 0,5 m | estabelecimento (primeiros 30 d) |
-| Aveia + nabo | média dos modelos de aveia e nabo | | | | estabelecimento |
+| Sorghum | 0.30 / 1.05 / 0.55 (table 12: mid 1.00–1.10) | 20/35/40/30 | 0.55 | 0.8 m | booting to grain fill (+50 to +90) |
+| Beans | 0.40 / 1.15 / 0.35 | 20/30/40/20 | 0.45 | 0.6 m | flowering and pods (+30 to +65) |
+| Forage radish | 0.50 / 1.10 / 0.95 (approximated by FAO's "turnip"; forage radish is not in the table) | 15/25/35/20 | 0.55 | 0.5 m | establishment (first 30 d) |
+| Oat + radish | average of the oat and radish models | | | | establishment |
 
-Fontes de preço e custo de todas as culturas (inclusive as estimativas) estão em `data/ref/precos_custos.json`, gerado por `field_shift.renda.atualizar`. Produtividade municipal: `ingest/pam_culturas_extra.py` grava `data/raw/ibge/pam_extra_oeste_pr.parquet`, lido junto com o PAM base. O sorgo e o feijão têm PAM em poucos municípios e anos: sem PAM recente (≥ 3 anos, último ≥ 2018), o município usa a média do Oeste do PR, e o card avisa.
+Price and cost sources for every crop (including the estimates) are in `data/ref/precos_custos.json`, generated by `field_shift.renda.atualizar`. Municipal yield: `ingest/pam_culturas_extra.py` writes `data/raw/ibge/pam_extra_oeste_pr.parquet`, read together with the base PAM. Sorghum and beans have PAM data in few municipalities and years: without recent PAM (≥ 3 years, latest ≥ 2018), the municipality uses the Western Paraná average, and the card says so.
 
-## 5. Regras duras
+## 5. Hard rules
 
-Eliminam a candidata antes de pontuar. A eliminada aparece no resultado com o motivo.
+They eliminate the candidate before scoring. An eliminated candidate appears in the result with the reason.
 
-| Regra | Efeito |
+| Rule | Effect |
 |---|---|
-| Vazio sanitário 02/06–31/08 sem soja viva (ADAPAR) | Elimina |
-| Semeadura da soja só de 01/09 a 31/12 | Elimina |
-| Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024) | Elimina |
-| Semeadura da 2ª cultura antes da colheita do verão (soja ~10/01, milho verão ~05/02; vale para as culturas que seguem a data escolhida) | Elimina |
-| Semeadura fora da janela da cultura (feijão 15/01–28/02, sorgo 15/01–15/03; estimativa a partir do ZARC/IDR-PR) | Elimina |
-| Milho sobre milho (milho verão + milho safrinha ou milho + braquiária) | **Não elimina**: critério pragas −0,25 e texto de risco (cigarrinha-do-milho/enfezamento) |
-| ZARC | Só aviso de crédito/seguro; não elimina |
+| Soybean-free period 02/06–31/08 with no live soybean (ADAPAR) | Eliminates |
+| Soybean sowing only from 01/09 to 31/12 | Eliminates |
+| Soybean after soybean in the same agricultural year is prohibited (Ordinance SDA/MAPA 1.124/2024) | Eliminates |
+| Sowing of the second crop before the summer harvest (soybean ~10/01, summer corn ~05/02; applies to the crops that follow the chosen date) | Eliminates |
+| Sowing outside the crop's window (beans 15/01–28/02, sorghum 15/01–15/03; estimate based on ZARC/IDR-PR) | Eliminates |
+| Corn after corn (summer corn + off-season corn or corn + brachiaria) | **Does not eliminate**: pest criterion −0.25 and a risk text (corn leafhopper/corn stunt) |
+| ZARC | Credit/insurance warning only; does not eliminate |
 
-Na prática, soja na 2ª janela é **sempre eliminada**, inclusive depois de milho verão (fora da janela legal de semeadura da soja e vazio sanitário; depois de soja, também soja sobre soja).
-Com a semeadura padrão (01/02), milho verão seguido de milho safrinha, milho + braquiária, milheto/crotalária, sorgo ou feijão também cai pela colheita do verão; a partir de 15/02 (feijão) ou 01/03 (demais) ele volta ao ranking.
+In practice, soybean in the second window is **always eliminated**, even after summer corn (outside the legal soybean sowing window and the soybean-free period; after soybean, also soybean after soybean).
+With the default sowing date (01/02), summer corn followed by off-season corn, corn + brachiaria, millet/crotalaria, sorghum or beans is also eliminated by the summer harvest; from 15/02 (beans) or 01/03 (the others) it comes back into the ranking.
 
-**Milho sobre milho:** o milho verão mantém hospedeiro contínuo da cigarrinha-do-milho (*Dalbulus maidis*) e do enfezamento, da lagarta-do-cartucho e de doenças foliares. A rotação continua válida, mas o critério de pragas perde 0,25 ponto (valor de catálogo, estimativa de referência a validar) e o texto entra em `card.riscos` e `card.evidencias`. Os alertas em curso estão em `/v1/contexto`.
+**Corn after corn:** summer corn keeps a continuous host for the corn leafhopper (*Dalbulus maidis*) and corn stunt, the fall armyworm and leaf diseases. The rotation remains valid, but the pest criterion loses 0.25 points (catalog value, reference estimate to be validated) and the text goes into `card.riscos` and `card.evidencias`. Current alerts are in `/v1/contexto`.
 
-**Atenção:** conferir portarias e datas na ADAPAR/MAPA antes do pitch.
+**Note:** check the ordinances and dates with ADAPAR/MAPA before the pitch.
 
-## 6. Os 5 critérios
+## 6. The 5 criteria
 
-Todos em escala absoluta de 0 a 1 (maior = melhor).
+All on an absolute 0 to 1 scale (higher = better).
 
-### 6.1 Risco climático
+### 6.1 Climate risk
 
-- **Fórmula:** risco = Π(1 − pᵢ) sobre os riscos da candidata. Assume eventos independentes. Sem risco relevante = 1,0.
-- **pᵢ:** anos com o evento / 34 (safras 1991–2024).
-- **Dado:** NASA POWER diário da célula de ~50 km que contém o talhão (pré-calculado).
-- **Convenção de ano agrícola:** Y = jul/Y a jun/Y+1. Safrinha e trigo caem em Y+1.
+- **Formula:** risk = Π(1 − pᵢ) over the candidate's risks. Assumes independent events. No relevant risk = 1.0.
+- **pᵢ:** years with the event / 34 (seasons 1991–2024).
+- **Data:** daily NASA POWER for the ~50 km cell that contains the field (pre-computed).
+- **Agricultural year convention:** Y = Jul/Y to Jun/Y+1. Off-season and wheat fall in Y+1.
 
-| Evento | Definição | Candidatas |
+| Event | Definition | Candidates |
 |---|---|---|
-| Geada no safrinha | T2M_MIN ≤ 3 °C entre semeadura+60 e semeadura+120 dias (florescimento/enchimento) | Milho, milho + braquiária |
-| Geada no trigo | T2M_MIN ≤ 3 °C de 15/08 a 30/09 | Trigo |
-| Geada no safrinha (sorgo, feijão) | mesma janela do milho, como aproximação | Sorgo, feijão |
-| Veranico no safrinha | ≥ 15 dias seguidos com chuva < 1 mm em mar–abr | Milho, milho + braquiária, feijão (o sorgo, tolerante à seca, não conta o veranico) |
-| Coberturas e pousio | Sem risco relevante | Nota 1,0 |
+| Off-season frost | T2M_MIN ≤ 3 °C between sowing+60 and sowing+120 days (flowering/grain fill) | Corn, corn + brachiaria |
+| Wheat frost | T2M_MIN ≤ 3 °C from 15/08 to 30/09 | Wheat |
+| Off-season frost (sorghum, beans) | same window as corn, as an approximation | Sorghum, beans |
+| Off-season dry spell | ≥ 15 consecutive days with rain < 1 mm in Mar–Apr | Corn, corn + brachiaria, beans (sorghum, drought tolerant, does not count dry spells) |
+| Cover crops and fallow | No relevant risk | Score 1.0 |
 
-Exemplo, geada no milho safrinha do talhão 72638, por semeadura:
+Example, off-season corn frost on field 72638, by sowing date:
 
-| Semeadura | 15/01 | 01/02 | 15/02 | 01/03 | 15/03 |
+| Sowing | 15/01 | 01/02 | 15/02 | 01/03 | 15/03 |
 |---|---|---|---|---|---|
-| Anos com geada | 6% | 12% | 26% | 47% | 76% |
+| Years with frost | 6% | 12% | 26% | 47% | 76% |
 
-**Validação:** com 7 estações INMET, a correlação de Tmin é 0,94. O POWER subestima os dias de geada em ~40%.
+**Validation:** against 7 INMET stations, the Tmin correlation is 0.94. POWER underestimates frost days by ~40%.
 
-### 6.2 Água
+### 6.2 Water
 
-- **Fórmula:** média nos 34 anos de ΣETa/ΣETc na fase crítica.
-- **Método:** balanço hídrico diário FAO-56 (modelo de balde), com chuva e ET0 Penman-Monteith diários do POWER.
-- **Solo:** CAD do polígono via SoilGrids, com pedotransferência Saxton & Rawls (2006). Tende a subestimar em latossolo.
-- **Parâmetros:** raiz de 0,6 a 0,8 m, Kc por estágio (FAO-56), p = 0,55, Ks pela depleção.
+- **Formula:** mean over the 34 years of ΣETa/ΣETc in the critical phase.
+- **Method:** daily FAO-56 water balance (bucket model), with daily POWER rain and Penman-Monteith ET0.
+- **Soil:** available water capacity of the polygon from SoilGrids, with the Saxton & Rawls (2006) pedotransfer. Tends to underestimate it in Latosols.
+- **Parameters:** root 0.6 to 0.8 m, Kc per stage (FAO-56), p = 0.55, Ks from depletion.
 
-| Candidata | Fase crítica |
+| Candidate | Critical phase |
 |---|---|
-| Milho (com ou sem braquiária) | Semeadura+55 a +95 dias |
-| Trigo | Espigamento/enchimento (semeadura em 01/05) |
-| Sorgo | Emborrachamento a enchimento (+50 a +90 dias) |
-| Feijão | Floração e formação de vagens (+30 a +65 dias) |
-| Coberturas (aveia, milheto/crotalária, nabo, aveia + nabo) | Estabelecimento (30 dias) |
-| Pousio | Sem demanda: 1,0 |
+| Corn (with or without brachiaria) | Sowing+55 to +95 days |
+| Wheat | Heading/grain fill (sowing on 01/05) |
+| Sorghum | Booting to grain fill (+50 to +90 days) |
+| Beans | Flowering and pod formation (+30 to +65 days) |
+| Cover crops (oat, millet/crotalaria, radish, oat + radish) | Establishment (30 days) |
+| Fallow | No demand: 1.0 |
 
-**Fallback sem solo:** média dos anos de min(1, P / (Kc · ET0)) do ciclo.
+**Fallback without soil:** mean over the years of min(1, P / (Kc · ET0)) for the cycle.
 
-### 6.3 Renda
+### 6.3 Income
 
-- **Fórmula (margem incremental sobre a soja de verão):** a referência é a soja de verão do município. Incremental = margem da rotação − margem da soja = (margem do verão − margem da soja) + margem da 2ª cultura + bônus na soja seguinte (bônus em sc/ha × preço da soja; é a soma do bônus da 2ª cultura e do bônus do milho verão, se for o caso). Com soja no verão o 1º termo é zero (a fórmula original: a soja é comum a todas e a nota olha só o que a 2ª safra soma ou tira). A escala S é a mesma para todas as candidatas, então a renda é comparável entre soja e milho verão. **renda = clip(0,5 + incremental / (2·S), 0, 1)**, com S = max(margem da soja do município, R$ 1.000/ha; constante `RENDA_ESCALA_MIN`). Incremental = +S dá 1,0; zero dá 0,5; −S dá 0. O piso de R$ 1.000/ha impede que uma soja de margem baixa ou negativa estique a escala.
-- **Margem da cultura** = rendimento do município (IBGE PAM, média de 5 anos) × preço (SEAB/DERAL-PR, média de 12 meses) − custo variável (CONAB COE). Milho verão usa o PAM de milho 1ª safra; sorgo e feijão usam o PAM extra (ou a média do Oeste do PR, sem PAM municipal recente).
-- **Custo:** usa Londrina/Ponta Grossa/Francisco Beltrão, porque não há planilha CONAB do Oeste. O milho 1ª safra do PR só existe em Ponta Grossa (produtividade de referência de 12 t/ha, bem acima da do Oeste): a margem do milho verão tende a ser subestimada e precisa de validação.
-- **Coberturas:** margem = −custo de implantação (estimativa). Sem fonte oficial (sorgo: preço e custo; nabo, aveia + nabo e demais coberturas: custo), o JSON marca "estimativa — validar".
-- **Margem da rotação** = verão (soja ou milho verão) + segunda cultura + bônus de palhada/N na soja seguinte (sc/ha × preço da soja; estimativa). É a que o card e a API exibem (`margem.total_r_ha`), junto de `incremental_r_ha` e `escala_S_r_ha`; só o incremental entra na nota.
-- **Por que COE e não COT:** a decisão é marginal. Com COT todas as margens ficam negativas.
-- O card também mostra a margem de "ano ruim" (rendimento p20).
+- **Formula (incremental margin over summer soybean):** the baseline is the municipality's summer soybean. Incremental = rotation margin − soybean margin = (summer margin − soybean margin) + second-crop margin + bonus on the following soybean (bonus in bags/ha × soybean price; it is the sum of the second crop's bonus and the summer-corn bonus, when applicable). With soybean in summer the first term is zero (the original formula: soybean is common to all and the score only looks at what the second season adds or takes away). The scale S is the same for every candidate, so income is comparable between soybean and summer corn. **income = clip(0.5 + incremental / (2·S), 0, 1)**, with S = max(municipal soybean margin, BRL 1,000/ha; constant `RENDA_ESCALA_MIN`). Incremental = +S gives 1.0; zero gives 0.5; −S gives 0. The BRL 1,000/ha floor prevents a low or negative soybean margin from stretching the scale.
+- **Crop margin** = municipal yield (IBGE PAM, 5-year average) × price (SEAB/DERAL-PR, 12-month average) − variable cost (CONAB COE). Summer corn uses the 1st-season corn PAM; sorghum and beans use the extra PAM (or the Western Paraná average, without recent municipal PAM).
+- **Cost:** uses Londrina/Ponta Grossa/Francisco Beltrão, because there is no CONAB sheet for Western Paraná. First-season corn in Paraná only exists for Ponta Grossa (reference yield of 12 t/ha, well above Western Paraná): the summer-corn margin tends to be underestimated and needs validation.
+- **Cover crops:** margin = −establishment cost (estimate). Without an official source (sorghum: price and cost; radish, oat + radish and other cover crops: cost), the JSON marks "estimate — to be validated".
+- **Rotation margin** = summer (soybean or summer corn) + second crop + straw/N bonus on the following soybean (bags/ha × soybean price; estimate). It is what the card and the API show (`margem.total_r_ha`), together with `incremental_r_ha` and `escala_S_r_ha`; only the incremental enters the score.
+- **Why COE and not COT:** the decision is marginal. With COT every margin is negative.
+- The card also shows the "bad year" margin (p20 yield).
 
-### 6.4 Saúde do solo
+### 6.4 Soil health
 
-Solo = (cobertura + fixação de N + (1 − dias descobertos / 180)) / 3.
+Soil = (cover + N fixation + (1 − bare days / 180)) / 3.
 
-Os três atributos vêm do catálogo da 2ª cultura. São estimativas a validar com agrônomo/Embrapa. O verão não altera esse critério (o benefício do milho verão entra pelo bônus na soja seguinte, em renda).
+The three attributes come from the second crop's catalog entry. They are estimates to be validated with an agronomist/Embrapa. The summer crop does not change this criterion (the summer-corn benefit enters through the bonus on the following soybean, in income).
 
-### 6.5 Quebra de pragas
+### 6.5 Pest break
 
-Atributo do catálogo da 2ª cultura, de 0 a 1 (estimativa a validar). Milho sobre milho desconta 0,25 (mínimo 0).
+Catalog attribute of the second crop, from 0 to 1 (estimate to be validated). Corn after corn subtracts 0.25 (minimum 0).
 
-## 7. Nota final
+## 7. Final score
 
-**Nota = Σ pesoᵢ × critérioᵢ / Σ pesoᵢ**
+**Score = Σ weightᵢ × criterionᵢ / Σ weightᵢ**
 
-- Contribuição de cada critério = pesoᵢ × critérioᵢ / Σ pesos. É ela que alimenta o "por quê" do card (o que mais pesou).
-- Os critérios ficam em escala absoluta, sem min-max entre candidatas. Assim, diferenças pequenas não são esticadas artificialmente. A renda também é absoluta: mede o incremental da 2ª safra na escala da margem da soja do próprio município.
-- O "por quê" de cada alternativa compara com a rotação atual: pega os 2–3 critérios de maior diferença ponderada (peso × Δcritério / Σ pesos) e cita os números por trás (R$/ha da 2ª safra, dias descobertos, probabilidade de risco, água).
+- Contribution of each criterion = weightᵢ × criterionᵢ / Σ weights. It feeds the card's "why" (what weighed most).
+- The criteria stay on an absolute scale, with no min-max across candidates. That way, small differences are not stretched artificially. Income is also absolute: it measures the second season's increment on the scale of the municipality's own soybean margin.
+- The "why" of each alternative compares it with the current rotation: it takes the 2–3 criteria with the largest weighted difference (weight × Δcriterion / Σ weights) and cites the numbers behind them (BRL/ha of the second season, bare days, risk probability, water).
 
-## 8. Exemplo resolvido: talhão 72638
+## 8. Worked example: field 72638
 
-Toledo, 103,9 ha, declividade 6,9%, argila 60%. Pesos padrão.
+Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights.
 
-**Semeadura 01/02**
+**Sowing 01/02**
 
-| Candidata | Nota | Renda | Solo | Água | Pragas | Risco |
+| Candidate | Score | Income | Soil | Water | Pests | Risk |
 |---|---|---|---|---|---|---|
-| Milho + braquiária | 0,814 | 0,977 | 0,711 | 0,844 | 0,650 | 0,779 |
-| Milho safrinha (atual) | 0,757 | 0,958 | 0,556 | 0,859 | 0,500 | 0,779 |
-| Milheto/crotalária | 0,756 | 0,459 | 0,819 | 0,998 | 0,700 | 1,000 |
-| Aveia | 0,698 | 0,438 | 0,626 | 1,000 | 0,600 | 1,000 |
-| Pousio | 0,547 | 0,408 | 0,122 | 1,000 | 0,300 | 1,000 |
-| Trigo | 0,466 | 0,000 | 0,504 | 0,949 | 0,600 | 0,588 |
-| Soja safrinha | Eliminada | | | | | |
+| Corn + brachiaria | 0.814 | 0.977 | 0.711 | 0.844 | 0.650 | 0.779 |
+| Off-season corn (current) | 0.757 | 0.958 | 0.556 | 0.859 | 0.500 | 0.779 |
+| Millet/crotalaria | 0.756 | 0.459 | 0.819 | 0.998 | 0.700 | 1.000 |
+| Oat | 0.698 | 0.438 | 0.626 | 1.000 | 0.600 | 1.000 |
+| Fallow | 0.547 | 0.408 | 0.122 | 1.000 | 0.300 | 1.000 |
+| Wheat | 0.466 | 0.000 | 0.504 | 0.949 | 0.600 | 0.588 |
+| Off-season soybean | Eliminated | | | | | |
 
-**Semeadura 15/03**
+**Sowing 15/03**
 
-| Candidata | Nota |
+| Candidate | Score |
 |---|---|
-| Milheto/crotalária | 0,756 |
-| Milho + braquiária | 0,733 |
-| Aveia | 0,698 |
-| Milho safrinha (atual) | 0,675 |
-| Pousio | 0,547 |
-| Trigo | 0,466 |
+| Millet/crotalaria | 0.756 |
+| Corn + brachiaria | 0.733 |
+| Oat | 0.698 |
+| Off-season corn (current) | 0.675 |
+| Fallow | 0.547 |
+| Wheat | 0.466 |
 
-**Conta da renda (Toledo, S = R$ 1.083/ha, a margem da soja)**
+**Income calculation (Toledo, S = BRL 1,083/ha, the soybean margin)**
 
-| Candidata | Incremental (R$/ha) | 0,5 + incremental / (2·S) | Renda |
+| Candidate | Incremental (BRL/ha) | 0.5 + incremental / (2·S) | Income |
 |---|---|---|---|
-| Milho + braquiária | +1.033 (873 − 200 + 360 de bônus) | 0,5 + 1.033 / 2.166 | 0,977 |
-| Milho safrinha | +993 | 0,5 + 993 / 2.166 | 0,958 |
-| Milheto/crotalária | −90 | 0,5 − 90 / 2.166 | 0,459 |
-| Trigo | −1.704 | 0,5 − 1.704 / 2.166 → limitado em 0 | 0,000 |
+| Corn + brachiaria | +1,033 (873 − 200 + 360 bonus) | 0.5 + 1,033 / 2,166 | 0.977 |
+| Off-season corn | +993 | 0.5 + 993 / 2,166 | 0.958 |
+| Millet/crotalaria | −90 | 0.5 − 90 / 2,166 | 0.459 |
+| Wheat | −1,704 | 0.5 − 1,704 / 2,166 → clipped at 0 | 0.000 |
 
-**Conta do milho + braquiária em 01/02**
+**Calculation for corn + brachiaria on 01/02**
 
-| Critério | Peso | Valor | Peso × valor |
+| Criterion | Weight | Value | Weight × value |
 |---|---|---|---|
-| Renda | 5 | 0,98 | 4,89 |
-| Solo | 3 | 0,71 | 2,13 |
-| Água | 3 | 0,84 | 2,53 |
-| Pragas | 3 | 0,65 | 1,95 |
-| Risco | 3 | 0,78 | 2,34 |
-| **Soma** | **17** | | **13,84** |
+| Income | 5 | 0.98 | 4.89 |
+| Soil | 3 | 0.71 | 2.13 |
+| Water | 3 | 0.84 | 2.53 |
+| Pests | 3 | 0.65 | 1.95 |
+| Risk | 3 | 0.78 | 2.34 |
+| **Sum** | **17** | | **13.84** |
 
-Nota = 13,84 / 17 = **0,814**. A renda é o que mais pesou (4,89 / 17 = 0,29 da nota).
+Score = 13.84 / 17 = **0.814**. Income weighed most (4.89 / 17 = 0.29 of the score).
 
-**Exemplo de "por quê" (alternativa, comparada com a atual):** "Em relação à atual (milho safrinha): melhora a saúde do solo (0,71 contra 0,56; ~30 dias de solo descoberto contra 60), quebra melhor o ciclo de pragas (0,65 contra 0,50) e soma R$ 1.033/ha contra R$ 993/ha na 2ª safra (+4%). Risco climático igual (...)." Para a atual: "É a rotação atual; ficou em 2º lugar entre 15 opções válidas. A melhor alternativa (milho safrinha + braquiária) tem nota 0,81." (15 válidas = 22 combinações menos 7 eliminadas na semeadura 01/02.)
+**Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60), breaks the pest cycle better (0.65 vs 0.50) and adds BRL 1,033/ha vs BRL 993/ha in the second season (+4%). Same climate risk (...)." For the current rotation: "This is the current rotation; it ranked 2nd among 15 valid options. The best alternative (off-season corn + brachiaria) scores 0.81." (15 valid = 22 combinations minus 7 eliminated with sowing on 01/02.)
 
-**Trade-off da semeadura do milho**
+**Corn sowing-date trade-off**
 
-| Semeadura | Geada | Água |
+| Sowing | Frost | Water |
 |---|---|---|
-| 01/02 | 12% | 0,86 (7 de 34 anos abaixo de 70%) |
-| 15/03 | 76% | 0,96 |
+| 01/02 | 12% | 0.86 (7 of 34 years below 70%) |
+| 15/03 | 76% | 0.96 |
 
-Semear tarde dá mais água e muito mais geada. Por isso o milho safrinha cai de 0,757 para 0,675 em 15/03 e as coberturas assumem o topo.
+Sowing late gives more water and much more frost. That is why off-season corn drops from 0.757 to 0.675 on 15/03 and the cover crops take the top.
 
-**Margens (PAM Toledo 2021–2025, preços SEAB, custo COE CONAB)**
+**Margins (PAM Toledo 2021–2025, SEAB prices, CONAB COE cost)**
 
-| Cultura | Rendimento (sc/ha) | Preço (R$/sc) | Custo (R$/ha) | Margem (R$/ha) |
+| Crop | Yield (bags/ha) | Price (BRL/bag) | Cost (BRL/ha) | Margin (BRL/ha) |
 |---|---|---|---|---|
-| Soja | 49 | 120,14 | 4.824 | +1.083 |
-| Milho 2ª safra | 103 | 53,89 | 4.678 | +873 |
-| Trigo | 37 | 68,44 | 4.334 | −1.824 |
+| Soybean | 49 | 120.14 | 4,824 | +1,083 |
+| 2nd-season corn | 103 | 53.89 | 4,678 | +873 |
+| Wheat | 37 | 68.44 | 4,334 | −1,824 |
 
-**Evidência PAM × clima:** nos anos de geada na janela, o milho safrinha do Oeste do PR rendeu ~6,5% abaixo da tendência (n efetivo ≈ 23 anos).
+**PAM × climate evidence:** in years with frost in the window, off-season corn in Western Paraná yielded ~6.5% below trend (effective n ≈ 23 years).
 
-## 9. Dado real × estimativa
+## 9. Real data × estimate
 
-| Vem de dado | Fonte |
+| Comes from data | Source |
 |---|---|
-| Chuva, temperatura, ET0 (34 anos) | NASA POWER |
-| CAD do solo | SoilGrids |
-| Histórico de uso da terra | MapBiomas |
-| Declividade | NASADEM |
-| Rendimento por município | IBGE PAM |
-| Preços | SEAB/DERAL-PR |
-| Custos | CONAB (de fora da região, ver abaixo) |
+| Rain, temperature, ET0 (34 years) | NASA POWER |
+| Soil available water capacity | SoilGrids |
+| Land-use history | MapBiomas |
+| Slope | NASADEM |
+| Municipal yield | IBGE PAM |
+| Prices | SEAB/DERAL-PR |
+| Costs | CONAB (from outside the region, see below) |
 
-| É premissa ajustável | Observação |
+| Adjustable assumption | Note |
 |---|---|
-| Kc por estágio e profundidade de raiz | Valores FAO-56, não medidos no talhão |
-| p = 0,55 e trigo/aveia semeados em 01/05 | Fixos; validar com ZARC |
-| Bônus de palhada/N na soja seguinte | sc/ha por candidata (0 a 3) |
-| Custo das coberturas | Estimativa |
-| Atributos de solo (cobertura, N, dias descobertos) e pragas | Estimativas do catálogo |
-| Datas de colheita do verão, janelas de semeadura do feijão e do sorgo, bônus do milho verão (+3 sc/ha) e penalidade de milho sobre milho (−0,25) | Estimativas de referência; validar com ZARC/Embrapa/agrônomo |
-| Kc, p e fase crítica de sorgo, feijão e nabo | FAO-56 (nabo aproximado pelo "turnip"); raiz e fase crítica estimadas |
-| Preço e custo do sorgo; custo de nabo, aveia + nabo e demais coberturas | "estimativa — validar" em `precos_custos.json` |
-| Custos CONAB | Londrina/Ponta Grossa/Francisco Beltrão, não o Oeste do PR; milho verão em Ponta Grossa (12 t/ha) |
+| Kc per stage and root depth | FAO-56 values, not measured on the field |
+| p = 0.55 and wheat/oat sown on 01/05 | Fixed; validate with ZARC |
+| Straw/N bonus on the following soybean | bags/ha per candidate (0 to 3) |
+| Cover crop cost | Estimate |
+| Soil attributes (cover, N, bare days) and pests | Catalog estimates |
+| Summer harvest dates, bean and sorghum sowing windows, summer-corn bonus (+3 bags/ha) and corn-after-corn penalty (−0.25) | Reference estimates; validate with ZARC/Embrapa/agronomist |
+| Kc, p and critical phase for sorghum, beans and radish | FAO-56 (radish approximated by "turnip"); root depth and critical phase estimated |
+| Sorghum price and cost; cost of radish, oat + radish and other cover crops | "estimate — to be validated" in `precos_custos.json` |
+| CONAB costs | Londrina/Ponta Grossa/Francisco Beltrão, not Western Paraná; summer corn for Ponta Grossa (12 t/ha) |
 
-## 10. Limitações e próximos passos
+## 10. Limitations and next steps
 
-**Limitações**
+**Limitations**
 
-- Grade de ~50 km: talhões da mesma célula recebem o mesmo clima.
-- Frequência histórica, não previsão de um ano específico. Assume clima estacionário, e 34 anos é amostra pequena.
-- O POWER subestima geada (~40%).
-- A pedotransferência tende a subestimar a CAD em latossolo (a análise de solo do produtor resolve isso).
-- Irrigação: o ganho de produtividade não é modelado (só água, risco e custo); lâmina líquida, sem perdas de aplicação.
-- Análise de solo: a amostra (padrão 0–20 cm) é tomada como representativa de todo o perfil de raiz.
-- Terceirização de máquinas, custo da irrigação e níveis de mercado são estimativas a validar.
-- O verão (soja ou milho verão) não entra nos critérios de água e de risco climático; só a 2ª janela.
-- ZARC ainda não implementado.
+- ~50 km grid: fields in the same cell get the same climate.
+- Historical frequency, not a forecast for a specific year. Assumes a stationary climate, and 34 years is a small sample.
+- POWER underestimates frost (~40%).
+- The pedotransfer tends to underestimate the available water capacity in Latosols (the farmer's soil analysis solves this).
+- Irrigation: the yield gain is not modeled (only water, risk and cost); net depth, no application losses.
+- Soil analysis: the sample (default 0–20 cm) is taken as representative of the whole root profile.
+- Machinery outsourcing, irrigation cost and market levels are estimates to be validated.
+- The summer crop (soybean or summer corn) does not enter the water and climate-risk criteria; only the second window does.
+- ZARC is not implemented yet.
 
-**Próximos passos:** ZARC; custos regionais; validação com agrônomo; SMAP para a safra corrente; regressão PAM × clima na renda.
+**Next steps:** ZARC; regional costs; validation with an agronomist; SMAP for the current season; PAM × climate regression in income.
 
-## Contexto atual (informativo)
+## Current context (informational)
 
-O endpoint `GET/POST /v1/contexto` (código em `src/field_shift/contexto/`) consulta, no momento da chamada, fontes oficiais sobre
-eventos em curso: ENSO (NOAA CPC, com a frequência histórica de veranico e geada por fase do ENSO na célula do talhão), umidade do solo
-(NASA SMAP L4, com percentil da climatologia), MJO (NOAA PSL) e pragas em surto (ferrugem da soja do IDR-PR e alertas ADAPAR/IDR-PR
-curados à mão). **Nada disso entra nas notas**: o ranking continua calculado só com a climatologia (POWER 1991-2024), solo, relevo,
-histórico e renda descritos acima. Os textos atribuem a informação à fonte ("NOAA indica...", "IDR-PR registra...") e não afirmam
-perda nem probabilidade para o talhão; o histórico por fase tem ~10 anos por fase e pode ser só ruído amostral. Cada fonte tem cache
-e fallback; se falhar, o bloco vem como `{"disponivel": false, "motivo": ...}` e o resto segue.
-
+The `GET/POST /v1/contexto` endpoint (code in `src/field_shift/contexto/`) queries official sources about ongoing events at request time:
+ENSO (NOAA CPC, with the historical frequency of dry spells and frost per ENSO phase in the field's cell), soil moisture
+(NASA SMAP L4, with the climatology percentile), MJO (NOAA PSL) and pest outbreaks (IDR-PR soybean rust and ADAPAR/IDR-PR alerts
+curated by hand). **None of this enters the scores**: the ranking is still computed only from the climatology (POWER 1991-2024), soil, terrain,
+history and income described above. The texts attribute the information to the source ("NOAA indicates...", "IDR-PR reports...") and do not claim
+a loss or a probability for the field; the per-phase history has ~10 years per phase and may be only sampling noise. Each source has a cache
+and a fallback; if it fails, the block comes back as `{"disponivel": false, "motivo": ...}` and the rest continues.
