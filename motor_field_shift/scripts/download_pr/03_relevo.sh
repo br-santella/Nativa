@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# NASADEM elev.tif + declividade slope_pct.tif (Planetary Computer; via STAC, sem Earthdata) -> data/raw/nasadem_pr/, data/processed/relevo_pr/
-# Retomável: pula o que já foi baixado. Log em data/logs/.
+# NASADEM elev.tif + slope slope_pct.tif (Planetary Computer; via STAC, no Earthdata) -> data/raw/nasadem_pr/, data/processed/relevo_pr/
+# Resumable: skips what has already been downloaded. Log in data/logs/.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 mkdir -p data/logs

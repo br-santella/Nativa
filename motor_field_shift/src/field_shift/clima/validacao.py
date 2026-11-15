@@ -1,4 +1,4 @@
-"""Validação NASA POWER x estações INMET (célula POWER que contém a estação)."""
+"""NASA POWER x INMET station validation (the POWER cell that contains the station)."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -30,12 +30,12 @@ def validar(proc: Path):
         t = j.dropna(subset=["tmin", "T2M_MIN"])
         r["n_dias_tmin"] = len(t)
         if len(t) > 100:
-            r["tmin_vies_C"] = float((t.T2M_MIN - t.tmin).mean())      # POWER - estação
+            r["tmin_vies_C"] = float((t.T2M_MIN - t.tmin).mean())      # POWER - station
             r["tmin_corr"] = float(t.T2M_MIN.corr(t.tmin))
             r["tmin_rmse_C"] = float(np.sqrt(((t.T2M_MIN - t.tmin) ** 2).mean()))
             inv = t[t.index.month.isin([5, 6, 7, 8, 9])]
             r["tmin_vies_invernal_C"] = float((inv.T2M_MIN - inv.tmin).mean())
-        # dias de geada por ano (anos com >= 330 dias de Tmin válido na estação e POWER)
+        # frost days per year (years with >= 330 days of valid Tmin at the station and in POWER)
         t2 = t.assign(ano=t.index.year)
         ok = t2.groupby("ano").size()
         anos_ok = ok[ok >= 330].index
@@ -50,7 +50,7 @@ def validar(proc: Path):
                 r[f"anos_com_geada_le{lim}_estacao"] = float((est_d > 0).mean())
                 r[f"anos_com_geada_le{lim}_power"] = float((pw_d > 0).mean())
                 r[f"dias_le{lim}_corr_anual"] = float(est_d.corr(pw_d)) if len(est_d) > 2 else np.nan
-        # chuva mensal (meses com >= 28 dias válidos em ambos)
+        # monthly rain (months with >= 28 valid days in both)
         c = j.dropna(subset=["chuva_mm", "PRECTOTCORR"])
         m = c.groupby([c.index.year, c.index.month]).agg(est=("chuva_mm", "sum"), pw=("PRECTOTCORR", "sum"),
                                                           n=("chuva_mm", "size"))
@@ -66,6 +66,6 @@ def validar(proc: Path):
     pd.set_option("display.width", 250)
     print(out.round(2).to_string())
     if len(out):
-        print("\nMÉDIAS:", out[["tmin_vies_C", "tmin_vies_invernal_C", "tmin_corr", "dias_le2_estacao_ano", "dias_le2_power_ano",
+        print("\nMEANS:", out[["tmin_vies_C", "tmin_vies_invernal_C", "tmin_corr", "dias_le2_estacao_ano", "dias_le2_power_ano",
                               "dias_le3_estacao_ano", "dias_le3_power_ano", "chuva_mensal_vies_pct",
                               "chuva_mensal_corr"]].mean().round(2).to_dict())

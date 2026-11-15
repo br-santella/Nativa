@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Limite do PR (UF 41) + 399 municípios (IBGE) -> data/raw/regiao/pr.geojson, municipios_pr.geojson
-# Retomável: pula o que já foi baixado. Log em data/logs/.
+# Paraná boundary (UF 41) + 399 municipalities (IBGE) -> data/raw/regiao/pr.geojson, municipios_pr.geojson
+# Resumable: skips what has already been downloaded. Log in data/logs/.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 mkdir -p data/logs

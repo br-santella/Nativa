@@ -1,6 +1,6 @@
-"""Recorta MapBiomas (2000-2024) e relevo (NASADEM) da mesorregiao Oeste do PR por um poligono.
+"""Clips MapBiomas (2000-2024) and terrain (NASADEM) of the Western Paraná mesoregion by a polygon.
 
-Entrada: shapely Polygon/MultiPolygon em EPSG:4326, ou GeoJSON dict (Geometry, Feature ou FeatureCollection).
+Input: shapely Polygon/MultiPolygon in EPSG:4326, or a GeoJSON dict (Geometry, Feature or FeatureCollection).
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ SLOPE = ROOT / "data/processed/relevo_oeste_pr/slope_pct.tif"
 REGIAO = ROOT / "data/raw/regiao/oeste_pr.geojson"
 LEGENDA = ROOT / "data/processed/ftw/mapbiomas_legend_c10.json"
 
-# classes Embrapa de declividade (limite superior %, nome)
+# Embrapa slope classes (upper limit %, name)
 CLASSES_EMBRAPA = [(3, "plano"), (8, "suave ondulado"), (20, "ondulado"),
                    (45, "forte ondulado"), (np.inf, "montanhoso")]
 
@@ -51,13 +51,13 @@ def _legenda() -> dict[int, str]:
 
 
 def dentro_da_regiao(poligono) -> bool:
-    """True se o poligono esta inteiramente dentro da mesorregiao Oeste (tolerancia ~10 m)."""
+    """True if the polygon is entirely inside the Western mesoregion (tolerance ~10 m)."""
     g = _geom(poligono)
     return bool(_regiao().buffer(1e-4).contains(g))
 
 
 def _ler(path, g, all_touched=False):
-    """Pixels do raster cujo centro cai dentro do poligono (fallback: pixels tocados, p/ poligonos minusculos)."""
+    """Raster pixels whose center falls inside the polygon (fallback: touched pixels, for tiny polygons)."""
     with rasterio.open(path) as src:
         win = from_bounds(*g.bounds, transform=src.transform).round_offsets().round_lengths()
         win = win.intersection(rasterio.windows.Window(0, 0, src.width, src.height))
@@ -78,7 +78,7 @@ def _anos() -> list[int]:
 
 
 def historico_mapbiomas(poligono) -> pd.DataFrame:
-    """Uma linha por ano: classe dominante (codigo/nome), fracao dela e `fracoes` {codigo: fracao} (soma 1)."""
+    """One row per year: dominant class (code/name), its fraction and `fracoes` {code: fraction} (sum 1)."""
     g = _geom(poligono)
     leg = _legenda()
     linhas = []
@@ -104,12 +104,12 @@ def classe_embrapa(decl_pct: float) -> str:
 
 
 def relevo(poligono) -> dict:
-    """Altitude (m) e declividade (%) medias/extremos dentro do poligono + classe Embrapa."""
+    """Elevation (m) and slope (%) means/extremes inside the polygon + Embrapa class."""
     g = _geom(poligono)
     el = _ler(DEM, g)
     sl = _ler(SLOPE, g)
     if el.size == 0 or sl.size == 0:
-        raise ValueError("Poligono sem dados de relevo (fora da area coberta)")
+        raise ValueError("Polygon without terrain data (outside the covered area)")
     dm = float(np.mean(sl))
     return dict(altitude_media=float(np.mean(el)), altitude_min=float(np.min(el)),
                 altitude_max=float(np.max(el)), declividade_media=dm,

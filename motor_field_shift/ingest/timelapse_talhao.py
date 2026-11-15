@@ -1,6 +1,6 @@
-"""Timelapse de um talhão FTW: quadros Sentinel-2 L2A + curva NDVI HLS (Planetary Computer).
+"""Timelapse of an FTW field: Sentinel-2 L2A frames + HLS NDVI curve (Planetary Computer).
 
-Uso: uv run python ingest/timelapse_talhao.py --id 72638 --start 2024-01-01 --end 2026-11-14
+Usage: uv run python ingest/timelapse_talhao.py --id 72638 --start 2024-01-01 --end 2026-11-14
 """
 import argparse, os, subprocess, time, warnings
 os.environ.update(GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR', GDAL_HTTP_MAX_RETRY='4',
@@ -18,8 +18,8 @@ warnings.filterwarnings('ignore')
 
 STAC = 'https://planetarycomputer.microsoft.com/api/stac/v1'
 FTW = 'data/processed/ftw/fields_tile_mapbiomas_geo.parquet'
-EVENTS = [('2024-02-06', 'colheita soja +\nsemeadura milho'), ('2024-07-19', 'colheita milho'),
-          ('2024-10-04', 'semeadura soja')]
+EVENTS = [('2024-02-06', 'soybean harvest +\ncorn sowing'), ('2024-07-19', 'corn harvest'),
+          ('2024-10-04', 'soybean sowing')]
 NIR = {'hls2-l30': 'B05', 'hls2-s30': 'B8A'}
 BAD_SCL = {0, 1, 3, 8, 9, 10, 11}
 
@@ -78,7 +78,7 @@ def run_hls(cat, geom, crs, ll, start, end):
     for coll in NIR:
         its = list(cat.search(collections=[coll], intersects=ll, datetime=f'{start}/{end}').items())
         jobs += [(i, coll, poly, crs) for i in its]
-    print('HLS itens:', len(jobs), flush=True)
+    print('HLS items:', len(jobs), flush=True)
     with ThreadPoolExecutor(16) as ex: res = [r for r in ex.map(hls_obs, jobs) if r]
     return pd.DataFrame(res).sort_values('data').reset_index(drop=True)
 
@@ -123,7 +123,7 @@ def s2_bands(args):
 def main():
     a = ap(); os_ = a.out; os.makedirs(f'{os_}/frames', exist_ok=True)
     g = gpd.read_parquet(FTW); g = g[g.id.astype(str) == str(a.id)]
-    assert len(g) == 1, 'talhão não encontrado'
+    assert len(g) == 1, 'field not found'
     geom = g.geometry.iloc[0]; crs = g.crs
     ll = gpd.GeoSeries([geom.centroid], crs=crs).to_crs(4326).iloc[0].__geo_interface__
     cat = pystac_client.Client.open(STAC)
@@ -135,7 +135,7 @@ def main():
     hls.to_csv(hls_csv, index=False); print('HLS obs:', len(hls))
     curve = smooth(hls, start, end, a.min_clear_hls)
 
-    # S2 janela: bbox + margem, na grade de 10 m
+    # S2 window: bbox + margin, on the 10 m grid
     minx, miny, maxx, maxy = geom.bounds; m = a.margin
     bx = [np.floor((minx - m) / 10) * 10, np.floor((miny - m) / 10) * 10, np.ceil((maxx + m) / 10) * 10, np.ceil((maxy + m) / 10) * 10]
     shape = (int((bx[3] - bx[1]) / 10), int((bx[2] - bx[0]) / 10))
@@ -144,19 +144,19 @@ def main():
     epsg = crs.to_epsg()
     items = [i for i in cat.search(collections=['sentinel-2-l2a'], intersects=ll, datetime=f'{start}/{end}').items()
              if i.properties.get('proj:code', f"EPSG:{i.properties.get('proj:epsg')}") == f'EPSG:{epsg}']
-    print('S2 itens (mesmo CRS):', len(items), flush=True)
+    print('S2 items (same CRS):', len(items), flush=True)
     with ThreadPoolExecutor(16) as ex: res = [r for r in ex.map(s2_scl, [(i, bx, shape, fmask) for i in items]) if r[1] is not None]
     cen = pd.DataFrame([dict(data=pd.Timestamp(i.datetime).tz_localize(None).normalize(), cena=i.id, frac_clear=f) for i, f in res])
     byid = {i.id: i for i, _ in res}
     cen['item'] = cen.cena
     cen.drop(columns='item').sort_values('data').to_csv(f'{os_}/cenas_s2_{a.id}.csv', index=False)
-    print('S2 cenas avaliadas:', len(cen))
-    # seleção por janela de 10 dias
+    print('S2 scenes evaluated:', len(cen))
+    # selection by 10-day window
     grid = pd.date_range(start, end, freq='10D')
     cen['jan'] = ((cen.data - pd.Timestamp(start)).dt.days // 10)
     good = cen[cen.frac_clear >= a.min_clear_s2]
     sel = good.sort_values(['frac_clear', 'data'], ascending=[False, True]).groupby('jan').head(1).sort_values('data').reset_index(drop=True)
-    print('Quadros selecionados:', len(sel), flush=True)
+    print('Frames selected:', len(sel), flush=True)
     sel[['data', 'cena', 'frac_clear']].to_csv(f'{os_}/cenas_s2_selecionadas_{a.id}.csv', index=False)
 
     with ThreadPoolExecutor(8) as ex:
@@ -187,33 +187,33 @@ def main():
             outline(ax); ax.set_xlim(extent[0], extent[1]); ax.set_ylim(extent[2], extent[3]); ax.set_xticks([]); ax.set_yticks([])
         x0 = extent[0] + 40; y0 = extent[2] + 40
         a1.plot([x0, x0 + 500], [y0, y0], color='white', lw=3); a1.text(x0 + 250, y0 + 25, '500 m', color='white', ha='center', fontsize=9, fontweight='bold')
-        a1.set_title('Cor verdadeira (B4/B3/B2)', fontsize=10); a2.set_title('NDVI Sentinel-2 (0–1)', fontsize=10)
+        a1.set_title('True color (B4/B3/B2)', fontsize=10); a2.set_title('NDVI Sentinel-2 (0–1)', fontsize=10)
         sm = plt.cm.ScalarMappable(cmap='RdYlGn', norm=plt.Normalize(0, 1)); cb = fig.colorbar(sm, cax=a2.inset_axes([0.1, -0.07, 0.8, 0.03]), orientation='horizontal'); cb.ax.tick_params(labelsize=7)
         a1.set_anchor('E'); a2.set_anchor('W')
-        # curva
+        # curve
         a3.plot(hls[hls.frac_clear >= a.min_clear_hls].data, hls[hls.frac_clear >= a.min_clear_hls].ndvi_mean, '.', color='0.6', ms=3, label='HLS obs.')
-        a3.plot(curve.index, curve.values, color='darkgreen', lw=2, label='NDVI suavizado')
+        a3.plot(curve.index, curve.values, color='darkgreen', lw=2, label='Smoothed NDVI')
         for y in range(pd.Timestamp(start).year, smax.year + 1):
             s0, s1 = pd.Timestamp(f'{y}-06-02'), pd.Timestamp(f'{y}-08-31')
             a3.axvspan(s0, s1, color='tab:orange', alpha=0.18, lw=0)
-            a3.text(s0 + (s1 - s0) / 2, 1.04, 'vazio sanitário', ha='center', va='bottom', fontsize=7.5, color='darkorange')
+            a3.text(s0 + (s1 - s0) / 2, 1.04, 'soybean-free period', ha='center', va='bottom', fontsize=7.5, color='darkorange')
         for k, (e, lab) in enumerate(EVENTS):
             a3.axvline(pd.Timestamp(e), color='k', lw=0.7, ls='--'); a3.text(pd.Timestamp(e), 0.02 + 0.0 * k, ' ' + lab, fontsize=7, va='bottom', ha='left', rotation=0)
         a3.axvline(dt, color='red', lw=2)
         a3.set_xlim(pd.Timestamp(start), smax); a3.set_ylim(0, 1.0); a3.set_ylabel('NDVI', fontsize=9)
         a3.xaxis.set_major_locator(mdates.MonthLocator(bymonth=[1, 4, 7, 10])); a3.xaxis.set_major_formatter(mdates.DateFormatter('%m/%y')); a3.tick_params(labelsize=8)
         a3.legend(loc='upper right', fontsize=7, ncol=2, bbox_to_anchor=(1, 0.995), frameon=False)
-        # fase inferida
+        # inferred phase
         v = float(curve.iloc[np.argmin(np.abs((curve.index - dt).days))]); mo = dt.month
-        if v < 0.4: fase = 'pousio / solo exposto'
+        if v < 0.4: fase = 'fallow / exposed soil'
         elif mo in (10, 11, 12, 1): fase = 'soja'
-        elif mo in (2, 3, 4, 5, 6, 7): fase = 'milho safrinha' if mo >= 3 or v > 0.5 else 'soja (final) / milho'
-        else: fase = 'pousio / vegetação'
-        fig.suptitle(f'Talhão {a.id} — {a.title_place} — {dt:%d/%m/%Y}', fontsize=16, fontweight='bold', y=0.97)
-        fig.text(0.5, 0.905, f'Sentinel-2 L2A (cena {row.cena[-22:-16]}, {row.frac_clear*100:.0f}% limpa) | NDVI curva: HLS | fase inferida: {fase}', ha='center', fontsize=10, color='0.25')
+        elif mo in (2, 3, 4, 5, 6, 7): fase = 'off-season corn' if mo >= 3 or v > 0.5 else 'soybean (late) / corn'
+        else: fase = 'fallow / vegetation'
+        fig.suptitle(f'Field {a.id} — {a.title_place} — {dt:%d/%m/%Y}', fontsize=16, fontweight='bold', y=0.97)
+        fig.text(0.5, 0.905, f'Sentinel-2 L2A (scene {row.cena[-22:-16]}, {row.frac_clear*100:.0f}% clear) | NDVI curve: HLS | inferred phase: {fase}', ha='center', fontsize=10, color='0.25')
         fig.text(0.5, 0.012, 'Imagem: Copernicus Sentinel-2 | NDVI: NASA HLS | Limite: Fields of The World', ha='center', fontsize=8, color='0.45')
         fig.savefig(f'{os_}/frames/frame_{idx:03d}.png'); plt.close(fig)
-    print('quadros salvos')
+    print('frames saved')
 
     files = [f'{os_}/frames/frame_{i:03d}.png' for i in range(len(sel))]
     ims = [Image.open(f).convert('RGB') for f in files]

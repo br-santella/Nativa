@@ -1,7 +1,7 @@
 [project]
 name = "field-shift"
 version = "0.1.0"
-description = "Add your description here"
+description = "Field Shift crop-rotation recommendation engine and API for Western Paraná"
 authors = [
     { name = "LucasCordeiro", email = "lucas.cordeiro@embeddo.io" }
 ]
@@ -51,5 +51,5 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = ["api"]
 testpaths = ["api/tests"]
-markers = ["integracao: usa o serviço real e os dados em data/ (lento)"]
+markers = ["integracao: uses the real service and the data in data/ (slow)"]
 addopts = "-m 'not integracao'"

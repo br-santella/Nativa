@@ -1,9 +1,9 @@
-"""Anexa o MapBiomas Brasil (Colecao 10) aos talhoes FTW, filtra agricultura e gera historico anual.
+"""Attaches MapBiomas Brasil (Collection 10) to the FTW fields, filters agriculture and builds the annual history.
 
-Fonte: espelho COG no Source Cooperative (tristangruppwri/mapbiomas), Colecao 10, anos 2019-2024.
-(O bucket oficial storage.googleapis.com/mapbiomas-public retorna 403 anonimo.)
+Source: COG mirror on Source Cooperative (tristangruppwri/mapbiomas), Collection 10, years 2019-2024.
+(The official bucket storage.googleapis.com/mapbiomas-public returns 403 to anonymous access.)
 
-Uso: uv run python -m field_shift.mapbiomas.join_fields [--skip-download]
+Usage: uv run python -m field_shift.mapbiomas.join_fields [--skip-download]
 """
 import argparse
 import json
@@ -24,9 +24,9 @@ URL = ("https://data.source.coop/tristangruppwri/mapbiomas/mapbiomas-brazil/"
        "mapbiomas_brazil_{y}/mapbiomas_brazil_{y}.tif")
 YEARS = list(range(2019, 2025))
 LAST = YEARS[-1]
-PAD = 0.02  # graus de folga
+PAD = 0.02  # degrees of margin
 
-# Legenda Colecao 10 (codigos nacionais brutos)
+# Collection 10 legend (raw national codes; official MapBiomas class names in Portuguese)
 LEGEND = {
     1: "Floresta", 3: "Formacao Florestal", 4: "Formacao Savanica", 5: "Mangue", 6: "Floresta Alagavel",
     9: "Silvicultura", 10: "Vegetacao herbacea e arbustiva", 11: "Campo Alagado/Area Pantanosa",
@@ -39,7 +39,7 @@ LEGEND = {
     48: "Outras Lavouras Perenes", 49: "Restinga arborizada", 50: "Restinga herbacea",
     62: "Algodao (beta)", 75: "Usina fotovoltaica (beta)",
 }
-TEMP_CROPS = [19, 20, 39, 40, 41, 62]  # lavoura temporaria (19 = classe-mae)
+TEMP_CROPS = [19, 20, 39, 40, 41, 62]  # temporary crops (19 = parent class)
 SOY = 39
 
 

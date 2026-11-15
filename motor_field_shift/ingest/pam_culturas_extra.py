@@ -1,13 +1,13 @@
-"""Ingestão IBGE PAM (SIDRA) das culturas extras da 2ª janela: sorgo e feijão 2ª safra, municípios do Oeste do PR.
+"""IBGE PAM (SIDRA) ingestion of the extra second-window crops: sorghum and 2nd-season beans, Western Paraná municipalities.
 
-Grava data/raw/ibge/pam_extra_oeste_pr.parquet no MESMO esquema de pam_oeste_pr.parquet
-(tabela, cod_ibge, ano, variavel, cultura, valor; formato longo). `field_shift.pam.produtividade` lê os dois arquivos.
+Writes data/raw/ibge/pam_extra_oeste_pr.parquet with the SAME schema as pam_oeste_pr.parquet
+(tabela, cod_ibge, ano, variavel, cultura, valor; long format). `field_shift.pam.produtividade` reads both files.
 
-  tabela 1612, classificação 81: 2714 sorgo (em grão)            -> cultura "sorgo"
-  tabela 1002, classificação 81: 117992 feijão (em grão) 2ª safra -> cultura "feijao_2safra"
+  table 1612, classification 81: 2714 sorghum (grain)            -> cultura "sorgo"
+  table 1002, classification 81: 117992 beans (grain) 2nd season -> cultura "feijao_2safra"
 
-Uso: uv run python ingest/pam_culturas_extra.py [--force]
-(Arquivo próprio para não depender de ingest/solo_pam_oeste_pr.py, que baixa o PAM do PR inteiro.)
+Usage: uv run python ingest/pam_culturas_extra.py [--force]
+(A separate file so it does not depend on ingest/solo_pam_oeste_pr.py, which downloads PAM for the whole of Paraná.)
 """
 import argparse
 import time
@@ -31,16 +31,16 @@ def _sidra(tabela, vars_, prods, munis):
         try:
             r = requests.get(url, timeout=180)
             r.raise_for_status()
-            return r.json()[1:]  # linha 0 = cabeçalho
+            return r.json()[1:]  # row 0 = header
         except Exception as ex:
             print("  retry SIDRA", type(ex).__name__)
             time.sleep(5)
-    raise RuntimeError("SIDRA falhou")
+    raise RuntimeError("SIDRA failed")
 
 
 def pam_extra(force=False):
     if SAIDA.exists() and not force:
-        print("já existe:", SAIDA)
+        print("already exists:", SAIDA)
         return
     SAIDA.parent.mkdir(parents=True, exist_ok=True)
     munis = [str(int(c)) for c in gpd.read_file(REG / "municipios_oeste_pr.geojson")["cod_ibge"]]
@@ -51,14 +51,14 @@ def pam_extra(force=False):
             for j in _sidra(tabela, list(VARS), list(prods), lote):
                 linhas.append(dict(tabela=tabela, cod_ibge=j["D1C"], ano=int(j["D3C"]), variavel=VARS[j["D2C"]],
                                    cultura=prods[j["D4C"]], valor_bruto=j["V"]))
-            print(f"  tabela {tabela}: municípios {i + 1}-{i + len(lote)}")
+            print(f"  table {tabela}: municipalities {i + 1}-{i + len(lote)}")
     df = pd.DataFrame(linhas)
-    # "-" (zero absoluto), "..." (não se aplica), "X" (omitido por sigilo), ".." e "" -> NaN
+    # "-" (absolute zero), "..." (not applicable), "X" (withheld for confidentiality), ".." and "" -> NaN
     df["valor"] = pd.to_numeric(df["valor_bruto"].replace({"-": None, "...": None, "..": None, "X": None, "": None}),
                                 errors="coerce")
     df = df.drop(columns="valor_bruto")
     df.to_parquet(SAIDA, index=False)
-    print("salvo", SAIDA, len(df), "linhas,", df.cod_ibge.nunique(), "municípios, anos", df.ano.min(), "-", df.ano.max())
+    print("saved", SAIDA, len(df), "rows,", df.cod_ibge.nunique(), "municipalities, years", df.ano.min(), "-", df.ano.max())
 
 
 if __name__ == "__main__":

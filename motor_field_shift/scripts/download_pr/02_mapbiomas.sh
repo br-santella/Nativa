@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # MapBiomas coverage 2019-2024 (Source Cooperative) -> data/raw/mapbiomas_pr/
-# Retomável: pula o que já foi baixado. Log em data/logs/.
+# Resumable: skips what has already been downloaded. Log in data/logs/.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 mkdir -p data/logs

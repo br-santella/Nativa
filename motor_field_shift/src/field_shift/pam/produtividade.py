@@ -1,9 +1,9 @@
-"""Rendimento municipal (IBGE PAM, SIDRA 1612, 839 e 1002), lido de data/raw/ibge/pam_oeste_pr.parquet e, se existir,
-de data/raw/ibge/pam_extra_oeste_pr.parquet (sorgo e feijão 2ª safra; ingest/pam_culturas_extra.py), mesmo esquema.
+"""Municipal yield (IBGE PAM, SIDRA 1612, 839 and 1002), read from data/raw/ibge/pam_oeste_pr.parquet and, if it exists,
+from data/raw/ibge/pam_extra_oeste_pr.parquet (sorghum and 2nd-season beans; ingest/pam_culturas_extra.py), same schema.
 
-produtividade(cod_ibge) -> {cultura: {...}}; culturas: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
-Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos 5 anos COM dado (até 2025, se existir).
-CV = desvio padrão / média dos últimos 10 anos. Tendência = inclinação (kg/ha/ano) da regressão linear dos últimos 10 anos.
+produtividade(cod_ibge) -> {crop: {...}}; crops: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
+Bag = 60 kg (soybean, corn, wheat, sorghum, beans); oat only in kg/ha. Last 5 years WITH data (up to 2025, if available).
+CV = standard deviation / mean of the last 10 years. Trend = slope (kg/ha/year) of the linear regression over the last 10 years.
 """
 from __future__ import annotations
 
@@ -17,9 +17,9 @@ ROOT = Path(__file__).resolve().parents[3]
 PAM = ROOT / "data/raw/ibge/pam_oeste_pr.parquet"
 PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"
 SACA_KG = {"soja": 60, "milho_total": 60, "milho_1safra": 60, "milho_2safra": 60, "trigo": 60, "sorgo": 60, "feijao_2safra": 60}
-ANO_MIN = {"sorgo": 2013, "feijao_2safra": 2013}  # séries antigas/interrompidas do sorgo e do feijão 2ª safra não representam o manejo atual
-NOMES = {"soja": "soja", "milho_total": "milho", "milho_1safra": "milho 1ª safra", "milho_2safra": "milho 2ª safra",
-         "trigo": "trigo", "aveia": "aveia", "sorgo": "sorgo", "feijao_2safra": "feijão 2ª safra"}
+ANO_MIN = {"sorgo": 2013, "feijao_2safra": 2013}  # old/interrupted sorghum and 2nd-season bean series do not represent current management
+NOMES = {"soja": "soybean", "milho_total": "corn", "milho_1safra": "1st-season corn", "milho_2safra": "2nd-season corn",
+         "trigo": "wheat", "aveia": "oat", "sorgo": "sorghum", "feijao_2safra": "2nd-season beans"}
 
 
 @lru_cache(maxsize=1)
@@ -32,7 +32,7 @@ def _rend() -> pd.DataFrame:
 
 
 def serie(cod_ibge, cultura: str) -> pd.Series:
-    """Rendimento anual (kg/ha) do município; NaN removidos."""
+    """Annual yield (kg/ha) of the municipality; NaN removed."""
     r = _rend()
     try:
         s = r.xs(str(int(cod_ibge)), level="cod_ibge")[cultura]
@@ -59,12 +59,12 @@ def produtividade(cod_ibge, n_anos: int = 5) -> dict:
 
 
 def texto(nome_mun: str, p: dict) -> str:
-    """Linha pronta para exibição."""
+    """Line ready for display."""
     partes = []
     for c in ("soja", "milho_2safra", "trigo"):
         if c in p:
-            partes.append(f"{NOMES[c]} {p[c]['sc_ha']:.0f} sc/ha")
+            partes.append(f"{NOMES[c]} {p[c]['sc_ha']:.0f} bags/ha")
     if "aveia" in p:
-        partes.append(f"aveia {p['aveia']['kg_ha']:.0f} kg/ha")
+        partes.append(f"oat {p['aveia']['kg_ha']:.0f} kg/ha")
     anos = p[next(iter(p))]["anos"] if p else ""
-    return f"Rendimento médio em {nome_mun}, {anos}: " + ", ".join(partes) + "."
+    return f"Mean yield in {nome_mun}, {anos}: " + ", ".join(partes) + "."

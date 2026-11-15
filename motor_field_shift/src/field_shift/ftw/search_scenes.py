@@ -1,4 +1,4 @@
-"""Lista cenas Sentinel-2 L2A (Planetary Computer) de baixa nuvem sobre um bbox."""
+"""Lists low-cloud Sentinel-2 L2A scenes (Planetary Computer) over a bbox."""
 import sys
 import planetary_computer as pc
 from pystac_client import Client

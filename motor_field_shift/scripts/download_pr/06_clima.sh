@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Clima: NASA POWER por ponto (143 células + 399 municípios), INMET (estações do bbox do PR) e indicadores -> data/raw/clima_pr/, data/processed/clima_pr/ (POWER leva ~40 min)
-# Retomável: pula o que já foi baixado. Log em data/logs/.
+# Climate: NASA POWER per point (143 cells + 399 municipalities), INMET (stations in the Paraná bbox) and indicators -> data/raw/clima_pr/, data/processed/clima_pr/ (POWER takes ~40 min)
+# Resumable: skips what has already been downloaded. Log in data/logs/.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 mkdir -p data/logs

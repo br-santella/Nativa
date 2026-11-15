@@ -1,7 +1,7 @@
-"""Lookup de indicadores climáticos pré-calculados (Oeste do PR) por lat/lon + fallback NASA POWER.
+"""Lookup of pre-computed climate indicators (Western Paraná) by lat/lon + NASA POWER fallback.
 
-indicadores_para(lat, lon) -> dict | None. None se o ponto está fora da região.
-fallback_power(lat, lon)   -> dict | None. Consulta NASA POWER (1991-2025) ao vivo no mesmo formato.
+indicadores_para(lat, lon) -> dict | None. None if the point is outside the region.
+fallback_power(lat, lon)   -> dict | None. Queries NASA POWER (1991-2025) live, in the same format.
 """
 from __future__ import annotations
 
@@ -79,7 +79,7 @@ def indicadores_para(lat: float, lon: float) -> dict | None:
                     indicadores=_dict_ponto(por_ponto[cid])),
         municipio=dict(cod_ibge=m.cod_ibge, nome=m.nome, lat=float(m.lat_c), lon=float(m.lon_c),
                        indicadores=_dict_ponto(por_ponto[mid])),
-        convencao="ano agrícola Y = jul/Y a jun/Y+1; anos 1991-2024; *_1991_2020 = safras 1991-2019",
+        convencao="agricultural year Y = Jul/Y to Jun/Y+1; years 1991-2024; *_1991_2020 = seasons 1991-2019",
     )
 
 
@@ -174,7 +174,7 @@ def _baixar_power_cache(lat_cell: float, lon_cell: float) -> tuple[pd.DataFrame 
 
 
 def fallback_power(lat: float, lon: float) -> dict | None:
-    """Baixa NASA POWER (1991-2025) para a célula do ponto e calcula indicadores no formato de indicadores_para."""
+    """Downloads NASA POWER (1991-2025) for the point's cell and computes indicators in the indicadores_para format."""
     lat_cell = round(lat / DLAT) * DLAT
     lon_cell = round(lon / DLON) * DLON
     df, elev = _baixar_power_cache(lat_cell, lon_cell)
@@ -190,5 +190,5 @@ def fallback_power(lat: float, lon: float) -> dict | None:
         celula=dict(ponto_id=cid, lat=float(lat_cell), lon=float(lon_cell), elev=float(elev),
                     indicadores=_dict_ponto(df_agg)),
         municipio=None,
-        convencao="ano agrícola Y = jul/Y a jun/Y+1; anos 1991-2024; *_1991_2020 = safras 1991-2019",
+        convencao="agricultural year Y = Jul/Y to Jun/Y+1; years 1991-2024; *_1991_2020 = seasons 1991-2019",
     )

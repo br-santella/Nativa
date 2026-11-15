@@ -1,9 +1,9 @@
-"""Ingestao regional (mesorregiao Oeste do PR, IBGE 4106): limite, MapBiomas C10 2000-2024, NASADEM + declividade.
+"""Regional ingestion (Western Paraná mesoregion, IBGE 4106): boundary, MapBiomas C10 2000-2024, NASADEM + slope.
 
-Idempotente: pula o que ja existe.
-Uso: uv run python ingest/mapbiomas_relevo_oeste_pr.py [--regiao oeste_pr|pr]
-  --regiao pr: Parana inteiro (UF 41, 399 municipios); grava em *_pr (regiao/pr.geojson, mapbiomas_pr/,
-  nasadem_pr/, relevo_pr/). Default oeste_pr = comportamento original.
+Idempotent: skips what already exists.
+Usage: uv run python ingest/mapbiomas_relevo_oeste_pr.py [--regiao oeste_pr|pr]
+  --regiao pr: whole of Paraná (UF 41, 399 municipalities); writes to *_pr (regiao/pr.geojson, mapbiomas_pr/,
+  nasadem_pr/, relevo_pr/). Default oeste_pr = original behavior.
 """
 import argparse
 import json
@@ -20,7 +20,7 @@ from rasterio.windows import Window, from_bounds
 ROOT = Path(__file__).resolve().parents[1]
 REG = ROOT / "data/raw/regiao"
 REGIOES = {
-    # meso=None -> estado inteiro (UF 41); blocos=True -> processa em blocos (raster grande demais p/ a RAM)
+    # meso=None -> whole state (UF 41); blocos=True -> processes in blocks (raster too large for RAM)
     "oeste_pr": dict(sufixo="oeste_pr", nome="Oeste Paranaense", meso=4106, n_mun=50, blocos=False),
     "pr": dict(sufixo="pr", nome="Paraná", meso=None, n_mun=399, blocos=True),
 }
@@ -66,7 +66,7 @@ def limite():
         g.to_file(muni, driver="GeoJSON")
         info = {"nome": [CFG["nome"]], "cod_meso": [meso]} if meso else {"nome": [CFG["nome"]], "cod_uf": [41]}
         gpd.GeoDataFrame(info, geometry=[g.union_all()], crs=4326).to_file(uniao, driver="GeoJSON")
-        print("limite salvo,", len(g), "municipios")
+        print("boundary saved,", len(g), "municipalities")
     b = gpd.read_file(uniao).total_bounds
     return (b[0] - MARGEM, b[1] - MARGEM, b[2] + MARGEM, b[3] + MARGEM)
 
@@ -80,7 +80,7 @@ def mapbiomas(bounds):
         try:
             src = rasterio.open(URL.format(y=y))
         except rasterio.errors.RasterioIOError as e:
-            # o espelho do Source Cooperative so tem 2019-2024; anos anteriores dao 404
+            # the Source Cooperative mirror only has 2019-2024; earlier years return 404
             print("mapbiomas", y, "indisponivel:", str(e)[:60], flush=True)
             continue
         with src:
@@ -89,7 +89,7 @@ def mapbiomas(bounds):
                         crs=src.crs, transform=src.window_transform(win), nodata=0,
                         compress="deflate", predictor=2, tiled=True, blockxsize=512, blockysize=512)
             tmp = dst.with_suffix(".tmp")
-            # leitura em faixas de linhas: o PR inteiro nao cabe confortavelmente de uma vez na RAM
+            # reading in row strips: the whole of Paraná does not fit comfortably in RAM at once
             with rasterio.open(tmp, "w", driver="GTiff", **prof) as o:
                 for r0 in range(0, win.height, 4096):
                     h = min(4096, win.height - r0)
@@ -101,7 +101,7 @@ def mapbiomas(bounds):
 
 
 def _dem_blocos(bounds):
-    """NASADEM em blocos de BLOCO x BLOCO pixels (grade unica de 1 arcsec), gravados direto no GeoTIFF."""
+    """NASADEM in blocks of BLOCO x BLOCO pixels (single 1 arcsec grid), written directly to the GeoTIFF."""
     import planetary_computer as pc
     import pystac_client
     from odc.geo.geobox import GeoBox
@@ -109,8 +109,8 @@ def _dem_blocos(bounds):
     DEM.parent.mkdir(parents=True, exist_ok=True)
     cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1", modifier=pc.sign_inplace)
     items = list(cat.search(collections=["nasadem"], bbox=list(bounds)).items())
-    print("itens NASADEM:", len(items), flush=True)
-    # grade alinhada a multiplos inteiros de 1 arcsec (mesma convencao do elev.tif do Oeste)
+    print("NASADEM items:", len(items), flush=True)
+    # grid aligned to integer multiples of 1 arcsec (same convention as the Western elev.tif)
     bounds = (np.floor(bounds[0] * 3600) / 3600, np.floor(bounds[1] * 3600) / 3600,
               np.ceil(bounds[2] * 3600) / 3600, np.ceil(bounds[3] * 3600) / 3600)
     gbox = GeoBox.from_bbox(bounds, "EPSG:4326", resolution=1 / 3600)
@@ -131,20 +131,20 @@ def _dem_blocos(bounds):
                         el = ds.elevation.max("time") if "time" in ds.elevation.dims else ds.elevation
                         arr = el.compute().values.astype("float32")
                         break
-                    except Exception as ex:  # noqa: BLE001 - rede instavel
-                        print("  retry bloco", r0, c0, type(ex).__name__, flush=True)
+                    except Exception as ex:  # noqa: BLE001 - unstable network
+                        print("  retry block", r0, c0, type(ex).__name__, flush=True)
                         time.sleep(10)
                 else:
                     raise RuntimeError(f"NASADEM falhou no bloco {r0},{c0}")
                 arr = np.where(arr < -1000, np.nan, arr)
                 o.write(arr, 1, window=Window(c0, r0, c1 - c0, r1 - r0))
-            print(f"  NASADEM linha {r0}/{h}", flush=True)
+            print(f"  NASADEM row {r0}/{h}", flush=True)
     tmp.rename(DEM)
     print("elev.tif", (h, w), flush=True)
 
 
 def _declividade(dem, transform, crs):
-    """Declividade (%) de um array: reprojeta para UTM 22S (metros), gradiente, volta para a grade original."""
+    """Slope (%) of an array: reprojects to UTM 22S (meters), gradient, back to the original grid."""
     bounds = rasterio.transform.array_bounds(dem.shape[0], dem.shape[1], transform)
     dst_crs = "EPSG:31982"
     tr, w, h = calculate_default_transform(crs, dst_crs, dem.shape[1], dem.shape[0], *bounds, resolution=30)
@@ -161,7 +161,7 @@ def _declividade(dem, transform, crs):
 
 
 def _slope_blocos():
-    """Declividade em blocos com halo (mesmo algoritmo do caso pequeno), para rasters que nao cabem na RAM."""
+    """Slope in blocks with a halo (same algorithm as the small case), for rasters that do not fit in RAM."""
     B, HALO = 3000, 48
     with rasterio.open(DEM) as src:
         prof = src.profile | dict(compress="deflate", predictor=3)
@@ -179,7 +179,7 @@ def _slope_blocos():
                     else:
                         out = _declividade(dem, src.window_transform(win), src.crs)
                     o.write(out[r0 - ra:r1 - ra, c0 - ca:c1 - ca], 1, window=Window(c0, r0, c1 - c0, r1 - r0))
-                print(f"  slope linha {r0}/{src.height}", flush=True)
+                print(f"  slope row {r0}/{src.height}", flush=True)
     tmp.rename(SLOPE)
     print("slope_pct.tif", (src.height, src.width), flush=True)
 
@@ -195,7 +195,7 @@ def nasadem(bounds):
         cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1",
                                         modifier=pc.sign_inplace)
         items = list(cat.search(collections=["nasadem"], bbox=list(bounds)).items())
-        print("itens NASADEM:", len(items), flush=True)
+        print("NASADEM items:", len(items), flush=True)
         ds = load(items, bands=["elevation"], bbox=bounds, crs="EPSG:4326", resolution=1 / 3600,
                   chunks={}, groupby="solar_day")
         el = ds.elevation.max("time").compute().astype("float32") if "time" in ds.elevation.dims else ds.elevation
@@ -205,7 +205,7 @@ def nasadem(bounds):
             arr = arr[::-1]
         res = abs(lon[1] - lon[0])
         tr = rasterio.transform.from_origin(lon.min() - res / 2, max(lat) + res / 2, res, res)
-        arr = np.where(arr < -1000, np.nan, arr)  # nodata do NASADEM (-32768) -> NaN
+        arr = np.where(arr < -1000, np.nan, arr)  # NASADEM nodata (-32768) -> NaN
         prof = dict(driver="GTiff", height=arr.shape[0], width=arr.shape[1], count=1, dtype="float32",
                     crs="EPSG:4326", transform=tr, nodata=np.nan, compress="deflate", predictor=3,
                     tiled=True, blockxsize=512, blockysize=512)
@@ -219,7 +219,7 @@ def nasadem(bounds):
         _slope_blocos()
     if not SLOPE.exists():
         SLOPE.parent.mkdir(parents=True, exist_ok=True)
-        # declividade: reprojeta para UTM 22S (metros), gradiente, volta para 4326 na grade original
+        # slope: reprojects to UTM 22S (meters), gradient, back to 4326 on the original grid
         with rasterio.open(DEM) as src:
             dem = src.read(1)
             dst_crs = "EPSG:31982"
@@ -245,7 +245,7 @@ def nasadem(bounds):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--regiao", choices=sorted(REGIOES), default="oeste_pr")
-    ap.add_argument("--so", choices=["limite", "nasadem", "mapbiomas"], help="roda so uma etapa")
+    ap.add_argument("--so", choices=["limite", "nasadem", "mapbiomas"], help="runs only one step")
     a = ap.parse_args()
     configurar(a.regiao)
     b = limite()

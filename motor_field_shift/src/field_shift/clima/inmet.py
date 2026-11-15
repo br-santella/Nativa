@@ -1,7 +1,7 @@
-"""INMET: dados históricos anuais -> diário (Tmin, Tmax, chuva) das estações dentro do bbox.
+"""INMET: annual historical data -> daily (Tmin, Tmax, rain) for the stations inside the bbox.
 
-Dia = dia local (UTC-3): os horários do CSV são UTC. Dia com < MIN_HORAS horas válidas -> NaN.
-Conteúdo dos zips é tratado só como dados (nunca executado).
+Day = local day (UTC-3): the CSV times are UTC. A day with < MIN_HORAS valid hours -> NaN.
+The zip contents are treated as data only (never executed).
 """
 from __future__ import annotations
 
@@ -79,7 +79,7 @@ def processar_inmet(bbox, zips_dir: Path, proc_dir: Path, headers: dict, anos=ra
     proc_dir.mkdir(parents=True, exist_ok=True)
     diarios, estacoes = [], {}
     falhas = []
-    cache = proc_dir / "_inmet_ano"  # diário por ano já processado (idempotência)
+    cache = proc_dir / "_inmet_ano"  # daily data per year already processed (idempotency)
     cache.mkdir(exist_ok=True)
     for ano in anos:
         pq = cache / f"{ano}.parquet"
@@ -120,15 +120,15 @@ def processar_inmet(bbox, zips_dir: Path, proc_dir: Path, headers: dict, anos=ra
             for h in est_ano:
                 estacoes[h["codigo"]] = dict(codigo=h["codigo"], nome=h["estacao"], uf=h["uf"], lat=h["lat"],
                                              lon=h["lon"], alt=h["alt"])
-            print(f"INMET {ano}: {len(est_ano)} estações no bbox", flush=True)
+            print(f"INMET {ano}: {len(est_ano)} stations in the bbox", flush=True)
         except Exception as e:  # noqa: BLE001
             falhas.append((ano, f"{type(e).__name__}: {e}"))
-            print(f"INMET {ano} falhou: {e}", flush=True)
+            print(f"INMET {ano} failed: {e}", flush=True)
         finally:
             if zp.exists():
                 zp.unlink()
     if not diarios:
-        raise RuntimeError(f"nenhum ano INMET processado: {falhas}")
+        raise RuntimeError(f"no INMET year processed: {falhas}")
     dia = pd.concat([d for d in diarios if len(d)], ignore_index=True)
     dia["data"] = pd.to_datetime(dia["data"])
     dia = dia.dropna(how="all", subset=["chuva_mm", "tmin", "tmax"])
@@ -140,4 +140,4 @@ def processar_inmet(bbox, zips_dir: Path, proc_dir: Path, headers: dict, anos=ra
     est.to_csv(proc_dir / "inmet_estacoes.csv", index=False)
     print(est.to_string())
     if falhas:
-        print("Anos com falha:", falhas)
+        print("Years that failed:", falhas)
