@@ -20,6 +20,7 @@ import {
 } from "./data";
 import type { Farm, Crop } from "./data";
 import "./styles.css";
+import MotorPanel from "./MotorPanel";
 
 const A = assets.overview,
   L = assets["13:16"];
@@ -1387,6 +1388,7 @@ function App() {
             </LinkButton>
           </section>
         </div>
+        <MotorPanel weights={applied} />
         <p className="footnote">
           Nenhum cenário é uma recomendação absoluta. Confirme a viabilidade com
           assistência agronômica e dados locais antes de decidir.
