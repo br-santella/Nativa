@@ -248,8 +248,8 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      </div></fieldset>
      {more(say('O momento da sua lavoura · opcional','Your crop timing · optional'), <>
      {field('Fase da cultura de verão', <select value={stage} onChange={e => setStage(e.target.value)}><option value="">{say('Não sei informar','I’m not sure')}</option>{summer?.estagios.map(x => <option key={x.id} value={x.id}>{t(x.nome)}</option>)}</select>)}
-     {field('Colheita prevista', <input type="date" value={harvest} onChange={e => setHarvest(e.target.value)}/>)}
-     {field('Semeadura da 2ª safra', <div className="wizard-reference-input is-inline"><input type="date" value={sowingDate} onChange={e => setSowingDate(e.target.value)}/>{sowingDate && <button type="button" className="wizard-inline-link" onClick={() => setSowingDate('')}>{say('Deixar automática','Make it automatic')}</button>}</div>)}
+     <div className="wizard-grid wizard-dates">{field('Colheita prevista', <input type="date" value={harvest} onChange={e => setHarvest(e.target.value)}/>)}
+      {field('Semeadura da 2ª safra', <div className="wizard-reference-input is-inline"><input type="date" value={sowingDate} onChange={e => setSowingDate(e.target.value)}/>{sowingDate && <button type="button" className="wizard-inline-link" onClick={() => setSowingDate('')}>{say('Deixar automática','Make it automatic')}</button>}</div>)}</div>
      <p className="wizard-hint" role="status">{!sowingDate
       ? say('Em branco, calculamos a semeadura a partir da colheita do verão.','If left blank, we work out the sowing date from the summer harvest.')
       : (() => { const used = engineSowing(sowingDate, options.semeaduras); const exact = `${sowingDate.slice(8, 10)}/${sowingDate.slice(5, 7)}` === used;
@@ -281,8 +281,15 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
     {step === 5 && <>
      <div className="wizard-ready"><span>{say('Seu ponto de partida','Your starting point')}</span><strong>{t(options.combinacoes.find(x => x.id === rotation)?.nome ?? rotation)}</strong><p>{priorityName} · {soilCount ? say(`${soilCount} dados de solo`, `${soilCount} soil values`) : say('Solo com dados públicos','Public soil data')}</p></div>
      
+     <div className="wizard-column">
      {more(say('Seus preços · opcional','Your prices · optional'), <><p className="wizard-hint">{say('R$/saca. Em branco, usamos os preços de referência.','BRL per sack. Leave blank to use reference prices.')}</p><div className="wizard-prices">{commodities.map(([id,label]) => <label key={id} className="wizard-price-row"><span>{t(label)}</span><span className="wizard-price-input"><input type="number" min="0" step="any" placeholder={say('referência','reference')} value={prices[id] ?? ''} onChange={e => setPrices({...prices,[id]:e.target.value})}/><small>R$/sc</small></span></label>)}</div>
 </>)}
+     {more(say('Quantos cenários ver','How many scenarios to see'), <fieldset className="wizard-buyers"><legend>{say('Alternativas à sua rotação atual','Alternatives to your current rotation')}</legend>
+      <div className="wizard-pills">{[1,2,3,4,5,6].map(n => <label key={n}><input type="radio" name="count" checked={count === n} onChange={() => setCount(n)}/><span>{n}</span></label>)}</div>
+      <p className="wizard-hint">{say('O motor mostra até esse número de opções, ordenadas pela nota. Mais opções deixam a comparação mais ampla.','The engine shows up to this many options, sorted by score. More options widen the comparison.')}</p>
+     </fieldset>)}
+     </div>
+     <div className="wizard-column">
      {more(say('Comprador para a 2ª safra · opcional','Buyers for the second crop · optional'), <fieldset className="wizard-buyers"><legend>{say('Você tem comprador para…','Do you have a buyer for…')}</legend>
       {commodities.filter(([id]) => id !== 'soja').map(([id,label]) => <div className="wizard-buyer-row" key={id}><span>{t(label)}</span><span className="wizard-segmented is-compact" role="radiogroup" aria-label={say(`Tem comprador para ${label.toLocaleLowerCase('pt-BR')}?`, `Buyer for ${t(label).toLocaleLowerCase('en-US')}?`)}>
        <label><input type="radio" name={`buyer-${id}`} checked={!buyers.includes(id)} onChange={() => setBuyers(buyers.filter(x => x !== id))}/><span>{say('Sim','Yes')}</span></label>
@@ -295,10 +302,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
       {yesNo('seeder', say('Semeadora de consórcio','Intercropping seeder'), seeder, setSeeder)}
       {yesNo('irrigation', say('Irrigação','Irrigation'), irrigation, setIrrigation)}
      </fieldset>)}
-     {more(say('Quantos cenários ver','How many scenarios to see'), <fieldset className="wizard-buyers"><legend>{say('Alternativas à sua rotação atual','Alternatives to your current rotation')}</legend>
-      <div className="wizard-pills">{[1,2,3,4,5,6].map(n => <label key={n}><input type="radio" name="count" checked={count === n} onChange={() => setCount(n)}/><span>{n}</span></label>)}</div>
-      <p className="wizard-hint">{say('O motor mostra até esse número de opções, ordenadas pela nota. Mais opções deixam a comparação mais ampla.','The engine shows up to this many options, sorted by score. More options widen the comparison.')}</p>
-     </fieldset>)}
+     </div>
     </>}
     </div>
     {error && <p className="wizard-error" role="alert">{error}</p>}

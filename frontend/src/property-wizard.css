@@ -186,3 +186,9 @@
 .property-wizard .wizard-map-canvas .leaflet-control-layers-base label > span { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 6px; }
 .property-wizard .wizard-map-canvas .leaflet-control-layers-base label:has(input:checked) > span { background: #ffbf22; color: #152217; }
 .property-wizard .wizard-map-canvas input.leaflet-control-layers-selector { position: absolute; opacity: 0; width: 1px; height: 1px; min-height: 0; margin: 0; padding: 0; }
+/* Round 3: harvest and sowing side by side; final step as two stacked columns. */
+.wizard-dates { align-items: start; }
+.wizard-dates .wizard-reference-input.is-inline { flex-wrap: wrap; gap: 6px 12px; }
+.wizard-dates .wizard-reference-input.is-inline input { max-width: none; flex: 1 1 160px; }
+.wizard-column { display: grid; gap: 18px; align-content: start; min-width: 0; }
+@media (max-width: 480px) { .wizard-dates { grid-template-columns: 1fr; } }
