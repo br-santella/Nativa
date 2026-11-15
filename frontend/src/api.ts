@@ -20,6 +20,7 @@ export type ItemRanking = {
   rotacao: string;
   nota: number | null;
   atual: boolean;
+  criterios?: { renda: number; solo: number; agua: number; pragas: number; risco: number };
   margem?: { total_r_ha: number; incremental_r_ha: number };
   card?: Card;
   eliminada?: boolean;
