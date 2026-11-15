@@ -11,6 +11,7 @@ import PropertyWizard from "./PropertyWizard";
 import type { SetupInputs } from "./PropertyWizard";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
+import { municipalities, findMunicipality, coordinatesInParana } from "./coverage";
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
 type Page = "about" | "landing" | "demo" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
@@ -51,6 +52,32 @@ function Field({ label, name, type = "text", options, min, max, step, }: {
           {__text(options.map((o) => (<option key={o} value={o}>{__text(o)}</option>)))}
         </select>) : (<input type={type} value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))} min={min} max={max} step={step} required={name === "name" || name === "city" || name === "area"}/>))}
     </label>);
+}
+// MVP coverage is Paraná only: the city must be a PR municipality and picking one sets the coordinates.
+function CityField() {
+    const { draft, setDraft } = useContext(DraftContext);
+    const valid = !!findMunicipality(draft.city);
+    return (<label className="field">
+      <span>{__text("Munic\u00EDpio (PR)")}</span>
+      <input list="pr-municipalities" value={draft.city} required autoComplete="off" aria-invalid={!valid} ref={(el) => el?.setCustomValidity(valid ? "" : t("Escolha um munic\u00EDpio do Paran\u00E1 na lista."))} onChange={(e) => {
+            const city = e.target.value, m = findMunicipality(city);
+            setDraft((v) => (m ? { ...v, city, latitude: String(m.lat), longitude: String(m.lon) } : { ...v, city }));
+        }} onBlur={() => {
+            const m = findMunicipality(draft.city);
+            if (m && m.label !== draft.city)
+                setDraft((v) => ({ ...v, city: m.label }));
+        }}/>
+      <datalist id="pr-municipalities">
+        {municipalities.map((m) => (<option key={m.name} value={m.label}/>))}
+      </datalist>
+      {!valid && draft.city.trim() && (<small className="error">{__text("Escolha um munic\u00EDpio do Paran\u00E1 na lista.")}</small>)}
+    </label>);
+}
+function CoverageNotice() {
+    return (<p className="coverage-notice" role="note">
+      <strong>{__text("Cobertura: somente Paran\u00E1 (PR).")}</strong>{" "}
+      {__text("Os dados de solo, relevo, clima e custos usados nas recomenda\u00E7\u00F5es foram preparados apenas para propriedades no estado.")}
+    </p>);
 }
 function App() {
     useLanguage();
@@ -102,6 +129,10 @@ function App() {
     }
     function saveFarm(e: React.FormEvent) {
         e.preventDefault();
+        if (!coordinatesInParana(draft.latitude, draft.longitude)) {
+            toast("A localiza\u00E7\u00E3o precisa estar dentro do Paran\u00E1 (PR). Nada foi salvo.");
+            return;
+        }
         setFarm({ ...draft });
         toast("Alterações aplicadas nesta sessão.");
     }
@@ -399,19 +430,16 @@ function App() {
             <section className="panel">
               <h2>{__text("01 Localiza\u00E7\u00E3o")}</h2>
               <p>{__text("Informe onde voc\u00EA cultiva. Os campos marcados s\u00E3o opcionais.")}</p>
+              <CoverageNotice />
               <div className="fields-grid">
                 <Field label={__text("Nome da propriedade")} name="name"/>
-                <Field label={__text("Pa\u00EDs")} name="country" options={[
-                "Brasil",
-                "Argentina",
-                "Uruguai",
-                "Paraguai",
-                "Outro",
-            ]}/>
+                <Field label={__text("Pa\u00EDs")} name="country" options={["Brasil"]}/>
+                <CityField />
                 <div className="fields-grid">
-                  <Field label={__text("Latitude")} name="latitude" type="number" min={-90} max={90} step="any"/>
-                  <Field label={__text("Longitude")} name="longitude" type="number" min={-180} max={180} step="any"/>
+                  <Field label={__text("Latitude")} name="latitude" type="number" min={-27} max={-22} step="any"/>
+                  <Field label={__text("Longitude")} name="longitude" type="number" min={-55} max={-48} step="any"/>
                 </div>
+                {!coordinatesInParana(draft.latitude, draft.longitude) && (<small className="error full">{__text("Fora da \u00E1rea de cobertura: informe um ponto dentro do Paran\u00E1.")}</small>)}
                 <Field label={__text("\u00C1rea da propriedade (ha)")} name="area" type="number" min={0.01} step="any"/>
               </div>
               <div className="location-preview">
@@ -1031,6 +1059,7 @@ function App() {
               {__text(farm.city)}{__text("\u2022")}{__text(farm.area)}{__text("ha")}</small>
           </button>
           <p>{__text("Uma propriedade est\u00E1 dispon\u00EDvel nesta demonstra\u00E7\u00E3o.")}</p>
+          <CoverageNotice />
           <LinkButton onClick={() => go("farm")}>{__text("Editar propriedade \u2192")}</LinkButton>
         </>);
         if (modal === "contact")

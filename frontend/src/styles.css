@@ -3586,3 +3586,21 @@ footer > small:last-child {
 @media(max-width:480px) { .about-team{grid-template-columns:1fr}.about-intro{margin-bottom:36px}.about-member{padding:24px} }
 
 .about-footer .back-link { position:static; inset:auto; flex-shrink:0; }
+.coverage-notice {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  border: 1px solid #b2bc42;
+  border-left-width: 4px;
+  border-radius: 8px;
+  background: rgba(145, 172, 50, 0.1);
+  color: #dfe8c4;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.coverage-notice strong {
+  color: #e7f08a;
+}
+.field small.error,
+small.error.full {
+  font-size: 11px;
+}
