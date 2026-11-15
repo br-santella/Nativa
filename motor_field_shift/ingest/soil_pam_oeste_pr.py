@@ -101,7 +101,7 @@ def soilgrids(force=False, props=None):
         print("saved", out, out.stat().st_size // 1024, "KB")
 
 
-# ------------------------------------------------------------------------------- PAM
+# PAM
 SIDRA = "https://apisidra.ibge.gov.br/values"
 VARS = {"109": "area_plantada_ha", "216": "area_colhida_ha", "214": "producao_t", "112": "rendimento_kg_ha"}
 VAR_VALOR = {"215": "valor_mil_reais"}

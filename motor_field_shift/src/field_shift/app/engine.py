@@ -36,7 +36,7 @@ FTW = ROOT / "data/processed/ftw"
 FIELD_ID = "72638"  # the parquet `id` column is a string
 SOIL_THRESHOLD = 0.35  # NDVI below this = bare soil / low cover
 
-# --------------------------------------------------------------------------- 1. Local
+# Local
 @lru_cache(maxsize=1)
 def fields_gdf() -> gpd.GeoDataFrame:
     """FTW fields with MapBiomas (in-memory cache; used by load_field and by the API service)."""
@@ -64,7 +64,7 @@ def load_field(tid: str = FIELD_ID) -> dict:
                 classe_embrapa=None if rel is None else rel["classe_embrapa"],
                 altitude=None if rel is None else rel["altitude_media"], historico=hist)
 
-# --------------------------------------------------------------------------- 2. NDVI history
+# NDVI history
 def load_ndvi(tid: str = FIELD_ID) -> pd.Series:
     df = pd.read_csv(ROOT / f"data/processed/timelapse/ndvi_hls_{tid}.csv", parse_dates=["data"])
     df = df[df["frac_clear"] >= 0.7]
@@ -116,7 +116,7 @@ def bare_soil_days_by_year(ndvi: pd.Series) -> float:
             tot.append(int((ndvi[start:end] < SOIL_THRESHOLD).sum()))
     return float(np.mean(tot)) if tot else float("nan")
 
-# --------------------------------------------------------------------------- 3. Clima NASA POWER
+# NASA POWER climate
 POWER_URL = ("https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MIN,T2M_MAX,PRECTOTCORR"
              "&community=AG&longitude={lon}&latitude={lat}&start=19950101&end=20241231&format=JSON")
 
@@ -260,7 +260,7 @@ def fmt_pam(rk: dict) -> str | None:
     return pam_text(rk["pam"]["nome"], rk["pam"]["dados"]) if rk.get("pam") else None
 
 
-# --------------------------------------------------------------------------- 5. Motor
+# Engine
 # REFERENCE ESTIMATES — validate with an agronomist/CONAB/Embrapa.
 # A rotation is a pair (summer crop, 2nd-window crop). The CATALOG of candidates (key = readable name of the pair) is built
 # from two small catalogs: SUMMER (soybean, summer corn) and SECOND (2nd window). Attributes of SECOND:
@@ -299,7 +299,9 @@ SECOND = {
         renda_itens=["milheto_crotalaria"], ciclo_agua="safrinha", kc=0.65, bonus_sc=3.0, riscos=[],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=None, milho=False,
         irrigavel=False, req_maquinas=(), vende=(), mercado_oeste_pr=None),
-    "pousio": dict(nome="pousio", tipo="pousio", dias_descobertos=150, cobertura=0.2, n_fix=0.0, pragas=0.3, agua=0.1,
+    # dias_descobertos: off-season corn (60) + the difference measured from space around field 72638, single- vs double-crop
+    # years (~31 bare days/yr, HLS NDVI < 0.35, 1,278 field-years; docs/validation.md §5.2). Was 150 (agronomic estimate).
+    "pousio": dict(nome="pousio", tipo="pousio", dias_descobertos=90, cobertura=0.2, n_fix=0.0, pragas=0.3, agua=0.1,
         renda_itens=["pousio"], ciclo_agua=None, kc=None, bonus_sc=0.0,  # no crop: no water demand (water = 1.0)
         riscos=[], soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=False, janela=None, milho=False,
         irrigavel=False, req_maquinas=(), vende=(),
@@ -574,6 +576,47 @@ class NoCandidates(ValueError):
         self.eliminated_list = eliminated_list or {}
 
 
+def income_score(incremental: float, scale: float) -> float:
+    """Income criterion (0–1): 0.5 at zero incremental margin, ~0.88 at +S, ~0.12 at −S, strictly increasing (no ties)."""
+    return float(0.5 + 0.5 * np.tanh(incremental / scale))
+
+
+# Validation of the climate-risk criterion against PAM off-season corn failures (docs/validation.md §6.1): calibrated on average,
+# no out-of-sample skill to tell which season or which municipality fails.
+RISK_CONFIDENCE_CORN = ("baixa", "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, "
+                        "2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da "
+                        "amostra, docs/validation.md §6.1).")
+RISK_CONFIDENCE_OTHER = ("não validada", "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas.")
+CATALOG_ESTIMATES = ("solo", "pragas")
+
+
+def uncertainty(c: dict, m: dict, income: float, score: float, w_income: float, p_risk: float, risks: list[str]) -> dict:
+    """Uncertainty of one candidate's result: income range (realized seasons of the track record, or the bad year of the
+    current-price estimate), the score range it implies (other criteria fixed), the score per past season, the confidence of the
+    climate-risk criterion and which criteria are catalog estimates."""
+    inc, s, ps = m["incremental"], m["escala_S"], m["preco_soja"]
+    by_season = None
+    if m.get("base_renda") == "historico" and m.get("historico_safras"):
+        incs = {y: inc + (v - m["historico_sc_soja_ha"]) * ps for y, v in m["historico_safras"].items()}
+        by_season = {y: score + w_income * (income_score(x, s) - income) for y, x in incs.items()}
+        lo, hi, origin = min(incs.values()), max(incs.values()), "historico"
+    else:
+        second = [i for i in m["itens"] if i["chave"] in c["renda_itens"] and not i.get("extra")]
+        sold = [i for i in second if i.get("sc_ha") is not None and i.get("margem_ano_ruim") is not None]
+        if sold:
+            lo, hi, origin = inc - sum(i["margem"] - i["margem_ano_ruim"] for i in sold), None, "ano_ruim_p20"
+        else:
+            lo, hi, origin = inc, inc, "custo_fixo"
+    score_lo = score + w_income * (income_score(lo, s) - income)
+    score_hi = None if hi is None else score + w_income * (income_score(hi, s) - income)
+    conf = RISK_CONFIDENCE_CORN if c["segunda"] in ("milho_safrinha", "milho_braquiaria") else RISK_CONFIDENCE_OTHER
+    return dict(renda=dict(incremental_r_ha=inc, faixa_r_ha=[lo, hi], origem=origin),
+                nota_faixa=[score_lo, score_hi], nota_por_safra=by_season,
+                risco_climatico=(dict(probabilidade=p_risk, eventos=[RISK_NAME.get(r, r) for r in risks], confianca=conf[0],
+                                      texto=conf[1]) if risks else None),
+                criterios_estimados=list(CATALOG_ESTIMATES))
+
+
 def score_rotation(pesos: dict[str, float], risks: dict, adjustments: dict | None = None, names: list[str] | None = None) -> dict:
     """Return a dict with the table of valid ones (DataFrame), eliminated ones and contributions. `names`: only evaluate these candidates
     (CATALOG names); None = all. All criteria on an ABSOLUTE 0–1 SCALE (no min-max across candidates), higher = better."""
@@ -595,20 +638,29 @@ def score_rotation(pesos: dict[str, float], risks: dict, adjustments: dict | Non
     # = (summer margin − soybean margin) + 2nd-crop margin (sold: PAM × price − cost; cover: − establishment
     # cost; fallow: − management cost) + bonus in the following soybean (bonus_sc × soybean price). With summer soybean the first
     # term is zero (original formula); summer corn enters with 1st-season corn PAM × corn price − CONAB summer-corn cost.
-    # income = clip(0.5 + incremental / (2·S), 0, 1), S = max(municipality soybean margin, INCOME_SCALE_MIN):
-    # incremental = +S → 1.0; zero → 0.5; −S → 0. Measures how much the 2nd season adds or removes on the municipality's own soybean scale.
+    # Income score: 0.5 + 0.5·tanh(incremental / S), S = max(municipal soybean margin, INCOME_SCALE_MIN). Near zero it has the
+    # same slope as the old clip(0.5 + incremental / (2·S), 0, 1), but it never saturates, so two good options are never tied
+    # at 1.0 (docs/validation.md §6.3). For grain second crops with a municipal track record, the second-crop margin in
+    # `incremental` is the 5-season realized margin (income.history.apply_to_income; validated out of sample, §6.2).
     extras = {n: extra_costs(n, c, risks) for n, c in valid_items.items()}
     margins = compute_margins({n: c for n, c in valid_items.items()}, yields_rk(risks), adjustments, extras)
-    income = {n: float(np.clip(0.5 + m["incremental"] / (2 * m["escala_S"]), 0.0, 1.0)) for n, m in margins.items()}
+    margins = income_history.apply_to_income(margins, valid_items, (risks.get("municipio") or {}).get("cod_ibge"))
+    income = {n: income_score(m["incremental"], m["escala_S"]) for n, m in margins.items()}
     income_warning = (None if any(m["total"] > 0 for m in margins.values())
                    else "Nenhuma rotação válida tem margem total positiva com os preços e custos usados (informativo).")
-    # Field state given by the farmer (problemas_area, fertility): additive deltas on soil and pests, clipped to [0, 1].
+    # Field state informed by the farmer (problemas_area, fertility, organic matter): additive deltas on soil and pests, applied
+    # with field_state.soft_add (slope 1 at zero, never saturates at 0 or 1, so two improved options never tie at the bound).
     # Without that input, `riscos["estado_area"]` does not exist and nothing changes.
     pests = {n: c["pragas"] for n, c in valid_items.items()}
     if risks.get("estado_area"):
         aj_ea = {n: field_state.adjustment(c, risks["estado_area"]) for n, c in valid_items.items()}
-        soil = {n: float(np.clip(soil[n] + aj_ea[n]["solo"], 0.0, 1.0)) for n in valid_items}
-        pests = {n: float(np.clip(pests[n] + aj_ea[n]["pragas"], 0.0, 1.0)) for n in valid_items}
+        soil = {n: field_state.soft_add(soil[n], aj_ea[n]["solo"]) for n in valid_items}
+        pests = {n: field_state.soft_add(pests[n], aj_ea[n]["pragas"]) for n in valid_items}
+        best = max(((n, float(m["incremental"])) for n, m in margins.items()), key=lambda x: x[1], default=None)
+        for n, m in margins.items():
+            rec = field_state.recovery(valid_items[n], risks["estado_area"], m, best)
+            if rec is not None:
+                m["recuperacao"] = rec
     crit = {
         "renda": income,
         "solo": soil,
@@ -624,9 +676,12 @@ def score_rotation(pesos: dict[str, float], risks: dict, adjustments: dict | Non
         lines.append(dict(candidata=n, nota=sum(contrib.values()),
                            **{f"{k}": crit[k][n] for k in crit}, contrib=contrib))
     tab = pd.DataFrame(lines).sort_values("nota", ascending=False, kind="stable").reset_index(drop=True)
+    for n, m in margins.items():
+        m["incerteza"] = uncertainty(valid_items[n], m, income[n], float(tab.loc[tab["candidata"] == n, "nota"].iloc[0]),
+                                     w["renda"], 1 - abs_risk[n], rs_ef[n])
     return dict(tabela=tab, eliminadas=eliminated_list, margens=margins, aviso_renda=income_warning, pesos_norm=w, riscos=risks)
 
-# --------------------------------------------------------------------------- 6. Card texts
+# Card texts
 def _r(x: float) -> str:
     return f"{x:,.0f}".replace(",", ".")
 
@@ -668,14 +723,20 @@ def fmt_margin(m: dict, risks: dict) -> list[str]:
                      if m["bonus_verao_sc"] else "")
     lines.append(f"Bônus na soja seguinte: {m['bonus_sc']:g} sc/ha × R$ {m['preco_soja']:.2f}/sc = R$ {_r(m['bonus'])}/ha{bonus_detail} "
                   f"(palhada/N e quebra de ciclo de doença, estimativa de referência).")
-    values = [_r(m["total"]), _r(m["incremental"]), _r(m["escala_S"]), _r(INCOME_SCALE_MIN)]
-    if m["total_ano_ruim"] is not None:
-        lines.append(Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ {1}/ha, "
-                         "na escala S = R$ {2}/ha (margem da soja do município, mín. {3}); em ano ruim (rendimento p20): R$ {4}/ha/ano.",
-                         *values, _r(m["total_ano_ruim"])))
+    if m.get("base_renda") == "historico":
+        head = Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ {1}/ha, "
+                   "com a 2ª safra pela média realizada das últimas safras no município ({2} sc de soja/ha × R$ {3}/sc; "
+                   "a preço atual seria R$ {4}/ha), na escala S = R$ {5}/ha (margem da soja do município, mín. {6})",
+                   _r(m["total"]), _r(m["incremental"]), str(round(m["historico_sc_soja_ha"], 1)).replace(".", ","),
+                   f"{m['preco_soja']:.2f}", _r(m["incremental_preco_atual"]), _r(m["escala_S"]), _r(INCOME_SCALE_MIN))
     else:
-        lines.append(Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ {1}/ha, "
-                         "na escala S = R$ {2}/ha (margem da soja do município, mín. {3}).", *values))
+        head = Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ {1}/ha, "
+                   "na escala S = R$ {2}/ha (margem da soja do município, mín. {3})",
+                   _r(m["total"]), _r(m["incremental"]), _r(m["escala_S"]), _r(INCOME_SCALE_MIN))
+    if m["total_ano_ruim"] is not None:
+        lines.append(Msg("{0}; em ano ruim (rendimento p20): R$ {1}/ha/ano.", head, _r(m["total_ano_ruim"])))
+    else:
+        lines.append(Msg("{0}.", head))
     return lines
 
 
@@ -761,9 +822,9 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
     hist = None
     if margin is not None:
         ev += fmt_margin(margin, risks)
-        # 5-season track record of the second crop (informative, never in the score; docs/validation.md §3)
+        # 5-season track record of the second crop (in the income score unless the farmer gave own data; docs/validation.md §6.2)
         hist = income_history.track_record((risks.get("municipio") or {}).get("cod_ibge"), c["segunda"])
-        if (h_txt := income_history.text(hist)):
+        if (h_txt := income_history.text(hist, in_score=margin.get("base_renda") == "historico")):
             ev.append(h_txt)
     ag, from_climate = water_met(c, risks, line["candidata"])
     bal = water_balance(line["candidata"], risks)
@@ -811,6 +872,8 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
         lacuna_cad = "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais."
     ea = field_state.card(c, risks.get("estado_area"))
     ev += ea["evidencias"]
+    if margin is not None and margin.get("recuperacao"):
+        ev.append(margin["recuperacao"]["texto"])
     lacunas = ([] if risks.get("solo") else ["Textura/CAD do solo (SoilGrids) não considerada (talhão fora do Paraná)."]) + [
                lacuna_cad,
                "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",

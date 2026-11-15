@@ -114,7 +114,7 @@ def query_rust(lat: float, lon: float, municipality: str | None, cache_only: boo
     return B.insurance("pragas_ferrugem", RUST_SOURCE, _fn)
 
 
-# ------------------------------------------------------------------------------------ curado
+# Curado
 TEXTS = {
     "cigarrinha": "Atenção ao milho safrinha: rotações com cobertura reduzem a exposição.",
 }

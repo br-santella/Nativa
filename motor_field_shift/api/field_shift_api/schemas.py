@@ -73,9 +73,7 @@ EXAMPLE_POLYGON: dict[str, Any] = {
 }
 
 
-# --------------------------------------------------------------------------
-# Entrada
-# --------------------------------------------------------------------------
+# Input
 class Area(BaseModel):
     """Área de análise. Informe EXATAMENTE UMA das formas: `geometry`, `lat`+`lon` ou `talhao_id`."""
 
@@ -434,9 +432,7 @@ class RecomendacaoIn(_EntradaMotor):
     )
 
 
-# --------------------------------------------------------------------------
 # Output (permissive: extra fields from the service pass through)
-# --------------------------------------------------------------------------
 class _Saida(BaseModel):
     model_config = ConfigDict(extra="allow")
 
@@ -507,7 +503,11 @@ class ItemMargem(_Saida):
 
 class Margem(_Saida):
     total_r_ha: float | None = None
-    incremental_r_ha: float | None = None
+    incremental_r_ha: float | None = Field(None, description="Margem incremental usada na nota de renda (R$/ha).")
+    incremental_preco_atual_r_ha: float | None = Field(
+        None, description="Margem incremental com a 2ª safra a preço e custo atuais (igual a incremental_r_ha quando base_renda = preco_atual).")
+    base_renda: str | None = Field(
+        None, description="Base da 2ª safra na nota de renda: 'historico' (margem realizada média das últimas safras no município) ou 'preco_atual'.")
     escala_S_r_ha: float | None = None
     itens: list[ItemMargem] = []
     ano_ruim_r_ha: float | None = None
@@ -542,6 +542,26 @@ class ItemRanking(_Saida):
     margem: Margem | None = None
     card: Card | None = None
     irrigacao: dict[str, Any] | None = Field(None, description="Presente só se a candidata é irrigada: lamina_media_mm_ano e custo_r_ha.")
+    incerteza: dict[str, Any] | None = Field(
+        None,
+        description=(
+            "Incerteza do resultado: `renda` (margem incremental usada na nota e `faixa_r_ha` [pior, melhor]; `origem` = 'historico' "
+            "(pior e melhor das últimas safras realizadas no município), 'ano_ruim_p20' (só o pior: rendimento p20; melhor nulo) ou "
+            "'custo_fixo' (cobertura/pousio: só custo)), `nota_faixa` [min, max] com a renda nesses extremos e os demais critérios "
+            "fixos, `nota_por_safra` (nota repetindo cada safra do histórico), `risco_climatico` (probabilidade, eventos, "
+            "`confianca` e texto da validação) e `criterios_estimados` (critérios do catálogo ainda sem validação de campo)."
+        ),
+    )
+    recuperacao_solo: dict[str, Any] | None = Field(
+        None,
+        description=(
+            "Só com fertilidade/MO informada e solo a recuperar (ácido, P/K baixos ou MO baixa): quanto custa recuperar o solo com esta "
+            "opção. `calagem_total_r_ha` (uma vez; a margem cobra 1/3 por ano), `calagem_t_ha`, `adubacao_pk_r_ha_ano` (extra desta "
+            "cultura, já na margem), `renda_abdicada_r_ha` (margem incremental a menos que `referencia_renda`, a opção de maior renda), "
+            "`credito_k2o_ate_r_ha` (só braquiária com K/P baixos: teto do K2O reciclado, Resende et al. 2021; não descontado), "
+            "`total_primeiro_ano_r_ha` e `texto` (o mesmo do card)."
+        ),
+    )
     ganho_vs_atual: dict[str, Any] | None = Field(
         None,
         description=(
@@ -585,6 +605,9 @@ class Bloco(_Saida):
     ranking: list[ItemRanking] = []
     alternativas: list[dict[str, Any]] = Field([], description="Melhores do bloco, sem a atual (até `n_alternativas`).")
     eliminadas: list[Eliminada] = []
+    estabilidade: dict[str, Any] | None = Field(
+        None, description="Quantas vezes cada opção ficaria em 1º repetindo a renda realizada de cada uma das últimas safras "
+                          "(`safras`, `primeiro` [{id, safras}], `texto`); nulo sem histórico de renda.")
 
 
 class CulturaAtual(_Saida):

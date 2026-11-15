@@ -42,7 +42,7 @@ def retry(f, n=3):
     raise err
 
 
-# ---------------- HLS ----------------
+# HLS
 def hls_obs(args):
     item, coll, poly, crs = args
     try:
@@ -92,7 +92,7 @@ def smooth(df, start, end, min_clear):
     return pd.Series(savgol_filter(s.values, 5, 2), index=grid)
 
 
-# ---------------- S2 ----------------
+# S2
 def s2_scl(args):
     item, bounds, shape, mask = args
     try:

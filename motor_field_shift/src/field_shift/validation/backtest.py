@@ -4,7 +4,7 @@ Three checks, all on the 50 municipalities of the Oeste mesoregion, using only i
 
 a) Yield expectation: the engine uses the mean of the last 10 years of IBGE PAM (and p20 as the "bad year"). Does that mean
    predict the next year, and does the realized yield fall below p20 in ~20 % of the years?
-b) Climate risk: does the engine's loss probability for off-season corn (frost + dry spell, NASA POWER) match how often PAM
+b) Climate risk: does the engine's loss probability for off-season corn (frost + water deficit; before: frost + dry spell) match how often PAM
    shows a real crop failure (yield ≥ 15 % below the municipal trend)?
 c) Decision: each year, pick the second crop with the engine's income logic (expected margin with the information of the
    previous year) and compare the realized margin with fixed strategies and with the ex-post best option.
@@ -34,7 +34,7 @@ FIRST_YEAR, LAST_YEAR = 2008, 2025
 KG_PER_BAG = 60.0
 
 
-# --------------------------------------------------------------------------- data
+# Data
 
 
 @lru_cache(maxsize=1)
@@ -76,7 +76,34 @@ def climate_flags() -> pd.DataFrame:
     return a[["cod_ibge", "ano_pam", "frost", "dry_spell"]]
 
 
-# --------------------------------------------------------------------------- a) yield expectation
+DEFICIT_FILE = ROOT / "data/processed/validation/backtest_deficit_flags.parquet"
+
+
+def deficit_flags(sowing: str = "15/02") -> pd.DataFrame:
+    """Per Oeste municipality and PAM year: ETa/ETc of off-season corn in the critical phase (FAO-56 daily balance, NASA POWER +
+    SoilGrids soil at the centroid, same path as a field) and the engine's deficit flag (ratio < DEFICIT_THRESHOLD).
+    Cached in data/processed/validation/ (the balance takes ~1 min)."""
+    from field_shift.water.balance import DEFICIT_THRESHOLD, YEARS, critical_phase_water
+    from field_shift.validation import zarc as Z
+    if DEFICIT_FILE.exists():
+        d = pd.read_parquet(DEFICIT_FILE)
+    else:
+        rows = []
+        for m in Z.municipalities().query("oeste").itertuples():
+            rk = Z.engine_side(m.lat_c, m.lon_c, sowing)
+            ac = (rk or {}).get("agua_ctx")
+            if ac is None:
+                continue
+            b = critical_phase_water("milho_safrinha", ac["ponto_id"], sowing, ac["cad_camadas"])
+            rows += [dict(cod_ibge=str(m.geocodigo), ano_pam=y + 1, ratio=float(r)) for y, r in zip(YEARS, b["razoes"])]
+        d = pd.DataFrame(rows)
+        DEFICIT_FILE.parent.mkdir(parents=True, exist_ok=True)
+        d.to_parquet(DEFICIT_FILE)
+    d["deficit"] = (d["ratio"] < DEFICIT_THRESHOLD).astype(float)
+    return d
+
+
+# A) yield expectation
 
 
 def yield_expectation(crop: str) -> pd.DataFrame:
@@ -108,7 +135,7 @@ def yield_metrics(df: pd.DataFrame) -> dict:
                 below_p20_capped=float((df["realized"] < np.minimum(df["p20"], df["engine"])).mean()))
 
 
-# --------------------------------------------------------------------------- b) climate risk vs realized failures
+# B) climate risk vs realized failures
 
 
 def corn_failures() -> pd.DataFrame:
@@ -124,35 +151,41 @@ def corn_failures() -> pd.DataFrame:
             rows.append(dict(cod_ibge=cod, ano_pam=int(year), dev=(v - t) / t))
     d = pd.DataFrame(rows)
     d["failure"] = d["dev"] <= FAIL_DEV
-    return d.merge(climate_flags(), on=["cod_ibge", "ano_pam"], how="inner")
+    d = d.merge(climate_flags(), on=["cod_ibge", "ano_pam"], how="inner")
+    return d.merge(deficit_flags()[["cod_ibge", "ano_pam", "ratio", "deficit"]], on=["cod_ibge", "ano_pam"], how="left")
 
 
 def risk_vs_failures() -> dict:
     """Event level (does a frost/dry-spell year coincide with a failure?) and municipality level (engine loss probability vs
     observed failure frequency)."""
-    d = corn_failures()
+    d = corn_failures().dropna(subset=["deficit"])
     d["event"] = (d["frost"] > 0) | (d["dry_spell"] > 0)
+    d["event_new"] = (d["frost"] > 0) | (d["deficit"] > 0)
     out = dict(n=len(d), years=f"{d['ano_pam'].min()}–{d['ano_pam'].max()}", base_failure=float(d["failure"].mean()))
-    for k in ("frost", "dry_spell", "event"):
+    for k in ("frost", "dry_spell", "deficit", "event", "event_new"):
         flag = d[k] > 0
         out[k] = dict(share_years=float(flag.mean()), failure_if_flag=float(d.loc[flag, "failure"].mean()),
                       failure_if_not=float(d.loc[~flag, "failure"].mean()),
                       mean_dev_if_flag=float(d.loc[flag, "dev"].mean()), mean_dev_if_not=float(d.loc[~flag, "dev"].mean()),
                       recall=float(flag[d["failure"]].mean()))
     # engine loss probability = 1 − (1 − P(frost))(1 − P(dry spell)), climatology of the same years
-    m = d.groupby("cod_ibge").agg(p_frost=("frost", "mean"), p_dry=("dry_spell", "mean"), obs_failure=("failure", "mean"))
-    m["engine_loss"] = 1 - (1 - m["p_frost"]) * (1 - m["p_dry"])
-    out["municipal"] = dict(mean_engine_loss=float(m["engine_loss"].mean()), mean_obs_failure=float(m["obs_failure"].mean()),
+    m = d.groupby("cod_ibge").agg(p_frost=("frost", "mean"), p_dry=("dry_spell", "mean"), p_deficit=("deficit", "mean"),
+                                  obs_failure=("failure", "mean"))
+    m["engine_loss_old"] = 1 - (1 - m["p_frost"]) * (1 - m["p_dry"])
+    m["engine_loss"] = 1 - (1 - m["p_frost"]) * (1 - m["p_deficit"])
+    out["municipal"] = dict(mean_engine_loss_old=float(m["engine_loss_old"].mean()), mean_engine_loss=float(m["engine_loss"].mean()),
+                            mean_obs_failure=float(m["obs_failure"].mean()),
+                            spearman_old=float(m["engine_loss_old"].corr(m["obs_failure"], method="spearman")),
                             spearman=float(m["engine_loss"].corr(m["obs_failure"], method="spearman")))
     # by year (regional): share of municipalities with failure vs with frost
     yr = d.groupby("ano_pam").agg(failure=("failure", "mean"), frost=("frost", "mean"), dry=("dry_spell", "mean"),
-                                  dev=("dev", "mean"))
+                                  deficit=("deficit", "mean"), dev=("dev", "mean"))
     out["by_year"] = yr
     out["municipal_table"] = m
     return out
 
 
-# --------------------------------------------------------------------------- c) decision backtest
+# C) decision backtest
 
 
 OPTIONS = ("milho_safrinha", "milho_braquiaria", "trigo", "aveia", "milheto_crotalaria", "pousio")

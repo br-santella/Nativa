@@ -27,7 +27,7 @@ def _window(s: pd.Series | pd.DataFrame, y: int, m0, d0, m1, d1, off: int):
     return s.loc[pd.Timestamp(a, m0, d0):pd.Timestamp(b, m1, d1)]
 
 
-# ----------------------------------------------------------------------------- ET0 FAO-56
+# ET0 FAO-56
 def et0_fao56(df: pd.DataFrame, lat: float, elev: float) -> pd.Series:
     """Daily ET0 (mm/day), FAO-56 Penman-Monteith. df with T2M, T2M_MIN, T2M_MAX, T2MDEW, RH2M, WS2M,
     ALLSKY_SFC_SW_DWN (MJ/m2/day). Soil heat flux G = 0."""
@@ -63,7 +63,7 @@ def _svp(t):
     return 0.6108 * np.exp(17.27 * t / (t + 237.3))
 
 
-# ----------------------------------------------------------------------------- helpers
+# Helpers
 def _max_seq(arr: np.ndarray, cond: np.ndarray) -> float:
     """Longest run of consecutive days with cond True (NaN in the data breaks the run)."""
     best = cur = 0
@@ -92,7 +92,7 @@ def _rain_onset(p: pd.Series, y: int) -> float:
     return np.nan
 
 
-# ----------------------------------------------------------------------------- per point
+# Per point
 def point_indicators(df: pd.DataFrame, lat: float, elev: float) -> dict[str, dict[int, float]]:
     df = df.sort_index()
     df = df.loc["1991-01-01":"2025-12-31"]

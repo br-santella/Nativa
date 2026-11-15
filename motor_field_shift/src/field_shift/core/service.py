@@ -107,7 +107,7 @@ _COST_ALIAS = {"milho": "milho_2safra", "milho_verao": "milho_1safra", "feijao":
 _PRODUCTIVITY = ("soja", "milho_2safra", "trigo", "milho_1safra", "feijao_2safra", "sorgo")
 
 
-# --------------------------------------------------------------------------- utilidades
+# Utilities
 def _clean(o):
     """Convert to native JSON types: numpy -> python, NaN/inf -> None, tuples -> lists, keys -> str."""
     if o is None or isinstance(o, (str, bool)):
@@ -184,7 +184,7 @@ def _geojson(poly: BaseGeometry) -> dict:
     return json.loads(shapely.to_geojson(shapely.set_precision(poly, 1e-6)))
 
 
-# --------------------------------------------------------------------------- 1. resolve the area
+# Resolve the area
 def _polygon_geojson(g) -> BaseGeometry:
     if not isinstance(g, dict):
         raise InvalidInput("'geometry' deve ser um objeto GeoJSON (Polygon, MultiPolygon ou Feature).")
@@ -251,7 +251,7 @@ def _resolver_area(area: dict) -> dict:
     return dict(origem=origin, talhao_id=tid, poly=poly, area_ha=ha, lat=lat, lon=lon)
 
 
-# --------------------------------------------------------------------------- 2. diagnosis
+# Diagnosis
 def _validate_sowing(s) -> str:
     if s not in E.SOWINGS_2ND:
         raise InvalidInput(f"semeadura_safrinha inválida: {s!r}. Opções: {E.SOWINGS_2ND}.")
@@ -455,7 +455,7 @@ def _round_ranking(item: dict) -> dict:
     item["criterios"] = _round(item["criterios"], 3)
     item["contribuicoes"] = _round(item["contribuicoes"], 3)
     m = item["margem"]
-    for k in ("total_r_ha", "incremental_r_ha", "escala_S_r_ha", "ano_ruim_r_ha", "bonus_proxima_soja_r_ha"):
+    for k in ("total_r_ha", "incremental_r_ha", "incremental_preco_atual_r_ha", "escala_S_r_ha", "ano_ruim_r_ha", "bonus_proxima_soja_r_ha"):
         m[k] = r0(m[k])
     for i in m["itens"]:
         i["margem_r_ha"], i["custo"] = r0(i["margem_r_ha"]), r0(i["custo"])
@@ -464,7 +464,7 @@ def _round_ranking(item: dict) -> dict:
     return item
 
 
-# --------------------------------------------------------------------------- 3. recommendation
+# Recommendation
 def _normalize_adjustments(aj) -> dict:
     """Accept {"precos": {soja, milho, trigo, feijao, sorgo}, "custos": {soja, milho|milho_2safra, milho_verao|milho_1safra,
     trigo, feijao|feijao_2safra, sorgo, aveia, milheto_crotalaria, braquiaria_consorcio, pousio, nabo_forrageiro, aveia_nabo},
@@ -532,7 +532,8 @@ def _split_fertility(solo_n: dict | None) -> tuple[dict | None, dict | None]:
     """Split the validated analysis into (physical/AWC part that replaces SoilGrids | None, interpreted fertility | None)."""
     if not solo_n:
         return None, None
-    fert = EA.prepare_fertility({k: v for k, v in solo_n.items() if k in _FERT_FIELDS}, solo_n.get("argila_pct"))
+    fert = EA.prepare_fertility({k: v for k, v in solo_n.items() if k in _FERT_FIELDS}, solo_n.get("argila_pct"),
+                                 solo_n.get("soc_g_kg"))  # organic carbon of the report (g/kg read as g/dm3)
     phys = {k: v for k, v in solo_n.items() if k not in _FERT_FIELDS}
     return (phys if ("argila_pct" in phys or "cad_mm_cm" in phys) else None), fert
 
@@ -670,6 +671,52 @@ def technical_tie(items: list[dict]) -> dict | None:
     return dict(ids=[x["id"] for x in tied], diferenca=round(gap, 3), limiar=TECHNICAL_TIE, texto=text)
 
 
+def _recovery_out(r: dict) -> dict:
+    """API block `recuperacao_solo` (R$/ha rounded; text already in the card)."""
+    rd = lambda x: None if x is None else float(round(x))  # noqa: E731
+    return dict(calagem_total_r_ha=rd(r["calagem_total_r_ha"]),
+                calagem_t_ha=None if r["calagem_t_ha"] is None else round(r["calagem_t_ha"], 2),
+                adubacao_pk_r_ha_ano=rd(r["adubacao_pk_r_ha_ano"]), renda_abdicada_r_ha=rd(r["renda_abdicada_r_ha"]),
+                referencia_renda=r["referencia_renda"], credito_k2o_ate_r_ha=rd(r["credito_k2o_ate_r_ha"]),
+                total_primeiro_ano_r_ha=rd(r["total_primeiro_ano_r_ha"]), texto=r["texto"])
+
+
+def _uncertainty_out(u: dict | None) -> dict | None:
+    """API view of `engine.uncertainty`: R$ without decimals, scores and probabilities with 3."""
+    if u is None:
+        return None
+    r0 = lambda x: None if x is None else float(round(x))  # noqa: E731
+    r3 = lambda x: None if x is None else round(float(x), 3)  # noqa: E731
+    rc = u["risco_climatico"]
+    return dict(
+        renda=dict(incremental_r_ha=r0(u["renda"]["incremental_r_ha"]), faixa_r_ha=[r0(x) for x in u["renda"]["faixa_r_ha"]],
+                   origem=u["renda"]["origem"]),
+        nota_faixa=[r3(x) for x in u["nota_faixa"]],
+        nota_por_safra=None if u["nota_por_safra"] is None else {str(k): r3(v) for k, v in sorted(u["nota_por_safra"].items())},
+        risco_climatico=None if rc is None else dict(rc, probabilidade=r3(rc["probabilidade"])),
+        criterios_estimados=u["criterios_estimados"])
+
+
+def ranking_stability(items: list[dict], margins: dict) -> dict | None:
+    """How often each option of the block would be first if each of the last seasons of the track record repeated (income of
+    the options with a track record varies by season; the other criteria and options stay fixed). None without track records."""
+    def by_season(x) -> dict:
+        return (margins[x["rotacao"]].get("incerteza") or {}).get("nota_por_safra") or {}
+
+    years = sorted({y for x in items for y in by_season(x)})
+    if not years or not items:
+        return None
+    wins: dict[str, int] = {}
+    for y in years:
+        best = max(items, key=lambda x: by_season(x).get(y, x["nota"]))["id"]
+        wins[best] = wins.get(best, 0) + 1
+    first = [dict(id=k, safras=v) for k, v in sorted(wins.items(), key=lambda kv: -kv[1])]
+    return dict(safras=years, primeiro=first,
+                texto=Msg("Repetindo a renda realizada de cada uma das últimas {0} safras ({1}–{2}), com os demais critérios "
+                          "fixos, a 1ª colocada seria: {3}.", str(len(years)), str(years[0]), str(years[-1]),
+                          Join([Msg("{0} em {1}", p["id"], str(p["safras"])) for p in first], "; ")))
+
+
 def _item_ranking(pos, nome, line, marg_, current, rk, ndvi_days, why_cmp=None) -> dict:
     card = E.build_card(line, current, rk, ndvi_days, marg_, why_cmp)
     items = []
@@ -687,7 +734,9 @@ def _item_ranking(pos, nome, line, marg_, current, rk, ndvi_days, why_cmp=None) 
     if marg_["total"] < 0:
         warnings.append("Margem total negativa com os preços e custos usados.")
     margin = dict(total_r_ha=marg_["total"], incremental_r_ha=marg_["incremental"], escala_S_r_ha=marg_["escala_S"], itens=items, ano_ruim_r_ha=marg_["total_ano_ruim"],
-                  bonus_proxima_soja_r_ha=marg_["bonus"], linha_custo=marg_["linha_custo"])
+                  bonus_proxima_soja_r_ha=marg_["bonus"], linha_custo=marg_["linha_custo"],
+                  base_renda=marg_.get("base_renda", "preco_atual"),
+                  incremental_preco_atual_r_ha=marg_.get("incremental_preco_atual", marg_["incremental"]))
     return dict(
         posicao=pos, **_ids(_SLUG_DE[nome]), **_summer_second(nome), rotacao=nome, nota=float(line["nota"]), atual=current,
         criterios={k: float(line[k]) for k in E.CRITERIA},
@@ -696,6 +745,8 @@ def _item_ranking(pos, nome, line, marg_, current, rk, ndvi_days, why_cmp=None) 
                   lacunas=card["lacunas"], riscos=card["revisar"], avisos=warnings + card["avisos"], mercado=card["mercado"]),
         **({"zarc": card["zarc"]} if card["zarc"] is not None else {}),
         **({"historico_renda": card["historico"]} if card.get("historico") is not None else {}),
+        **({"incerteza": _uncertainty_out(marg_.get("incerteza"))} if marg_.get("incerteza") is not None else {}),
+        **({"recuperacao_solo": _recovery_out(marg_["recuperacao"])} if marg_.get("recuperacao") else {}),
         **({"irrigacao": dict(lamina_media_mm_ano=round(card["irrigacao"]["lamina_media_mm"], 1),
                                            custo_r_ha=float(round(card["irrigacao"]["custo_r_ha"])))}
            if card["irrigacao"] else {}))
@@ -949,7 +1000,7 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
         el = [dict(**_ids(_SLUG_DE[n]), **_summer_second(n), rotacao=n, motivos=list(m)) for n, m in elim.items() if in_now(n) == now]
         tie = technical_tie(items)
         return dict(ranking=items, alternativas=[r for r in items if not r["atual"]][:n_alternatives], eliminadas=el,
-                    empate_tecnico=tie)
+                    empate_tecnico=tie, estabilidade=ranking_stability(items, res["margens"]))
 
     now, next_ = block(True), block(False)
     if sel is not None and not now["ranking"] and not next_["ranking"]:
@@ -1006,7 +1057,7 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
     return _clean(out)
 
 
-# --------------------------------------------------------------------------- 4. options and warm-up
+# Options and warm-up
 @lru_cache(maxsize=1)
 def _demo_fields() -> list[dict]:
     demo = gpd.read_file(E.ROOT / "data/processed/ftw/candidatos_demo.geojson")

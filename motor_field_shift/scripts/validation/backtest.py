@@ -47,7 +47,7 @@ def main() -> None:
     r = B.risk_vs_failures()
     print(f"\n## b) Off-season corn failures (yield ≤ {B.FAIL_DEV:.0%} vs trend), {r['n']} municipality-years {r['years']}, "
           f"base rate {r['base_failure']:.3f}\n")
-    rows = [dict(signal=k, **r[k]) for k in ("frost", "dry_spell", "event")]
+    rows = [dict(signal=k, **r[k]) for k in ("frost", "dry_spell", "deficit", "event", "event_new")]
     print(pd.DataFrame(rows).to_markdown(index=False, floatfmt=".3f"))
     print("\nmunicipal:", {k: round(v, 3) for k, v in r["municipal"].items()})
     r["by_year"].to_csv(OUT / "backtest_failures_by_year.csv")
@@ -57,13 +57,15 @@ def main() -> None:
     rows, per_strategy = [], None
     for bonus in (False, True):
         base = B.decision_backtest(with_bonus=bonus)
-        variants = {"engine (10-y mean yield, last-year price)": base,
+        variants = {"old engine (10-y mean yield, last-year price)": base,
                     "trend yield, last-year price": B.decision_backtest(with_bonus=bonus, expectation="trend"),
+                    "engine (clipped trend yield, last-year price)": B.decision_backtest(with_bonus=bonus, expectation="engine"),
+                    "engine yield, 5-y mean price ratio": B.decision_backtest(with_bonus=bonus, expectation="engine", price_years=5),
                     "track record (5-y realized margin)": B.track_record(base, 5)}
         for label, d in variants.items():
             s = B.strategies(d)
             rows.append(dict(bonus=bonus, **summary(s, label)))
-            if not bonus and label.startswith("engine"):
+            if not bonus and label.startswith("engine (clipped"):
                 per_strategy = s
                 s.to_csv(OUT / "backtest_decisions.csv", index=False)
     dec = pd.DataFrame(rows)
@@ -90,7 +92,8 @@ def main() -> None:
     by = r["by_year"]
     ax.bar(by.index, by["failure"], color="#c0392b", alpha=0.6, label="share of municipalities with corn failure")
     ax.plot(by.index, by["frost"], "o-", color="#2e86c1", label="share with frost flag (POWER)")
-    ax.plot(by.index, by["dry"], "s--", color="#e67e22", label="share with dry-spell flag (POWER)")
+    ax.plot(by.index, by["dry"], "s--", color="#e67e22", alpha=0.5, label="share with dry-spell flag (old engine)")
+    ax.plot(by.index, by["deficit"], "^-", color="#27ae60", label="share with water-deficit flag (engine)")
     ax.set_ylim(0, 1.05)
     ax.set_title("Off-season corn: realized failures vs engine climate flags", fontsize=9)
     ax.legend(fontsize=7, loc="upper right")

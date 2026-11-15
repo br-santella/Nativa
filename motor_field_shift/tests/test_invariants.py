@@ -36,7 +36,7 @@ def _by_id(tab):
     return tab.set_index("id")
 
 
-# --------------------------------------------------------------------------- structure
+# Structure
 
 
 def test_deterministic():
@@ -65,7 +65,7 @@ def test_current_rotation_always_reported():
         assert r["atual"]["id"] == cur and r["atual"]["atual"]
 
 
-# --------------------------------------------------------------------------- weights
+# Weights
 
 
 def test_scaling_all_weights_keeps_ranking():
@@ -94,7 +94,7 @@ def test_subset_keeps_relative_order():
     assert [E.CATALOG[n]["id"] for n in res["tabela"]["candidata"]] == sub
 
 
-# --------------------------------------------------------------------------- income
+# Income
 
 
 def test_higher_corn_price_helps_corn_and_leaves_corn_free_unchanged():
@@ -105,7 +105,7 @@ def test_higher_corn_price_helps_corn_and_leaves_corn_free_unchanged():
             assert b.at[rid, "renda"] == pytest.approx(a.at[rid, "renda"]), rid
         else:
             assert b.at[rid, "renda"] >= a.at[rid, "renda"] - 1e-12, rid
-    # The income criterion is clipped at 1 (corn can already saturate it), so the strict check starts from a low corn price.
+    # A typed corn price moves corn to the current-price income basis, so the strict check compares two typed prices.
     low = _by_id(rank(base(), adjustments={"preco": {"milho": 30.0}}))
     assert b.at["soja__milho_safrinha", "renda"] > low.at["soja__milho_safrinha", "renda"]
 
@@ -128,7 +128,7 @@ def test_higher_bonus_never_lowers_income():
     assert (b["renda"] >= a["renda"].reindex(b.index) - 1e-12).all()
 
 
-# --------------------------------------------------------------------------- climate, water, calendar
+# Climate, water, calendar
 
 
 def _criteria(c, rid, k):

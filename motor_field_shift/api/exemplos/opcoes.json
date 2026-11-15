@@ -134,7 +134,7 @@
       "id": "feijao_safrinha",
       "nome": "Feijão safrinha",
       "tipo": "grão",
-      "descricao_curta": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco."
+      "descricao_curta": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e a déficit hídrico e hospedeiro do mofo-branco."
     },
     {
       "id": "nabo_forrageiro",
@@ -513,7 +513,7 @@
     {
       "id": "soja__feijao_safrinha",
       "nome": "Soja → feijão safrinha",
-      "descricao_curta": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco."
+      "descricao_curta": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e a déficit hídrico e hospedeiro do mofo-branco."
     },
     {
       "id": "soja__nabo_forrageiro",
@@ -568,7 +568,7 @@
     {
       "id": "milho_verao__feijao_safrinha",
       "nome": "Milho verão → feijão safrinha",
-      "descricao_curta": "Milho verão no verão, depois: Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco."
+      "descricao_curta": "Milho verão no verão, depois: Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e a déficit hídrico e hospedeiro do mofo-branco."
     },
     {
       "id": "milho_verao__nabo_forrageiro",

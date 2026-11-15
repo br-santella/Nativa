@@ -40,7 +40,7 @@ MAX_CLOUD = 80
 MIN_CLEAR = 0.7          # same threshold as engine.carregar_ndvi
 
 
-# --------------------------------------------------------------------------- MapBiomas
+# MapBiomas
 
 
 def mapbiomas_summary() -> dict:
@@ -52,7 +52,7 @@ def mapbiomas_summary() -> dict:
                 share_area_soy_every_year=float(share.get(6, 0.0)))
 
 
-# --------------------------------------------------------------------------- HLS sample
+# HLS sample
 
 
 def sample_fields() -> gpd.GeoDataFrame:
@@ -141,7 +141,7 @@ def fetch_ndvi(fields: gpd.GeoDataFrame, start: str = START, end: str = END, wor
     return df
 
 
-# --------------------------------------------------------------------------- per field-year metrics (engine logic)
+# Per field-year metrics (engine logic)
 
 
 def daily_series(obs: pd.DataFrame) -> pd.Series:

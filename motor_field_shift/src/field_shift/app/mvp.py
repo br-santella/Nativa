@@ -31,7 +31,7 @@ def _enrich(rk, lat, lon): return E.enrich(rk, _field())
 def source(text): st.caption(f"**Por quê / fonte:** {text}")
 
 
-# ------------------------------------------------------------------ 1. Local
+# Local
 st.header("1. Local")
 t = _field()
 c1, c2 = st.columns([1, 2])
@@ -49,7 +49,7 @@ fig.update_layout(map=dict(style="open-street-map", center=dict(lat=t["lat"], lo
 c2.plotly_chart(fig, width="stretch")
 source("o clima e o histórico dependem de onde está o talhão; polígono detectado pelo modelo FTW (Fields of the World) sobre Sentinel-2.")
 
-# ------------------------------------------------------------------ 2. History
+# History
 st.header("2. Passado — histórico (pré-calculado)")
 st.write("**MapBiomas (uso do solo por ano):** " + " · ".join(f"{a}: {n}" for a, n in t["historico"].items()))
 ndvi = _ndvi()
@@ -67,7 +67,7 @@ st.write(f"Faixas marrons = solo descoberto/baixa cobertura (NDVI<{E.SOIL_THRESH
 st.success(f"Rotação detectada: **{detected_rot}** ({'2 safras por ano agrícola' if detected_rot.endswith('safrinha') else '1 safra por ano'}).")
 source("MapBiomas Coleção 10 (classe por ano) e NDVI do HLS Sentinel-2/Landsat (NASA), filtrado por fração de pixels limpos ≥ 70%. Dois picos de verde no ano = duas safras.")
 
-# ------------------------------------------------------------------ 3. Clima
+# Clima
 st.header("3. Passado — clima (NASA POWER)")
 sow_date = st.selectbox("Data de semeadura do milho safrinha", E.SOWINGS_2ND, index=E.SOWINGS_2ND.index(E.DEFAULT_SOWING),
                    help="Define a janela de geada no florescimento/enchimento do milho (indicador pré-calculado).")
@@ -133,7 +133,7 @@ if rk["pam"]:
     st.write(E.fmt_pam(rk))
     st.caption("Média dos últimos 10 anos com dado (SIDRA tabelas 1612 e 839); sacas de 60 kg. Alimenta a margem (critério renda).")
 
-# ------------------------------------------------------------------ 4. Operador
+# Operador
 st.header("4. Situação do operador")
 names = list(E.CATALOG)
 current = st.selectbox("Rotação atual (pré-preenchida pelo histórico, editável)", names, index=names.index(detected_rot))
@@ -142,7 +142,7 @@ pesos = {k: cols[i].slider(nome, 0, 5, E.DEFAULT_WEIGHTS[k]) for i, (k, nome) in
 st.caption("Risco climático = aversão: peso alto penaliza candidatas expostas a geada/veranico.")
 source("a decisão depende do que o produtor valoriza; os pesos viram a média ponderada da nota.")
 
-# ------------------------------------------------------------------ 5. Motor
+# Motor
 st.header("5. Motor")
 REF = load_reference()
 st.subheader("Renda: preços e custos (valores de referência editáveis)")
@@ -171,7 +171,7 @@ st.caption("As portarias (SDA/MAPA 1.124/2024 e vazio sanitário do PR) ainda pr
 source("catálogo fixo de 7 candidatas; todos os critérios em escala absoluta 0–1: renda = margem incremental da 2ª safra (PAM × preço − custo, mais bônus na soja seguinte) na escala da margem da soja do município (0,5 + incremental/2S, limitada a 0–1); "
      "solo e pragas do catálogo; água = ETa/ETc na fase crítica pelo balanço hídrico diário (NASA POWER + solo SoilGrids; muda com a data de semeadura); risco = 1 − probabilidade; nota = Σ peso × critério. Pesos padrão: renda 5, demais 3.")
 
-# ------------------------------------------------------------------ 6. Resultado
+# Resultado
 st.header("6. Resultado")
 tab = res["tabela"]
 shown = tab.drop(columns=["contrib"]).rename(columns={"candidata": "Candidata", "nota": "Nota", **E.CRITERIA})

@@ -7,9 +7,9 @@ declarative and auditable in the tables below and uses the scales the engine alr
 Sourcing policy (see docs/fontes_estado_area.md for URL, title, year and the excerpt each number came from):
 - every number with a source we opened and read carries a short source label in the code and in the card;
 - every number WITHOUT a confirmed source is marked "no confirmed source" here and says so in the card / ajustes_aplicados
-  (`FONTE_ESTIMATIVA`) and in docs/pendencias.md.
+  (`ESTIMATE_SOURCE`) and in docs/pendencias.md.
 
-State = {"problemas": [slugs], "fert": dict from `preparar_fertilidade` | None}, stored in rk["estado_area"].
+State = {"problemas": [slugs], "fert": dict from `prepare_fertility` | None}, stored in rk["estado_area"].
 User-facing texts and API field names stay in Portuguese; identifiers and comments are in English.
 """
 from __future__ import annotations
@@ -24,7 +24,7 @@ from field_shift.i18n import Join, Msg
 ESTIMATE_SOURCE = "estimativa, sem fonte confirmada; validar com agrônomo/Embrapa"
 _NO_SOURCE = "no confirmed source"
 
-# --------------------------------------------------------------------------- vocabulary (catalog/vocabulario.yaml)
+# Vocabulary (catalog/vocabulario.yaml)
 _PROBLEMS_FALLBACK = ("nematoide", "mofo_branco", "cigarrinha", "compactacao")
 
 
@@ -40,7 +40,7 @@ PROBLEMS = _load_problems()
 PROBLEM_LABELS = {"nematoide": "nematoide", "mofo_branco": "mofo-branco", "cigarrinha": "cigarrinha-do-milho",
                     "compactacao": "compactação"}
 
-# --------------------------------------------------------------------------- source registry
+# Source registry
 # id -> (short label shown in the card, full reference). Only sources we actually opened and read are listed; the excerpt that
 # supports each use is in docs/fontes_estado_area.md. URLs are repeated there.
 SOURCES: dict[str, dict[str, str]] = {
@@ -72,17 +72,35 @@ SOURCES: dict[str, dict[str, str]] = {
     "torres_pd": dict(label="Torres et al., 500 Perguntas 500 Respostas: Plantio Direto (Embrapa)", year="s.d.",
                       title="Compactação do solo (cap. 8)",
                       url="https://www.alice.cnptia.embrapa.br/alice/bitstream/doc/44718/1/PROCI1998.00129.pdf"),
+    "resende2021": dict(label="Resende et al. 2021 (Embrapa Milho e Sorgo, CT 277)", year="2021",
+                        title="Créditos de nutrientes e matéria orgânica no solo pela inserção do capim-braquiária em sistemas de culturas anuais",
+                        url="https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1135669/1/CIRC-TEC-277-Creditos-nutrientes-materia-organica-solo-capim-braquiaria.pdf"),
+    "betta2008": dict(label="Betta et al. 2008 (FESURV/Embrapa Solos)", year="2008",
+                      title="Efeito da Brachiaria ruziziensis sobre a ciclagem do P, K e produtividade da soja",
+                      url="https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/339765/1/Efeito-da-Brachiaria-ruziziensis-sobre-a-ciclagem-do-P-K-e-produtividade-da-soja-2008.pdf"),
+    "viola2013": dict(label="Viola et al. 2013 (Bragantia 72, Pato Branco-PR)", year="2013",
+                      title="Adubação verde e nitrogenada na cultura do trigo em plantio direto",
+                      url="https://www.redalyc.org/pdf/908/90826421010.pdf"),
+    "bertin2005": dict(label="Bertin et al. 2005 (Acta Sci. Biol. Sci. 27)", year="2005",
+                       title="Plantas de cobertura em pré-safra ao milho em plantio direto",
+                       url="https://www.redalyc.org/pdf/1871/187117381001.pdf"),
+    "manual_pr": dict(label="Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420)", year="2019",
+                      title="Interpretação dos parâmetros químicos no solo para o estado do Paraná (Quadro 4: classes de C orgânico)",
+                      url="https://www.sistemafaep.org.br/wp-content/uploads/2026/04/PR.0420-Nutrientes-e-Teores-de-Referencia_web.pdf"),
+    "pr0404": dict(label="Manual PR via SENAR-AR/PR PR.0404 (2025), tolerância à acidez", year="2025",
+                   title="Amostragem e calagem do solo (milho, trigo, feijão, sorgo e soja na classe de tolerância à acidez 'baixa', V 51–70%)",
+                   url="https://www.sistemafaep.org.br/wp-content/uploads/2026/02/PR.0404-Amostragem-e-calagem-do-solo_web.pdf"),
 }
 
-# --------------------------------------------------------------------------- A) area problems: qualitative levels
-# OUR MODELLING CHOICE, NOT FROM THE LITERATURE: the literature gives direction (host / non-host, suppresses / favours), not a
-# number on our 0-1 criteria. Each (problem, crop) cell gets one of three levels and ONE declared magnitude for all of them.
+# A) area problems: qualitative levels
+# Our modelling choice, not from the literature: the literature gives direction (host / non-host, suppresses / favours), not a
+# number on our 0-1 criteria. Each (problem, crop) cell gets one of three levels and one declared magnitude for all of them.
 LEVEL_MAGNITUDE = 0.15
 LEVEL_DELTA = {"favorece": +LEVEL_MAGNITUDE, "neutro": 0.0, "penaliza": -LEVEL_MAGNITUDE}
 
 # problem -> target -> dict(level, criterion, sources, motive, caveat). Target: "segunda:<slug>" (2nd-window crop),
 # "verao:<slug>" (summer crop) or "milho_sobre_milho". The rotation adds the summer and 2nd-window effects (the summer soybean
-# weighs the same in every rotation of the block). A non-neutral cell REQUIRES at least one entry in `sources` (a test enforces it);
+# weighs the same in every rotation of the block). A non-neutral cell requires at least one entry in `sources` (a test enforces it);
 # a (problem, crop) pair that is absent here, or listed in NEUTRAL_NO_SOURCE, is neutral.
 PROBLEM_EFFECTS: dict[str, dict[str, dict]] = {
     "mofo_branco": {  # Sclerotinia sclerotiorum
@@ -126,7 +144,7 @@ PROBLEM_EFFECTS: dict[str, dict[str, dict]] = {
     },
 }
 
-# Plausible effects for which we found NO source: treated as neutral (neither penalise nor favour) and reported in the card and in
+# Plausible effects for which we found no source: treated as neutral (neither penalise nor favour) and reported in the card and in
 # docs/pendencias.md as "efeito plausível sem fonte". (problem, target) -> reason.
 NEUTRAL_NO_SOURCE: dict[tuple[str, str], str] = {
     ("mofo_branco", "segunda:aveia_nabo"): "o nabo do mix é hospedeiro, mas não há fonte para o efeito do mix aveia + nabo",
@@ -164,7 +182,7 @@ def _unsourced_neutrals(c: dict, problems) -> list[str]:
             for (p, t), why in NEUTRAL_NO_SOURCE.items() if p in problems and t in keys]
 
 
-# --------------------------------------------------------------------------- B) fertility
+# B) fertility
 # Fields (all optional; units of the Brazilian soil report): P Mehlich-1 mg/dm3, K/Ca/Mg/Al/CEC cmolc/dm3, V%.
 FERTILITY_FIELDS = {  # field: (min, max) plausible-value validation
     "p_mg_dm3": (0, 500), "k_cmolc_dm3": (0, 10), "ca_cmolc_dm3": (0, 40), "mg_cmolc_dm3": (0, 20),
@@ -192,7 +210,7 @@ CLASSES = {  # classes that do not depend on clay; Manual PR Quadros 4 and 6 (vi
     "al": [(0.3, "muito_baixo"), (0.8, "baixo"), (1.6, "medio"), (_NEXT(2.5, _INF), "alto"), (_INF, "muito_alto")],  # cmolc/dm3
 }
 V_AVOID_ABOVE = 90.0  # "Condições a evitar" for V% (Quadro 4)
-CONSERVATIVE_CLAY_BAND = "<250"  # used when the farmer gives no clay: its limits are the highest, so a given P is read as the LOWEST class
+CONSERVATIVE_CLAY_BAND = "<250"  # used when the farmer gives no clay: its limits are the highest, so a given P is read as the lowest class
 
 
 def clay_band(clay_pct: float | None) -> tuple[str, str]:
@@ -220,10 +238,10 @@ NC_MAX_T_HA = 6.0  # cap of one application (above this, split it): no confirmed
 LIME_R_T = 220.0  # R$/t applied (product + freight + spreading): no confirmed source (no public regional price found)
 LIMING_YEARS = 3  # lime cost is spread over this many years; only partial support: CBPTT 2020 says "reanalisar o solo após três anos"
 # V2 (target base saturation) per 2nd-window crop. The Manual PR puts corn, wheat, beans, sorghum and soybean in the same acid-tolerance
-# class "baixa" (V 51-70%), so we use ONE value inside that range. Soybean: 60% (Manual PR, via Embrapa Soja Doc. 417, 2019);
+# class "baixa" (V 51-70%), so we use one value inside that range. Soybean: 60% (Manual PR, via Embrapa Soja Doc. 417, 2019);
 # wheat: V2 = 60% in the CBPTT 2020 equation. Corn, beans, sorghum: only the class range is confirmed; 60 is our pick inside it.
 V2 = {"milho_safrinha": 60.0, "milho_braquiaria": 60.0, "trigo": 60.0, "feijao_safrinha": 60.0, "sorgo": 60.0}
-# Liming corrects the acidity of the AREA, not of one crop: covers and fallow are charged with it too (with the same V2), otherwise they
+# Liming corrects the acidity of the area, not of one crop: covers and fallow are charged with it too (with the same V2), otherwise they
 # would look ~R$ 550/ha better than grain crops on an acid soil. Modelling premise, to be confirmed by an agronomist.
 V2_AREA = 60.0
 V2_SHORT_SOURCE = "60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020)"
@@ -231,10 +249,10 @@ V2_SOURCE = ("V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão,
             "Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, "
             "então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa)")
 
-# P2O5/K2O doses (kg/ha). The margin already carries the CONAB reference fertilization, which we ASSUME equals the "medio" class
+# P2O5/K2O doses (kg/ha). The margin already carries the CONAB reference fertilization, which we assume equals the "medio" class
 # (no source for what CONAB embeds); the extra cost is (dose of the class - dose of "medio") x price, negative (saving) on rich soil.
 # Corn: Manual PR 2nd ed. 2017 Tabelas 2 and 3 (reproduced in Los 2025, UEPG TCC), expected yield < 8 Mg/ha column (safrinha
-# premise: confirm against the farm's yield expectation); we take the MIDPOINT of each published range.
+# premise: confirm against the farm's yield expectation); we take the midpoint of each published range.
 DOSE_P2O5_CORN = {"muito_baixo": 120.0, "baixo": 100.0, "medio": 80.0, "alto": 60.0, "muito_alto": 40.0, "condicao_evitar": 0.0}
 DOSE_K2O_CORN = {"muito_baixo": 115.0, "baixo": 90.0, "medio": 55.0, "alto": 30.0, "muito_alto": 20.0}
 CORN_DOSE_SOURCE = "Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa)"
@@ -243,32 +261,72 @@ WHEAT_P2O5 = [(5.0, 75.0), (_NEXT(9.0, _INF), 50.0), (_INF, 30.0)]  # P mg/dm3: 
 WHEAT_K2O = [(0.10, 70.0), (_NEXT(0.30, _INF), 50.0), (_INF, 35.0)]  # K cmolc/dm3: < 0.10 -> 60-80; 0.10-0.30 -> 40-60; > 0.30 -> 30-40
 WHEAT_BASELINE = dict(p2o5=50.0, k2o=50.0)  # the 5-9 mg/dm3 and 0.10-0.30 cmolc/dm3 bands, taken as the CONAB reference
 WHEAT_DOSE_SOURCE = "CBPTT 2020 (Tab. 7 e 8, ponto médio da faixa)"
-# Beans and sorghum: NO confirmed source for P/K doses; our old class table, scaled by crop demand (kept as estimate).
+# Beans and sorghum: no confirmed source for P/K doses; our old class table, scaled by crop demand (kept as estimate).
 P2O5_DOSE_ESTIMATE = {"muito_baixo": 90.0, "baixo": 70.0, "medio": 50.0, "alto": 30.0, "muito_alto": 0.0, "condicao_evitar": 0.0}
 K2O_DOSE_ESTIMATE = {"muito_baixo": 80.0, "baixo": 80.0, "medio": 50.0, "alto": 30.0, "muito_alto": 30.0}
 PK_DEMAND = {"feijao_safrinha": 1.0, "sorgo": 0.6}  # demand factor for the estimate tables: no confirmed source
 # Prices: CNA/Cepea Campo Futuro, average of MT and PR, 19/09/2025 ("CNA Insumos Agropecuários", ed. Set/25): SSP R$ 2,104.7/t and
-# KCl R$ 2,898.8/t. The nutrient grades (SSP 18% P2O5, KCl 58% K2O) are ASSUMED, not from that report.
+# KCl R$ 2,898.8/t. The nutrient grades (SSP 18% P2O5, KCl 58% K2O) are assumed, not from that report.
 PRICE_SOURCE = "CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos"
 P2O5_PRICE_R_KG = 2104.7 / (1000.0 * 0.18)
 K2O_PRICE_R_KG = 2898.8 / (1000.0 * 0.58)
 
-# Penalty on the `solo` criterion for an acid-sensitive crop: PENALIDADE_ACIDEZ x severity (0-2) x sensitivity. The Manual PR puts
-# all five crops in the same tolerance class, so sensitivity is equal. The penalty size itself is our modelling choice (no source).
-# Severity = max(Al: medio 1, alto/muito_alto 2; V%: medio 1, baixo/muito_baixo 2).
-ACIDITY_PENALTY = 0.08
-ACIDITY_SENSITIVITY = {"trigo": 1.0, "milho_safrinha": 1.0, "milho_braquiaria": 1.0, "feijao_safrinha": 1.0, "sorgo": 1.0}
-# Bonus on `solo` for nutrient-cycling covers when P or K are low, and for crotalaria when the soil is poor: modelling choice, no source.
-RECYCLING_BONUS = {"nabo_forrageiro": 0.10, "aveia_nabo": 0.06, "milho_braquiaria": 0.08}
-CROTALARIA_BONUS = {"milheto_crotalaria": 0.05}
+# Organic matter (optional): Corg classes of the Manual PR Quadro 4 (g/dm3): MB < 4, B 4-8, M 9-14, A 15-20, MA > 20; MO = Corg x 1.72
+# (PR.0420, section 5.3). Decimals between published integers go to the lower class, as for P/K. The API takes MO (%) or C (g/kg);
+# the report unit is g/dm3 and we read g/kg as g/dm3 (no density correction: premise, stated in the card).
+CORG_CLASSES = [(4.0, "muito_baixo"), (9.0, "baixo"), (15.0, "medio"), (_NEXT(20.0, _INF), "alto"), (_INF, "muito_alto")]
+MO_FACTOR = 1.72
+LOW = ("muito_baixo", "baixo")
+
+# C) fertility and organic-matter effects on the `solo` criterion
+# Same scheme as the area problems: the literature gives the direction (which crop helps or hurts under that soil condition), the
+# magnitude is the declared LEVEL_MAGNITUDE (our modelling choice). Condition -> target -> dict(level, sources, motive, caveat).
+# A non-neutral cell needs at least one source (a test enforces it). "acidez" is graded by severity (1 = half, 2 = full magnitude).
+FERTILITY_EFFECTS: dict[str, dict[str, dict]] = {
+    "acidez": {  # Al or V% outside the target (severity > 0)
+        **{f"segunda:{k}": dict(level="penaliza", sources=["pr0404"],
+                                motive=Msg("{0} está na classe de tolerância à acidez 'baixa' do Manual PR (V% alvo 51–70%)", n),
+                                caveat="a calagem corrige; o custo dela entra na margem")
+           for k, n in (("milho_safrinha", "o milho"), ("milho_braquiaria", "o milho"), ("trigo", "o trigo"),
+                        ("feijao_safrinha", "o feijão"), ("sorgo", "o sorgo"), ("soja_safrinha", "a soja"))},
+    },
+    "pk_baixo": {  # P or K in the low classes
+        "segunda:milho_braquiaria": dict(level="favorece", sources=["resende2021", "betta2008"],
+                                         motive="a braquiária recicla K e P de camadas profundas: até 40 kg/ha de K2O a mais na camada 0–5 cm "
+                                                "para a cultura seguinte (Resende et al.); palhada com P e K equivalentes à adubação regional (Betta et al.)",
+                                         caveat="ensaios no Cerrado (MG/GO); recicla o que está no perfil, não repõe o que falta"),
+        "segunda:nabo_forrageiro": dict(level="favorece", sources=["viola2013"],
+                                        motive="o nabo forrageiro acumulou das maiores quantidades de K, P e N e as liberou rápido para o trigo (Pato Branco-PR)",
+                                        caveat="recicla o que está no perfil, não repõe o que falta"),
+    },
+    "mo_baixa": {  # organic carbon in the low classes
+        "segunda:milho_braquiaria": dict(level="favorece", sources=["resende2021"],
+                                         motive="plantio direto com braquiária aumentou a matéria orgânica na camada superficial após 9 anos",
+                                         caveat="efeito de longo prazo: um ciclo de braquiária não mudou a MO no ensaio"),
+        "segunda:milheto_crotalaria": dict(level="favorece", sources=["bertin2005", "resende2021"],
+                                           motive="o milheto foi a cobertura de maior fitomassa e gramíneas (alta relação C/N) mantêm mais MO; "
+                                                  "aumentar a MO exige alto aporte de palhada",
+                                           caveat="sem medição de MO no consórcio; efeito de anos, não de uma safra"),
+        "segunda:pousio": dict(level="penaliza", sources=["resende2021"],
+                               motive="sem aporte de palhada na 2ª janela; o aumento de MO no plantio direto exige diversificação e elevado aporte de resíduos",
+                               caveat="inferência a partir da fonte (ela não mediu pousio)"),
+    },
+}
+FERTILITY_LABEL = {"acidez": "solo ácido", "pk_baixo": "P ou K baixos", "mo_baixa": "matéria orgânica baixa"}
+FERTILITY_NEUTRAL_NO_SOURCE: dict[tuple[str, str], str] = {
+    ("pk_baixo", "segunda:aveia_nabo"): "o nabo recicla K e P (Viola et al. 2013), mas não há fonte para o mix aveia + nabo",
+    ("pk_baixo", "segunda:milheto_crotalaria"): "o milheto recicla nutrientes, mas não achamos fonte de P/K para o consórcio",
+    ("mo_baixa", "segunda:aveia_nabo"): "não achamos fonte de efeito na MO para o mix aveia + nabo",
+}
 
 
-def prepare_fertility(f: dict | None, clay_pct: float | None = None) -> dict | None:
-    """Interprets the informed fertility (dict with a subset of CAMPOS_FERTILIDADE, already validated) into classes.
-    `argila_pct` (the farmer's clay %, optional) selects the P table by clay band. None if nothing was informed.
+def prepare_fertility(f: dict | None, clay_pct: float | None = None, corg_g_dm3: float | None = None) -> dict | None:
+    """Interprets the informed fertility (dict with a subset of FERTILITY_FIELDS, already validated) into classes.
+    `clay_pct` (the farmer's clay %, optional) selects the P table by clay band; `corg_g_dm3` (organic carbon from the farmer's
+    report, optional) gets the Corg class. None if nothing was informed.
     Nothing is estimated: V% is only derived when Ca, Mg, K and CEC come together (V = (Ca+Mg+K)/CEC)."""
     f = {k: float(v) for k, v in (f or {}).items() if k in FERTILITY_FIELDS and v is not None}
-    if not f:
+    if not f and corg_g_dm3 is None:
         return None
     v_source = "informada" if "v_pct" in f else None
     if v_source is None and all(k in f for k in ("ca_cmolc_dm3", "mg_cmolc_dm3", "k_cmolc_dm3", "ctc_cmolc_dm3")) and f["ctc_cmolc_dm3"] > 0:
@@ -280,11 +338,15 @@ def prepare_fertility(f: dict | None, clay_pct: float | None = None) -> dict | N
     if "k_cmolc_dm3" in f: classes["k"] = _classify(f["k_cmolc_dm3"], CLASSES["k"])
     if "v_pct" in f: classes["v"] = "condicao_evitar" if f["v_pct"] > V_AVOID_ABOVE else _classify(f["v_pct"], CLASSES["v"])
     if "al_cmolc_dm3" in f: classes["al"] = _classify(f["al_cmolc_dm3"], CLASSES["al"])
+    if corg_g_dm3 is not None:
+        classes["mo"] = _classify(float(corg_g_dm3), CORG_CLASSES)
     sev = max([{"muito_baixo": 0, "baixo": 0, "medio": 1, "alto": 2, "muito_alto": 2}[classes["al"]] if "al" in classes else 0,
                {"muito_baixo": 2, "baixo": 2, "medio": 1}.get(classes.get("v"), 0)])
-    pk_low = classes.get("p") in ("muito_baixo", "baixo") or classes.get("k") in ("muito_baixo", "baixo")
-    return dict(valores=f, classes=classes, v_origem=v_source, severidade_acidez=sev, pk_baixo=pk_low,
-                pobre=pk_low or sev > 0, informados=[k for k in FERTILITY_FIELDS if k in f],
+    pk_low = classes.get("p") in LOW or classes.get("k") in LOW
+    mo_low = classes.get("mo") in LOW
+    return dict(valores=f, classes=classes, v_origem=v_source, severidade_acidez=sev, pk_baixo=pk_low, mo_baixa=mo_low,
+                corg_g_dm3=None if corg_g_dm3 is None else float(corg_g_dm3),
+                pobre=pk_low or sev > 0 or mo_low, informados=[k for k in FERTILITY_FIELDS if k in f],
                 ausentes=[k for k in FERTILITY_FIELDS if k not in f],
                 argila_faixa_g_kg=band if "p" in classes else None, argila_origem=band_source if "p" in classes else None)
 
@@ -356,6 +418,63 @@ def costs(c: dict, state: dict | None) -> list[dict]:
     return out
 
 
+def fertility_conditions(fert: dict | None) -> dict[str, float]:
+    """Active soil conditions of the informed fertility -> weight (acidity: severity/2; the others: 1)."""
+    if not fert:
+        return {}
+    out = {}
+    if fert.get("severidade_acidez"):
+        out["acidez"] = fert["severidade_acidez"] / 2.0
+    if fert.get("pk_baixo"):
+        out["pk_baixo"] = 1.0
+    if fert.get("mo_baixa"):
+        out["mo_baixa"] = 1.0
+    return out
+
+
+def _cond_detail(cond: str, fert: dict) -> str:
+    cl = fert["classes"]
+    if cond == "acidez":
+        return Msg("Al {0}, V% {1}; severidade {2} de 2", cl.get("al", "n/i").replace("_", " "), cl.get("v", "n/i").replace("_", " "),
+                   str(fert["severidade_acidez"]))
+    if cond == "pk_baixo":
+        return Msg("P {0}, K {1}", cl.get("p", "n/i").replace("_", " "), cl.get("k", "n/i").replace("_", " "))
+    corg, mo = f"{fert['corg_g_dm3']:.1f}".replace(".", ","), f"{fert['corg_g_dm3'] * MO_FACTOR / 10:.1f}".replace(".", ",")
+    return Msg("C orgânico {0} g/dm³ (MO ~{1}%), classe {2}", corg, mo, cl["mo"].replace("_", " "))
+
+
+def _fertility_effects(c: dict, fert: dict) -> list[dict]:
+    keys = _target_keys(c)
+    out = []
+    for cond, wgt in fertility_conditions(fert).items():
+        for target, e in FERTILITY_EFFECTS[cond].items():
+            if target in keys and e["level"] != "neutro":
+                out.append(dict(origem=Msg("fertilidade: {0}", FERTILITY_LABEL[cond]), condicao=cond, problema=None, alvo=target,
+                                nivel=e["level"], criterio="solo", delta=LEVEL_DELTA[e["level"]] * wgt,
+                                motivo=Msg("{0} ({1})", e["motive"], _cond_detail(cond, fert)), ressalva=e.get("caveat"),
+                                fontes=[SOURCES[x]["label"] for x in e["sources"]]))
+    return out
+
+
+def _fertility_unsourced_neutrals(c: dict, fert: dict) -> list[str]:
+    keys, conds = _target_keys(c), fertility_conditions(fert)
+    return [Msg("{0} × {1}: efeito sem fonte confirmada, tratado como neutro ({2})", FERTILITY_LABEL[k],
+                t.split(":")[-1].replace("_", " "), why)
+            for (k, t), why in FERTILITY_NEUTRAL_NO_SOURCE.items() if k in conds and t in keys]
+
+
+def soft_add(base: float, delta: float) -> float:
+    """Adds `delta` to a 0-1 score without saturating: slope 1 at delta = 0 and the result approaches 1 (or 0) exponentially,
+    so two options with different adjustments never tie at the bound (the same reason the income score uses tanh).
+    No extra parameter: the gap to the bound is the scale. delta = 0 returns `base` unchanged."""
+    base = min(1.0, max(0.0, float(base)))
+    if delta > 0 and base < 1.0:
+        return 1.0 - (1.0 - base) * math.exp(-delta / (1.0 - base))
+    if delta < 0 and base > 0.0:
+        return base * math.exp(delta / base)
+    return base
+
+
 def adjustment(c: dict, state: dict | None) -> dict:
     """Additive deltas on the candidate's criteria: {"pragas": x, "solo": y, "efeitos": [dict(origem, criterio, delta, motivo, ...)]}.
     Without state (nothing informed) it returns zeros and no effects."""
@@ -365,36 +484,71 @@ def adjustment(c: dict, state: dict | None) -> dict:
     for e in _problem_effects(c, state.get("problemas") or ()):
         out[e["criterio"]] += e["delta"]
         out["efeitos"].append(dict(e, origem=f"problema da área: {PROBLEM_LABELS[e['problema']]}"))
-    fert, sec_ = state.get("fert"), c["segunda"]
+    fert = state.get("fert")
     if fert:
-        sens = ACIDITY_SENSITIVITY.get(sec_, 0.0)
-        if sens and fert["severidade_acidez"]:
-            d = -ACIDITY_PENALTY * fert["severidade_acidez"] * sens
-            out["solo"] += d
-            out["efeitos"].append(dict(origem="fertilidade", criterio="solo", delta=d, problema=None,
-                                       motivo=f"cultura sensível à acidez (Al {fert['classes'].get('al', 'n/i').replace('_', ' ')}, "
-                                              f"V% {fert['classes'].get('v', 'n/i').replace('_', ' ')}); severidade {fert['severidade_acidez']}; "
-                                              f"classes do Manual PR, tamanho da penalidade é escolha de modelagem ({ESTIMATE_SOURCE})"))
-        b = RECYCLING_BONUS.get(sec_, 0.0) if fert["pk_baixo"] else 0.0
-        if b:
-            out["solo"] += b
-            out["efeitos"].append(dict(origem="fertilidade", criterio="solo", delta=b, problema=None,
-                                       motivo=f"recicla K/P em solo com P ou K baixos; tamanho do bônus é escolha de modelagem ({ESTIMATE_SOURCE})"))
-        b = CROTALARIA_BONUS.get(sec_, 0.0) if fert["pobre"] else 0.0
-        if b:
-            out["solo"] += b
-            out["efeitos"].append(dict(origem="fertilidade", criterio="solo", delta=b, problema=None,
-                                       motivo=f"crotalária fixa N e adiciona matéria orgânica em solo pobre; tamanho do bônus é escolha de modelagem ({ESTIMATE_SOURCE})"))
+        for e in _fertility_effects(c, fert):
+            out["solo"] += e["delta"]
+            out["efeitos"].append(e)
     return out
 
 
-# --------------------------------------------------------------------------- texts (card and methodology)
+# D) cost of recovering the soil with each option (shown on the card; never enters the score twice)
+K_CREDIT_BRACHIARIA_KG = 40.0  # "até 40 kg/ha de K2O" in the 0-5 cm layer after one brachiaria cycle (Resende et al. 2021)
+
+
+def _brl(x: float) -> str:
+    return f"{x:,.0f}".replace(",", ".")
+
+
+def recovery(c: dict, state: dict | None, margin: dict | None, best: tuple[str, float] | None) -> dict | None:
+    """What it costs to recover the informed soil with this option: liming of the area (total, once; the margin only carries
+    1/LIMING_YEARS of it per year), the extra P/K of this crop (per year, already in the margin), and the income given up against the
+    option with the highest incremental income (`best` = (name, incremental R$/ha)). For brachiaria on low K, the sourced K credit is
+    shown as an upper bound, not subtracted. None when the farmer gave no fertility, or the soil needs no recovery."""
+    fert = (state or {}).get("fert")
+    if not fert:
+        return None
+    nc = _nc_t_ha(fert, V2_AREA)
+    if not (fert["pobre"] or nc):
+        return None
+    lime = (nc or 0.0) * LIME_R_T
+    pk = sum(i["custo"] for i in costs(c, state) if i["chave"] == "adubacao_pk")
+    inc = None if margin is None else float(margin["incremental"])
+    gap = None if (inc is None or best is None) else max(0.0, best[1] - inc)
+    credit = (K_CREDIT_BRACHIARIA_KG * K2O_PRICE_R_KG if c["segunda"] == "milho_braquiaria" and fert["pk_baixo"] else None)
+    total = lime + max(0.0, pk) + (gap or 0.0)
+    parts = []
+    if nc:
+        parts.append(Msg("calagem R$ {0}/ha uma vez ({1} t/ha; a margem cobra 1/{2} por ano)", _brl(lime),
+                         f"{nc:.1f}".replace(".", ","), str(LIMING_YEARS)))
+    if pk > 0:
+        parts.append(Msg("adubação P/K extra R$ {0}/ha/ano", _brl(pk)))
+    if gap:
+        parts.append(Msg("renda que deixa de ganhar frente a {0} R$ {1}/ha", best[0], _brl(gap)))
+    what = Join(parts, " + ") if parts else "sem custo direto além da cultura"
+    tail = []
+    if credit:
+        tail.append(Msg("crédito possível de até R$ {0}/ha em K2O reciclado pela braquiária (Resende et al. 2021, camada 0–5 cm)",
+                        _brl(credit)))
+    if fert["mo_baixa"]:
+        tail.append("a matéria orgânica sobe em anos de palhada, não em uma safra")
+    head = Msg("Recuperar o solo com esta opção: {0} ≈ R$ {1}/ha no 1º ano", what, _brl(total))
+    txt = Msg("{0}.", Join([head, *tail], "; "))
+    return dict(calagem_total_r_ha=lime, calagem_t_ha=nc, adubacao_pk_r_ha_ano=pk, renda_abdicada_r_ha=gap,
+                referencia_renda=None if best is None else best[0], credito_k2o_ate_r_ha=credit, total_primeiro_ano_r_ha=total, texto=txt)
+
+
+# Texts (card and methodology)
 def _fert_txt(fert: dict) -> str:
     rot = {"p_mg_dm3": "P", "k_cmolc_dm3": "K", "ca_cmolc_dm3": "Ca", "mg_cmolc_dm3": "Mg", "al_cmolc_dm3": "Al", "v_pct": "V%",
            "ctc_cmolc_dm3": "CTC"}
     v = fert["valores"]
     return ", ".join(f"{rot[k]} {v[k]:g}" for k in fert["informados"]) + (
         f"; V% {v['v_pct']:.0f} {fert['v_origem']}" if fert["v_origem"] and fert["v_origem"] != "informada" else "")
+
+
+def _short_scale_txt() -> str:
+    return f"±{LEVEL_MAGNITUDE:g}, metade para acidez de severidade 1"
 
 
 def _scale_txt() -> str:
@@ -422,17 +576,26 @@ def card(c: dict, state: dict | None) -> dict:
     else:
         gap.append("Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.")
     if fert:
-        classes = ", ".join(f"{k.upper()} {v.replace('_', ' ')}" for k, v in fert["classes"].items())
-        ev.append(f"Fertilidade informada pelo produtor ({_fert_txt(fert)}); classes: {classes} ({MANUAL_SOURCE}).")
+        if fert["informados"]:
+            classes = ", ".join(f"{k.upper()} {v.replace('_', ' ')}" for k, v in fert["classes"].items() if k != "mo")
+            ev.append(f"Fertilidade informada pelo produtor ({_fert_txt(fert)}); classes: {classes} ({MANUAL_SOURCE}).")
         if fert.get("argila_faixa_g_kg"):
             ev.append(f"Classe de P pela argila {fert['argila_faixa_g_kg']} g/kg ({fert['argila_origem']}).")
-        for e in (x for x in aj["efeitos"] if x["origem"] == "fertilidade"):
-            ev.append(f"Fertilidade: critério {e['criterio']} {e['delta']:+.2f} ({e['motivo']}).")
+        if "mo" in fert["classes"]:
+            ev.append(Msg("Matéria orgânica: {0} ({1}, Quadro 4; MO = C × 1,72).", _cond_detail("mo_baixa", fert),
+                          SOURCES["manual_pr"]["label"]))
+        for e in (x for x in aj["efeitos"] if x.get("condicao")):
+            caveat = Msg("; ressalva: {0}", e["ressalva"]) if e["ressalva"] else ""
+            ev.append(Msg("Solo ({0}): {1}, critério solo {2} ({3}; fonte: {4}{5}).", FERTILITY_LABEL[e["condicao"]], e["nivel"],
+                          f"{e['delta']:+.2f}", e["motivo"], Join(e["fontes"], "; "), caveat))
+        gap.extend(_fertility_unsourced_neutrals(c, fert))
         for it in costs(c, state):
             ev.append(Msg("Fertilidade: {0} {1}R$ {2}/ha/ano ({3}).", it["rotulo"], "+" if it["custo"] >= 0 else "−",
                           f"{abs(it['custo']):.0f}", it["detalhe"]))
         if _nc_t_ha(fert, V2.get(c["segunda"], V2_AREA)) is None:
             gap.append("Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.")
+        if "mo" in fert["classes"]:
+            gap.append("C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).")
         if fert["ausentes"]:
             gap.append(f"Fertilidade parcial: não informados {', '.join(fert['ausentes'])}; esses itens não entram na análise.")
         if fert.get("argila_faixa_g_kg") and not fert["argila_origem"].startswith("informada"):
@@ -440,11 +603,12 @@ def card(c: dict, state: dict | None) -> dict:
         if c["segunda"] in PK_DEMAND:
             gap.append(f"Doses de P2O5/K2O de {c['segunda'].replace('_', ' ')}: {_NO_SOURCE} ({ESTIMATE_SOURCE}).")
         gap.append(f"Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; {V2_SOURCE}. Preço do calcário, teto de dose e "
-                   f"diluição da calagem: {ESTIMATE_SOURCE}. Penalidade/bônus no critério solo: escolha de modelagem sem fonte. "
+                   f"diluição da calagem: {ESTIMATE_SOURCE}. Efeitos no critério solo: direção com fonte, tamanho ({_short_scale_txt()}) "
+                   "é escolha de modelagem nossa. "
                    "Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).")
         rev.append("Fertilidade: confirmar doses de calagem e adubação com o agrônomo e o laudo completo.")
     else:
-        gap.append("Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade.")
+        gap.append("Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo.")
     return dict(evidencias=ev, lacunas=gap, revisar=rev)
 
 
@@ -463,12 +627,21 @@ def applied_adjustments(state: dict | None, analysis_given: bool) -> list[str]:
                  "docs/fontes_estado_area.md); sem fonte, o efeito é neutro.")
     else:
         o.append("Problemas da área não informados: não considerados.")
-    if fert:
-        o.append(f"Fertilidade informada pelo produtor ({', '.join(fert['informados'])}): classes de P (por argila), K, V% e Al do Manual de "
-                 "Adubação e Calagem do Paraná; custo de calagem (saturação por bases, fórmula do Manual) e de adubação P/K por cultura na margem "
-                 f"(doses do Manual PR para o milho e da CBPTT 2020 para o trigo; feijão e sorgo {ESTIMATE_SOURCE}), penalidade no critério solo "
-                 "para cultura sensível em solo ácido/pobre e bônus para cobertura recicladora e crotalária (escolha de modelagem sem fonte); "
-                 f"itens não informados não entram. Preço do calcário, teto de dose e diluição da calagem: {ESTIMATE_SOURCE}.")
+    if fert and not fert["informados"]:  # only organic matter was informed
+        o.append(Msg("Matéria orgânica informada pelo produtor: classe de C orgânico do Manual PR (Quadro 4), classe {0}; matéria "
+                     "orgânica baixa favorece braquiária e milheto e penaliza o pousio no critério solo (fonte lida, tamanho ±{1}, "
+                     "escolha de modelagem). Sem P, K, V%, Al e CTC: calagem e adubação não entram.",
+                     fert["classes"]["mo"].replace("_", " "), f"{LEVEL_MAGNITUDE:g}"))
+    elif fert:
+        given = fert["informados"] + (["carbono_organico"] if "mo" in fert["classes"] else [])
+        o.append(Msg("Fertilidade informada pelo produtor ({0}): classes de P (por argila), K, V% e Al do Manual de "
+                     "Adubação e Calagem do Paraná; custo de calagem (saturação por bases, fórmula do Manual) e de adubação P/K por cultura na "
+                     "margem (doses do Manual PR para o milho e da CBPTT 2020 para o trigo; feijão e sorgo {1}); no critério solo, "
+                     "solo ácido penaliza as culturas de baixa tolerância à acidez (Manual PR), P/K baixos favorecem braquiária e nabo "
+                     "(recicladores) e matéria orgânica baixa (classes de C do Manual PR) favorece braquiária e milheto e penaliza o pousio, "
+                     "com fonte lida (docs/fontes_estado_area.md) e tamanho ±{2} (escolha de modelagem); os ajustes se somam sem saturar a "
+                     "nota; itens não informados não entram. Preço do calcário, teto de dose e diluição da calagem: {3}.",
+                     Join(given, ", "), ESTIMATE_SOURCE, f"{LEVEL_MAGNITUDE:g}", ESTIMATE_SOURCE))
     else:
         o.append("Fertilidade não considerada (não informada).")
     return o

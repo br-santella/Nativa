@@ -45,6 +45,14 @@ details{margin:.3rem 0;font-size:.88rem}summary{cursor:pointer;color:var(--green
 pre{background:#f0efe8;padding:.6rem;overflow:auto;max-height:50vh;font-size:.75rem}
 .gain{background:var(--green2);border-radius:8px;padding:.4rem .6rem;font-size:.85rem;margin:.4rem 0}
 .elim{font-size:.85rem;border-top:1px dashed var(--line);padding:.3rem 0}
+.unc{border-top:1px dashed var(--line);margin:.5rem 0 .2rem;padding-top:.4rem;font-size:.85rem}
+.unc p{margin:.15rem 0}
+.range{position:relative;height:10px;background:#ececE4;border-radius:5px;margin:.3rem 0 .1rem;max-width:420px}
+.range>.band{position:absolute;top:0;bottom:0;background:#b9d3b5;border-radius:5px}
+.range>.dot{position:absolute;top:-3px;width:4px;height:16px;margin-left:-2px;background:var(--green);border-radius:2px}
+.scale{display:flex;justify-content:space-between;max-width:420px;font-size:.7rem;color:var(--mut)}
+.conf{font-size:.72rem;border-radius:99px;padding:.05rem .45rem;margin-left:.3rem;background:var(--warnbg);color:var(--warn)}
+.stab{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.5rem .7rem;margin:.4rem 0;font-size:.88rem}
 </style>
 </head>
 <body>
@@ -139,7 +147,7 @@ function h(tag, attrs, ...kids) {
     if (v == null || v === false) continue;
     if (k === "class") el.className = v; else el.setAttribute(k, v);
   }
-  for (const kid of kids.flat()) {
+  for (const kid of kids.flat(Infinity)) {
     if (kid == null || kid === false) continue;
     el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
   }
@@ -242,6 +250,52 @@ function collectBody() {
 function bar(v) { return h("div", {class: "bar"}, h("i", {style: `width:${Math.max(0, Math.min(1, v)) * 100}%`})); }
 function list(items) { return items?.length ? h("ul", {}, items.map((t) => h("li", {}, t))) : null; }
 
+// Score range of the option: band = score with the worst and best past season, tick = current score (0–1 scale)
+function scoreRange(nota, faixa) {
+  const [lo, hi] = faixa || [];
+  if (lo == null || nota == null) return null;
+  const top = hi ?? nota;
+  return [h("div", {class: "range", title: `nota entre ${num(lo, 3)} e ${num(top, 3)}`},
+      h("div", {class: "band", style: `left:${Math.min(lo, top) * 100}%;width:${Math.max(0.004, Math.abs(top - lo)) * 100}%`}),
+      h("div", {class: "dot", style: `left:${nota * 100}%`})),
+    h("div", {class: "scale"}, h("span", {}, "0"), h("span", {}, "nota"), h("span", {}, "1"))];
+}
+
+function renderUncertainty(x) {
+  const u = x.incerteza, m = x.margem || {};
+  if (!u) return null;
+  const out = [];
+  if (m.base_renda === "historico")
+    out.push(h("p", {}, `Renda na nota pela média realizada das últimas safras no município: ${brl(m.incremental_r_ha)}/ha `
+      + `(a preço atual seria ${brl(m.incremental_preco_atual_r_ha)}/ha).`));
+  const [lo, hi] = u.renda?.faixa_r_ha || [];
+  const [nlo, nhi] = u.nota_faixa || [];
+  if (u.renda?.origem === "historico")
+    out.push(h("p", {}, `Incerteza: a renda da 2ª safra variou de ${brl(lo)} a ${brl(hi)}/ha nas últimas safras; com isso a nota fica entre `,
+      h("b", {}, `${num(nlo)} e ${num(nhi)}`), "."), scoreRange(x.nota, u.nota_faixa));
+  else if (u.renda?.origem === "ano_ruim_p20")
+    out.push(h("p", {}, `Incerteza: em ano ruim (produtividade p20) a renda cai para ${brl(lo)}/ha e a nota para `, h("b", {}, num(nlo)), "."),
+      scoreRange(x.nota, u.nota_faixa));
+  else if (u.renda?.origem === "custo_fixo")
+    out.push(h("p", {class: "hint"}, "Renda sem variação: é só o custo de implantação (sem venda)."));
+  const r = u.risco_climatico;
+  if (r)
+    out.push(h("p", {}, `Risco climático: algum evento adverso em ${pct(r.probabilidade)} dos anos (${r.eventos.join(", ")})`,
+      h("span", {class: "conf", title: r.texto}, "confiança " + r.confianca), "."),
+      h("p", {class: "hint"}, r.texto));
+  if (u.criterios_estimados?.length) {
+    const names = u.criterios_estimados.map((id) => options.criterios.find((c) => c.id === id)?.nome || id);
+    out.push(h("p", {class: "hint"}, `${names.join(" e ")}: estimativas de catálogo, ainda sem validação de campo.`));
+  }
+  const tr = x.historico_renda;
+  if (tr?.safras?.length)
+    out.push(h("details", {}, h("summary", {}, `Renda realizada de ${tr.cultura} nas últimas safras (sc de soja/ha)`),
+      h("ul", {}, tr.safras.map((s) => h("li", {}, `${s.ano}: ${num(s.margem_sc_soja_ha, 1)} (produtividade ${num(s.rendimento_sc_ha, 1)} sc/ha)`))),
+      u.nota_por_safra ? h("p", {class: "hint"}, "Nota repetindo cada safra: "
+        + Object.entries(u.nota_por_safra).map(([y, v]) => `${y}: ${num(v)}`).join(" · ")) : null));
+  return out.length ? h("div", {class: "unc"}, out) : null;
+}
+
 function renderItem(x, isCurrent) {
   const crit = options.criterios.map((c) => h("div", {}, `${c.nome} ${num(x.criterios?.[c.id])}`, bar(x.criterios?.[c.id] ?? 0)));
   const g = x.ganho_vs_atual;
@@ -256,6 +310,7 @@ function renderItem(x, isCurrent) {
       x.margem.ano_ruim_r_ha != null ? ` • em ano ruim: ${brl(x.margem.ano_ruim_r_ha)}/ha` : "") : null,
     g ? h("div", {class: "gain"}, `Frente à atual: soja seguinte ${num(g.soja_seguinte_sc, 1)} sc/ha (${brl(g.soja_seguinte_rs)}/ha); 2ª safra ${brl(g.renda_2a_safra?.r_ha)}/ha; `
       + `margem total ${g.margem_total?.r_ha >= 0 ? "+" : ""}${brl(g.margem_total?.r_ha)}/ha; solo ${g.solo?.dias_descobertos > 0 ? "+" : ""}${g.solo?.dias_descobertos} dias descobertos.`) : null,
+    renderUncertainty(x),
     card.por_que ? h("p", {}, card.por_que) : null,
     card.mercado ? h("p", {class: "hint"}, `Mercado (${card.mercado.nivel}): ${card.mercado.texto} — ${card.mercado.estimativa}`) : null,
     card.beneficios?.length ? h("details", {}, h("summary", {}, "Benefícios"), list(card.beneficios)) : null,
@@ -269,6 +324,13 @@ function renderBlock(title, subtitle, block, atual) {
   const out = [h("h2", {}, title), h("p", {class: "sub"}, subtitle)];
   const ranking = block?.ranking || [];
   if (!ranking.length) out.push(h("div", {class: "box warn"}, "Nenhuma opção viável neste bloco."));
+  const st = block?.estabilidade;
+  if (st?.primeiro?.length) {
+    const name = (id) => ranking.find((x) => x.id === id)?.rotacao || id;
+    out.push(h("div", {class: "stab"}, h("b", {}, "Quão firme é o 1º lugar? "),
+      `Repetindo a renda de cada uma das últimas ${st.safras.length} safras (${st.safras[0]}–${st.safras.at(-1)}), a 1ª colocada seria: `,
+      st.primeiro.map((p) => `${name(p.id)} em ${p.safras} de ${st.safras.length}`).join("; "), "."));
+  }
   ranking.forEach((x) => out.push(renderItem(x)));
   if (atual && !ranking.some((x) => x.atual) && title.startsWith("Agora"))
     out.push(renderItem(atual, true));
@@ -309,7 +371,7 @@ function render(res) {
     root.append(h("details", {}, h("summary", {}, `${res.eliminadas.length} rotações eliminadas por regra legal/calendário/restrição`),
       res.eliminadas.map((e) => h("div", {class: "elim"}, h("b", {}, e.rotacao), list(e.motivos)))));
   root.append(...renderDiagnosis(res.diagnostico),
-    h("p", {class: "hint"}, "Valores estimados com dados públicos (NASA, IBGE, CONAB, SEAB). Não substituem o agrônomo."),
+    h("p", {class: "hint"}, "Valores estimados com dados públicos (NASA, IBGE, CONAB, SEAB). A faixa de cada opção mostra quanto o resultado varia entre safras. Não substituem o agrônomo."),
     h("details", {}, h("summary", {}, "Ver JSON bruto"), h("pre", {}, JSON.stringify(res, null, 2))));
 }
 

@@ -19,7 +19,7 @@ from field_shift_api import schemas
 AREA = {"talhao_id": "72638"}
 RA = {"rotacao_atual": "soja__milho_safrinha"}
 POOR = dict(p_mg_dm3=2, k_cmolc_dm3=0.10, ca_cmolc_dm3=1.0, mg_cmolc_dm3=0.4, al_cmolc_dm3=1.5, v_pct=30, ctc_cmolc_dm3=9)
-EXPECTED = {"milho_braquiaria": 0.821, "milho_safrinha": 0.774, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.55, "trigo": 0.466}
+EXPECTED = {"milho_braquiaria": 0.795, "milho_safrinha": 0.747, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.57, "trigo": 0.524}
 X = EA.LEVEL_MAGNITUDE
 
 
@@ -33,7 +33,7 @@ def _delta(nome, problem, criterion):
     return EA.adjustment(_cand_crops(nome), {"problemas": [problem], "fert": None})[criterion]
 
 
-# --------------------------------------------------------------------------- vocabulary and validation
+# Vocabulary and validation
 def test_vocabulary_yaml_schema_and_engine_match():
     yml = Path(__file__).resolve().parents[3] / "catalog" / "vocabulario.yaml"
     voc = yaml.safe_load(yml.read_text(encoding="utf-8"))["problemas_area"]
@@ -69,7 +69,7 @@ def test_analysis_with_fertility_only_and_split():
         svc._normalize_soil_analysis({"ph": 5.5})  # no texture, no CAD, no fertility
 
 
-# --------------------------------------------------------------------------- fertility classes (Manual PR, by clay band)
+# Fertility classes (Manual PR, by clay band)
 @pytest.mark.parametrize("clay_pct,p,expected", [
     (20, 5, "muito_baixo"), (20, 6, "baixo"), (20, 12.5, "baixo"), (20, 13, "medio"), (20, 19, "alto"), (20, 24, "alto"), (20, 25, "muito_alto"),
     (20, 121, "condicao_evitar"),
@@ -122,14 +122,20 @@ def test_classes_and_derived_v_without_estimating():
     assert EA.prepare_fertility({"k_cmolc_dm3": 0.2})["argila_faixa_g_kg"] is None  # clay only matters for P
 
 
-# --------------------------------------------------------------------------- qualitative levels of the area problems
+# Qualitative levels of the area problems
 def test_levels_use_one_declared_scale_and_every_effect_has_a_read_source():
     assert EA.LEVEL_DELTA == {"favorece": X, "neutro": 0.0, "penaliza": -X}
+    for cond, targets in EA.FERTILITY_EFFECTS.items():
+        for target, e in targets.items():
+            assert e["level"] in ("favorece", "penaliza") and e["sources"], (cond, target)
+            assert all(EA.SOURCES[sid]["url"].startswith("https://") for sid in e["sources"])
+    for (cond, target), why in EA.FERTILITY_NEUTRAL_NO_SOURCE.items():
+        assert cond in EA.FERTILITY_EFFECTS and target not in EA.FERTILITY_EFFECTS[cond] and why
     for problem, targets in EA.PROBLEM_EFFECTS.items():
         for target, e in targets.items():
             assert e["level"] in EA.LEVEL_DELTA and e["criterion"] in ("pragas", "solo")
             if e["level"] != "neutro":
-                assert e["sources"], (problem, target)  # a non-neutral cell REQUIRES a source
+                assert e["sources"], (problem, target)  # a non-neutral cell requires a source
                 for sid in e["sources"]:
                     ref = EA.SOURCES[sid]
                     assert ref["url"].startswith("https://") and ref["label"] and ref["title"]
@@ -189,7 +195,7 @@ def test_card_shows_source_and_caveat_of_each_applied_effect():
     assert "escolha de modelagem" in gap and "três níveis" in gap
 
 
-# --------------------------------------------------------------------------- fertility (pure module)
+# Fertility (pure module)
 def test_no_state_changes_nothing():
     c = _cand_crops("Soja → trigo")
     assert EA.costs(c, None) == [] and EA.adjustment(c, None) == dict(pragas=0.0, solo=0.0, efeitos=[])
@@ -250,7 +256,7 @@ def test_unsourced_constants_are_declared_in_the_card():
     assert "Argila não informada" in gap and "Preço do calcário" in gap and "sem fonte confirmada" in gap
 
 
-# --------------------------------------------------------------------------- API (fake service)
+# API (fake service)
 def test_api_invalid_area_problems_returns_422(client, calls):
     r = client.post("/v1/recomendacao", json={"area": AREA, **RA, "problemas_area": ["ferrugem"]})
     assert r.status_code == 422 and not calls
@@ -273,7 +279,7 @@ def test_api_invalid_fertility_returns_422(client, calls):
     assert not calls
 
 
-# --------------------------------------------------------------------------- real engine
+# Real engine
 real = pytest.mark.skipif(not REAL_SERVICE, reason="serviço real indisponível")
 
 
@@ -297,7 +303,8 @@ def test_regression_without_fields_ranking_unchanged(base):
     assert "problemas_area" not in base["entrada"] and "ajustes_aplicados" not in base["metodologia"]
     for x in _rk(base).values():
         gap = " ".join(x["card"]["lacunas"])
-        assert "Fertilidade não considerada (não informada)" in gap and "Problemas da área" in gap and "não informados" in gap
+        assert "Fertilidade e matéria orgânica não consideradas (não informadas)" in gap and "Problemas da área" in gap and "não informados" in gap
+        assert "recuperacao_solo" not in x
         assert all("Fertilidade:" not in e for e in x["card"]["evidencias"])
         assert not any(i["cultura"] in ("Calagem",) for i in x["margem"]["itens"])
     # a soil analysis without fertility does not consider it either, and the applied adjustment says so
@@ -315,7 +322,7 @@ def test_area_problems_move_the_ranking_in_the_expected_direction(base):
     assert x["soja__feijao_safrinha"]["criterios"]["pragas"] < b["soja__feijao_safrinha"]["criterios"]["pragas"]
     assert x["soja__feijao_safrinha"]["nota"] < b["soja__feijao_safrinha"]["nota"]
     assert x["soja__nabo_forrageiro"]["criterios"]["pragas"] < b["soja__nabo_forrageiro"]["criterios"]["pragas"]
-    assert x["soja__milheto_crotalaria"]["criterios"]["pragas"] == pytest.approx(b["soja__milheto_crotalaria"]["criterios"]["pragas"] - X)  # summer soybean only
+    assert x["soja__milheto_crotalaria"]["criterios"]["pragas"] == pytest.approx(EA.soft_add(b["soja__milheto_crotalaria"]["criterios"]["pragas"], -X), abs=1e-3)  # summer soybean only
     pos = lambda rr, i: next(k for k, v in enumerate(sorted(_rk(rr).values(), key=lambda v: -v["nota"])) if v["id"] == i)  # noqa: E731
     assert pos(r, "soja__feijao_safrinha") >= pos(base, "soja__feijao_safrinha")
     assert r["entrada"]["problemas_area"] == ["mofo_branco"]
@@ -327,13 +334,13 @@ def test_area_problems_move_the_ranking_in_the_expected_direction(base):
 
     n = _rk(_rec(area_problems=["nematoide"]))  # soybean -X in all; crotalaria +X on top; brachiaria and corn species-dependent -> neutral
     assert n["soja__milheto_crotalaria"]["criterios"]["pragas"] == pytest.approx(b["soja__milheto_crotalaria"]["criterios"]["pragas"])
-    assert n["soja__milho_braquiaria"]["criterios"]["pragas"] == pytest.approx(b["soja__milho_braquiaria"]["criterios"]["pragas"] - X)
+    assert n["soja__milho_braquiaria"]["criterios"]["pragas"] == pytest.approx(EA.soft_add(b["soja__milho_braquiaria"]["criterios"]["pragas"], -X), abs=1e-3)
     assert n["soja__feijao_safrinha"]["criterios"]["pragas"] < b["soja__feijao_safrinha"]["criterios"]["pragas"]
     assert n["soja__milheto_crotalaria"]["criterios"]["pragas"] > n["soja__milho_safrinha"]["criterios"]["pragas"]
 
     mv = dict(current_rotation="milho_verao__milho_safrinha", summer_stage="maturacao", reference_date="2027-01-10", include_diagnosis=False)
     bm, cm = _rk(svc.recommend(AREA, **mv)), _rk(svc.recommend(AREA, area_problems=["cigarrinha"], **mv))
-    assert cm["milho_verao__milho_safrinha"]["criterios"]["pragas"] == pytest.approx(bm["milho_verao__milho_safrinha"]["criterios"]["pragas"] - X)  # corn on corn only
+    assert cm["milho_verao__milho_safrinha"]["criterios"]["pragas"] == pytest.approx(EA.soft_add(bm["milho_verao__milho_safrinha"]["criterios"]["pragas"], -X), abs=1e-3)  # corn on corn only
     assert cm["milho_verao__trigo"]["criterios"]["pragas"] == bm["milho_verao__trigo"]["criterios"]["pragas"]
     c = _rk(_rec(area_problems=["cigarrinha"]))
     assert c["soja__milho_safrinha"]["criterios"] == b["soja__milho_safrinha"]["criterios"]  # single corn crop: neutral without source
@@ -358,8 +365,25 @@ def test_poor_and_acid_fertility(base):
         keys = [it["cultura"] for it in x[i]["margem"]["itens"]]
         assert "Calagem" in keys and any(c.startswith("Adubação P/K") for c in keys)
         assert x[i]["margem"]["total_r_ha"] < b[i]["margem"]["total_r_ha"]
-    for i in ("soja__nabo_forrageiro", "soja__aveia_nabo", "soja__milheto_crotalaria"):
-        assert x[i]["criterios"]["solo"] > b[i]["criterios"]["solo"]
+    assert x["soja__nabo_forrageiro"]["criterios"]["solo"] > b["soja__nabo_forrageiro"]["criterios"]["solo"]  # sourced P/K recycler
+    # brachiaria recycles P/K (+X) but its corn is acid-sensitive (-X at severity 2): net zero, both effects on the card
+    assert x["soja__milho_braquiaria"]["criterios"]["solo"] == b["soja__milho_braquiaria"]["criterios"]["solo"]
+    ev_b = " ".join(x["soja__milho_braquiaria"]["card"]["evidencias"])
+    assert "Solo (P ou K baixos): favorece" in ev_b and "Solo (solo ácido): penaliza" in ev_b
+    for i in ("soja__aveia_nabo", "soja__milheto_crotalaria"):  # no source for these mixes on P/K: neutral, and flagged
+        assert x[i]["criterios"]["solo"] == b[i]["criterios"]["solo"]
+        assert any("sem fonte confirmada" in l for l in x[i]["card"]["lacunas"])
+    assert x["soja__soja_safrinha"]["criterios"]["solo"] < b["soja__soja_safrinha"]["criterios"]["solo"] if "soja__soja_safrinha" in x else True
+    # recovery cost: on every candidate, liming in full (not diluted), income given up against the top-income option
+    rec = {k: v["recuperacao_solo"] for k, v in x.items()}
+    lime = {r["calagem_total_r_ha"] for r in rec.values()}
+    assert len(lime) == 1 and lime.pop() > 0
+    top = max(x.values(), key=lambda v: v["margem"]["incremental_r_ha"])
+    assert rec[top["id"]]["renda_abdicada_r_ha"] == 0 and all(r["referencia_renda"] == top["rotacao"] for r in rec.values())
+    assert rec["soja__milheto_crotalaria"]["renda_abdicada_r_ha"] > 0
+    assert rec["soja__milho_braquiaria"]["credito_k2o_ate_r_ha"] == pytest.approx(round(40 * EA.K2O_PRICE_R_KG))
+    assert rec["soja__trigo"]["credito_k2o_ate_r_ha"] is None
+    assert any(e.startswith("Recuperar o solo com esta opção") for e in x["soja__trigo"]["card"]["evidencias"])
     # oat (no P/K model, no solo effect) pays only the area-level liming, the same amount as wheat; solo/pragas criteria do not move
     ca, cb = x["soja__aveia"]["criterios"], b["soja__aveia"]["criterios"]
     assert {k: v for k, v in ca.items() if k != "renda"} == {k: v for k, v in cb.items() if k != "renda"} and ca["renda"] < cb["renda"]
@@ -401,3 +425,53 @@ def test_invalid_values_in_real_engine():
         _rec(area_problems=["ferrugem"])
     with pytest.raises(svc.InvalidInput):
         _rec(soil_analysis={"v_pct": 150})
+
+
+# Organic matter, soft bound and recovery cost
+@pytest.mark.parametrize("corg,expected", [(3.9, "muito_baixo"), (4, "baixo"), (8.6, "baixo"), (9, "medio"), (14.9, "medio"),
+                                           (15, "alto"), (20, "alto"), (20.5, "muito_alto")])
+def test_organic_carbon_classes_manual_pr(corg, expected):
+    f = EA.prepare_fertility(None, None, corg)
+    assert f["classes"] == {"mo": expected} and f["mo_baixa"] == (expected in EA.LOW)
+
+
+def test_low_organic_matter_effects_have_sources_and_direction():
+    state = {"problemas": [], "fert": EA.prepare_fertility(None, None, 7.0)}  # MO ~1.2 %
+    d = {s: EA.adjustment(_cand_crops(f"Soja → {n}"), state)["solo"] for s, n in (("braq", "milho safrinha + braquiária"),
+                                                                           ("mil", "milheto/crotalária (cobertura)"), ("pou", "pousio"),
+                                                                           ("mil_s", "milho safrinha"), ("trigo", "trigo"))}
+    assert d["braq"] == d["mil"] == X and d["pou"] == -X and d["mil_s"] == d["trigo"] == 0
+    ev = " ".join(EA.card(_cand_crops("Soja → pousio"), state)["evidencias"])
+    assert "Resende et al. 2021" in ev and "Quadro 4" in ev and "matéria orgânica baixa" in ev
+    assert EA.adjustment(_cand_crops("Soja → pousio"), {"problemas": [], "fert": EA.prepare_fertility(None, None, 25.0)})["solo"] == 0
+
+
+def test_acidity_is_graded_and_sourced():
+    sev1 = EA.prepare_fertility({"al_cmolc_dm3": 1.0})  # Al medio -> severity 1
+    sev2 = EA.prepare_fertility({"al_cmolc_dm3": 2.0})
+    c = _cand_crops("Soja → trigo")
+    assert EA.adjustment(c, {"fert": sev1})["solo"] == pytest.approx(-X / 2) and EA.adjustment(c, {"fert": sev2})["solo"] == pytest.approx(-X)
+    assert EA.adjustment(_cand_crops("Soja → aveia (cobertura/palha)"), {"fert": sev2})["solo"] == 0
+
+
+@pytest.mark.parametrize("base", [0.0, 0.3, 0.7, 0.95, 1.0])
+def test_soft_add_never_saturates_and_is_identity_at_zero(base):
+    assert EA.soft_add(base, 0.0) == base
+    up, up2 = EA.soft_add(base, 0.15), EA.soft_add(base, 0.30)
+    dn, dn2 = EA.soft_add(base, -0.15), EA.soft_add(base, -0.30)
+    assert 0.0 <= dn2 <= dn <= base <= up <= up2 <= 1.0
+    if 0 < base < 1:
+        assert up < up2 < 1.0 and 0.0 < dn2 < dn  # two different adjustments never tie at the bound
+        assert abs(EA.soft_add(base, 1e-6) - base - 1e-6) < 1e-9  # slope 1 at zero
+
+
+def test_recovery_cost_only_when_soil_needs_it():
+    c = _cand_crops("Soja → milheto/crotalária (cobertura)")
+    marg, best = {"incremental": -300.0}, ("Soja → milho safrinha", 1500.0)
+    assert EA.recovery(c, None, marg, best) is None
+    assert EA.recovery(c, {"fert": EA.prepare_fertility({"p_mg_dm3": 80}, 50)}, marg, best) is None  # rich soil
+    r = EA.recovery(c, {"problemas": [], "fert": EA.prepare_fertility(POOR, 55, 7.0)}, marg, best)
+    nc = (EA.V2_AREA - 30) / 100 * 9 / EA.PRNT
+    assert r["calagem_total_r_ha"] == pytest.approx(nc * EA.LIME_R_T) and r["renda_abdicada_r_ha"] == 1800.0
+    assert r["total_primeiro_ano_r_ha"] == pytest.approx(nc * EA.LIME_R_T + 1800.0) and r["credito_k2o_ate_r_ha"] is None
+    assert "R$ 1.800/ha" in r["texto"] and "anos de palhada" in r["texto"]

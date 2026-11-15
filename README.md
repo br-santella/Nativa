@@ -55,9 +55,11 @@ Field Shift ranks crop rotations for a field in Western Paraná. A rotation is a
 
 | Rank | Rotation | Score | Margin (BRL/ha) | Income | Soil | Water | Pests | Risk |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | Soybean → corn + brachiaria | **0.764** | 2,431 | 0.81 | 0.71 | 0.84 | 0.65 | 0.78 |
-| 2 | Soybean → millet / crotalaria (cover) | 0.759 | 1,414 | 0.47 | 0.82 | 1.00 | 0.70 | 1.00 |
-| 4 | Soybean → off-season corn *(current)* | 0.709 | 2,391 | 0.80 | 0.56 | 0.86 | 0.50 | 0.78 |
+| 1 | Soybean → corn + brachiaria | **0.794** | 2,994 | 0.91 | 0.71 | 0.81 | 0.65 | 0.80 |
+| 2 | Soybean → millet / crotalaria (cover) | 0.757 | 1,103 | 0.46 | 0.82 | 1.00 | 0.70 | 1.00 |
+| 3 | Soybean → off-season corn *(current)* | 0.751 | 2,954 | 0.91 | 0.56 | 0.83 | 0.50 | 0.86 |
+
+Each option also carries its uncertainty (`incerteza`): for corn + brachiaria the income ranges from BRL 60 to 2,943/ha across the last 5 seasons, and the score from 0.679 to 0.817. Repeating each of those seasons, corn + brachiaria would be first in 4 of 5 (`estabilidade`).
 
 Full response:
 [`motor_field_shift/api/exemplos/recomendacao_talhao_72638.json`](motor_field_shift/api/exemplos/recomendacao_talhao_72638.json).

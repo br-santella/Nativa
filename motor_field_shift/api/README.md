@@ -180,7 +180,7 @@ Output:
 | `ajustes.linha_custo` | `coe`, `cot` or `ct` | no | from the service | Effective operating cost, total operating cost or total cost |
 | `ajustes.produtividade` | `{soja, milho, milho_2safra, milho_verao, trigo, feijao, sorgo}` in bags/ha (> 0; `milho` is an alias of `milho_2safra`; `milho_verao` = 1st-season corn) | no | municipal PAM | Own yield: replaces the PAM yield in the margin; the bad year scales proportionally (own × PAM p20/average); the soybean value also changes the scale S. Source in the items: "provided by the farmer" |
 | `analise_solo` | `{argila_pct, areia_pct, materia_organica_pct` or `carbono_organico_g_kg, ph, cad_mm_cm, profundidade_cm}` | no | SoilGrids | Farmer's soil analysis. Requires clay+sand (sum <= 100) or `cad_mm_cm`. Ranges: percentages 0 to 100, pH 3 to 9, available water capacity 0.3 to 3 mm/cm. With `cad_mm_cm`, that capacity is used directly; otherwise, Saxton & Rawls with the provided values (without organic matter in the analysis, SoilGrids' is used, with a warning). `profundidade_cm` (default 20) only describes the sample, taken as representative of the profile. Replaces SoilGrids in `solo` and in the water balance; `solo.fonte` = "farmer's soil analysis" |
-| `analise_solo` fertility fields | any subset of `p_mg_dm3` (Mehlich-1), `k_cmolc_dm3`, `ca_cmolc_dm3`, `mg_cmolc_dm3`, `al_cmolc_dm3`, `v_pct`, `ctc_cmolc_dm3` (inside `analise_solo`, which may carry only these) | no | not considered | Optional fertility. Interpreted with the Manual de Adubação e Calagem do Paraná classes: **P by clay band** (`argila_pct`, < 250, 250-400, > 400 g/kg; without clay the most demanding band is used and the card says so), K, V% and Al. Adds liming cost (base saturation, NC = (V2 − V1) × CEC / PRNT; needs V% and CEC; V% is only derived from Ca+Mg+K+CEC) and P/K fertilizer cost to the margin, an acidity penalty on `solo` and a recycling bonus. Doses: Manual PR (corn) and CBPTT 2020 (wheat); beans and sorghum doses, lime price and the penalty/bonus sizes carry **no confirmed source** and the card says so. Not informed: nothing is estimated. Sources: `docs/fontes_estado_area.md` |
+| `analise_solo` fertility fields | any subset of `p_mg_dm3` (Mehlich-1), `k_cmolc_dm3`, `ca_cmolc_dm3`, `mg_cmolc_dm3`, `al_cmolc_dm3`, `v_pct`, `ctc_cmolc_dm3` (inside `analise_solo`, which may carry only these) | no | not considered | Optional fertility. Interpreted with the Manual de Adubação e Calagem do Paraná classes: **P by clay band** (`argila_pct`, < 250, 250-400, > 400 g/kg; without clay the most demanding band is used and the card says so), K, V% and Al. Adds liming cost (base saturation, NC = (V2 − V1) × CEC / PRNT; needs V% and CEC; V% is only derived from Ca+Mg+K+CEC) and P/K fertilizer cost to the margin, sourced effects on `solo` (acid soil penalises acid-sensitive crops; low P/K favours brachiaria and radish; low organic matter, by the Manual PR carbon classes of `materia_organica_pct`/`carbono_organico_g_kg`, favours brachiaria and millet and penalises fallow; ±0.15, added without saturating) and a `recuperacao_solo` block per item (full liming, extra P/K, income given up against the top-income option). Doses: Manual PR (corn) and CBPTT 2020 (wheat); beans and sorghum doses, lime price and the effect size carry **no confirmed source** and the card says so. Not informed: nothing is estimated. Sources: `docs/fontes_estado_area.md` |
 | `problemas_area` | list of `nematoide`, `mofo_branco`, `cigarrinha`, `compactacao` | no | not considered | Area problems known to the farmer. Each (problem, crop) cell has one of three levels, `favorece` / `neutro` / `penaliza`, with ONE declared magnitude (±0.15 on `pragas` or `solo`; the direction comes from the literature, the magnitude is our modelling choice). Only cells with a source we read are non-neutral; the card shows the source and caveat (e.g. species of nematode), and flags the plausible cells without source as `efeito sem fonte confirmada` (treated as neutral). Unknown value is a 422 |
 | `restricoes.culturas_excluidas` | list of ids `"<verao>__<segunda>"` or old slugs (= soybean in summer) | no | none | Go to `eliminadas` with the reason "Excluded by the farmer." |
 | `restricoes.maquinas` | `{plataforma_milho, semeadora_consorcio}` (bool) | no | has everything | Summer corn, off-season corn and corn+brachiaria require a corn header (one cost per harvest); corn+brachiaria also requires an intercrop seeder. `false` does NOT eliminate: warning on the card and an outsourcing cost in the margin (BRL 250/ha per harvest and BRL 80/ha, estimates to be validated) |
@@ -213,7 +213,7 @@ returns the old slug.
   estimate to be validated), in addition to the second crop's straw/N bonus.
 
 **Summer income.** The rotation margin is summer + second crop + bonus. The score uses the increment over the municipality's summer soybean:
-`incremental = rotation margin − soybean margin`, `renda = clip(0.5 + incremental / (2·S), 0, 1)`, with S = max(soybean margin, BRL 1,000/ha).
+`incremental = rotation margin − soybean margin`, `renda = 0.5 + 0.5·tanh(incremental / S)`, with S = max(soybean margin, BRL 1,000/ha).
 With soybean in summer the formula is the usual one; summer corn enters with PAM 1st-season corn × DERAL corn price − CONAB 1st-season corn cost
 (Ponta Grossa-PR, the only current Paraná sheet; it uses a reference yield of 12 t/ha, above Western Paraná's, so the summer-corn margin tends to be underestimated).
 The summer crop does not enter the water and climate-risk criteria (only the second window does).
@@ -229,9 +229,9 @@ Output:
 | `dias_ate_colheita` | Days from `data_referencia` to the estimated harvest (absent with `premissa`) |
 | `semeadura_2a` | `{data, origem}`: sowing date of the second window used; `origem`: `derivada`, `informada` or `premissa`. Absent if the harvest is too late |
 | `diagnostico` | Same as `/v1/diagnostico` (if `incluir_diagnostico`) |
-| `agora` | **Main block**: combinations with the **same summer crop** as the current rotation (what enters after this harvest). `{ranking[], alternativas[], eliminadas[]}` |
+| `agora` | **Main block**: combinations with the **same summer crop** as the current rotation (what enters after this harvest). `{ranking[], alternativas[], eliminadas[], empate_tecnico}`. `empate_tecnico` is null or `{ids[], diferenca, limiar, texto}` when one or more options are less than 0.02 below the best score (the tied cards also carry the warning in `avisos`) |
 | `proxima_safra` | Combinations with the **other summer crop** (decision for the next season), compared with the current rotation. Same sowing date of the second window as `agora` (see the known limitation). Same shape as `agora` |
-| `ranking[]` | `posicao`, `id` (`"<verao>__<segunda>"`), `id_legado`, `verao{id,nome}`, `segunda{id,nome}`, `rotacao`, `nota` (0 to 1), `atual`, `criterios{renda,solo,agua,pragas,risco}`, `contribuicoes{}`, `margem{total_r_ha, incremental_r_ha, escala_S_r_ha, itens[{cultura, rendimento_sc_ha, preco, custo, margem_r_ha, fonte}], ano_ruim_r_ha}`, `card{por_que, evidencias, beneficios, lacunas, riscos, avisos, mercado{nivel, texto, estimativa}}`, `irrigacao{lamina_media_mm_ano, custo_r_ha}` (only for irrigated candidates), `zarc{indicado, culturas[{cultura, cultura_zarc, semeadura, decendio, indicado, risco_pct, solos_indicados_pct, portaria, motivo}], segunda_sem_zoneamento, fonte}` (ZARC 2025/2026 check for the municipality; informative, does not change `nota`; null when the table is not built), `ganho_vs_atual` (see below). The top-level `ranking[]`, `alternativas[]` and `eliminadas[]` are kept for compatibility: the first two are aliases of `agora.ranking` and `agora.alternativas`; `eliminadas` is the union of both blocks. `posicao` restarts at 1 in each block |
+| `ranking[]` | `posicao`, `id` (`"<verao>__<segunda>"`), `id_legado`, `verao{id,nome}`, `segunda{id,nome}`, `rotacao`, `nota` (0 to 1), `atual`, `criterios{renda,solo,agua,pragas,risco}`, `contribuicoes{}`, `margem{total_r_ha, incremental_r_ha (used in the score), incremental_preco_atual_r_ha, base_renda ("historico" | "preco_atual"), escala_S_r_ha, itens[{cultura, rendimento_sc_ha, preco, custo, margem_r_ha, fonte}], ano_ruim_r_ha}`, `card{por_que, evidencias, beneficios, lacunas, riscos, avisos, mercado{nivel, texto, estimativa}}`, `irrigacao{lamina_media_mm_ano, custo_r_ha}` (only for irrigated candidates), `zarc{indicado, culturas[{cultura, cultura_zarc, semeadura, decendio, indicado, risco_pct, solos_indicados_pct, portaria, motivo}], segunda_sem_zoneamento, fonte}` (ZARC 2025/2026 check for the municipality; informative, does not change `nota`; null when the table is not built), `historico_renda{cultura, safras[{ano, rendimento_sc_ha, margem_sc_soja_ha}], media_sc_soja_ha, min_sc_soja_ha, max_sc_soja_ha, negativas, fonte}` (off-season corn, corn + brachiaria and wheat only: realized second-crop margin of the last 5 seasons in the municipality, in soybean bags/ha; its mean is the second-crop margin in the income score unless the farmer typed price, cost or yield for that crop), `incerteza{renda{incremental_r_ha, faixa_r_ha[worst, best], origem}, nota_faixa[min, max], nota_por_safra{ano: nota}, risco_climatico{probabilidade, eventos, confianca, texto}, criterios_estimados[]}` (how far to trust the result; `docs/motor.md` §7.1), `ganho_vs_atual` (see below). Each block (`agora`, `proxima_safra`) also has `empate_tecnico` and `estabilidade{safras, primeiro[{id, safras}], texto}` (how often each option would be first repeating each of the last seasons). The top-level `ranking[]`, `alternativas[]` and `eliminadas[]` are kept for compatibility: the first two are aliases of `agora.ranking` and `agora.alternativas`; `eliminadas` is the union of both blocks. `posicao` restarts at 1 in each block |
 | `atual` | Item for the current rotation (when provided). If it is eliminated by a hard rule (soybean in the second window, summer corn before the harvest, etc.), it comes with null `posicao` and `nota`, `eliminada: true` and `motivos[]`, and does not appear in `ranking`/`alternativas`. With a `rotacoes` list that does not include it, it comes with `avaliada: false`. `rotacao_atual` is required, so there is no detection fallback in this endpoint |
 | `alternativas[]` | Alias of `agora.alternativas`: the best of the `agora` block without the current rotation (up to `n_alternativas`; the `proxima_safra` block has its own `alternativas[]`) |
 | `eliminadas[]` | Rotations vetoed by a hard rule, the calendar or a restriction (both blocks): `id`, `id_legado`, `verao`, `segunda`, `rotacao`, `motivos[]` |
@@ -291,15 +291,15 @@ Response (summarized): 2 rotations in `agora` (same summer crop, soybean), 2 in 
 {
   "agora": {
     "ranking": [
-      {"posicao": 1, "id": "soja__milho_safrinha", "id_legado": "milho_safrinha", "nota": 0.715, "atual": true},
-      {"posicao": 2, "id": "soja__sorgo", "id_legado": null, "nota": 0.596, "atual": false}
+      {"posicao": 1, "id": "soja__milho_safrinha", "id_legado": "milho_safrinha", "nota": 0.708, "atual": true},
+      {"posicao": 2, "id": "soja__sorgo", "id_legado": null, "nota": 0.573, "atual": false}
     ],
     "eliminadas": []
   },
   "proxima_safra": {
     "ranking": [
-      {"posicao": 1, "id": "milho_verao__aveia_nabo", "id_legado": null, "nota": 0.576, "atual": false},
-      {"posicao": 2, "id": "milho_verao__milho_safrinha", "id_legado": null, "nota": 0.389, "atual": false,
+      {"posicao": 1, "id": "milho_verao__aveia_nabo", "id_legado": null, "nota": 0.586, "atual": false},
+      {"posicao": 2, "id": "milho_verao__milho_safrinha", "id_legado": null, "nota": 0.488, "atual": false,
        "criterios": {"pragas": 0.25},
        "card": {"riscos": ["... Corn after corn (summer corn + off-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt ..."]}}
     ],
@@ -352,7 +352,7 @@ criterion weighed, and `metodologia.formula` gives the exact formula of the runn
 
 | Criterion | Origin |
 |---|---|
-| `renda` | **Incremental** margin of the second season (BRL/ha) = yield (municipal IBGE PAM) x price - cost (SEAB/DERAL, CONAB) of the second crop (cover/fallow: - cost) + straw/N bonus on the following soybean; soybean, common to all, is left out. Score = `clip(0.5 + incremental / (2·S), 0, 1)`, with S = max(municipal soybean margin, BRL 1,000/ha): incremental +S = 1.0; zero = 0.5; -S = 0. `margem.total_r_ha` (soybean + incremental), `incremental_r_ha` and `escala_S_r_ha` appear in the ranking; `ano_ruim_r_ha` shows the adverse scenario |
+| `renda` | **Incremental** margin of the second season (BRL/ha) = yield (municipal IBGE PAM) x price - cost (SEAB/DERAL, CONAB) of the second crop (cover/fallow: - cost) + straw/N bonus on the following soybean; soybean, common to all, is left out. For off-season corn, corn + brachiaria and wheat the second-crop margin is the mean realized margin of the last 5 seasons in the municipality (better out of sample than the current-price estimate; `docs/validation.md` §6.2), unless the farmer typed price, cost or yield for that crop. Score = `0.5 + 0.5·tanh(incremental / S)`, with S = max(municipal soybean margin, BRL 1,000/ha): zero = 0.5; +S = 0.88; -S = 0.12 (never saturates). `margem.total_r_ha` (soybean + incremental), `incremental_r_ha` and `escala_S_r_ha` appear in the ranking; `ano_ruim_r_ha` shows the adverse scenario |
 | `solo` | SoilGrids (texture, organic matter), effect of cover/straw and of brachiaria/legumes; terrain (NASADEM) for erosion |
 | `agua` | NASA POWER: precipitation - ET0 balance, rain onset, off-season dry spell |
 | `pragas` | Crop history (MapBiomas) and pest/disease cycle break by the rotation |
@@ -499,10 +499,19 @@ Excerpt of `POST /v1/recomendacao` for the per-stage example above (field 72638;
         "verao": {"id": "soja", "nome": "Soja"},
         "segunda": {"id": "milho_braquiaria", "nome": "Milho safrinha + braquiária"},
         "rotacao": "Soja → milho safrinha + braquiária",
-        "nota": 0.768,
+        "nota": 0.794,
         "atual": false,
-        "criterios": {"renda": 0.809, "solo": 0.711, "agua": 0.811, "pragas": 0.65, "risco": 0.83},
-        "margem": {"total_r_ha": 2431.0, "incremental_r_ha": 928.0, "escala_S_r_ha": 1503.0},
+        "criterios": {"renda": 0.914, "solo": 0.711, "agua": 0.811, "pragas": 0.65, "risco": 0.803},
+        "margem": {"total_r_ha": 2994.0, "incremental_r_ha": 1406.0, "incremental_preco_atual_r_ha": 1802.0,
+                   "base_renda": "historico", "escala_S_r_ha": 1192.0},
+        "incerteza": {
+          "renda": {"incremental_r_ha": 1406.0, "faixa_r_ha": [60.0, 2943.0], "origem": "historico"},
+          "nota_faixa": [0.679, 0.817],
+          "nota_por_safra": {"2021": 0.679, "2022": 0.8, "2023": 0.795, "2024": 0.774, "2025": 0.817},
+          "risco_climatico": {"probabilidade": 0.197, "eventos": ["geada no milho safrinha", "déficit hídrico na fase crítica"],
+                              "confianca": "baixa", "texto": "Calibrado na média (...), mas não indica qual safra vai falhar (...)"},
+          "criterios_estimados": ["solo", "pragas"]
+        },
         "ganho_vs_atual": {
           "comparado_com": "soja__milho_safrinha",
           "soja_seguinte_sc": 2.0,
@@ -510,7 +519,7 @@ Excerpt of `POST /v1/recomendacao` for the per-stage example above (field 72638;
           "renda_2a_safra": {"r_ha": -200.0, "origem": "dado: ..."},
           "solo": {"dias_descobertos": -30, "cobertura": 0.3, "origem": "estimativa de catálogo, ..."},
           "agua": {"criterio": -0.017, "origem": "dado: ..."},
-          "risco_climatico": {"criterio": 0.0, "origem": "dado: ..."}
+          "risco_climatico": {"criterio": -0.055, "origem": "dado: ..."}
         }
       }
     ],
@@ -518,14 +527,18 @@ Excerpt of `POST /v1/recomendacao` for the per-stage example above (field 72638;
     "eliminadas": [
       {"id": "soja__soja_safrinha", "id_legado": "soja_safrinha", "rotacao": "Soja → soja safrinha",
        "motivos": ["Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024).", "..."]}
-    ]
+    ],
+    "empate_tecnico": null,
+    "estabilidade": {"safras": [2021, 2022, 2023, 2024, 2025],
+                     "primeiro": [{"id": "soja__milho_braquiaria", "safras": 4}, {"id": "soja__milheto_crotalaria", "safras": 1}],
+                     "texto": "Repetindo a renda realizada de cada uma das últimas 5 safras (2021–2025), ..."}
   },
   "proxima_safra": {
-    "ranking": [{"posicao": 1, "id": "milho_verao__aveia_nabo", "nota": 0.576, "atual": false, "ganho_vs_atual": {"...": "..."}}],
+    "ranking": [{"posicao": 1, "id": "milho_verao__aveia_nabo", "nota": 0.586, "atual": false, "ganho_vs_atual": {"...": "..."}}],
     "alternativas": ["..."],
     "eliminadas": [{"id": "milho_verao__milho_safrinha", "motivos": ["... sowing before the summer harvest ..."]}]
   },
-  "atual": {"posicao": 4, "id": "soja__milho_safrinha", "nota": 0.713, "atual": true, "ganho_vs_atual": null},
+  "atual": {"posicao": 3, "id": "soja__milho_safrinha", "nota": 0.751, "atual": true, "ganho_vs_atual": null},
   "ranking": ["alias of agora.ranking"],
   "alternativas": ["alias of agora.alternativas"],
   "eliminadas": ["union of agora.eliminadas and proxima_safra.eliminadas"],

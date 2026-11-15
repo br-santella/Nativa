@@ -13,6 +13,7 @@ There is no ground-truth label of the kind "rotation X was the right choice on f
 | 3 | Historical backtest | Following the engine in past seasons, would the farmer have earned more? | IBGE PAM (yields and realized prices), CONAB costs, NASA POWER | Done (section 3) |
 | 4 | Expert panel | Do agronomists rank the options like the engine? | Blind ranking by agronomists (Embrapa, IDR-PR, cooperatives) | Not started (depends on people) |
 | 5 | Satellite check | Do real fields behave as the catalog assumes (rotations practised, effect on the following soybean)? | MapBiomas, HLS NDVI | Done (section 5) |
+| 6 | Accuracy changes, out of sample | Do the attempted accuracy improvements predict better on seasons they never saw? | IBGE PAM, NASA POWER, CONAB (leave-one-season-out and past-only tests) | Done (section 6) |
 
 Component checks that already exist: NASA POWER against 7 INMET stations (Tmin correlation 0.94, POWER underestimates frost days by ~40%; `docs/motor.md`, `src/field_shift/climate/station_validation.py`).
 
@@ -92,6 +93,10 @@ Code: `src/field_shift/validation/sensitivity.py` (patches copies of the catalog
 Low priority: bare-soil days, wheat and fallow attributes, corn-on-corn penalty (no effect on the top-3 at ±20 %).
 
 **Consequence for the product.** When the top-2 differ by less than ~0.02, the response should present them as a technical tie, so the recommendation does not look more precise than the data allow. Tracked in `docs/pendencias.md`.
+
+**Rerun after the engine changes of §2.4 and §3.4 (trend yield, water deficit).** On field 72638 corn + brachiaria now leads clearly at the default date (0.821 vs off-season corn 0.774 and millet/crotalaria 0.757). ±20 % on 19 of 62 parameters moves the top-1 or the top-3; with soybean in summer only the prices flip the top-1 (corn −20 % or soybean +20 % → millet/crotalaria). With summer corn the top two are tied (0.623 vs 0.621) and most catalog estimates flip them. Monte Carlo weights: millet/crotalaria 50 % and corn + brachiaria 50 % of the top-1 (millet/crotalaria in the top-3 in 100 %). The numbers above are from the earlier engine.
+
+**Rerun after the §6 changes (track-record income, non-saturating income score, fallow 90 bare days).** Baseline top-3 at the default date: corn + brachiaria 0.795 · millet/crotalaria 0.757 · off-season corn 0.747; late sowing: corn + brachiaria 0.762 · millet/crotalaria 0.757. ±20 % on 29 of 62 parameters moves the top-1 or the top-3. With the default and grain-fill dates only the prices flip the top-1 (soybean +20 % or corn −20 % → millet/crotalaria); in the late scenario (gap 0.005) the catalog attributes of the top-2 also flip it, so that case is still a near tie. Monte Carlo weights: millet/crotalaria first in 59–74 % of the draws, corn + brachiaria in 26–41 %, off-season corn ≤ 1 %. Prices remain the most influential inputs (worst-case Kendall τ 0.56 for corn, 0.64 for soybean, ≥ 0.83 for any catalog estimate).
 
 ### 1.3 How to reproduce
 
@@ -273,8 +278,6 @@ Three checks:
 
 ¹ Needs 5 past seasons, so 782 municipality-years.
 
-![Backtest](figuras/validation_backtest.png)
-
 - **The engine's income logic, as it is today, would have lost 3.4 bags/ha/yr against simply always planting off-season corn** (4.64 vs 8.01). In 24 % of the cases it switched to fallow because the expected corn margin came out negative. Three things combine: the yield underestimate (a), a single year's price snapshot (corn was cheap relative to soybean in 2014, 2015 and 2017), and the CONAB high-tech cost. Corn then paid well in those years (2015, 2016, 2018).
 - **Correcting the yield bias with a trend recovers half of the loss** (regret 4.3 → 2.3). Averaging the price over 3–5 years does not help much. **A track-record estimator** (mean realized margin of the last 5 seasons) brings the hit rate to 82 % and the regret to 1 bag/ha. It is still slightly below "always corn", because off-season corn is the ex-post best in 81 % of the municipality-years in the Oeste.
 - **Price of the soil-oriented recommendations** (fixed strategies, no bonus):
@@ -294,12 +297,66 @@ Three checks:
 
 ### 3.3 Consequences for the engine (tracked in `docs/pendencias.md`)
 
-1. **Expected yield from the trend**, not the plain 10-year mean, for income (bias −12 % → −1 % for off-season corn). Keep p20 for the bad year (calibrated).
-2. **Do not rely on a single price snapshot.** Show the margin with the 5-year price ratio (or the track record) next to the current price, and avoid dropping corn for fallow on a single negative expected margin.
-3. **Replace or recalibrate the dry-spell indicator** (no predictive value against PAM failures). Candidates: a water-balance deficit in the critical phase (the engine already has the FAO-56 balance) or the GWETROOT soil moisture from POWER. Keep the frost indicator.
+1. **Expected yield from the trend** (done, §3.4), not the plain 10-year mean, for income (bias −12 % → −1 % for off-season corn). Keep p20 for the bad year (calibrated).
+2. **Do not rely on a single price snapshot** (track record shown on the card, §3.4). Show the margin with the 5-year price ratio (or the track record) next to the current price, and avoid dropping corn for fallow on a single negative expected margin.
+3. **Replace or recalibrate the dry-spell indicator** (done: water deficit, §2.4 and §3.4) (no predictive value against PAM failures). Candidates: a water-balance deficit in the critical phase (the engine already has the FAO-56 balance) or the GWETROOT soil moisture from POWER. Keep the frost indicator.
 4. **Make the income trade-off of cover crops explicit** on the card: millet/crotalaria gives up ~12 bags/ha/yr of realized income against off-season corn in the Oeste history.
 
-### 3.4 How to reproduce
+### 3.4 After the engine changes (trend yield, water deficit, track record)
+
+Changes made after 3.3 (items 1–3; item 4 is still open):
+
+- **Expected yield** = linear trend of the last 10 PAM years projected to the next season, clipped to the window's min–max (`pam.produtividade.expected_yield`); the bad year is p20 of the same window, capped at the expected yield.
+- **Water deficit** in the critical phase replaces the dry spell in the risk criterion (§2.4).
+- **Track record**: each card of off-season corn, corn + brachiaria and wheat shows the realized margin of the last 5 seasons in the municipality, in soybean bags/ha (`income.history`, item field `historico_renda`). Informative only: it does not enter the score.
+- **Technical tie**: when options are less than 0.02 below the best score, the block carries `empate_tecnico` and their cards say so (§1.2).
+
+Same backtest, rerun (Oeste, 50 municipalities):
+
+**Yield expectation** (median error against the realized yield of the next season):
+
+| Crop | Bias: 10-y mean → engine | Abs. error: 10-y mean → engine | Below the bad year (p20 capped) |
+|---|---|---|---|
+| Soybean | −10.6 % → −6.3 % | 15.7 % → 15.8 % | 19 % |
+| Off-season corn | −11.7 % → **−1.2 %** | 18.8 % → 16.8 % | 15 % |
+| Summer corn | −9.4 % → −1.2 % | 15.6 % → 15.1 % | 18 % |
+| Wheat | −7.2 % → −0.2 % | 20.4 % → 19.8 % | 20 % |
+| Beans (2nd season) | −3.7 % → 0.0 % | 15.1 % → 17.2 % | 26 % |
+
+The clip changes little on average (it matters in municipalities with one extreme year at the end of the window). Soybean is still underestimated by 6 % (the 2018/19 and 2021/22 droughts are inside the window).
+
+**Climate risk vs PAM off-season corn failures** (1,143 municipality-years, 2003–2025, base failure rate 23 %):
+
+| Signal | Share of years | Failure if flagged | Failure if not | Mean yield deviation if flagged |
+|---|---|---|---|---|
+| Frost (unchanged) | 19 % | 30 % | 21 % | −6.4 % |
+| Dry spell (old) | 22 % | 21 % | 23 % | −1.1 % |
+| **Water deficit (new)** | 6 % | **65 %** | 20 % | **−26.7 %** |
+| Frost or dry spell (old) | 38 % | 26 % | 21 % | −3.6 % |
+| **Frost or deficit (new)** | 25 % | **38 %** | 18 % | −11.0 % |
+
+- The engine's mean loss probability for off-season corn (sown 15/02) went from 37 % to **24 %**, against an observed failure rate of 23 %: it is now calibrated on average.
+- The deficit is precise but rare: it flags 17 % of the failures (2021 is the big one: 70 % of the municipalities). Failures in 2005, 2008, 2011 and 2024 (30–54 % of the municipalities) have little or no frost and no deficit in the indicators; heat, pests and diseases (e.g. leafhopper/corn stunt) and excess rain at harvest are not modelled.
+- Across municipalities, neither the old nor the new loss probability ranks the observed failure frequency (Spearman ≈ 0): failures are driven by the season, which hits the whole region; the 50 km climate cells do not separate neighbouring municipalities.
+
+**Decision backtest** (income only, soybean bags/ha/yr, no bonus, 882 municipality-years 2008–2025):
+
+| Estimator | Engine pick | Always corn | Ex-post best | Regret | Hit rate | Picks fallow |
+|---|---|---|---|---|---|---|
+| Old engine (10-y mean, last-year price) | 4.64 | 8.01 | 8.93 | 4.29 | 57 % | 24 % |
+| **Engine now** (clipped trend, last-year price) | **6.63** | 8.01 | 8.93 | 2.30 | 71 % | 14 % |
+| Engine yield, 5-y mean price ratio | 6.71 | 8.01 | 8.93 | 2.23 | 72 % | 11 % |
+| Track record (5-y realized margin) | 8.64 | 8.89 | 9.68 | 1.04 | 82 % | 2 % |
+
+- The trend yield recovers **+2.0 bags/ha/yr** (43 % of the regret). It still loses 1.4 bags/ha/yr against always planting corn: a single expected margin, built with one year's price ratio and a current cost, is negative for corn in some years where corn turned out positive.
+- A 5-year price ratio adds little (+0.1). The track record is the best estimator (regret 1.0), which is why the card now shows it. It now also enters the income score (§6.2).
+- With the catalog bonus added, the income-only decision picks corn + brachiaria in 82 % of the cases (millet/crotalaria 13 %, wheat 5 %) and reaches 8.0 bags/ha/yr vs 9.0 for always corn.
+
+**Side effect on field 72638.** With the trend, the expected off-season corn yield in Toledo is 117 sc/ha (10-y mean 101) and soybean 50 sc/ha (mean 53). Corn + brachiaria is now first (0.821) and off-season corn second (0.774); millet/crotalaria (0.757) is third, and the technical tie of §1 disappears at the default sowing date (it remains at 15/03: 0.757 vs 0.744). The income criterion of both corn options is clipped at 1.0 (incremental margin R$ 1,762–1,802/ha against a scale S of R$ 1,192/ha), so income no longer separates them; tracked in `docs/pendencias.md`.
+
+![Backtest](figuras/validation_backtest.png)
+
+### 3.5 How to reproduce
 
 ```bash
 uv run python scripts/validation/backtest.py      # ~1 min; prints the tables
@@ -361,7 +418,7 @@ The raw difference (+0.03 peak) disappears once field and season are controlled 
 
 ### 5.3 Consequences for the engine (tracked in `docs/pendencias.md`)
 
-1. **Review `dias_descobertos`** of fallow vs second crops (satellite difference ~30 days, catalog 90), or state in the card that it is an agronomic estimate.
+1. **Review `dias_descobertos`** of fallow vs second crops (satellite difference ~30 days, catalog 90), or state in the card that it is an agronomic estimate. Done (§6.4): fallow 150 → 90 (corn 60 + the measured ~31); the covers were not measured (too rare in the sample) and stay estimates.
 2. **The soybean bonus stays a literature estimate**: NDVI does not detect it; the evidence must come from field trials (paused literature survey) or yield data per field.
 3. Confirmed: soybean summer and soy → off-season corn as the inferred current rotation are the regional norm.
 
@@ -373,3 +430,81 @@ uv run pytest tests/test_validation_satellite.py   # synthetic NDVI series: dete
 ```
 
 Outputs (`data/processed/validation/`): `satellite_ndvi_fields.parquet` (per field × date), `satellite_field_years.csv`, `satellite_following_soy.csv`. Code: `src/field_shift/validation/satellite.py`. Figure: `docs/figuras/validation_satellite.png`.
+
+## 6. Accuracy changes, tested out of sample
+
+Three attempts to make the engine more accurate, each kept only if it predicts better on seasons it did not see.
+
+**Overfitting guard.** Off-season corn fails across the whole Oeste in the same seasons, so the 1,143 municipality-years hold only ~23 independent seasons. Every comparison is made at season level:
+
+- **Leave one season out:** 23 rounds; in each one the model is trained on 22 seasons and predicts the season left out. Every season gets an out-of-sample prediction.
+- **Forward (past only):** season Y is predicted by a model trained only on seasons before Y (13 test seasons, 2013–2025). This is how the engine is used.
+- **Season-block bootstrap:** 90 % intervals resample whole seasons, not municipality-years, so the 50 municipalities of the same season are not counted as 50 independent cases.
+- The candidate models were fixed in advance from agronomy (no feature search on the data), and a change is adopted only if its out-of-sample gain is positive with the interval above zero.
+
+### 6.1 Climate risk: a richer failure model does not generalize
+
+Target: PAM off-season corn failure (yield ≥ 15 % below the municipal trend), base rate 22.8 %. Models (logistic regression, standardized inputs, fixed L2 C = 1): the engine's flags (frost ≤ 3 °C, water deficit ETa/ETc < 0.55), their continuous versions (frost degree-days, unmet share of the water demand), + heat at flowering (days with Tmax ≥ 32 °C, sowing +50 to +85 days) and rain at harvest (sowing +120 to +160 days), + mean temperature at establishment (leafhopper proxy). Score: Brier skill score (BSS) against the base rate; > 0 is better than always predicting 23 %.
+
+| Model | BSS in-sample | BSS leave-one-season-out [90 % interval] | BSS forward (past only) [90 % interval] |
+|---|---|---|---|
+| Engine flags (frost, deficit) | +0.076 | +0.006 [−0.08, +0.09] | +0.008 [−0.21, +0.15] |
+| Continuous frost + deficit | +0.061 | −0.105 [−0.37, +0.05] | −0.128 [−0.59, +0.14] |
+| + heat at flowering + rain at harvest | **+0.132 [+0.01, +0.24]** | **−0.086** [−0.45, +0.13] | **−0.315** [−1.13, +0.13] |
+| + establishment temperature | +0.144 [+0.03, +0.25] | −0.081 [−0.44, +0.13] | −0.301 [−0.99, +0.08] |
+
+- **This is the overfitting case.** The richer models look significantly better on the seasons they were fitted on (interval above zero) and are worse than the plain base rate on seasons they did not see. With ~23 seasons, every extra variable mostly learns the particular bad years (2021 alone drives most of the deficit signal).
+- **The engine's flags are calibrated but carry no out-of-sample skill** (BSS ≈ 0). Within a season they rank municipalities barely better than chance (AUC 0.53).
+- **There is nothing to rank between municipalities.** Permuting failures among municipalities within each season gives the same spread of municipal failure rates as observed (SD 0.069 vs 0.072 by chance, p = 0.66). The Spearman ≈ 0 of §3.4 is the expected result, not a defect.
+- **Decision: the risk criterion is unchanged.** The response now states its confidence (`incerteza.risco_climatico.confianca` = "baixa" for off-season corn, "não validada" for the others; `docs/motor.md` §7.1).
+
+### 6.2 Income: the 5-season track record enters the score
+
+Decision backtest of §3 (income only, soybean bags/ha/yr, no bonus) on the 782 municipality-years where the track record exists (2010–2025), same sample for both:
+
+| Second-crop margin in the score | Engine pick | Always corn | Ex-post best | Regret | Hit rate | Picks fallow | Margin error (MAE) |
+|---|---|---|---|---|---|---|---|
+| Previous engine: trend yield × last-year price − current cost | 7.39 | 8.89 | 9.68 | 2.29 | 72 % | 15 % | 4.63 |
+| **Current engine: mean realized margin of the last 5 seasons** | **8.64** | 8.89 | 9.68 | **1.04** | **82 %** | **2 %** | **3.73** |
+
+- Gain +1.26 bags/ha/yr. It is better in 13 of 16 seasons (1 tie), and the 90 % season-bootstrap interval is +0.60 to +2.05.
+- The margin error falls for every crop with a record: off-season corn 9.98 → 7.89, wheat 7.88 → 6.68 bags/ha.
+- **No parameter was tuned.** The 5-season window was fixed before this test (§3.4). Blends between the two estimators (weights 0.25 / 0.5 / 0.75) were all worse than the track record alone, so the simplest option won.
+- **Scope.** The track record is used for off-season corn, corn + brachiaria and wheat, which have a CONAB cost series. When the farmer types their own price, cost or yield for the crop, or picks a cost line other than COE, the current-price estimate is kept.
+- **Still below "always corn" (8.64 vs 8.89).** Off-season corn is the ex-post best in 81 % of the Oeste municipality-years; the remaining gap comes from seasons where the record was dragged down by one failure (e.g. 2021).
+
+### 6.3 Income criterion no longer saturates
+
+The earlier clip(0.5 + incremental / (2·S), 0, 1) put both corn options of field 72638 at exactly 1.0 (incremental BRL 1,762–1,802 > S = 1,192), so income could not separate them. It is now 0.5 + 0.5·tanh(incremental / S):
+
+- same slope near zero;
+- strictly increasing, never 0 or 1;
+- no new parameter, and the same S for every block.
+
+On field 72638 the two corn options now get 0.914 and 0.909. This is a correctness fix, not a predictive one: the income-only backtest is unchanged, because the ranking by margin does not depend on the transform.
+
+### 6.4 Fallow bare-soil days from the satellite
+
+`dias_descobertos` of fallow goes from 150 (estimate) to 90. That is off-season corn (60) plus the ~31 extra bare days/yr measured in single- versus double-crop years around field 72638 (§5.2; HLS NDVI < 0.35, 1,278 field-years). This is a measurement, not a fit, but it has no outcome to validate against: NDVI < 0.35 is not the same as "no cover". The fallow score rises 0.55 → 0.57 and stays near the bottom. The covers were not measured (too rare in the sample).
+
+Not done, with the reason:
+- **Field history from MapBiomas:** the annual classes do not show the second crop, so it adds nothing to the current rotation the farmer already gives (and the NDVI peak count of §5 already confirms soy → corn as the norm).
+- **Soybean harvest date from the Deral regional bulletins:** no Toledo/Cascavel series was found (`docs/fontes_validacao_pendencias.md`). It stays pending.
+
+### 6.5 Effect on field 72638 (default date 01/02)
+
+| | Before | After |
+|---|---|---|
+| Top-3 | corn + brachiaria 0.821 · off-season corn 0.774 · millet/crotalaria 0.757 | corn + brachiaria 0.795 · millet/crotalaria 0.757 · off-season corn 0.747 |
+| Income, corn + brachiaria / off-season corn | 1.000 / 1.000 (saturated) | 0.914 / 0.909 |
+| Income of wheat | 0.000 (clipped) | 0.196 (track record −8 bags/ha, better than the −1,780 BRL/ha current-price estimate) |
+| Uncertainty in the response | technical tie only | + `incerteza` per item (income and score range, score per season, risk confidence) and `estabilidade` per block: corn + brachiaria is first in 4 of the 5 seasons 2021–2025 |
+
+### 6.6 How to reproduce
+
+```bash
+uv run python scripts/validation/precision.py      # ~1 min; failure models (3 evaluations) and income estimator before/after
+uv run pytest tests/test_history.py              # track record in the score, farmer-data fallback, tanh, uncertainty block
+```
+
+Outputs (`data/processed/validation/`): `precision_failure_models.csv`, `precision_income.csv`, `precision_income_by_season.csv`. Code: `src/field_shift/validation/failure_model.py`, `src/field_shift/income/history.py` (`apply_to_income`), `src/field_shift/app/engine.py` (`income_score`, `uncertainty`).

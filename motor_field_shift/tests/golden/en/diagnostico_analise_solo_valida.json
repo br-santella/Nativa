@@ -650,7 +650,7 @@
     "k": "medio",
     "p": "baixo"
    },
-   "fonte": "farmer's soil analysis; classes: Paraná Fertilization and Liming Manual (SBCS/NEPAR, Pauletti & Motta), Tables 4–6 reproduced in SENAR-AR/PR, PR.0420 (2026)",
+   "fonte": "farmer's soil analysis; classes: Manual de Adubação and Calagem para o Estado do Paraná (SBCS/NEPAR, Pauletti & Motta), Quadros 4–6 reproduzidos in SENAR-AR/PR, PR.0420 (2026)",
    "nao_informados": [
     "ca_cmolc_dm3",
     "mg_cmolc_dm3",
@@ -798,7 +798,7 @@
    "fonte": "IBGE PAM",
    "municipio": "Toledo",
    "rendimento_usado": "Municipality PAM (IBGE code 4127700)",
-   "texto": "Expected yield in Toledo (PAM trend 2016–2025, projected to the next season): soybean 50 bags/ha, 2nd-season corn 117 bags/ha, wheat 36 bags/ha, oat 1627 kg/ha."
+   "texto": "Rendimento esperado in Toledo (tendência da PAM 2016–2025, projetada para a próxima safra): soybean 50 bags/ha, 2nd-season corn 117 bags/ha, wheat 36 bags/ha, oat 1627 kg/ha."
   },
   "relevo": {
    "altitude_max": 671.0,

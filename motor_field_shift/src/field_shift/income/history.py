@@ -1,4 +1,4 @@
-"""Track record of the second crop: realized margin of the last seasons in the municipality (informative, not in the score).
+"""Track record of the second crop: realized margin of the last seasons in the municipality (used in the income score).
 
 For each sold second crop with a historical cost series (off-season corn, corn + brachiaria, wheat), and each of the last
 `SEASONS` harvest years with data:
@@ -12,6 +12,12 @@ price levels can be compared without a deflator. The bonus on the following soyb
 Why: in the historical backtest (docs/validation.md §3) a decision based on the 5-season track record recovered most of the
 gap to the ex-post best choice (8.6 vs 8.9 bags/ha/yr), while the price snapshot alone lost 3.4 bags/ha/yr against always
 planting corn. The card shows it next to the current-price margin so the farmer sees the spread of good and bad seasons.
+
+Income score (docs/validation.md §6.2): for off-season corn, corn + brachiaria and wheat, the second-crop margin that enters the
+income criterion is the track-record mean × the soybean price in use, instead of the current-price estimate (yield trend × current
+price − current cost). Out of sample (Oeste, 2010–2025) it chose better in 13 of 16 seasons (+1.26 soybean bags/ha/yr, 90 %
+season-bootstrap interval +0.60 to +2.05), with no fitted parameter. The current-price estimate stays when the farmer typed
+their own price, cost or yield for that crop, or picked a cost line other than COE (the record is built on the COE).
 """
 from __future__ import annotations
 
@@ -120,14 +126,41 @@ def track_record(cod_ibge: str | None, nome: str, seasons: int = SEASONS) -> dic
                        f"sem o bônus na soja seguinte"))
 
 
-def text(tr: dict | None) -> str | None:
+def _uses_current_price(itens: list[dict], keys: list[str], cost_line: str) -> bool:
+    """True when the farmer gave their own data for the second crop (price, cost or yield) or a cost line other than COE: then
+    the current-price estimate is the more specific one and the track record does not replace it."""
+    own = any(i.get("preco_usuario") or i.get("custo_usuario") or i.get("prod_usuario") for i in itens if i["chave"] in keys)
+    return own or cost_line != "coe"
+
+
+def apply_to_income(margins: dict, catalog: dict, cod_ibge: str | None) -> dict:
+    """Set the income basis of each candidate. For second crops with a track record (and no farmer data for them), the
+    second-crop margin in `incremental` is replaced by the track-record mean × the soybean price in use; the current-price
+    value is kept in `incremental_preco_atual`. Adds `base_renda` ("historico" | "preco_atual") and `historico_sc_soja_ha`."""
+    for name, m in margins.items():
+        c = catalog[name]
+        m["incremental_preco_atual"] = m["incremental"]
+        m["base_renda"], m["historico_sc_soja_ha"], m["historico_safras"] = "preco_atual", None, None
+        tr = track_record(cod_ibge, c["segunda"])
+        if tr is None or _uses_current_price(m["itens"], c["renda_itens"], m["linha_custo"]):
+            continue
+        current = sum(i["margem"] for i in m["itens"] if i["chave"] in c["renda_itens"] and not i.get("extra"))
+        m["incremental"] = m["incremental"] - current + tr["media_sc_soja_ha"] * m["preco_soja"]
+        m["base_renda"], m["historico_sc_soja_ha"] = "historico", tr["media_sc_soja_ha"]
+        m["historico_safras"] = {r["ano"]: r["margem_sc_soja_ha"] for r in tr["safras"]}
+    return margins
+
+
+def text(tr: dict | None, in_score: bool = False) -> str | None:
     """Evidence line of the card."""
     if tr is None:
         return None
     years = ", ".join(f"{r['ano']}: {r['margem_sc_soja_ha']:+.0f}" for r in tr["safras"]).replace(".", ",")
-    values = [tr["cultura"].replace(".", ","), years, f"{tr['media_sc_soja_ha']:.1f}".replace(".", ","), tr["fonte"]]
+    usage = ("A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas)." if in_score
+             else "Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).")
+    values = [tr["cultura"].replace(".", ","), years, f"{tr['media_sc_soja_ha']:.1f}".replace(".", ","), tr["fonte"], usage]
     if tr["negativas"]:
         return Msg("Histórico de renda do {0} no município (margem realizada, sc de soja/ha): {1}; média {2}; margem negativa em "
-                   "{4} de {5}. Fonte: {3}. Informativo: não entra na nota.", *values, str(tr["negativas"]), str(len(tr["safras"])))
-    return Msg("Histórico de renda do {0} no município (margem realizada, sc de soja/ha): {1}; média {2}. Fonte: {3}. "
-               "Informativo: não entra na nota.", *values)
+                   "{5} de {6}. Fonte: {3}. {4}", *values, str(tr["negativas"]), str(len(tr["safras"])))
+    return Msg("Histórico de renda do {0} no município (margem realizada, sc de soja/ha): {1}; média {2}. Fonte: {3}. {4}",
+               *values)

@@ -26,7 +26,7 @@ def _eliminated(block):
     return {e["id"]: e["motivos"] for e in block["eliminadas"]}
 
 
-# --------------------------------------------------------------------------- pure calendar
+# Pure calendar
 def test_stage_days():
     assert [e["dias"] for e in cal.STAGES["soja"].values()] == [90, 65, 48, 32, 10, 0]
     assert list(cal.STAGES["milho_verao"]) == ["vegetativo", "pendoamento", "grao_leitoso", "grao_farinaceo", "maturacao", "colhida"]
@@ -68,7 +68,7 @@ def test_invalid_expected_harvest(x):
         cal.resolver("soja", None, x, date(2026, 12, 1))
 
 
-# --------------------------------------------------------------------------- exemplo principal
+# Exemplo principal
 def test_soy_grain_fill_field_72638():
     r = _rec(summer_stage="enchimento_graos", reference_date=REF)
     assert r["cultura_atual"] == {"id": "soja", "nome": "Soja"}
@@ -123,7 +123,7 @@ def test_current_summer_corn_uses_farmer_harvest():
     assert r["cultura_atual"]["id"] == "milho_verao"
 
 
-# --------------------------------------------------------------------------- colheita tarde demais
+# Colheita tarde demais
 def test_too_late_harvest_eliminates_only_sowing_followers():
     r = _rec(summer_stage="vegetativo", reference_date="2026-12-20")  # colheita ~20/03
     assert r["colheita_estimada"] == {"data": "20/03", "origem": "estagio"} and r["semeadura_2a"] is None
@@ -136,7 +136,7 @@ def test_too_late_harvest_eliminates_only_sowing_followers():
     assert all(x["ganho_vs_atual"] is None for x in r["agora"]["ranking"])  # without the current one, nothing to compare
 
 
-# --------------------------------------------------------------------------- precedence and inputs
+# Precedence and inputs
 def test_expected_harvest_beats_stage_and_sowing_beats_derived():
     r = _rec(summer_stage="vegetativo", expected_harvest="20/01", reference_date=REF)
     assert r["colheita_estimada"] == {"data": "20/01", "origem": "informada"} and r["dias_ate_colheita"] == 50
@@ -171,7 +171,7 @@ def test_invalid_inputs():
         _rec(expected_harvest="2027-01-20")
 
 
-# --------------------------------------------------------------------------- rotacoes split into the blocks
+# `rotacoes` split into the blocks
 def test_rotations_land_in_the_right_block():
     requested = [{"verao": "soja", "segunda": "milho_safrinha"}, {"verao": "soja", "segunda": "aveia"}, {"verao": "soja", "segunda": "soja_safrinha"},
                {"verao": "milho_verao", "segunda": "aveia_nabo"}, {"verao": "milho_verao", "segunda": "milho_safrinha"}]
@@ -185,7 +185,7 @@ def test_rotations_land_in_the_right_block():
     assert r["proxima_safra"]["ranking"][0]["ganho_vs_atual"]["comparado_com"] == SOYBEAN
 
 
-# --------------------------------------------------------------------------- /v1/opcoes
+# /v1/opcoes
 def test_options_stages():
     o = {c["id"]: c for c in options()["culturas_verao"]}
     assert [(e["id"], e["dias_ate_colheita"]) for e in o["soja"]["estagios"]] == [

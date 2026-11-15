@@ -83,7 +83,7 @@ def catalog_overrides(fn: Callable[[dict], None]) -> Iterator[None]:
         E.CATALOG.update(saved)
 
 
-# --------------------------------------------------------------------------- parameters
+# Parameters
 
 
 @dataclass(frozen=True)
@@ -165,7 +165,7 @@ def parameters() -> list[Param]:
     return ps
 
 
-# --------------------------------------------------------------------------- metrics
+# Metrics
 
 
 def compare(base: list[str], new: list[str]) -> dict:

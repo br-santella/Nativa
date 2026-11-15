@@ -46,7 +46,7 @@ POWER_URL = "https://power.larc.nasa.gov/api/temporal/daily/point"
 UA = {"User-Agent": "field-shift-hackathon/0.1 (pesquisa academica)"}
 
 
-# ----------------------------------------------------------------------------- 1. Area
+# Area
 def configure(region: str):
     """Point the global paths to the chosen region (module default: oeste_pr)."""
     global RAW, PROC, MESO, REGION, MUN_GEOJSON, POWER_DIR, INMET_ZIPS
@@ -104,7 +104,7 @@ def list_points() -> pd.DataFrame:
     return pd.DataFrame(lines)
 
 
-# ----------------------------------------------------------------------------- 2. POWER
+# POWER
 def download_point(pid: str, lat: float, lon: float, params: list[str]) -> dict | None:
     f = POWER_DIR / f"{pid}.json"
     if f.exists():
@@ -175,7 +175,7 @@ def consolidate_power(pts: pd.DataFrame):
           f"points without a file: {missing or 'none'}")
 
 
-# ----------------------------------------------------------------------------- 3. INMET
+# INMET
 def cmd_inmet():
     from field_shift.climate.inmet import process_inmet
     gdf = cmd_area()
@@ -184,7 +184,7 @@ def cmd_inmet():
     process_inmet(bbox, INMET_ZIPS, PROC, UA)
 
 
-# ----------------------------------------------------------------------------- 4/5
+# Indicators
 def cmd_indicators():
     from field_shift.climate.indicators import build_indicators
     build_indicators(PROC)

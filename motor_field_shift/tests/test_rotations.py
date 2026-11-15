@@ -23,7 +23,7 @@ def _eliminated(r):
     return {e["id"]: e["motivos"] for e in r["eliminadas"]}
 
 
-# --------------------------------------------------------------------------- calendar and legal rules
+# Calendar and legal rules
 @pytest.mark.parametrize("sow_date", E.SOWINGS_2ND)
 def test_soy_in_second_window_always_eliminated(sow_date):
     el = _eliminated(_rec(sowing_second=sow_date))
@@ -67,7 +67,7 @@ def test_valid_sowings_in_options():
     assert c["soja__milho_safrinha"]["id_legado"] == "milho_safrinha" and "id_legado" not in c["soja__sorgo"]
 
 
-# --------------------------------------------------------------------------- milho sobre milho
+# Milho sobre milho
 def test_corn_on_corn_penalizes_and_does_not_eliminate():
     r = _rec(sowing_second="01/03")
     ids = _by_id(r)
@@ -82,7 +82,7 @@ def test_corn_on_corn_penalizes_and_does_not_eliminate():
     assert not any("cigarrinha" in x for x in ids["soja__milho_safrinha"]["card"]["riscos"])
 
 
-# --------------------------------------------------------------------------- rotation benefit and summer income
+# Rotation benefit and summer income
 def test_summer_corn_income():
     r = _rec(sowing_second="01/03", rotations=[SOYBEAN_CORN, {"verao": "milho_verao", "segunda": "aveia"}, {"verao": "soja", "segunda": "aveia"}])
     ids = _by_id(r)
@@ -105,11 +105,11 @@ def test_summer_corn_income():
 def test_summer_soy_keeps_old_scores():
     all_ = _rec(sowing_second="01/02")
     old = {x["id"]: x["nota"] for x in all_["ranking"] if "id_legado" in x}
-    assert old == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.821, "milho_safrinha": 0.774, "milheto_crotalaria": 0.757,
-                                                     "aveia": 0.7, "pousio": 0.55, "trigo": 0.466}.items()}
+    assert old == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.795, "milho_safrinha": 0.747, "milheto_crotalaria": 0.757,
+                                                     "aveia": 0.7, "pousio": 0.57, "trigo": 0.524}.items()}
 
 
-# --------------------------------------------------------------------------- culturas novas
+# Culturas novas
 def test_new_crops_have_water_income_and_source():
     r = _rec(sowing_second="15/02")
     ids = _by_id(r)
@@ -144,7 +144,7 @@ def test_no_buyer_for_sorghum_and_beans():
     assert "Sem comprador local informado pelo produtor (feijao)" in el["milho_verao__feijao_safrinha"][0]
 
 
-# --------------------------------------------------------------------------- rotacoes
+# `rotacoes` input
 def test_rotations_evaluates_only_requested():
     requested = [{"verao": "milho_verao", "segunda": "aveia_nabo"}, SOYBEAN_CORN, {"verao": "soja", "segunda": "sorgo"},
                {"verao": "soja", "segunda": "soja_safrinha"}, {"verao": "milho_verao", "segunda": "milho_safrinha"}]
@@ -183,7 +183,7 @@ def test_invalid_rotations(rotations):
         _rec(rotations=rotations)
 
 
-# --------------------------------------------------------------------------- slugs antigos e ids
+# Slugs antigos e ids
 def test_old_slugs_equal_new_ids():
     a = _rec(current_rotation="milho_safrinha", constraints={"culturas_excluidas": ["trigo"]})
     b = _rec(current_rotation="soja__milho_safrinha", constraints={"culturas_excluidas": ["soja__trigo"]})

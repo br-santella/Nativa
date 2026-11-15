@@ -12,7 +12,7 @@ def recommend(area, **kw):
     return _recommend(area, **kw)
 
 # Scores of the 6 old rotations (summer soybean), by old slug (`id_legado`): they do not change with the larger catalog (absolute scale).
-EXPECTED = {"milho_braquiaria": 0.821, "milho_safrinha": 0.774, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.55, "trigo": 0.466}
+EXPECTED = {"milho_braquiaria": 0.795, "milho_safrinha": 0.747, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.57, "trigo": 0.524}
 
 
 def _old(r):
@@ -34,14 +34,17 @@ def test_field_72638():
     assert [e["id"] for e in r["eliminadas"]][0] == "soja__soja_safrinha" and len(r["eliminadas"]) == 7
     # incremental margin and S scale (Cascavel soybean); rounded output (R$ without decimals, criteria with 3)
     m = _rk(r)
-    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 1762 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1802
+    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 1370 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1406
+    assert m["milho_safrinha"]["margem"]["incremental_preco_atual_r_ha"] == 1762 and m["milho_safrinha"]["margem"]["base_renda"] == "historico"
     assert m["trigo"]["margem"]["escala_S_r_ha"] == 1192
-    assert r["ranking"][0]["criterios"]["renda"] == 1.0 and m["trigo"]["criterios"]["renda"] == 0.0  # both clipped
+    # income never saturates: the two corn options are separated and no one sits at 0 or 1
+    assert 0.9 < m["milho_safrinha"]["criterios"]["renda"] < m["milho_braquiaria"]["criterios"]["renda"] < 1.0
+    assert 0.0 < m["trigo"]["criterios"]["renda"] < 0.5
     # "why" compared with the current one
     top = r["ranking"][0]["card"]["por_que"]
-    assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top  # income is clipped at 1 for both corn options
+    assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top
     current = r["atual"]["card"]["por_que"]
-    assert current.startswith("É a rotação atual; ficou em 2º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
+    assert current.startswith("É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
     print("72638", round(dt, 2), "s", [(x["id"], round(x["nota"], 2)) for x in r["ranking"]])
 
 
@@ -90,7 +93,7 @@ def test_options_and_current_eliminated():
     assert r["atual"]["eliminada"] and r["atual"]["id"] == "soja__soja_safrinha" and not any(x["atual"] for x in r["ranking"])
 
 
-# --------------------------------------------------------------------------- optional inputs (own data)
+# Optional inputs (own data)
 T = {"talhao_id": "72638"}
 TYPICAL_SOIL = {"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "cad_mm_cm": 1.4}
 
@@ -253,12 +256,12 @@ if __name__ == "__main__":
 
 
 def test_technical_tie():
-    # 15/03: millet/crotalaria and corn + brachiaria are less than 0.02 apart on field 72638
-    r = recommend({"talhao_id": "72638"}, sowing_second="15/03", include_diagnosis=False)
+    # 15/03 with income weight 6: millet/crotalaria and corn + brachiaria are less than 0.02 apart on field 72638
+    r = recommend({"talhao_id": "72638"}, sowing_second="15/03", pesos={"renda": 6}, include_diagnosis=False)
     e = r["agora"]["empate_tecnico"]
     assert e is not None and e["ids"][:2] == ["soja__milheto_crotalaria", "soja__milho_braquiaria"] and 0 <= e["diferenca"] < 0.02
     tied = [x for x in r["agora"]["ranking"] if x["id"] in e["ids"]]
     assert all(x["card"]["avisos"][0].startswith("Empate técnico") for x in tied)
     assert not any(a.startswith("Empate técnico") for x in r["agora"]["ranking"] if x["id"] not in e["ids"] for a in x["card"]["avisos"])
-    # 15/01: corn + brachiaria clearly ahead
+    # default weights at 15/01: corn + brachiaria clearly ahead
     assert recommend({"talhao_id": "72638"}, sowing_second="15/01", include_diagnosis=False)["agora"]["empate_tecnico"] is None

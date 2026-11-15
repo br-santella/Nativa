@@ -45,7 +45,7 @@ Mapping of the NATIVA screen sliders (0–100%) to `pesos` (0–10):
 | Soil (clay, sand, organic C, pH, available water capacity) | SoilGrids | 250 m | `diagnostico.solo` |
 | Terrain (elevation, slope, Embrapa class) | NASADEM | 30 m | `diagnostico.relevo` |
 | Crop history | MapBiomas | 2019–2024 | `diagnostico.historico` |
-| Municipality and average yield | IBGE PAM | Last 10 years | `diagnostico.area.municipio`, `diagnostico.produtividade` |
+| Municipality and expected yield (trend) | IBGE PAM | Last 10 years | `diagnostico.area.municipio`, `diagnostico.produtividade` |
 | Price | SEAB/DERAL-PR | 12-month average | `ranking[].margem.itens[].preco` |
 | Cost | CONAB COE (Londrina/Ponta Grossa) | Latest season | `ranking[].margem.itens[].custo` |
 | Legal rules (soybean-free period, soybean after soybean) | ADAPAR (free period 02/06–31/08) and Ordinance SDA/MAPA 1.124/2024 | In force (check before the pitch) | `eliminadas[]`, `avisos` |

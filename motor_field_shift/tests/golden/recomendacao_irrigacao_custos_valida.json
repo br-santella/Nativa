@@ -20,7 +20,7 @@
        "Irrigação: custo extra R$ 218/ha (lâmina média 73 mm/ano × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bônus na soja seguinte: 6 sc/ha × R$ 120.14/sc = R$ 721/ha (3 sc/ha do milho verão no lugar da soja + 3 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 1.603/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 411/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 11/ha/ano.",
-       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 73 mm/ano, custo R$ 218/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -39,14 +39,14 @@
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho braquiaria: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "alto",
        "texto": "milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,25 contra 0,60) e melhora a saúde do solo (0,86 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,27 contra 0,60) e melhora a saúde do solo (0,83 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
        "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -54,17 +54,17 @@
      },
      "contribuicoes": {
       "agua": 0.176,
-      "pragas": 0.044,
-      "renda": 0.198,
+      "pragas": 0.049,
+      "renda": 0.196,
       "risco": 0.176,
-      "solo": 0.152
+      "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
-      "pragas": 0.25,
-      "renda": 0.672,
+      "pragas": 0.275,
+      "renda": 0.666,
       "risco": 1.0,
-      "solo": 0.861
+      "solo": 0.828
      },
      "ganho_vs_atual": {
       "agua": {
@@ -134,14 +134,43 @@
       ]
      },
      "id": "milho_verao__milho_braquiaria",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.583,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1181.0,
+        null
+       ],
+       "incremental_r_ha": 411.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 218.0,
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
       "ano_ruim_r_ha": 11.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 411.0,
       "incremental_r_ha": 411.0,
       "itens": [
        {
@@ -180,7 +209,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1603.0
      },
-     "nota": 0.747,
+     "nota": 0.743,
      "posicao": 1,
      "rotacao": "Milho verão → milho safrinha + braquiária",
      "segunda": {
@@ -237,7 +266,7 @@
        "Irrigação: custo extra R$ 192/ha (lâmina média 64 mm/ano × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 1.589/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 397/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2/ha/ano.",
-       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 64 mm/ano, custo R$ 192/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -255,14 +284,14 @@
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho safrinha: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "alto",
        "texto": "cooperativas e agroindústria de aves e suínos do Oeste do PR"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,10 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,14 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,19) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
        "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -270,15 +299,15 @@
      },
      "contribuicoes": {
       "agua": 0.176,
-      "pragas": 0.018,
-      "renda": 0.196,
+      "pragas": 0.024,
+      "renda": 0.194,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
-      "pragas": 0.1,
-      "renda": 0.666,
+      "pragas": 0.137,
+      "renda": 0.661,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -350,14 +379,43 @@
       ]
      },
      "id": "milho_verao__milho_safrinha",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.51,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1195.0,
+        null
+       ],
+       "incremental_r_ha": 397.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 192.0,
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
       "ano_ruim_r_ha": -2.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 481.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 397.0,
       "incremental_r_ha": 397.0,
       "itens": [
        {
@@ -388,7 +446,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1589.0
      },
-     "nota": 0.665,
+     "nota": 0.669,
      "posicao": 2,
      "rotacao": "Milho verão → milho safrinha",
      "segunda": {
@@ -462,14 +520,14 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,97 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,92 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -477,16 +535,16 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.0,
+      "renda": 0.011,
       "risco": 0.176,
-      "solo": 0.171
+      "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.0,
+      "renda": 0.037,
       "risco": 1.0,
-      "solo": 0.969
+      "solo": 0.921
      },
      "ganho_vs_atual": {
       "agua": {
@@ -521,10 +579,32 @@
       }
      },
      "id": "milho_verao__milheto_crotalaria",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.65,
+       0.65
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1941.0,
+        -1941.0
+       ],
+       "incremental_r_ha": -1941.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "margem": {
       "ano_ruim_r_ha": -748.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -1941.0,
       "incremental_r_ha": -1941.0,
       "itens": [
        {
@@ -547,7 +627,7 @@
       "linha_custo": "coe",
       "total_r_ha": -748.0
      },
-     "nota": 0.647,
+     "nota": 0.65,
      "posicao": 3,
      "rotacao": "Milho verão → milheto/crotalária (cobertura)",
      "segunda": {
@@ -598,6 +678,22 @@
     }
    ],
    "empate_tecnico": null,
+   "estabilidade": {
+    "primeiro": [
+     {
+      "id": "milho_verao__milho_braquiaria",
+      "safras": 5
+     }
+    ],
+    "safras": [
+     2021,
+     2022,
+     2023,
+     2024,
+     2025
+    ],
+    "texto": "Repetindo a renda realizada de cada uma das últimas 5 safras (2021–2025), com os demais critérios fixos, a 1ª colocada seria: milho_verao__milho_braquiaria em 5."
+   },
    "ranking": [
     {
      "atual": false,
@@ -617,7 +713,7 @@
        "Irrigação: custo extra R$ 218/ha (lâmina média 73 mm/ano × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bônus na soja seguinte: 6 sc/ha × R$ 120.14/sc = R$ 721/ha (3 sc/ha do milho verão no lugar da soja + 3 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 1.603/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 411/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 11/ha/ano.",
-       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 73 mm/ano, custo R$ 218/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -636,14 +732,14 @@
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho braquiaria: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "alto",
        "texto": "milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,25 contra 0,60) e melhora a saúde do solo (0,86 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,27 contra 0,60) e melhora a saúde do solo (0,83 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
        "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -651,17 +747,17 @@
      },
      "contribuicoes": {
       "agua": 0.176,
-      "pragas": 0.044,
-      "renda": 0.198,
+      "pragas": 0.049,
+      "renda": 0.196,
       "risco": 0.176,
-      "solo": 0.152
+      "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
-      "pragas": 0.25,
-      "renda": 0.672,
+      "pragas": 0.275,
+      "renda": 0.666,
       "risco": 1.0,
-      "solo": 0.861
+      "solo": 0.828
      },
      "ganho_vs_atual": {
       "agua": {
@@ -732,14 +828,43 @@
      },
      "id": "milho_verao__milho_braquiaria",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.583,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1181.0,
+        null
+       ],
+       "incremental_r_ha": 411.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 218.0,
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
       "ano_ruim_r_ha": 11.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 411.0,
       "incremental_r_ha": 411.0,
       "itens": [
        {
@@ -778,8 +903,9 @@
       "linha_custo": "coe",
       "total_r_ha": 1603.0
      },
-     "nota": 0.747,
+     "nota": 0.743,
      "posicao": 1,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → milho safrinha + braquiária",
      "segunda": {
       "id": "milho_braquiaria",
@@ -835,7 +961,7 @@
        "Irrigação: custo extra R$ 192/ha (lâmina média 64 mm/ano × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 1.589/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 397/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2/ha/ano.",
-       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 64 mm/ano, custo R$ 192/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -853,14 +979,14 @@
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho safrinha: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "alto",
        "texto": "cooperativas e agroindústria de aves e suínos do Oeste do PR"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,10 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,14 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,19) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
        "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -868,15 +994,15 @@
      },
      "contribuicoes": {
       "agua": 0.176,
-      "pragas": 0.018,
-      "renda": 0.196,
+      "pragas": 0.024,
+      "renda": 0.194,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
-      "pragas": 0.1,
-      "renda": 0.666,
+      "pragas": 0.137,
+      "renda": 0.661,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -949,14 +1075,43 @@
      },
      "id": "milho_verao__milho_safrinha",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.51,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1195.0,
+        null
+       ],
+       "incremental_r_ha": 397.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 192.0,
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
       "ano_ruim_r_ha": -2.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 481.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 397.0,
       "incremental_r_ha": 397.0,
       "itens": [
        {
@@ -987,8 +1142,9 @@
       "linha_custo": "coe",
       "total_r_ha": 1589.0
      },
-     "nota": 0.665,
+     "nota": 0.669,
      "posicao": 2,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → milho safrinha",
      "segunda": {
       "id": "milho_safrinha",
@@ -1061,14 +1217,14 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,97 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,92 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -1076,16 +1232,16 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.0,
+      "renda": 0.011,
       "risco": 0.176,
-      "solo": 0.171
+      "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.0,
+      "renda": 0.037,
       "risco": 1.0,
-      "solo": 0.969
+      "solo": 0.921
      },
      "ganho_vs_atual": {
       "agua": {
@@ -1121,11 +1277,33 @@
      },
      "id": "milho_verao__milheto_crotalaria",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.65,
+       0.65
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1941.0,
+        -1941.0
+       ],
+       "incremental_r_ha": -1941.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": -748.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 721.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -1941.0,
       "incremental_r_ha": -1941.0,
       "itens": [
        {
@@ -1148,8 +1326,9 @@
       "linha_custo": "coe",
       "total_r_ha": -748.0
      },
-     "nota": 0.647,
+     "nota": 0.65,
      "posicao": 3,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → milheto/crotalária (cobertura)",
      "segunda": {
       "id": "milheto_crotalaria",
@@ -1211,7 +1390,7 @@
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
        "compactação × aveia nabo: efeito sem fonte confirmada, tratado como neutro (no ensaio de França et al. 2012 o consórcio aveia-preta + nabo não reduziu a compactação; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -1226,14 +1405,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.115,
-      "renda": 0.0,
+      "renda": 0.011,
       "risco": 0.176,
       "solo": 0.109
      },
      "criterios": {
       "agua": 0.997,
       "pragas": 0.65,
-      "renda": 0.0,
+      "renda": 0.037,
       "risco": 1.0,
       "solo": 0.619
      },
@@ -1271,11 +1450,33 @@
      },
      "id": "milho_verao__aveia_nabo",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.587,
+       0.587
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1951.0,
+        -1951.0
+       ],
+       "incremental_r_ha": -1951.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": -758.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 661.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -1951.0,
       "incremental_r_ha": -1951.0,
       "itens": [
        {
@@ -1298,8 +1499,9 @@
       "linha_custo": "coe",
       "total_r_ha": -758.0
      },
-     "nota": 0.576,
+     "nota": 0.587,
      "posicao": 4,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → aveia + nabo forrageiro (cobertura)",
      "segunda": {
       "id": "aveia_nabo",
@@ -1370,14 +1572,14 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,67 contra 0,63; ~35 dias de solo descoberto contra 40). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): desempenho praticamente igual nos cinco critérios. Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -1385,16 +1587,16 @@
      "contribuicoes": {
       "agua": 0.175,
       "pragas": 0.106,
-      "renda": 0.0,
+      "renda": 0.012,
       "risco": 0.176,
-      "solo": 0.118
+      "solo": 0.114
      },
      "criterios": {
       "agua": 0.993,
       "pragas": 0.6,
-      "renda": 0.0,
+      "renda": 0.041,
       "risco": 1.0,
-      "solo": 0.669
+      "solo": 0.647
      },
      "ganho_vs_atual": {
       "agua": {
@@ -1430,11 +1632,33 @@
      },
      "id": "milho_verao__nabo_forrageiro",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.584,
+       0.584
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1886.0,
+        -1886.0
+       ],
+       "incremental_r_ha": -1886.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": -694.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -1886.0,
       "incremental_r_ha": -1886.0,
       "itens": [
        {
@@ -1457,8 +1681,9 @@
       "linha_custo": "coe",
       "total_r_ha": -694.0
      },
-     "nota": 0.576,
+     "nota": 0.584,
      "posicao": 5,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → nabo forrageiro (cobertura)",
      "segunda": {
       "id": "nabo_forrageiro",
@@ -1519,14 +1744,14 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,75. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+      "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,74. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -1534,25 +1759,47 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.0,
+      "renda": 0.01,
       "risco": 0.176,
       "solo": 0.11
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.0,
+      "renda": 0.035,
       "risco": 1.0,
       "solo": 0.626
      },
      "ganho_vs_atual": null,
      "id": "milho_verao__aveia",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.579,
+       0.579
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -1986.0,
+        -1986.0
+       ],
+       "incremental_r_ha": -1986.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": -794.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -1986.0,
       "incremental_r_ha": -1986.0,
       "itens": [
        {
@@ -1575,8 +1822,9 @@
       "linha_custo": "coe",
       "total_r_ha": -794.0
      },
-     "nota": 0.569,
+     "nota": 0.579,
      "posicao": 6,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → aveia (cobertura/palha)",
      "segunda": {
       "id": "aveia",
@@ -1648,7 +1896,7 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -1663,14 +1911,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.097,
-      "renda": 0.0,
+      "renda": 0.007,
       "risco": 0.176,
       "solo": 0.1
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.55,
-      "renda": 0.0,
+      "renda": 0.023,
       "risco": 1.0,
       "solo": 0.565
      },
@@ -1708,14 +1956,43 @@
      },
      "id": "milho_verao__sorgo",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.555,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -2351.0,
+        null
+       ],
+       "incremental_r_ha": -2234.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "não validada",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 134.0,
       "lamina_media_mm_ano": 44.6
      },
      "margem": {
       "ano_ruim_r_ha": -1159.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 481.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -2234.0,
       "incremental_r_ha": -2234.0,
       "itens": [
        {
@@ -1746,8 +2023,9 @@
       "linha_custo": "coe",
       "total_r_ha": -1041.0
      },
-     "nota": 0.55,
+     "nota": 0.556,
      "posicao": 7,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → sorgo",
      "segunda": {
       "id": "sorgo",
@@ -1805,8 +2083,8 @@
        "Trigo: 36 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 40 sc/ha) × R$ 68.44/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.334/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)) = R$ -1.900/ha (CV do rendimento 36%; ano ruim, p20 da mesma janela de 10 anos = 27 sc/ha → R$ -2.508/ha).",
        "Irrigação: custo extra R$ 75/ha (lâmina média 25 mm/ano × R$ 3.00/mm/ha) = −R$ 75/ha.",
        "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -2.513/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.706/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.122/ha/ano.",
-       "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Total da rotação: R$ -2.513/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -2.767/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -3.706/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.122/ha/ano.",
+       "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
        "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 25 mm/ano, custo R$ 75/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 7 de 34 anos (21%), NASA POWER 1991–2024, célula ~50 km.",
@@ -1821,14 +2099,14 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "médio",
        "texto": "cooperativas e moinhos, com liquidez menor que a do milho"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): aumenta o risco climático (algum evento adverso em 21% dos anos contra 0%) e piora a saúde do solo (0,50 contra 0,63; ~70 dias de solo descoberto contra 40). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,14).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): aumenta o risco climático (algum evento adverso em 21% dos anos contra 0%), piora a saúde do solo (0,50 contra 0,63; ~70 dias de solo descoberto contra 40) e abre mão de R$ 781/ha na 2ª safra (−R$ 2.767/ha contra −R$ 1.986/ha). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,14).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
        "Geada no florescimento do trigo em 21% dos anos."
@@ -1837,14 +2115,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.0,
+      "renda": 0.003,
       "risco": 0.14,
       "solo": 0.089
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.0,
+      "renda": 0.01,
       "risco": 0.794,
       "solo": 0.504
      },
@@ -1917,15 +2195,50 @@
      },
      "id": "milho_verao__trigo",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.512,
+       0.53
+      ],
+      "nota_por_safra": {
+       "2021": 0.517,
+       "2022": 0.513,
+       "2023": 0.512,
+       "2024": 0.512,
+       "2025": 0.53
+      },
+      "renda": {
+       "faixa_r_ha": [
+        -3536.0,
+        -1613.0
+       ],
+       "incremental_r_ha": -2767.0,
+       "origem": "historico"
+      },
+      "risco_climatico": {
+       "confianca": "não validada",
+       "eventos": [
+        "geada no trigo (florescimento)"
+       ],
+       "probabilidade": 0.206,
+       "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 75.0,
       "lamina_media_mm_ano": 24.9
      },
      "margem": {
       "ano_ruim_r_ha": -3122.0,
+      "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 481.0,
       "escala_S_r_ha": 1192.0,
-      "incremental_r_ha": -3706.0,
+      "incremental_preco_atual_r_ha": -3706.0,
+      "incremental_r_ha": -2767.0,
       "itens": [
        {
         "cultura": "Milho verão (1ª safra)",
@@ -1955,8 +2268,9 @@
       "linha_custo": "coe",
       "total_r_ha": -2513.0
      },
-     "nota": 0.511,
+     "nota": 0.514,
      "posicao": 8,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → trigo",
      "segunda": {
       "id": "trigo",
@@ -2029,7 +2343,7 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -2044,14 +2358,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.0,
+      "renda": 0.008,
       "risco": 0.176,
       "solo": 0.081
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.0,
+      "renda": 0.026,
       "risco": 1.0,
       "solo": 0.461
      },
@@ -2089,14 +2403,43 @@
      },
      "id": "milho_verao__feijao_safrinha",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.488,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -3873.0,
+        null
+       ],
+       "incremental_r_ha": -2156.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "não validada",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 242.0,
       "lamina_media_mm_ano": 80.6
      },
      "margem": {
       "ano_ruim_r_ha": -2681.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -2156.0,
       "incremental_r_ha": -2156.0,
       "itens": [
        {
@@ -2127,8 +2470,9 @@
       "linha_custo": "coe",
       "total_r_ha": -964.0
      },
-     "nota": 0.487,
+     "nota": 0.495,
      "posicao": 9,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → feijão safrinha",
      "segunda": {
       "id": "feijao_safrinha",
@@ -2180,7 +2524,7 @@
        "Chuva atende praticamente toda a demanda hídrica."
       ],
       "evidencias": [
-       "Dias de solo descoberto/ano (catálogo): ~150 dias.",
+       "Dias de solo descoberto/ano (catálogo): ~90 dias.",
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (3 sc/ha do milho verão no lugar da soja + 0 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
@@ -2198,32 +2542,31 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem produção na 2ª janela"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): piora a saúde do solo (0,12 contra 0,63; ~150 dias de solo descoberto contra 40) e quebra menos o ciclo de pragas (0,30 contra 0,60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): piora a saúde do solo (0,23 contra 0,63; ~90 dias de solo descoberto contra 40) e quebra menos o ciclo de pragas (0,30 contra 0,60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
       "riscos": [
-       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
-       "Muitos dias de solo exposto: risco de erosão e plantas daninhas."
+       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
      },
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.0,
+      "renda": 0.009,
       "risco": 0.176,
-      "solo": 0.022
+      "solo": 0.041
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.0,
+      "renda": 0.031,
       "risco": 1.0,
-      "solo": 0.122
+      "solo": 0.233
      },
      "ganho_vs_atual": {
       "agua": {
@@ -2253,17 +2596,39 @@
       ],
       "solo": {
        "cobertura": -0.6,
-       "dias_descobertos": 110,
+       "dias_descobertos": 50,
        "origem": "estimativa de catálogo, validar com agrônomo/Embrapa (dias negativos = menos solo descoberto)"
       }
      },
      "id": "milho_verao__pousio",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.456,
+       0.456
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -2051.0,
+        -2051.0
+       ],
+       "incremental_r_ha": -2051.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": -859.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -2051.0,
       "incremental_r_ha": -2051.0,
       "itens": [
        {
@@ -2286,8 +2651,9 @@
       "linha_custo": "coe",
       "total_r_ha": -859.0
      },
-     "nota": 0.427,
+     "nota": 0.456,
      "posicao": 10,
+     "recuperacao_solo": null,
      "rotacao": "Milho verão → pousio",
      "segunda": {
       "id": "pousio",
@@ -2337,7 +2703,7 @@
       "Irrigação: custo extra R$ 218/ha (lâmina média 73 mm/ano × R$ 3.00/mm/ha) = −R$ 218/ha.",
       "Bônus na soja seguinte: 6 sc/ha × R$ 120.14/sc = R$ 721/ha (3 sc/ha do milho verão no lugar da soja + 3 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
       "Total da rotação: R$ 1.603/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 411/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 11/ha/ano.",
-      "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+      "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
       "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
       "Irrigado: lâmina média 73 mm/ano, custo R$ 218/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
       "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -2356,14 +2722,14 @@
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho braquiaria: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "alto",
       "texto": "milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,25 contra 0,60) e melhora a saúde do solo (0,86 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,27 contra 0,60) e melhora a saúde do solo (0,83 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
       "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -2371,17 +2737,17 @@
     },
     "contribuicoes": {
      "agua": 0.176,
-     "pragas": 0.044,
-     "renda": 0.198,
+     "pragas": 0.049,
+     "renda": 0.196,
      "risco": 0.176,
-     "solo": 0.152
+     "solo": 0.146
     },
     "criterios": {
      "agua": 1.0,
-     "pragas": 0.25,
-     "renda": 0.672,
+     "pragas": 0.275,
+     "renda": 0.666,
      "risco": 1.0,
-     "solo": 0.861
+     "solo": 0.828
     },
     "ganho_vs_atual": {
      "agua": {
@@ -2451,14 +2817,43 @@
      ]
     },
     "id": "milho_verao__milho_braquiaria",
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.583,
+      null
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1181.0,
+       null
+      ],
+      "incremental_r_ha": 411.0,
+      "origem": "ano_ruim_p20"
+     },
+     "risco_climatico": {
+      "confianca": "baixa",
+      "eventos": [
+       "geada no milho safrinha"
+      ],
+      "probabilidade": 0.0,
+      "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+     }
+    },
     "irrigacao": {
      "custo_r_ha": 218.0,
      "lamina_media_mm_ano": 72.7
     },
     "margem": {
      "ano_ruim_r_ha": 11.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": 411.0,
      "incremental_r_ha": 411.0,
      "itens": [
       {
@@ -2497,7 +2892,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1603.0
     },
-    "nota": 0.747,
+    "nota": 0.743,
     "posicao": 1,
     "rotacao": "Milho verão → milho safrinha + braquiária",
     "segunda": {
@@ -2554,7 +2949,7 @@
       "Irrigação: custo extra R$ 192/ha (lâmina média 64 mm/ano × R$ 3.00/mm/ha) = −R$ 192/ha.",
       "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
       "Total da rotação: R$ 1.589/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 397/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2/ha/ano.",
-      "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+      "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
       "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
       "Irrigado: lâmina média 64 mm/ano, custo R$ 192/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
       "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -2572,14 +2967,14 @@
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho safrinha: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "alto",
       "texto": "cooperativas e agroindústria de aves e suínos do Oeste do PR"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,10 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Água (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,14 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,19) e Água (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
       "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -2587,15 +2982,15 @@
     },
     "contribuicoes": {
      "agua": 0.176,
-     "pragas": 0.018,
-     "renda": 0.196,
+     "pragas": 0.024,
+     "renda": 0.194,
      "risco": 0.176,
      "solo": 0.098
     },
     "criterios": {
      "agua": 1.0,
-     "pragas": 0.1,
-     "renda": 0.666,
+     "pragas": 0.137,
+     "renda": 0.661,
      "risco": 1.0,
      "solo": 0.556
     },
@@ -2667,14 +3062,43 @@
      ]
     },
     "id": "milho_verao__milho_safrinha",
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.51,
+      null
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1195.0,
+       null
+      ],
+      "incremental_r_ha": 397.0,
+      "origem": "ano_ruim_p20"
+     },
+     "risco_climatico": {
+      "confianca": "baixa",
+      "eventos": [
+       "geada no milho safrinha"
+      ],
+      "probabilidade": 0.0,
+      "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+     }
+    },
     "irrigacao": {
      "custo_r_ha": 192.0,
      "lamina_media_mm_ano": 63.9
     },
     "margem": {
      "ano_ruim_r_ha": -2.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 481.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": 397.0,
      "incremental_r_ha": 397.0,
      "itens": [
       {
@@ -2705,7 +3129,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1589.0
     },
-    "nota": 0.665,
+    "nota": 0.669,
     "posicao": 2,
     "rotacao": "Milho verão → milho safrinha",
     "segunda": {
@@ -2779,14 +3203,14 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "não se aplica",
       "texto": "sem venda de grão; semente disponível em revendas"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,97 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,92 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
      ]
@@ -2794,16 +3218,16 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.124,
-     "renda": 0.0,
+     "renda": 0.011,
      "risco": 0.176,
-     "solo": 0.171
+     "solo": 0.162
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.7,
-     "renda": 0.0,
+     "renda": 0.037,
      "risco": 1.0,
-     "solo": 0.969
+     "solo": 0.921
     },
     "ganho_vs_atual": {
      "agua": {
@@ -2838,10 +3262,32 @@
      }
     },
     "id": "milho_verao__milheto_crotalaria",
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.65,
+      0.65
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1941.0,
+       -1941.0
+      ],
+      "incremental_r_ha": -1941.0,
+      "origem": "custo_fixo"
+     },
+     "risco_climatico": null
+    },
     "margem": {
      "ano_ruim_r_ha": -748.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -1941.0,
      "incremental_r_ha": -1941.0,
      "itens": [
       {
@@ -2864,7 +3310,7 @@
      "linha_custo": "coe",
      "total_r_ha": -748.0
     },
-    "nota": 0.647,
+    "nota": 0.65,
     "posicao": 3,
     "rotacao": "Milho verão → milheto/crotalária (cobertura)",
     "segunda": {
@@ -2928,14 +3374,14 @@
      "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
      "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
      "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-     "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+     "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
     ],
     "mercado": {
      "estimativa": "estimativa a validar com cooperativas/revendas locais",
      "nivel": "não se aplica",
      "texto": "sem venda de grão; semente disponível em revendas"
     },
-    "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,75. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+    "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,74. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
     "riscos": [
      "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
     ]
@@ -2943,14 +3389,14 @@
    "contribuicoes": {
     "agua": 0.176,
     "pragas": 0.106,
-    "renda": 0.0,
+    "renda": 0.01,
     "risco": 0.176,
     "solo": 0.11
    },
    "criterios": {
     "agua": 1.0,
     "pragas": 0.6,
-    "renda": 0.0,
+    "renda": 0.035,
     "risco": 1.0,
     "solo": 0.626
    },
@@ -2958,11 +3404,33 @@
    "ganho_vs_atual": null,
    "id": "milho_verao__aveia",
    "id_legado": null,
+   "incerteza": {
+    "criterios_estimados": [
+     "solo",
+     "pragas"
+    ],
+    "nota_faixa": [
+     0.579,
+     0.579
+    ],
+    "nota_por_safra": null,
+    "renda": {
+     "faixa_r_ha": [
+      -1986.0,
+      -1986.0
+     ],
+     "incremental_r_ha": -1986.0,
+     "origem": "custo_fixo"
+    },
+    "risco_climatico": null
+   },
    "irrigacao": null,
    "margem": {
     "ano_ruim_r_ha": -794.0,
+    "base_renda": "preco_atual",
     "bonus_proxima_soja_r_ha": 601.0,
     "escala_S_r_ha": 1192.0,
+    "incremental_preco_atual_r_ha": -1986.0,
     "incremental_r_ha": -1986.0,
     "itens": [
      {
@@ -2986,8 +3454,9 @@
     "total_r_ha": -794.0
    },
    "motivos": [],
-   "nota": 0.569,
+   "nota": 0.579,
    "posicao": 6,
+   "recuperacao_solo": null,
    "rotacao": "Milho verão → aveia (cobertura/palha)",
    "segunda": {
     "id": "aveia",
@@ -3512,7 +3981,7 @@
        "Irrigação: custo extra R$ 218/ha (lâmina média 73 mm/ano × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 3.454/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 2.262/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.862/ha/ano.",
-       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 73 mm/ano, custo R$ 218/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -3527,14 +3996,14 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho braquiaria: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "alto",
        "texto": "milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 2.262/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,86 contra 0,63; ~30 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,65 contra 0,60). Maiores contribuições para a nota: Renda (0,29) e Risco climático (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 2.262/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,83 contra 0,63; ~30 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,65 contra 0,60). Maiores contribuições para a nota: Renda (0,29) e Risco climático (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -3542,16 +4011,16 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.115,
-      "renda": 0.294,
+      "renda": 0.288,
       "risco": 0.176,
-      "solo": 0.152
+      "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.65,
-      "renda": 1.0,
+      "renda": 0.978,
       "risco": 1.0,
-      "solo": 0.861
+      "solo": 0.828
      },
      "ganho_vs_atual": {
       "agua": {
@@ -3622,14 +4091,43 @@
      },
      "id": "soja__milho_braquiaria",
      "id_legado": "milho_braquiaria",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.836,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        670.0,
+        null
+       ],
+       "incremental_r_ha": 2262.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 218.0,
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
       "ano_ruim_r_ha": 1862.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 2262.0,
       "incremental_r_ha": 2262.0,
       "itens": [
        {
@@ -3668,7 +4166,7 @@
       "linha_custo": "coe",
       "total_r_ha": 3454.0
      },
-     "nota": 0.914,
+     "nota": 0.901,
      "posicao": 1,
      "rotacao": "Soja → milho safrinha + braquiária",
      "segunda": {
@@ -3724,7 +4222,7 @@
        "Irrigação: custo extra R$ 192/ha (lâmina média 64 mm/ano × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 3.440/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 2.248/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.849/ha/ano.",
-       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 64 mm/ano, custo R$ 192/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -3739,7 +4237,7 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho safrinha: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -3754,14 +4252,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.088,
-      "renda": 0.294,
+      "renda": 0.287,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.5,
-      "renda": 1.0,
+      "renda": 0.977,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -3834,14 +4332,43 @@
      },
      "id": "soja__milho_safrinha",
      "id_legado": "milho_safrinha",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.76,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        656.0,
+        null
+       ],
+       "incremental_r_ha": 2248.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 192.0,
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
       "ano_ruim_r_ha": 1849.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 120.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 2248.0,
       "incremental_r_ha": 2248.0,
       "itens": [
        {
@@ -3872,7 +4399,7 @@
       "linha_custo": "coe",
       "total_r_ha": 3440.0
      },
-     "nota": 0.833,
+     "nota": 0.827,
      "posicao": 2,
      "rotacao": "Soja → milho safrinha",
      "segunda": {
@@ -3941,14 +4468,14 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 90/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,97 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 90/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,92 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -3958,14 +4485,14 @@
       "pragas": 0.124,
       "renda": 0.136,
       "risco": 0.176,
-      "solo": 0.171
+      "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.462,
+      "renda": 0.463,
       "risco": 1.0,
-      "solo": 0.969
+      "solo": 0.921
      },
      "ganho_vs_atual": {
       "agua": {
@@ -4001,10 +4528,32 @@
      },
      "id": "soja__milheto_crotalaria",
      "id_legado": "milheto_crotalaria",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.775,
+       0.775
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -90.0,
+        -90.0
+       ],
+       "incremental_r_ha": -90.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "margem": {
       "ano_ruim_r_ha": 1103.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -90.0,
       "incremental_r_ha": -90.0,
       "itens": [
        {
@@ -4027,7 +4576,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1103.0
      },
-     "nota": 0.783,
+     "nota": 0.775,
      "posicao": 3,
      "rotacao": "Soja → milheto/crotalária (cobertura)",
      "segunda": {
@@ -4079,6 +4628,22 @@
     }
    ],
    "empate_tecnico": null,
+   "estabilidade": {
+    "primeiro": [
+     {
+      "id": "soja__milho_braquiaria",
+      "safras": 5
+     }
+    ],
+    "safras": [
+     2021,
+     2022,
+     2023,
+     2024,
+     2025
+    ],
+    "texto": "Repetindo a renda realizada de cada uma das últimas 5 safras (2021–2025), com os demais critérios fixos, a 1ª colocada seria: soja__milho_braquiaria em 5."
+   },
    "ranking": [
     {
      "atual": false,
@@ -4099,7 +4664,7 @@
        "Irrigação: custo extra R$ 218/ha (lâmina média 73 mm/ano × R$ 3.00/mm/ha) = −R$ 218/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 3.454/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 2.262/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.862/ha/ano.",
-       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 73 mm/ano, custo R$ 218/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -4114,14 +4679,14 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho braquiaria: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "alto",
        "texto": "milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 2.262/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,86 contra 0,63; ~30 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,65 contra 0,60). Maiores contribuições para a nota: Renda (0,29) e Risco climático (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 2.262/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,83 contra 0,63; ~30 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,65 contra 0,60). Maiores contribuições para a nota: Renda (0,29) e Risco climático (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -4129,16 +4694,16 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.115,
-      "renda": 0.294,
+      "renda": 0.288,
       "risco": 0.176,
-      "solo": 0.152
+      "solo": 0.146
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.65,
-      "renda": 1.0,
+      "renda": 0.978,
       "risco": 1.0,
-      "solo": 0.861
+      "solo": 0.828
      },
      "ganho_vs_atual": {
       "agua": {
@@ -4209,14 +4774,43 @@
      },
      "id": "soja__milho_braquiaria",
      "id_legado": "milho_braquiaria",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.836,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        670.0,
+        null
+       ],
+       "incremental_r_ha": 2262.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 218.0,
       "lamina_media_mm_ano": 72.7
      },
      "margem": {
       "ano_ruim_r_ha": 1862.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 2262.0,
       "incremental_r_ha": 2262.0,
       "itens": [
        {
@@ -4255,8 +4849,9 @@
       "linha_custo": "coe",
       "total_r_ha": 3454.0
      },
-     "nota": 0.914,
+     "nota": 0.901,
      "posicao": 1,
+     "recuperacao_solo": null,
      "rotacao": "Soja → milho safrinha + braquiária",
      "segunda": {
       "id": "milho_braquiaria",
@@ -4311,7 +4906,7 @@
        "Irrigação: custo extra R$ 192/ha (lâmina média 64 mm/ano × R$ 3.00/mm/ha) = −R$ 192/ha.",
        "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
        "Total da rotação: R$ 3.440/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 2.248/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.849/ha/ano.",
-       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
        "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 64 mm/ano, custo R$ 192/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -4326,7 +4921,7 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "cigarrinha-do-milho × milho safrinha: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -4341,14 +4936,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.088,
-      "renda": 0.294,
+      "renda": 0.287,
       "risco": 0.176,
       "solo": 0.098
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.5,
-      "renda": 1.0,
+      "renda": 0.977,
       "risco": 1.0,
       "solo": 0.556
      },
@@ -4421,14 +5016,43 @@
      },
      "id": "soja__milho_safrinha",
      "id_legado": "milho_safrinha",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.76,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        656.0,
+        null
+       ],
+       "incremental_r_ha": 2248.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "baixa",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 192.0,
       "lamina_media_mm_ano": 63.9
      },
      "margem": {
       "ano_ruim_r_ha": 1849.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 120.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": 2248.0,
       "incremental_r_ha": 2248.0,
       "itens": [
        {
@@ -4459,8 +5083,9 @@
       "linha_custo": "coe",
       "total_r_ha": 3440.0
      },
-     "nota": 0.833,
+     "nota": 0.827,
      "posicao": 2,
+     "recuperacao_solo": null,
      "rotacao": "Soja → milho safrinha",
      "segunda": {
       "id": "milho_safrinha",
@@ -4528,14 +5153,14 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 90/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,97 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 90/ha contra −R$ 1.986/ha na 2ª safra, melhora a saúde do solo (0,92 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -4545,14 +5170,14 @@
       "pragas": 0.124,
       "renda": 0.136,
       "risco": 0.176,
-      "solo": 0.171
+      "solo": 0.162
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.7,
-      "renda": 0.462,
+      "renda": 0.463,
       "risco": 1.0,
-      "solo": 0.969
+      "solo": 0.921
      },
      "ganho_vs_atual": {
       "agua": {
@@ -4588,11 +5213,33 @@
      },
      "id": "soja__milheto_crotalaria",
      "id_legado": "milheto_crotalaria",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.775,
+       0.775
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -90.0,
+        -90.0
+       ],
+       "incremental_r_ha": -90.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": 1103.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -90.0,
       "incremental_r_ha": -90.0,
       "itens": [
        {
@@ -4615,8 +5262,9 @@
       "linha_custo": "coe",
       "total_r_ha": 1103.0
      },
-     "nota": 0.783,
+     "nota": 0.775,
      "posicao": 3,
+     "recuperacao_solo": null,
      "rotacao": "Soja → milheto/crotalária (cobertura)",
      "segunda": {
       "id": "milheto_crotalaria",
@@ -4671,14 +5319,14 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 35/ha contra −R$ 1.986/ha na 2ª safra e melhora a saúde do solo (0,67 contra 0,63; ~35 dias de solo descoberto contra 40). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 35/ha contra −R$ 1.986/ha na 2ª safra. Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -4688,14 +5336,14 @@
       "pragas": 0.106,
       "renda": 0.143,
       "risco": 0.176,
-      "solo": 0.118
+      "solo": 0.114
      },
      "criterios": {
       "agua": 0.993,
       "pragas": 0.6,
       "renda": 0.485,
       "risco": 1.0,
-      "solo": 0.669
+      "solo": 0.647
      },
      "ganho_vs_atual": {
       "agua": {
@@ -4731,11 +5379,33 @@
      },
      "id": "soja__nabo_forrageiro",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.715,
+       0.715
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -35.0,
+        -35.0
+       ],
+       "incremental_r_ha": -35.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": 1158.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 240.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -35.0,
       "incremental_r_ha": -35.0,
       "itens": [
        {
@@ -4758,8 +5428,9 @@
       "linha_custo": "coe",
       "total_r_ha": 1158.0
      },
-     "nota": 0.718,
+     "nota": 0.715,
      "posicao": 4,
+     "recuperacao_solo": null,
      "rotacao": "Soja → nabo forrageiro (cobertura)",
      "segunda": {
       "id": "nabo_forrageiro",
@@ -4816,7 +5487,7 @@
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
        "compactação × aveia nabo: efeito sem fonte confirmada, tratado como neutro (no ensaio de França et al. 2012 o consórcio aveia-preta + nabo não reduziu a compactação; fica neutro)",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -4876,11 +5547,33 @@
      },
      "id": "soja__aveia_nabo",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.711,
+       0.711
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -100.0,
+        -100.0
+       ],
+       "incremental_r_ha": -100.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": 1093.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 300.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -100.0,
       "incremental_r_ha": -100.0,
       "itens": [
        {
@@ -4905,6 +5598,7 @@
      },
      "nota": 0.711,
      "posicao": 5,
+     "recuperacao_solo": null,
      "rotacao": "Soja → aveia + nabo forrageiro (cobertura)",
      "segunda": {
       "id": "aveia_nabo",
@@ -4971,7 +5665,7 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -4986,7 +5680,7 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.13,
+      "renda": 0.131,
       "risco": 0.176,
       "solo": 0.11
      },
@@ -5031,11 +5725,33 @@
      },
      "id": "soja__aveia",
      "id_legado": "aveia",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.7,
+       0.7
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -135.0,
+        -135.0
+       ],
+       "incremental_r_ha": -135.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": 1058.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 240.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -135.0,
       "incremental_r_ha": -135.0,
       "itens": [
        {
@@ -5060,6 +5776,7 @@
      },
      "nota": 0.7,
      "posicao": 6,
+     "recuperacao_solo": null,
      "rotacao": "Soja → aveia (cobertura/palha)",
      "segunda": {
       "id": "aveia",
@@ -5125,7 +5842,7 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -5140,14 +5857,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.097,
-      "renda": 0.1,
+      "renda": 0.101,
       "risco": 0.176,
       "solo": 0.1
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.55,
-      "renda": 0.34,
+      "renda": 0.345,
       "risco": 1.0,
       "solo": 0.565
      },
@@ -5185,14 +5902,43 @@
      },
      "id": "soja__sorgo",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.638,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -500.0,
+        null
+       ],
+       "incremental_r_ha": -382.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "não validada",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 134.0,
       "lamina_media_mm_ano": 44.6
      },
      "margem": {
       "ano_ruim_r_ha": 693.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 120.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -382.0,
       "incremental_r_ha": -382.0,
       "itens": [
        {
@@ -5223,8 +5969,9 @@
       "linha_custo": "coe",
       "total_r_ha": 810.0
      },
-     "nota": 0.65,
+     "nota": 0.651,
      "posicao": 7,
+     "recuperacao_solo": null,
      "rotacao": "Soja → sorgo",
      "segunda": {
       "id": "sorgo",
@@ -5291,7 +6038,7 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -5306,14 +6053,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.109,
+      "renda": 0.11,
       "risco": 0.176,
       "solo": 0.081
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.372,
+      "renda": 0.375,
       "risco": 1.0,
       "solo": 0.461
      },
@@ -5351,14 +6098,43 @@
      },
      "id": "soja__feijao_safrinha",
      "id_legado": null,
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.497,
+       null
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -2022.0,
+        null
+       ],
+       "incremental_r_ha": -305.0,
+       "origem": "ano_ruim_p20"
+      },
+      "risco_climatico": {
+       "confianca": "não validada",
+       "eventos": [
+        "geada no milho safrinha"
+       ],
+       "probabilidade": 0.0,
+       "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 242.0,
       "lamina_media_mm_ano": 80.6
      },
      "margem": {
       "ano_ruim_r_ha": -830.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 0.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -305.0,
       "incremental_r_ha": -305.0,
       "itens": [
        {
@@ -5391,6 +6167,7 @@
      },
      "nota": 0.597,
      "posicao": 8,
+     "recuperacao_solo": null,
      "rotacao": "Soja → feijão safrinha",
      "segunda": {
       "id": "feijao_safrinha",
@@ -5438,7 +6215,7 @@
        "Chuva atende praticamente toda a demanda hídrica."
       ],
       "evidencias": [
-       "Dias de solo descoberto/ano (catálogo): ~150 dias.",
+       "Dias de solo descoberto/ano (catálogo): ~90 dias.",
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
        "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
@@ -5454,32 +6231,31 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "não se aplica",
        "texto": "sem produção na 2ª janela"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 200/ha contra −R$ 1.986/ha na 2ª safra, piora a saúde do solo (0,12 contra 0,63; ~150 dias de solo descoberto contra 40) e quebra menos o ciclo de pragas (0,30 contra 0,60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 200/ha contra −R$ 1.986/ha na 2ª safra, piora a saúde do solo (0,23 contra 0,63; ~90 dias de solo descoberto contra 40) e quebra menos o ciclo de pragas (0,30 contra 0,60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
       "riscos": [
-       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
-       "Muitos dias de solo exposto: risco de erosão e plantas daninhas."
+       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
      },
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.122,
+      "renda": 0.123,
       "risco": 0.176,
-      "solo": 0.022
+      "solo": 0.041
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.416,
+      "renda": 0.417,
       "risco": 1.0,
-      "solo": 0.122
+      "solo": 0.233
      },
      "ganho_vs_atual": {
       "agua": {
@@ -5509,17 +6285,39 @@
       ],
       "solo": {
        "cobertura": -0.6,
-       "dias_descobertos": 110,
+       "dias_descobertos": 50,
        "origem": "estimativa de catálogo, validar com agrônomo/Embrapa (dias negativos = menos solo descoberto)"
       }
      },
      "id": "soja__pousio",
      "id_legado": "pousio",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.57,
+       0.57
+      ],
+      "nota_por_safra": null,
+      "renda": {
+       "faixa_r_ha": [
+        -200.0,
+        -200.0
+       ],
+       "incremental_r_ha": -200.0,
+       "origem": "custo_fixo"
+      },
+      "risco_climatico": null
+     },
      "irrigacao": null,
      "margem": {
       "ano_ruim_r_ha": 992.0,
+      "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 0.0,
       "escala_S_r_ha": 1192.0,
+      "incremental_preco_atual_r_ha": -200.0,
       "incremental_r_ha": -200.0,
       "itens": [
        {
@@ -5542,8 +6340,9 @@
       "linha_custo": "coe",
       "total_r_ha": 992.0
      },
-     "nota": 0.55,
+     "nota": 0.57,
      "posicao": 9,
+     "recuperacao_solo": null,
      "rotacao": "Soja → pousio",
      "segunda": {
       "id": "pousio",
@@ -5588,8 +6387,8 @@
        "Trigo: 36 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 40 sc/ha) × R$ 68.44/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.334/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)) = R$ -1.900/ha (CV do rendimento 36%; ano ruim, p20 da mesma janela de 10 anos = 27 sc/ha → R$ -2.508/ha).",
        "Irrigação: custo extra R$ 75/ha (lâmina média 25 mm/ano × R$ 3.00/mm/ha) = −R$ 75/ha.",
        "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -662/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.855/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.271/ha/ano.",
-       "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+       "Total da rotação: R$ -662/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -916/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -1.855/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.271/ha/ano.",
+       "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
        "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
        "Irrigado: lâmina média 25 mm/ano, custo R$ 75/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
        "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 7 de 34 anos (21%), NASA POWER 1991–2024, célula ~50 km.",
@@ -5602,14 +6401,14 @@
        "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
        "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
-       "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+       "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
       ],
       "mercado": {
        "estimativa": "estimativa a validar com cooperativas/revendas locais",
        "nivel": "médio",
        "texto": "cooperativas e moinhos, com liquidez menor que a do milho"
       },
-      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): aumenta o risco climático (algum evento adverso em 21% dos anos contra 0%) e piora a saúde do solo (0,50 contra 0,63; ~70 dias de solo descoberto contra 40). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,14).",
+      "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma −R$ 916/ha contra −R$ 1.986/ha na 2ª safra, aumenta o risco climático (algum evento adverso em 21% dos anos contra 0%) e piora a saúde do solo (0,50 contra 0,63; ~70 dias de solo descoberto contra 40). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,14).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
        "Geada no florescimento do trigo em 21% dos anos."
@@ -5618,14 +6417,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.0,
+      "renda": 0.052,
       "risco": 0.14,
       "solo": 0.089
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.0,
+      "renda": 0.177,
       "risco": 0.794,
       "solo": 0.504
      },
@@ -5698,15 +6497,50 @@
      },
      "id": "soja__trigo",
      "id_legado": "trigo",
+     "incerteza": {
+      "criterios_estimados": [
+       "solo",
+       "pragas"
+      ],
+      "nota_faixa": [
+       0.528,
+       0.687
+      ],
+      "nota_por_safra": {
+       "2021": 0.606,
+       "2022": 0.55,
+       "2023": 0.528,
+       "2024": 0.531,
+       "2025": 0.687
+      },
+      "renda": {
+       "faixa_r_ha": [
+        -1685.0,
+        238.0
+       ],
+       "incremental_r_ha": -916.0,
+       "origem": "historico"
+      },
+      "risco_climatico": {
+       "confianca": "não validada",
+       "eventos": [
+        "geada no trigo (florescimento)"
+       ],
+       "probabilidade": 0.206,
+       "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+      }
+     },
      "irrigacao": {
       "custo_r_ha": 75.0,
       "lamina_media_mm_ano": 24.9
      },
      "margem": {
       "ano_ruim_r_ha": -1271.0,
+      "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 120.0,
       "escala_S_r_ha": 1192.0,
-      "incremental_r_ha": -1855.0,
+      "incremental_preco_atual_r_ha": -1855.0,
+      "incremental_r_ha": -916.0,
       "itens": [
        {
         "cultura": "Soja",
@@ -5736,8 +6570,9 @@
       "linha_custo": "coe",
       "total_r_ha": -662.0
      },
-     "nota": 0.511,
+     "nota": 0.563,
      "posicao": 10,
+     "recuperacao_solo": null,
      "rotacao": "Soja → trigo",
      "segunda": {
       "id": "trigo",
@@ -5798,7 +6633,7 @@
       "Irrigação: custo extra R$ 218/ha (lâmina média 73 mm/ano × R$ 3.00/mm/ha) = −R$ 218/ha.",
       "Bônus na soja seguinte: 6 sc/ha × R$ 120.14/sc = R$ 721/ha (3 sc/ha do milho verão no lugar da soja + 3 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
       "Total da rotação: R$ 1.603/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 411/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 11/ha/ano.",
-      "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+      "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
       "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
       "Irrigado: lâmina média 73 mm/ano, custo R$ 218/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
       "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -5817,14 +6652,14 @@
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho braquiaria: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "alto",
       "texto": "milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,25 contra 0,60) e melhora a saúde do solo (0,86 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 411/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,27 contra 0,60) e melhora a saúde do solo (0,83 contra 0,63; ~30 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Risco climático (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
       "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -5832,17 +6667,17 @@
     },
     "contribuicoes": {
      "agua": 0.176,
-     "pragas": 0.044,
-     "renda": 0.198,
+     "pragas": 0.049,
+     "renda": 0.196,
      "risco": 0.176,
-     "solo": 0.152
+     "solo": 0.146
     },
     "criterios": {
      "agua": 1.0,
-     "pragas": 0.25,
-     "renda": 0.672,
+     "pragas": 0.275,
+     "renda": 0.666,
      "risco": 1.0,
-     "solo": 0.861
+     "solo": 0.828
     },
     "ganho_vs_atual": {
      "agua": {
@@ -5913,14 +6748,43 @@
     },
     "id": "milho_verao__milho_braquiaria",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.583,
+      null
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1181.0,
+       null
+      ],
+      "incremental_r_ha": 411.0,
+      "origem": "ano_ruim_p20"
+     },
+     "risco_climatico": {
+      "confianca": "baixa",
+      "eventos": [
+       "geada no milho safrinha"
+      ],
+      "probabilidade": 0.0,
+      "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+     }
+    },
     "irrigacao": {
      "custo_r_ha": 218.0,
      "lamina_media_mm_ano": 72.7
     },
     "margem": {
      "ano_ruim_r_ha": 11.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": 411.0,
      "incremental_r_ha": 411.0,
      "itens": [
       {
@@ -5959,8 +6823,9 @@
      "linha_custo": "coe",
      "total_r_ha": 1603.0
     },
-    "nota": 0.747,
+    "nota": 0.743,
     "posicao": 1,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → milho safrinha + braquiária",
     "segunda": {
      "id": "milho_braquiaria",
@@ -6016,7 +6881,7 @@
       "Irrigação: custo extra R$ 192/ha (lâmina média 64 mm/ano × R$ 3.00/mm/ha) = −R$ 192/ha.",
       "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
       "Total da rotação: R$ 1.589/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ 397/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2/ha/ano.",
-      "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+      "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota (há preço, custo ou produtividade informados pelo produtor).",
       "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
       "Irrigado: lâmina média 64 mm/ano, custo R$ 192/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
       "Geada no florescimento/enchimento do milho semeado em 15/01: 0 de 34 anos (0%), NASA POWER 1991–2024, célula ~50 km.",
@@ -6034,14 +6899,14 @@
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho safrinha: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "alto",
       "texto": "cooperativas e agroindústria de aves e suínos do Oeste do PR"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,10 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,20) e Água (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): soma R$ 397/ha contra −R$ 1.986/ha na 2ª safra, quebra menos o ciclo de pragas (0,14 contra 0,60) e piora a saúde do solo (0,56 contra 0,63; ~60 dias de solo descoberto contra 40). Maiores contribuições para a nota: Renda (0,19) e Água (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
       "Milho sobre milho (milho verão + milho safrinha): mantém hospedeiro contínuo da cigarrinha-do-milho (Dalbulus maidis) e do enfezamento, além de lagarta-do-cartucho e doenças foliares; o critério de pragas perde 0.25 ponto (estimativa de referência, validar com agrônomo/Embrapa). Acompanhe os alertas de cigarrinha (CigarrinhaWeb/ADAPAR; veja /v1/contexto)."
@@ -6049,15 +6914,15 @@
     },
     "contribuicoes": {
      "agua": 0.176,
-     "pragas": 0.018,
-     "renda": 0.196,
+     "pragas": 0.024,
+     "renda": 0.194,
      "risco": 0.176,
      "solo": 0.098
     },
     "criterios": {
      "agua": 1.0,
-     "pragas": 0.1,
-     "renda": 0.666,
+     "pragas": 0.137,
+     "renda": 0.661,
      "risco": 1.0,
      "solo": 0.556
     },
@@ -6130,14 +6995,43 @@
     },
     "id": "milho_verao__milho_safrinha",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.51,
+      null
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1195.0,
+       null
+      ],
+      "incremental_r_ha": 397.0,
+      "origem": "ano_ruim_p20"
+     },
+     "risco_climatico": {
+      "confianca": "baixa",
+      "eventos": [
+       "geada no milho safrinha"
+      ],
+      "probabilidade": 0.0,
+      "texto": "Calibrado na média (perda prevista 24 % contra 23 % de quebras observadas na PAM do Oeste, 2003–2025), mas não indica qual safra vai falhar nem diferencia municípios vizinhos (validação fora da amostra, docs/validation.md §6.1)."
+     }
+    },
     "irrigacao": {
      "custo_r_ha": 192.0,
      "lamina_media_mm_ano": 63.9
     },
     "margem": {
      "ano_ruim_r_ha": -2.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 481.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": 397.0,
      "incremental_r_ha": 397.0,
      "itens": [
       {
@@ -6168,8 +7062,9 @@
      "linha_custo": "coe",
      "total_r_ha": 1589.0
     },
-    "nota": 0.665,
+    "nota": 0.669,
     "posicao": 2,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → milho safrinha",
     "segunda": {
      "id": "milho_safrinha",
@@ -6242,14 +7137,14 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "não se aplica",
       "texto": "sem venda de grão; semente disponível em revendas"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,97 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,92 contra 0,63; ~35 dias de solo descoberto contra 40) e quebra melhor o ciclo de pragas (0,70 contra 0,60). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
      ]
@@ -6257,16 +7152,16 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.124,
-     "renda": 0.0,
+     "renda": 0.011,
      "risco": 0.176,
-     "solo": 0.171
+     "solo": 0.162
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.7,
-     "renda": 0.0,
+     "renda": 0.037,
      "risco": 1.0,
-     "solo": 0.969
+     "solo": 0.921
     },
     "ganho_vs_atual": {
      "agua": {
@@ -6302,11 +7197,33 @@
     },
     "id": "milho_verao__milheto_crotalaria",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.65,
+      0.65
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1941.0,
+       -1941.0
+      ],
+      "incremental_r_ha": -1941.0,
+      "origem": "custo_fixo"
+     },
+     "risco_climatico": null
+    },
     "irrigacao": null,
     "margem": {
      "ano_ruim_r_ha": -748.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 721.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -1941.0,
      "incremental_r_ha": -1941.0,
      "itens": [
       {
@@ -6329,8 +7246,9 @@
      "linha_custo": "coe",
      "total_r_ha": -748.0
     },
-    "nota": 0.647,
+    "nota": 0.65,
     "posicao": 3,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → milheto/crotalária (cobertura)",
     "segunda": {
      "id": "milheto_crotalaria",
@@ -6392,7 +7310,7 @@
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
       "compactação × aveia nabo: efeito sem fonte confirmada, tratado como neutro (no ensaio de França et al. 2012 o consórcio aveia-preta + nabo não reduziu a compactação; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -6407,14 +7325,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.115,
-     "renda": 0.0,
+     "renda": 0.011,
      "risco": 0.176,
      "solo": 0.109
     },
     "criterios": {
      "agua": 0.997,
      "pragas": 0.65,
-     "renda": 0.0,
+     "renda": 0.037,
      "risco": 1.0,
      "solo": 0.619
     },
@@ -6452,11 +7370,33 @@
     },
     "id": "milho_verao__aveia_nabo",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.587,
+      0.587
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1951.0,
+       -1951.0
+      ],
+      "incremental_r_ha": -1951.0,
+      "origem": "custo_fixo"
+     },
+     "risco_climatico": null
+    },
     "irrigacao": null,
     "margem": {
      "ano_ruim_r_ha": -758.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 661.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -1951.0,
      "incremental_r_ha": -1951.0,
      "itens": [
       {
@@ -6479,8 +7419,9 @@
      "linha_custo": "coe",
      "total_r_ha": -758.0
     },
-    "nota": 0.576,
+    "nota": 0.587,
     "posicao": 4,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → aveia + nabo forrageiro (cobertura)",
     "segunda": {
      "id": "aveia_nabo",
@@ -6551,14 +7492,14 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "não se aplica",
       "texto": "sem venda de grão; semente disponível em revendas"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): melhora a saúde do solo (0,67 contra 0,63; ~35 dias de solo descoberto contra 40). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): desempenho praticamente igual nos cinco critérios. Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
      ]
@@ -6566,16 +7507,16 @@
     "contribuicoes": {
      "agua": 0.175,
      "pragas": 0.106,
-     "renda": 0.0,
+     "renda": 0.012,
      "risco": 0.176,
-     "solo": 0.118
+     "solo": 0.114
     },
     "criterios": {
      "agua": 0.993,
      "pragas": 0.6,
-     "renda": 0.0,
+     "renda": 0.041,
      "risco": 1.0,
-     "solo": 0.669
+     "solo": 0.647
     },
     "ganho_vs_atual": {
      "agua": {
@@ -6611,11 +7552,33 @@
     },
     "id": "milho_verao__nabo_forrageiro",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.584,
+      0.584
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1886.0,
+       -1886.0
+      ],
+      "incremental_r_ha": -1886.0,
+      "origem": "custo_fixo"
+     },
+     "risco_climatico": null
+    },
     "irrigacao": null,
     "margem": {
      "ano_ruim_r_ha": -694.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 601.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -1886.0,
      "incremental_r_ha": -1886.0,
      "itens": [
       {
@@ -6638,8 +7601,9 @@
      "linha_custo": "coe",
      "total_r_ha": -694.0
     },
-    "nota": 0.576,
+    "nota": 0.584,
     "posicao": 5,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → nabo forrageiro (cobertura)",
     "segunda": {
      "id": "nabo_forrageiro",
@@ -6700,14 +7664,14 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "não se aplica",
       "texto": "sem venda de grão; semente disponível em revendas"
      },
-     "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,75. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+     "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,74. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
      ]
@@ -6715,25 +7679,47 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.106,
-     "renda": 0.0,
+     "renda": 0.01,
      "risco": 0.176,
      "solo": 0.11
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.6,
-     "renda": 0.0,
+     "renda": 0.035,
      "risco": 1.0,
      "solo": 0.626
     },
     "ganho_vs_atual": null,
     "id": "milho_verao__aveia",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.579,
+      0.579
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -1986.0,
+       -1986.0
+      ],
+      "incremental_r_ha": -1986.0,
+      "origem": "custo_fixo"
+     },
+     "risco_climatico": null
+    },
     "irrigacao": null,
     "margem": {
      "ano_ruim_r_ha": -794.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 601.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -1986.0,
      "incremental_r_ha": -1986.0,
      "itens": [
       {
@@ -6756,8 +7742,9 @@
      "linha_custo": "coe",
      "total_r_ha": -794.0
     },
-    "nota": 0.569,
+    "nota": 0.579,
     "posicao": 6,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → aveia (cobertura/palha)",
     "segunda": {
      "id": "aveia",
@@ -6829,7 +7816,7 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -6844,14 +7831,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.097,
-     "renda": 0.0,
+     "renda": 0.007,
      "risco": 0.176,
      "solo": 0.1
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.55,
-     "renda": 0.0,
+     "renda": 0.023,
      "risco": 1.0,
      "solo": 0.565
     },
@@ -6889,14 +7876,43 @@
     },
     "id": "milho_verao__sorgo",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.555,
+      null
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -2351.0,
+       null
+      ],
+      "incremental_r_ha": -2234.0,
+      "origem": "ano_ruim_p20"
+     },
+     "risco_climatico": {
+      "confianca": "não validada",
+      "eventos": [
+       "geada no milho safrinha"
+      ],
+      "probabilidade": 0.0,
+      "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+     }
+    },
     "irrigacao": {
      "custo_r_ha": 134.0,
      "lamina_media_mm_ano": 44.6
     },
     "margem": {
      "ano_ruim_r_ha": -1159.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 481.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -2234.0,
      "incremental_r_ha": -2234.0,
      "itens": [
       {
@@ -6927,8 +7943,9 @@
      "linha_custo": "coe",
      "total_r_ha": -1041.0
     },
-    "nota": 0.55,
+    "nota": 0.556,
     "posicao": 7,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → sorgo",
     "segunda": {
      "id": "sorgo",
@@ -6986,8 +8003,8 @@
       "Trigo: 36 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 40 sc/ha) × R$ 68.44/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.334/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)) = R$ -1.900/ha (CV do rendimento 36%; ano ruim, p20 da mesma janela de 10 anos = 27 sc/ha → R$ -2.508/ha).",
       "Irrigação: custo extra R$ 75/ha (lâmina média 25 mm/ano × R$ 3.00/mm/ha) = −R$ 75/ha.",
       "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ -2.513/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.706/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.122/ha/ano.",
-      "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. Informativo: não entra na nota.",
+      "Total da rotação: R$ -2.513/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -2.767/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -3.706/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.122/ha/ano.",
+      "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
       "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, irrigado, CAD 100 mm).",
       "Irrigado: lâmina média 25 mm/ano, custo R$ 75/ha (R$ 3.00/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
       "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 7 de 34 anos (21%), NASA POWER 1991–2024, célula ~50 km.",
@@ -7002,14 +8019,14 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "médio",
       "texto": "cooperativas e moinhos, com liquidez menor que a do milho"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): aumenta o risco climático (algum evento adverso em 21% dos anos contra 0%) e piora a saúde do solo (0,50 contra 0,63; ~70 dias de solo descoberto contra 40). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,14).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): aumenta o risco climático (algum evento adverso em 21% dos anos contra 0%), piora a saúde do solo (0,50 contra 0,63; ~70 dias de solo descoberto contra 40) e abre mão de R$ 781/ha na 2ª safra (−R$ 2.767/ha contra −R$ 1.986/ha). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,14).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
       "Geada no florescimento do trigo em 21% dos anos."
@@ -7018,14 +8035,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.106,
-     "renda": 0.0,
+     "renda": 0.003,
      "risco": 0.14,
      "solo": 0.089
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.6,
-     "renda": 0.0,
+     "renda": 0.01,
      "risco": 0.794,
      "solo": 0.504
     },
@@ -7098,15 +8115,50 @@
     },
     "id": "milho_verao__trigo",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.512,
+      0.53
+     ],
+     "nota_por_safra": {
+      "2021": 0.517,
+      "2022": 0.513,
+      "2023": 0.512,
+      "2024": 0.512,
+      "2025": 0.53
+     },
+     "renda": {
+      "faixa_r_ha": [
+       -3536.0,
+       -1613.0
+      ],
+      "incremental_r_ha": -2767.0,
+      "origem": "historico"
+     },
+     "risco_climatico": {
+      "confianca": "não validada",
+      "eventos": [
+       "geada no trigo (florescimento)"
+      ],
+      "probabilidade": 0.206,
+      "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+     }
+    },
     "irrigacao": {
      "custo_r_ha": 75.0,
      "lamina_media_mm_ano": 24.9
     },
     "margem": {
      "ano_ruim_r_ha": -3122.0,
+     "base_renda": "historico",
      "bonus_proxima_soja_r_ha": 481.0,
      "escala_S_r_ha": 1192.0,
-     "incremental_r_ha": -3706.0,
+     "incremental_preco_atual_r_ha": -3706.0,
+     "incremental_r_ha": -2767.0,
      "itens": [
       {
        "cultura": "Milho verão (1ª safra)",
@@ -7136,8 +8188,9 @@
      "linha_custo": "coe",
      "total_r_ha": -2513.0
     },
-    "nota": 0.511,
+    "nota": 0.514,
     "posicao": 8,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → trigo",
     "segunda": {
      "id": "trigo",
@@ -7210,7 +8263,7 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
@@ -7225,14 +8278,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.053,
-     "renda": 0.0,
+     "renda": 0.008,
      "risco": 0.176,
      "solo": 0.081
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.3,
-     "renda": 0.0,
+     "renda": 0.026,
      "risco": 1.0,
      "solo": 0.461
     },
@@ -7270,14 +8323,43 @@
     },
     "id": "milho_verao__feijao_safrinha",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.488,
+      null
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -3873.0,
+       null
+      ],
+      "incremental_r_ha": -2156.0,
+      "origem": "ano_ruim_p20"
+     },
+     "risco_climatico": {
+      "confianca": "não validada",
+      "eventos": [
+       "geada no milho safrinha"
+      ],
+      "probabilidade": 0.0,
+      "texto": "Frequência histórica do evento no clima NASA POWER; não comparada com quebras observadas."
+     }
+    },
     "irrigacao": {
      "custo_r_ha": 242.0,
      "lamina_media_mm_ano": 80.6
     },
     "margem": {
      "ano_ruim_r_ha": -2681.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 360.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -2156.0,
      "incremental_r_ha": -2156.0,
      "itens": [
       {
@@ -7308,8 +8390,9 @@
      "linha_custo": "coe",
      "total_r_ha": -964.0
     },
-    "nota": 0.487,
+    "nota": 0.495,
     "posicao": 9,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → feijão safrinha",
     "segunda": {
      "id": "feijao_safrinha",
@@ -7361,7 +8444,7 @@
       "Chuva atende praticamente toda a demanda hídrica."
      ],
      "evidencias": [
-      "Dias de solo descoberto/ano (catálogo): ~150 dias.",
+      "Dias de solo descoberto/ano (catálogo): ~90 dias.",
       "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
       "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
       "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (3 sc/ha do milho verão no lugar da soja + 0 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
@@ -7379,32 +8462,31 @@
       "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
       "Problemas da área considerados: cigarrinha-do-milho, compactação (efeito por cultura em três níveis: favorece +0.15, penaliza −0.15 no critério (a direção vem da literatura; a magnitude é escolha de modelagem nossa)).",
       "cigarrinha-do-milho × milho verao: efeito sem fonte confirmada, tratado como neutro (o milho é o hospedeiro da cigarrinha, mas não há fonte que quantifique a penalidade do milho isolado; fica neutro)",
-      "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
+      "Fertilidade e matéria orgânica não consideradas (não informadas): sem custo de adubação/calagem e sem efeito no critério solo."
      ],
      "mercado": {
       "estimativa": "estimativa a validar com cooperativas/revendas locais",
       "nivel": "não se aplica",
       "texto": "sem produção na 2ª janela"
      },
-     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): piora a saúde do solo (0,12 contra 0,63; ~150 dias de solo descoberto contra 40) e quebra menos o ciclo de pragas (0,30 contra 0,60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+     "por_que": "Em relação à atual (Milho verão → aveia (cobertura/palha)): piora a saúde do solo (0,23 contra 0,63; ~90 dias de solo descoberto contra 40) e quebra menos o ciclo de pragas (0,30 contra 0,60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
      "riscos": [
-      "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
-      "Muitos dias de solo exposto: risco de erosão e plantas daninhas."
+      "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
      ]
     },
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.053,
-     "renda": 0.0,
+     "renda": 0.009,
      "risco": 0.176,
-     "solo": 0.022
+     "solo": 0.041
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.3,
-     "renda": 0.0,
+     "renda": 0.031,
      "risco": 1.0,
-     "solo": 0.122
+     "solo": 0.233
     },
     "ganho_vs_atual": {
      "agua": {
@@ -7434,17 +8516,39 @@
      ],
      "solo": {
       "cobertura": -0.6,
-      "dias_descobertos": 110,
+      "dias_descobertos": 50,
       "origem": "estimativa de catálogo, validar com agrônomo/Embrapa (dias negativos = menos solo descoberto)"
      }
     },
     "id": "milho_verao__pousio",
     "id_legado": null,
+    "incerteza": {
+     "criterios_estimados": [
+      "solo",
+      "pragas"
+     ],
+     "nota_faixa": [
+      0.456,
+      0.456
+     ],
+     "nota_por_safra": null,
+     "renda": {
+      "faixa_r_ha": [
+       -2051.0,
+       -2051.0
+      ],
+      "incremental_r_ha": -2051.0,
+      "origem": "custo_fixo"
+     },
+     "risco_climatico": null
+    },
     "irrigacao": null,
     "margem": {
      "ano_ruim_r_ha": -859.0,
+     "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 360.0,
      "escala_S_r_ha": 1192.0,
+     "incremental_preco_atual_r_ha": -2051.0,
      "incremental_r_ha": -2051.0,
      "itens": [
       {
@@ -7467,8 +8571,9 @@
      "linha_custo": "coe",
      "total_r_ha": -859.0
     },
-    "nota": 0.427,
+    "nota": 0.456,
     "posicao": 10,
+    "recuperacao_solo": null,
     "rotacao": "Milho verão → pousio",
     "segunda": {
      "id": "pousio",
