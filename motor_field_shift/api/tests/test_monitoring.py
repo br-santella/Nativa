@@ -32,17 +32,63 @@ def test_soil_units_and_percentage_points(monkeypatch):
         m.soil(0, 0, TODAY)
 
 
-def test_ndvi_quality_mask_keeps_negative_values(monkeypatch):
-    dates = [{'calendar_date': d, 'modis_date': str(n)} for n,d in enumerate(['2026-09-14','2026-09-30','2026-10-16'])]
+def _ndvi_rows(values):
     rows = []
-    for d, value, qa in zip(dates, [-1000,8000,5000], [0,3,1]):
-        for band, raw in [('250m_16_days_NDVI',value),('250m_16_days_pixel_reliability',qa)]:
-            rows.append({'calendar_date': d['calendar_date'], 'band': band, 'data': [raw]})
-    monkeypatch.setattr(m, '_get', lambda url, **kw: {'dates': dates} if url.endswith('/dates') else {'subset': rows})
+    for day, (value, qa) in values.items():
+        for band, raw in [('250m_16_days_NDVI', value), ('250m_16_days_pixel_reliability', qa)]:
+            rows.append({'calendar_date': day, 'band': band, 'data': [raw]})
+    return rows
+
+
+@pytest.fixture
+def ndvi_cache(tmp_path, monkeypatch):
+    from field_shift.context import _base
+    monkeypatch.setattr(_base, 'CACHE_DIR', tmp_path)
+    return tmp_path
+
+
+def test_ndvi_quality_mask_keeps_negative_values(monkeypatch, ndvi_cache):
+    # 2026-11-01 is too recent (within 16 days) and must be ignored.
+    rows = _ndvi_rows({'2026-09-14': (-1000, 0), '2026-09-30': (8000, 3), '2026-10-16': (5000, 1), '2026-11-01': (9000, 0)})
+    calls = []
+    monkeypatch.setattr(m, '_get', lambda url, **kw: calls.append((url, kw)) or {'subset': rows})
     result = m.vegetation(0, 0, TODAY)['vegetation']
     assert result['value'] == .5
-    assert [p['value'] for p in result['series']] == [-.1,None,.5]
+    assert [p['value'] for p in result['series']] == [-.1, None, .5]
     assert result['delta'] is None  # no comparison across a cloudy composite
+    assert len(calls) == 1 and calls[0][0].endswith('/subset')  # no separate /dates request
+    assert calls[0][1]['startDate'] == 'A2026225' and calls[0][1]['endDate'] == 'A2026305'
+
+
+def test_modis_composite_dates():
+    assert m._modis_date(date(2026, 1, 1)) == 'A2026001'
+    assert m._modis_date(date(2026, 1, 17)) == 'A2026017'
+    assert m._modis_date(date(2026, 12, 31)) == 'A2026353'
+
+
+def test_ndvi_fresh_cache_skips_provider(monkeypatch, ndvi_cache):
+    rows = _ndvi_rows({'2026-10-16': (6000, 0)})
+    calls = []
+    monkeypatch.setattr(m, '_get', lambda url, **kw: calls.append(url) or {'subset': rows})
+    first = m.vegetation(-24.95, -53.45, TODAY)
+    second = m.vegetation(-24.95, -53.45, TODAY)
+    assert first == second and first['vegetation']['value'] == .6
+    assert len(calls) == 1
+
+
+def test_ndvi_expired_cache_covers_outage(monkeypatch, ndvi_cache):
+    monkeypatch.setattr(m, '_get', lambda url, **kw: {'subset': _ndvi_rows({'2026-10-16': (6000, 0)})})
+    m.vegetation(-24.95, -53.45, TODAY)
+    monkeypatch.setattr(m, 'NDVI_CACHE_TTL', 0)
+    def timeout(*a, **kw): raise requests.ReadTimeout()
+    monkeypatch.setattr(m, '_get', timeout)
+    assert m.vegetation(-24.95, -53.45, TODAY)['vegetation']['value'] == .6
+    # Only cloudy composites: keep the last valid reading instead of an empty card.
+    monkeypatch.setattr(m, '_get', lambda url, **kw: {'subset': _ndvi_rows({'2026-10-16': (6000, 3)})})
+    assert m.vegetation(-24.95, -53.45, TODAY)['vegetation']['value'] == .6
+    # Without any cache the outage still propagates (monitor() isolates it).
+    with pytest.raises(ValueError):
+        m.vegetation(10, 10, TODAY)
 
 
 def test_provider_outage_is_isolated(monkeypatch):
