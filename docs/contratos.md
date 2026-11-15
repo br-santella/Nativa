@@ -39,7 +39,7 @@ os dados da fazenda (localStorage) e os envia em cada requisição.
 | POST | `/v1/diagnostico` | Telas de fazenda, histórico e clima: relevo, solo, histórico MapBiomas, rotação detectada, clima e riscos, produtividade |
 | POST | `/v1/recomendacao` | Tela de rotação: ranking, rotação atual, alternativas, eliminadas, cards |
 | GET | `/v1/clima` | Só o bloco de clima para um ponto |
-| GET, POST | `/v1/contexto` | Situação atual (ENSO, SMAP, MJO, pragas). Informativo, não altera a nota. Entra com o PR #4 |
+| GET, POST | `/v1/contexto` | Situação atual (ENSO, SMAP, MJO, pragas). Informativo, não altera a nota |
 
 ### Área (comum a `/diagnostico` e `/recomendacao`)
 
