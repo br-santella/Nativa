@@ -879,5 +879,10 @@
   "Começar": "Start",
   "Próximo": "Next",
   "Explorar por conta própria": "Explore on my own",
-  "Ver tutorial guiado": "View guided tutorial"
+  "Ver tutorial guiado": "View guided tutorial",
+  "Origem": "Source",
+  "Contorno real de lavoura, mapeado por satélite (Fields of The World)": "Real field boundary mapped from satellite imagery (Fields of The World)",
+  "• calculado": "• calculated",
+  "Argila, silte e areia somam 100%: preencha argila e areia e calculamos o silte.": "Clay, silt and sand add up to 100%: fill in clay and sand and we work out the silt.",
+  "O motor mostra até esse número de opções, ordenadas pela nota. Mais opções deixam a comparação mais ampla.": "The engine shows up to this many options, sorted by score. More options widen the comparison."
 }
