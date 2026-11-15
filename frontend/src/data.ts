@@ -79,11 +79,6 @@ export const series = {
   moisture: [38, 40, 39, 34, 29, 25, 24, 25, 29, 34, 38, 40],
   ndvi: [0.7, 0.76, 0.68, 0.5, 0.62, 0.7, 0.6, 0.4, 0.32, 0.5, 0.62, 0.74],
 };
-export const profiles = {
-  soil: [80, 90, 60, 75],
-  water: [100, 20, 20, 100],
-  profit: [0, 0, 100, 0],
-};
 export const info = {
   sources: {
     title: "Fontes, escala e incerteza",
