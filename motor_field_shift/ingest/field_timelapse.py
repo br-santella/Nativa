@@ -2,10 +2,19 @@
 
 Usage: uv run python ingest/field_timelapse.py --id 72638 --start 2024-01-01 --end 2026-11-14
 """
-import argparse, os, subprocess, time, warnings
+import argparse
+import os
+import subprocess
+import time
+import warnings
 os.environ.update(GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR', GDAL_HTTP_MAX_RETRY='4',
                   GDAL_HTTP_RETRY_DELAY='1', CPL_VSIL_CURL_ALLOWED_EXTENSIONS='.tif')
-import numpy as np, pandas as pd, geopandas as gpd, rasterio, pystac_client, planetary_computer as pc
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import rasterio
+import pystac_client
+import planetary_computer as pc
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates

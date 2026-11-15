@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import io
 import unicodedata
-import re
 import zipfile
 from pathlib import Path
 

@@ -8,18 +8,13 @@ Idempotent: skips what is already cached / processed.
 from __future__ import annotations
 
 import argparse
-import io
 import json
 import math
-import re
-import shutil
 import sys
 import time
-import zipfile
 from pathlib import Path
 
 import geopandas as gpd
-import numpy as np
 import pandas as pd
 import requests
 

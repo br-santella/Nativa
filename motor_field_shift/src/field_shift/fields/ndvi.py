@@ -1,6 +1,11 @@
 """Step 3: monthly NDVI series (Sentinel-2 L2A, Planetary Computer) per field."""
-import sys, time
-import numpy as np, pandas as pd, geopandas as gpd, planetary_computer as pc, pystac_client, xarray as xr
+import time
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import planetary_computer as pc
+import pystac_client
+import xarray as xr
 import rasterio
 from rasterio.transform import from_origin
 from odc.stac import load

@@ -6,7 +6,6 @@ Usage: uv run python ingest/mapbiomas_relief_oeste_pr.py [--regiao oeste_pr|pr]
   nasadem_pr/, relevo_pr/). Default oeste_pr = original behavior.
 """
 import argparse
-import json
 import time
 from pathlib import Path
 

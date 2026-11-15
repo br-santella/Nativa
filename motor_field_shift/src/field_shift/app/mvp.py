@@ -9,7 +9,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).parent))
 import engine as E  # noqa: E402
 from field_shift.income import load_reference, cost_source, price_source  # noqa: E402
-from field_shift.income.income import COST_LINE_NAME, LABEL  # noqa: E402
+from field_shift.income.income import LABEL  # noqa: E402
 
 st.set_page_config(page_title="Field Shift — MVP", layout="wide")
 st.title("Field Shift — apoio à decisão de rotação de culturas")

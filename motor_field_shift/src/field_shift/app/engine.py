@@ -21,7 +21,7 @@ from field_shift.water.balance import DEFICIT_THRESHOLD, WHEAT_SOWING
 from field_shift import zarc
 from field_shift.i18n import Join, Msg
 from field_shift.income import history as income_history
-from field_shift.crop_calendar import PREP_DAYS_2ND, DEFAULT_SOWING, SOWINGS_2ND
+from field_shift.crop_calendar import DEFAULT_SOWING, SOWINGS_2ND
 from field_shift.climate.lookup import indicators_for
 from field_shift.pam import productivity as pam_yield
 from field_shift.pam.productivity import text as pam_text

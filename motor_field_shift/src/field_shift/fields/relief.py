@@ -1,5 +1,9 @@
 """Step 2: relief (NASADEM, Planetary Computer) per candidate field."""
-import numpy as np, pandas as pd, geopandas as gpd, planetary_computer as pc, pystac_client
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import planetary_computer as pc
+import pystac_client
 import rioxarray  # noqa
 from odc.stac import load
 from exactextract import exact_extract

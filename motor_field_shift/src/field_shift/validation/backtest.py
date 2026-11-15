@@ -17,7 +17,6 @@ costs are the CONAB variable cost (COE) sheets for Paraná of each season.
 """
 from __future__ import annotations
 
-import warnings
 from functools import lru_cache
 from pathlib import Path
 

@@ -14,7 +14,6 @@ import json
 import math
 from datetime import date
 from functools import lru_cache
-from pathlib import Path
 from urllib.error import URLError
 
 import geopandas as gpd

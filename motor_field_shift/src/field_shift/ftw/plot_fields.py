@@ -1,5 +1,8 @@
 """RGB figure + FTW polygons. Usage: plot_fields.py scene.tif fields.gpkg out.png"""
-import sys, numpy as np, rasterio, geopandas as gpd
+import sys
+import numpy as np
+import rasterio
+import geopandas as gpd
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 scene, fields, out = sys.argv[1:4]
