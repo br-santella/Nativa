@@ -1,6 +1,6 @@
 # Field Shift — Rotation engine logic
 
-How the engine computes and ranks the rotation options. Date: 2026-11-15. Coverage: the whole of Paraná (399 municipalities); the pilot and the income backtest are Western Paraná, and the worked example is field 72638. Code in `src/field_shift/app/engine.py` (catalog, rules, scoring), supported by `climate/`, `water/`, `soil/` and `income/`.
+How the engine computes and ranks the rotation options. Date: 2026-11-15. Coverage: the whole of Paraná (399 municipalities); the pilot is Western Paraná, the income and risk backtests were repeated for all of Paraná by mesoregion (`docs/validation.md` §7), and the worked example is field 72638. Code in `src/field_shift/app/engine.py` (catalog, rules, scoring), supported by `climate/`, `water/`, `soil/` and `income/`.
 
 Units: 1 bag (sc) = 60 kg. Monetary values are in BRL.
 
@@ -170,7 +170,7 @@ Example, off-season corn frost on field 72638, by sowing date:
 
 **Validation:** against 7 INMET stations, the Tmin correlation is 0.94. POWER underestimates frost days by ~40%. The water-deficit threshold (0.55) was calibrated against IBGE PAM off-season corn failures and the ZARC classes; the old dry-spell count had no predictive value (`docs/validation.md` §2.4 and §3).
 
-**How far to trust it (`docs/validation.md` §6.1):** for off-season corn the loss probability is right on average (24 % predicted vs 23 % of PAM failures in the Oeste, 2003–2025), but it does not tell which season will fail: out of sample (leave one season out, and training only on past seasons) neither the engine's flags nor richer weather models (heat at flowering, rain at harvest, establishment temperature) beat the plain failure rate. Failures also do not differ between Oeste municipalities beyond chance. The criterion therefore works as a climatological average, not as a forecast, and the API says so (`incerteza.risco_climatico.confianca` = "baixa"; other crops: "não validada").
+**How far to trust it (`docs/validation.md` §6.1):** for off-season corn the loss probability is right on average (24 % predicted vs 23 % of PAM failures in the Oeste, 2003–2025), but it does not tell which season will fail: out of sample (leave one season out, and training only on past seasons) neither the engine's flags nor richer weather models (heat at flowering, rain at harvest, establishment temperature) beat the plain failure rate. Failures also do not differ between Oeste municipalities beyond chance. The criterion therefore works as a climatological average, not as a forecast, and the API says so (`incerteza.risco_climatico.confianca` = "baixa"; other crops: "não validada"). Statewide (`docs/validation.md` §7.3) the calibration depends on the sowing date, which the PAM does not record: at the default 01/02 the south is close to the observed failures (Centro-Sul 26 % vs 23 %) and the north is under-predicted (Norte Pioneiro 14 % vs 30 %); at 15/02 the opposite.
 
 ### 6.2 Water
 
@@ -193,7 +193,7 @@ Example, off-season corn frost on field 72638, by sowing date:
 ### 6.3 Income
 
 - **Formula (incremental margin over summer soybean):** the baseline is the municipality's summer soybean. Incremental = rotation margin − soybean margin = (summer margin − soybean margin) + second-crop margin + bonus on the following soybean (bonus in bags/ha × soybean price; it is the sum of the second crop's bonus and the summer-corn bonus, when applicable). With soybean in summer the first term is zero (the original formula: soybean is common to all and the score only looks at what the second season adds or takes away). The scale S is the same for every candidate, so income is comparable between soybean and summer corn. **income = 0.5 + 0.5 · tanh(incremental / S)**, with S = max(municipal soybean margin, BRL 1,000/ha; constant `RENDA_ESCALA_MIN`; `engine.income_score`). Zero gives 0.5; +S gives 0.88; −S gives 0.12; it never reaches 0 or 1. Near zero it has the same slope as the earlier linear form clip(0.5 + incremental / (2·S), 0, 1); unlike it, it never saturates, so two good options are not tied at 1.0 (before, both corn options on field 72638 sat at 1.0 and income could not separate them). The BRL 1,000/ha floor prevents a low or negative soybean margin from stretching the scale.
-- **Second-crop margin in the score: track record when it exists (`income.history.apply_to_income`).** For off-season corn, corn + brachiaria and wheat, the second-crop margin used in the incremental is the **mean realized margin of the last 5 seasons in the municipality** (in soybean bags/ha, × the soybean price in use), not the current-price estimate below. In the historical backtest this choice was better in 13 of 16 seasons (+1.26 soybean bags/ha/yr; 90 % season-bootstrap interval +0.60 to +2.05) and cut the margin error by 19 %, with no fitted parameter (`docs/validation.md` §6.2). The current-price estimate is kept when the farmer typed their own price, cost or yield for that crop, or a cost line other than COE (the record is built on the COE), and for crops without a cost series (sorghum, beans, covers, fallow). The API reports which one was used: `margem.base_renda` ("historico" | "preco_atual"), `margem.incremental_r_ha` (used in the score) and `margem.incremental_preco_atual_r_ha`.
+- **Second-crop margin in the score: track record when it exists (`income.history.apply_to_income`).** For off-season corn, corn + brachiaria and wheat, the second-crop margin used in the incremental is the **mean realized margin of the last 5 seasons in the municipality** (in soybean bags/ha, × the soybean price in use), not the current-price estimate below. In the historical backtest this choice was better in 13 of 16 seasons (+1.26 soybean bags/ha/yr; 90 % season-bootstrap interval +0.60 to +2.05) and cut the margin error by 19 %, with no fitted parameter (`docs/validation.md` §6.2); repeated for all of Paraná it is better in every mesoregion (+1.54 bags/ha/yr, §7.1). The current-price estimate is kept when the farmer typed their own price, cost or yield for that crop, or a cost line other than COE (the record is built on the COE), and for crops without a cost series (sorghum, beans, covers, fallow). The API reports which one was used: `margem.base_renda` ("historico" | "preco_atual"), `margem.incremental_r_ha` (used in the score) and `margem.incremental_preco_atual_r_ha`.
 - **Crop margin (current-price estimate; shown on the card and in `margem.itens`)** = expected municipal yield (IBGE PAM: linear trend of the last 10 years with data, projected to the next season and clipped to the window's min–max; plain mean with fewer than 5 years; `pam.produtividade.expected_yield`) × price (SEAB/DERAL-PR, 12-month average) − variable cost (CONAB COE). Summer corn uses the 1st-season corn PAM; sorghum and beans use the extra PAM (or the Western Paraná average, without recent municipal PAM).
 - **Cost:** uses Londrina/Ponta Grossa/Francisco Beltrão, because there is no CONAB sheet for Western Paraná. First-season corn in Paraná only exists for Ponta Grossa (reference yield of 12 t/ha, well above Western Paraná): the summer-corn margin tends to be underestimated and needs validation.
 - **Cover crops:** margin = −establishment cost (estimate). Without an official source (sorghum: price and cost; radish, oat + radish and other cover crops: cost), the JSON marks "estimate — to be validated".
@@ -254,8 +254,8 @@ source"; the sources, with URL and the excerpt each number came from, are in [`f
   recovery (acid, P/K low or MO low): liming of the area in full (once; the margin charges one third per year), this crop's extra P/K per
   year, and the income given up against the option with the highest incremental income. For corn + brachiaria on low P/K the card adds
   the K2O credit "up to" 40 kg/ha × KCl price (Resende et al. 2021), not subtracted. With low MO the card says the gain takes years.
-  Field 72638, degraded soil (poor, acid, MO 1.2 %, compaction, nematode): corn + brachiaria 0.777 (soil 0.898; recovery ≈ BRL 1,310/ha in
-  year 1: liming 901 + P/K 409), millet/crotalaria 0.747 (soil 0.965; ≈ BRL 1,987/ha: liming 901 + 1,086 of income given up); before
+  Field 72638, degraded soil (poor, acid, MO 1.2 %, compaction, nematode): corn + brachiaria 0.781 (soil 0.898; recovery ≈ BRL 1,310/ha in
+  year 1: liming 901 + P/K 409), millet/crotalaria 0.744 (soil 0.965; ≈ BRL 1,987/ha: liming 901 + 1,086 of income given up); before
   the change they tied at 0.753.
 
 ## 7. Final score
@@ -288,57 +288,57 @@ Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights. The tables below fix th
 
 | Candidate | Score | Income | Soil | Water | Pests | Risk |
 |---|---|---|---|---|---|---|
-| Corn + brachiaria | 0.795 | 0.914 | 0.711 | 0.844 | 0.650 | 0.779 |
-| Millet/crotalaria | 0.757 | 0.463 | 0.819 | 0.998 | 0.700 | 1.000 |
-| Off-season corn (current) | 0.747 | 0.909 | 0.556 | 0.858 | 0.500 | 0.804 |
-| Oat + radish | 0.710 | 0.458 | 0.619 | 0.994 | 0.650 | 1.000 |
-| Oat | 0.700 | 0.444 | 0.626 | 1.000 | 0.600 | 1.000 |
-| Forage radish | 0.691 | 0.485 | 0.519 | 0.988 | 0.600 | 1.000 |
-| Sorghum | 0.624 | 0.397 | 0.565 | 0.878 | 0.550 | 0.882 |
-| Beans | 0.575 | 0.474 | 0.461 | 0.849 | 0.300 | 0.856 |
-| Fallow | 0.570 | 0.417 | 0.233 | 1.000 | 0.300 | 1.000 |
-| Wheat | 0.524 | 0.196 | 0.504 | 0.949 | 0.600 | 0.588 |
+| Corn + brachiaria | 0.799 | 0.926 | 0.711 | 0.844 | 0.650 | 0.779 |
+| Millet/crotalaria | 0.756 | 0.460 | 0.819 | 0.998 | 0.700 | 1.000 |
+| Off-season corn (current) | 0.751 | 0.922 | 0.556 | 0.858 | 0.500 | 0.804 |
+| Oat + radish | 0.710 | 0.455 | 0.619 | 0.994 | 0.650 | 1.000 |
+| Oat | 0.699 | 0.440 | 0.626 | 1.000 | 0.600 | 1.000 |
+| Forage radish | 0.691 | 0.484 | 0.519 | 0.988 | 0.600 | 1.000 |
+| Sorghum | 0.622 | 0.390 | 0.565 | 0.878 | 0.550 | 0.882 |
+| Beans | 0.574 | 0.472 | 0.461 | 0.849 | 0.300 | 0.856 |
+| Fallow | 0.568 | 0.411 | 0.233 | 1.000 | 0.300 | 1.000 |
+| Wheat | 0.519 | 0.180 | 0.504 | 0.949 | 0.600 | 0.588 |
 | Off-season soybean | Eliminated | | | | | |
 
 **Sowing 15/03** (beans eliminated: outside its window)
 
 | Candidate | Score |
 |---|---|
-| Millet/crotalaria | 0.757 |
-| Corn + brachiaria | 0.719 |
+| Millet/crotalaria | 0.756 |
+| Corn + brachiaria | 0.722 |
 | Oat + radish | 0.710 |
-| Oat | 0.700 |
+| Oat | 0.699 |
 | Forage radish | 0.691 |
-| Off-season corn (current) | 0.665 |
-| Fallow | 0.570 |
-| Sorghum | 0.525 |
-| Wheat | 0.524 |
+| Off-season corn (current) | 0.669 |
+| Fallow | 0.568 |
+| Sorghum | 0.523 |
+| Wheat | 0.519 |
 
-Millet/crotalaria leads by 0.038 (no technical tie at the default weights; with income weight 6 the two are 0.012 apart and the response flags `empate_tecnico`). The corn options sown on 15/03 are also outside ZARC 2025/2026 in Toledo, so their cards carry the ZARC warning (the score does not change).
+Millet/crotalaria leads by 0.034 (no technical tie at the default weights; with income weight 6 the two are 0.006 apart and the response flags `empate_tecnico`). It earns BRL 1,496/ha/yr less than corn + brachiaria, so its card carries the income warning and the block's `maior_renda` says the first is not the best-income option. The corn options sown on 15/03 are also outside ZARC 2025/2026 in Toledo, so their cards carry the ZARC warning (the score does not change).
 
-**Income calculation (Toledo, S = BRL 1,192/ha, the soybean margin; soybean BRL 120.14/bag)**
+**Income calculation (S = BRL 1,110/ha, the same in all of Paraná; soybean BRL 120.14/bag)**
 
 | Candidate | Basis | Incremental used (BRL/ha) | At current price (BRL/ha) | Income = 0.5 + 0.5·tanh(incr./S) | Range, worst–best season (BRL/ha) |
 |---|---|---|---|---|---|
-| Corn + brachiaria | track record 8.7 bags | +1,406 (8.7 × 120.14 + 360 bonus) | +1,802 | 0.914 | +60 to +2,943 |
-| Off-season corn | track record 10.4 bags | +1,370 (10.4 × 120.14 + 120 bonus) | +1,762 | 0.909 | +12 to +2,907 |
-| Millet/crotalaria | cost only | −90 | −90 | 0.463 | — |
-| Wheat | track record −8.0 bags | −841 | −1,780 | 0.196 | −1,610 to +312 |
+| Corn + brachiaria | track record 8.7 bags | +1,406 (8.7 × 120.14 + 360 bonus) | +1,802 | 0.926 | +60 to +2,943 |
+| Off-season corn | track record 10.4 bags | +1,370 (10.4 × 120.14 + 120 bonus) | +1,762 | 0.922 | +12 to +2,907 |
+| Millet/crotalaria | cost only | −90 | −90 | 0.460 | — |
+| Wheat | track record −8.0 bags | −841 | −1,780 | 0.180 | −1,610 to +312 |
 
-The track record is lower than the current-price estimate for corn (2021 was a failure: −0.9 bags) and higher for wheat. Income now separates the two corn options; with the old clipped formula both sat at 1.0. Score range (`nota_faixa`): corn + brachiaria 0.681–0.819, off-season corn 0.628–0.772. `estabilidade`: repeating each of the seasons 2021–2025, corn + brachiaria is first in 4 and millet/crotalaria in 1 (2021).
+The track record is lower than the current-price estimate for corn (2021 was a failure: −0.9 bags) and higher for wheat. Income now separates the two corn options; with the old clipped formula both sat at 1.0. Score range (`nota_faixa`): corn + brachiaria 0.682–0.819, off-season corn 0.628–0.772. `estabilidade`: repeating each of the seasons 2021–2025, corn + brachiaria is first in 4 and millet/crotalaria in 1 (2021).
 
 **Calculation for corn + brachiaria on 01/02**
 
 | Criterion | Weight | Value | Weight × value |
 |---|---|---|---|
-| Income | 5 | 0.914 | 4.57 |
+| Income | 5 | 0.926 | 4.63 |
 | Soil | 3 | 0.711 | 2.13 |
 | Water | 3 | 0.844 | 2.53 |
 | Pests | 3 | 0.650 | 1.95 |
 | Risk | 3 | 0.779 | 2.34 |
-| **Sum** | **17** | | **13.52** |
+| **Sum** | **17** | | **13.58** |
 
-Score = 13.52 / 17 = **0.795** (the criteria shown are rounded). Income weighed most (4.57 / 17 = 0.27 of the score).
+Score = 13.58 / 17 = **0.799** (the criteria shown are rounded). Income weighed most (4.63 / 17 = 0.27 of the score).
 
 **Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60) and breaks the pest cycle better (0.65 vs 0.50). Same climate risk (some adverse event in 22% of years). Biggest contributions to the score: Income (0.29) and Water (0.15)." For the current rotation: "This is the current rotation; it ranked 3rd among 10 valid options. The best alternative (off-season corn + brachiaria) scores 0.80." (The count is within the `agora` block: the 11 combinations with soybean in summer minus soybean in the second window.) Against the current rotation the second-season income gain is small (BRL 40/ha with the soybean bonus: −200 for the brachiaria + 240 of extra bonus), so soil and pests carry the difference.
 
@@ -349,7 +349,7 @@ Score = 13.52 / 17 = **0.795** (the criteria shown are rounded). Income weighed 
 | 01/02 | 12% | 0.86 | 0.80 |
 | 15/03 | 76% | 0.97 | 0.24 |
 
-Sowing late gives more water and much more frost. That is why off-season corn drops from 0.747 to 0.665 on 15/03 and the cover crops take the top.
+Sowing late gives more water and much more frost. That is why off-season corn drops from 0.751 to 0.669 on 15/03 and the cover crops take the top.
 
 **Margins (PAM Toledo 2016–2025, SEAB prices, CONAB COE cost)**
 

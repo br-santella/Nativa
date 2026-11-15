@@ -105,8 +105,8 @@ def test_summer_corn_income():
 def test_summer_soy_keeps_old_scores():
     all_ = _rec(sowing_second="01/02")
     old = {x["id"]: x["nota"] for x in all_["ranking"] if "id_legado" in x}
-    assert old == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.795, "milho_safrinha": 0.747, "milheto_crotalaria": 0.757,
-                                                     "aveia": 0.7, "pousio": 0.57, "trigo": 0.524}.items()}
+    assert old == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.799, "milho_safrinha": 0.751, "milheto_crotalaria": 0.756,
+                                                     "aveia": 0.699, "pousio": 0.568, "trigo": 0.519}.items()}
 
 
 # Culturas novas

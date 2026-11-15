@@ -39,7 +39,7 @@ Na prática, soja na 2ª safra é sempre eliminada. As restrições do produtor 
 
 ## Renda
 
-A renda mede quanto a 2ª safra (mais o bônus na soja seguinte) soma à margem da soja do município, numa régua do tamanho dessa própria margem da soja.
+A renda mede quanto a 2ª safra (mais o bônus na soja seguinte) soma à margem da soja do município, numa régua S que é a mesma em todo o Paraná.
 
 $$\text{renda} = 0{,}5 + 0{,}5 \cdot \tanh\left(\frac{\text{incremental}}{S}\right)$$
 
@@ -47,7 +47,7 @@ $$\text{renda} = 0{,}5 + 0{,}5 \cdot \tanh\left(\frac{\text{incremental}}{S}\rig
 - **Margem da 2ª safra:**
   - **Milho safrinha, milho + braquiária e trigo:** média da margem realizada nas últimas 5 safras do município, em sacas de soja/ha × preço da soja. Em safras que o modelo não viu, isso escolheu melhor que a estimativa a preço atual em 13 de 16 safras (+1,26 saca/ha/ano).
   - **Quando o produtor informa preço, custo ou produtividade dessa cultura, e nas demais culturas:** produtividade esperada × preço − custo (tabela abaixo).
-- **S** = margem da soja do município, com piso de R$ 1.000/ha. Incremental zero dá 0,5; +S dá 0,88; −S dá 0,12. A nota nunca chega a 0 ou 1, então duas opções boas não empatam no teto (antes a fórmula cortava em 1,0 e os dois milhos ficavam iguais).
+- **S** = R$ 1.110/ha em todo o Paraná: a margem mediana da soja nos 50 municípios do Oeste, onde o motor foi validado. Antes era a margem da soja de cada município, e onde a soja rende mais (Centro-Sul, Campos Gerais) o mesmo real de milho pesava até 3 vezes menos. Incremental zero dá 0,5; +S dá 0,88; −S dá 0,12. A nota nunca chega a 0 ou 1, então duas opções boas não empatam no teto (antes a fórmula cortava em 1,0 e os dois milhos ficavam iguais).
 
 | Componente | Como é calculado | Fonte |
 | --- | --- | --- |
@@ -129,15 +129,15 @@ $$\text{solo} = \frac{\text{cobertura} + \text{fixação de N} + \left(1 - \frac
 | P ou K baixos | milho + braquiária, nabo forrageiro | — | Resende et al. 2021 (Embrapa, até 40 kg/ha de K2O reciclado); Betta et al. 2008; Viola et al. 2013 |
 | Matéria orgânica baixa (C ≤ 8 g/dm³, MO ≤ ~1,4 %; classes do Manual PR) | milho + braquiária, milheto/crotalária | pousio | Resende et al. 2021 (MO sobe em 9 anos, não em um ciclo); Bertin et al. 2005 |
 
-O tamanho (±0,15) é escolha de modelagem; a direção tem fonte lida. Sem fonte, o efeito é neutro e o card avisa. Os ajustes **não saturam**: somam com inclinação 1 perto de zero e se aproximam de 1 (ou 0) sem chegar, como a renda com tanh. Antes, num solo degradado o milheto/crotalária batia em 1,00 e empatava com o milho + braquiária (0,753); agora fica milho + braquiária 0,777 (solo 0,898) e milheto/crotalária 0,747 (solo 0,965).
+O tamanho (±0,15) é escolha de modelagem; a direção tem fonte lida. Sem fonte, o efeito é neutro e o card avisa. Os ajustes **não saturam**: somam com inclinação 1 perto de zero e se aproximam de 1 (ou 0) sem chegar, como a renda com tanh. Antes, num solo degradado o milheto/crotalária batia em 1,00 e empatava com o milho + braquiária (0,753); agora fica milho + braquiária 0,781 (solo 0,898) e milheto/crotalária 0,744 (solo 0,965).
 
 **Quanto custa recuperar o solo** (card e campo `recuperacao_solo`): calagem da área inteira de uma vez + adubação P/K extra da cultura + renda que deixa de ganhar frente à opção de maior renda. No 72638 degradado: milho + braquiária ≈ R$ 1.310/ha no 1º ano (calagem 901 + P/K 409; crédito de até R$ 200/ha em K2O reciclado), milheto/crotalária ≈ R$ 1.987/ha (calagem 901 + R$ 1.086 de renda abdicada).
 
 ## Exemplo: talhão 72638, milho + braquiária
 
-No talhão 72638 (Toledo, 104 ha), com semeadura em 01/02 e pesos padrão, a soja → milho safrinha + braquiária fica em 1º lugar com nota 0,795.
+No talhão 72638 (Toledo, 104 ha), com semeadura em 01/02 e pesos padrão, a soja → milho safrinha + braquiária fica em 1º lugar com nota 0,799.
 
-**Renda** (S = margem da soja de Toledo = R$ 1.192/ha; soja a R$ 120,14/sc):
+**Renda** (S = R$ 1.110/ha, a mesma no Paraná todo; soja a R$ 120,14/sc):
 
 | Item | Valor |
 | --- | --- |
@@ -146,7 +146,7 @@ No talhão 72638 (Toledo, 104 ha), com semeadura em 01/02 e pesos padrão, a soj
 | **Incremental** | **R$ 1.406/ha** |
 | A preço atual seria | 1.641 (milho) − 200 (braquiária) + 360 = R$ 1.802/ha |
 
-Renda = 0,5 + 0,5 × tanh(1.406 ÷ 1.192) = **0,914**.
+Renda = 0,5 + 0,5 × tanh(1.406 ÷ 1.110) = **0,926**.
 
 Na estimativa a preço atual, o milho de Toledo daria 117 sc/ha × R$ 53,89 − R$ 4.678 = R$ 1.641/ha. O histórico realizado é mais baixo porque inclui 2021, quando a safra quebrou.
 
@@ -154,16 +154,16 @@ Na estimativa a preço atual, o milho de Toledo daria 117 sc/ha × R$ 53,89 − 
 
 | Critério | Peso | Valor | Peso × valor |
 | --- | --- | --- | --- |
-| Renda | 5 | 0,914 | 4,57 |
+| Renda | 5 | 0,926 | 4,63 |
 | Saúde do solo | 3 | 0,711 | 2,13 |
 | Água | 3 | 0,844 | 2,53 |
 | Quebra de pragas | 3 | 0,650 | 1,95 |
 | Risco climático | 3 | 0,779 | 2,34 |
-| **Soma** | **17** | | **13,52** |
+| **Soma** | **17** | | **13,58** |
 
-Nota = 13,52 ÷ 17 = **0,795**.
+Nota = 13,58 ÷ 17 = **0,799**.
 
-O milheto/crotalária fica em 2º (0,757): renda menor (0,463, só custo de R$ 90/ha), mas melhor em solo (0,82), água (1,00), pragas (0,70) e sem risco climático. O milho safrinha sozinho (a rotação atual) cai para 3º, com 0,747: renda quase igual (0,909), mas solo pior (0,56) e quebra de pragas menor (0,50). Em 15/03 a geada sobe para 76 % dos anos e o milheto/crotalária passa à frente (0,757 contra 0,719 do milho + braquiária), com aviso de milho fora do ZARC.
+O milheto/crotalária fica em 2º (0,756): renda menor (0,460, só custo de R$ 90/ha), mas melhor em solo (0,82), água (1,00), pragas (0,70) e sem risco climático. O milho safrinha sozinho (a rotação atual) cai para 3º, com 0,751: renda quase igual (0,922), mas solo pior (0,56) e quebra de pragas menor (0,50). Em 15/03 a geada sobe para 76 % dos anos e o milheto/crotalária passa à frente (0,756 contra 0,722 do milho + braquiária), com aviso de milho fora do ZARC e aviso de que a cobertura rende R$ 1.496/ha/ano a menos.
 
 **Incerteza do milho + braquiária:**
 - Renda entre R$ 60 e R$ 2.943/ha na pior e na melhor das últimas 5 safras, o que dá nota entre 0,679 e 0,817.

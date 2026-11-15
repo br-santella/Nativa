@@ -126,7 +126,7 @@ class Ajustes(BaseModel):
         description=(
             "Produtividade própria em sc/ha (soja, milho = 2ª safra, milho_verao = 1ª safra, trigo, feijao, sorgo); 'milho' é alias "
             "de 'milho_2safra'. Substitui o rendimento da PAM do município na margem; o cenário de ano ruim escala "
-            "proporcionalmente (próprio × p20/média da PAM). A soja informada também muda a escala S da renda."
+            "proporcionalmente (próprio × p20/média da PAM)."
         ),
     )
 

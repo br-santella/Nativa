@@ -33,3 +33,25 @@ def test_conab_cost_series_has_no_gaps_2008_2025():
         c = B.conab_costs(crop)
         assert set(range(2008, 2026)) <= set(c.index), crop
         assert (c > 100).all()  # parsed cost values (BRL/ha), not codes or percentages
+
+
+def test_scope_switch_validates_and_restores():
+    with pytest.raises(ValueError):
+        B.set_scope("brasil")
+    assert B.scope() == "oeste"
+
+
+def test_mesoregions_cover_paraná():
+    m = B.mesoregions()
+    assert len(m) == 399 and m["4127700"] == "Oeste do PR" and m.nunique() == 10
+
+
+@pytest.mark.skipif(not (B.RAW / "ibge/pam_pr.parquet").exists(), reason="statewide PAM not downloaded")
+def test_statewide_scope_reads_all_paraná_and_oeste_is_the_default():
+    try:
+        B.set_scope("pr")
+        n_pr = B.pam()["cod_ibge"].nunique()
+    finally:
+        B.set_scope("oeste")
+    n_oeste = B.pam()["cod_ibge"].nunique()
+    assert n_oeste <= 50 < n_pr and B.scope() == "oeste"
