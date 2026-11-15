@@ -1,89 +1,95 @@
-# Contratos entre as partes
+# Team contracts
 
-Os contratos permitem que as frentes trabalhem em paralelo. **Quem muda um contrato avisa o grupo e atualiza
-este arquivo no mesmo pull request.** Até o dado real existir, use os exemplos no mesmo formato.
+Contracts let the workstreams work in parallel. **If you change a contract, tell the team and update this
+file in the same pull request.** Until real data exists, use the examples in the same shape.
 
-O backend do MVP é a API do motor em `motor_field_shift/`. A referência completa (todos os campos, regras e
-exemplos) está em [motor_field_shift/api/README.md](../motor_field_shift/api/README.md) e no Swagger em
-`http://localhost:8000/docs`. Este arquivo resume o que cada parte pode assumir.
+The MVP backend is the engine API in `motor_field_shift/`. The full reference (every field, rule and
+example) is in [motor_field_shift/api/README.md](../motor_field_shift/api/README.md) and in Swagger at
+`http://localhost:8000/docs`. This file summarizes what each part can rely on.
 
-## C1 — Dados locais do motor (frente 1 → frentes 3 e 4)
+> Field names, routes and error codes are in Portuguese because they come from the engine's code.
 
-O motor só lê arquivos locais em `motor_field_shift/data/` (exceto `/v1/contexto` e os fallbacks, que consultam
-fontes externas na hora e gravam cache).
+## C1 — Engine local data (data → engine and API)
 
-- `data/raw/` e `data/processed/` (~280 MB) ficam **fora do git**. Lista dos arquivos, tamanho e script que gera
-  cada um: seção "Dados necessários" do README da API.
-- `data/ref/precos_custos.json` e `data/contexto/pragas_alertas.json` são versionados.
-- Fora do Oeste do PR, clima e solo usam fallback ao vivo (NASA POWER e SoilGrids 2.0).
+The engine only reads local files in `motor_field_shift/data/`. The exceptions are `/v1/contexto` and the
+fallbacks, which query external sources at request time and write a cache.
 
-## C2 — Catálogo (frente 2 → frentes 3, 4 e 5)
+- `data/raw/` and `data/processed/` (~280 MB) are **not in git**. The list of files, their sizes and the
+  script that generates each one is in the "Dados necessários" section of the API README.
+- `data/ref/precos_custos.json` and `data/contexto/pragas_alertas.json` are versioned.
+- The live fallbacks (NASA POWER and SoilGrids 2.0) only run **inside** Western Paraná, when a local file
+  does not cover the area. Areas outside the region are rejected before any fallback runs.
 
-- `catalog/crops.yaml`: um bloco por cultura. **Todo número é uma faixa (`min`/`max`) com unidade e `fonte`.**
-- `catalog/vocabulario.yaml`: listas fechadas compartilhadas por catálogo, formulário da fazenda e frontend
-  (máquinas, irrigação, mão de obra, texturas).
+## C2 — Catalog (curation → engine, API and frontend)
 
-Pendente: o motor ainda usa catálogo próprio (`/v1/opcoes`) e não lê `catalog/`. Até a unificação, **os ids
-válidos para a API são os de `/v1/opcoes`**.
+- `catalog/crops.yaml`: one block per crop. **Every number is a range (`min`/`max`) with a unit and a
+  `fonte` (source).**
+- `catalog/vocabulario.yaml`: closed lists shared by the catalog, the farm form and the frontend
+  (machinery, irrigation, labor, soil textures).
+
+Pending: the engine still uses its own catalog (`/v1/opcoes`) and does not read `catalog/`. Until they are
+unified, **the valid ids for the API are the ones in `/v1/opcoes`**.
 
 ## C3 — API (backend → frontend)
 
-Base: `http://localhost:8000`. CORS aberto. Sem autenticação. Todas as rotas são stateless: o frontend guarda
-os dados da fazenda (localStorage) e os envia em cada requisição.
+Base URL: `http://localhost:8000`. CORS is open. No authentication. All routes are stateless: the frontend
+keeps the farm data (in localStorage) and sends it with every request.
 
-| Método | Rota | Uso no frontend |
+| Method | Route | Used by the frontend for |
 | --- | --- | --- |
-| GET | `/health` | Verificar se a API está no ar e se os dados carregaram (`ok` / `degradado`) |
-| GET | `/v1/opcoes` | Montar os seletores: culturas de verão e da 2ª janela, combinações válidas, semeaduras, critérios, pesos padrão, referências de renda, talhões demo |
-| GET | `/v1/talhoes/demo` | Lista de talhões de demonstração |
-| POST | `/v1/diagnostico` | Telas de fazenda, histórico e clima: relevo, solo, histórico MapBiomas, rotação detectada, clima e riscos, produtividade |
-| POST | `/v1/recomendacao` | Tela de rotação: ranking, rotação atual, alternativas, eliminadas, cards |
-| GET | `/v1/clima` | Só o bloco de clima para um ponto |
-| GET, POST | `/v1/contexto` | Situação atual (ENSO, SMAP, MJO, pragas). Informativo, não altera a nota |
+| GET | `/health` | Checking that the API is up and the data loaded (`ok` / `degradado`) |
+| GET | `/v1/opcoes` | Building the selectors: summer and second-window crops, valid combinations, sowing dates, criteria, default weights, income references, demo fields |
+| GET | `/v1/talhoes/demo` | List of demo fields |
+| POST | `/v1/diagnostico` | Farm, history and climate screens: terrain, soil, MapBiomas history, detected rotation, climate and risks, yields |
+| POST | `/v1/recomendacao` | Rotation screen: ranking, current rotation, alternatives, eliminated rotations, cards |
+| GET | `/v1/clima` | Climate block only, for a point |
+| GET, POST | `/v1/contexto` | Current conditions (ENSO, SMAP, MJO, pests). Informational only: does not change the score |
 
-### Área (comum a `/diagnostico` e `/recomendacao`)
+### Area (shared by `/diagnostico` and `/recomendacao`)
 
-Exatamente uma forma: `{"talhao_id": "72638"}`, `{"lat": -24.95, "lon": -53.45}` ou
-`{"geometry": <GeoJSON Polygon/MultiPolygon/Feature>}` (EPSG:4326, máx. 5000 ha).
+Exactly one form: `{"talhao_id": "72638"}`, `{"lat": -24.95, "lon": -53.45}` or
+`{"geometry": <GeoJSON Polygon/MultiPolygon/Feature>}` (EPSG:4326, max. 5000 ha).
 
-### `POST /v1/recomendacao`: o essencial
+### `POST /v1/recomendacao`: the essentials
 
-Entrada mínima:
+Minimal request:
 
 ```json
 { "area": {"talhao_id": "72638"}, "rotacao_atual": "soja__milho_safrinha" }
 ```
 
-Opcionais: `semeadura_safrinha`, `pesos {renda, solo, agua, pragas, risco}` (0 a 10), `rotacoes[]`, `ajustes`
-(preços, custos, produtividade), `analise_solo`, `restricoes`, `irrigacao`, `n_alternativas`,
-`incluir_diagnostico`.
+Optional: `semeadura_safrinha` (second-window sowing date), `pesos {renda, solo, agua, pragas, risco}`
+(weights, 0 to 10), `rotacoes[]`, `ajustes` (prices, costs, yields), `analise_solo` (soil analysis),
+`restricoes` (restrictions), `irrigacao`, `n_alternativas`, `incluir_diagnostico`.
 
-Uma **rotação** é um par (cultura de verão, cultura da 2ª janela) com id `"<verao>__<segunda>"`.
+A **rotation** is a pair (summer crop, second-window crop) with id `"<verao>__<segunda>"`.
 
-Saída: `ranking[]` e `alternativas[]` com `nota` (0 a 1), `criterios{}`, `margem{total_r_ha, incremental_r_ha}`
-e `card{por_que, evidencias, beneficios, lacunas, riscos, avisos}`; `atual`; `eliminadas[]` com `motivos[]`;
-`avisos[]`; `metodologia`.
+Response: `ranking[]` and `alternativas[]` with `nota` (score, 0 to 1), `criterios{}`,
+`margem{total_r_ha, incremental_r_ha}` and `card{por_que, evidencias, beneficios, lacunas, riscos, avisos}`;
+`atual` (current rotation); `eliminadas[]` with `motivos[]`; `avisos[]`; `metodologia`.
 
-### Erros
+### Errors
 
-| Status | Corpo | Quando |
+| Status | Body | When |
 | --- | --- | --- |
-| 422 | `{"erro": "fora_da_regiao"}` | Área fora do Oeste do PR |
-| 422 | erro de validação | Corpo inválido |
-| 400 | `{"erro": "entrada_invalida"}` | Restrições eliminaram todas as rotações, ajuste inválido etc. |
-| 504 | `{"erro": "timeout_externo"}` | Fallback NASA POWER ou SoilGrids não respondeu |
-| 500 | `{"erro": "interno"}` | Erro inesperado |
+| 422 | `{"erro": "fora_da_regiao"}` | Area outside Western Paraná |
+| 422 | validation error | Malformed body |
+| 400 | `{"erro": "entrada_invalida"}` | Restrictions eliminated every rotation, invalid adjustment, etc. |
+| 504 | `{"erro": "timeout_externo"}` | Reserved for an external source timing out. **Not returned yet:** today these failures come back as 500 |
+| 500 | `{"erro": "interno"}` | Unexpected error |
 
-Todos os erros do motor trazem também `mensagem` (texto legível).
+Every engine error also carries `mensagem` (human-readable text).
 
-### Exemplos para desenvolver sem dados
+### Examples for working without data
 
-Respostas reais em [motor_field_shift/api/exemplos/](../motor_field_shift/api/exemplos/): use-as como mock no
-frontend enquanto os dados locais não estiverem disponíveis.
+Real responses are in [motor_field_shift/api/exemplos/](../motor_field_shift/api/exemplos/). Use them as
+frontend mocks while the local data is not available.
 
-## Pendências de contrato
+## Open contract items
 
-- **Semáforo de confiança** (🔴 encaminhar a profissional, 🟡 indicativo, 🟢 bem sustentado): ainda não existe
-  na resposta. Proposta: campo `confianca{nivel, motivos[]}` em cada item do ranking e no `atual`.
-- **Região:** decidir se a demo fica no Oeste do PR ou se a trava sai (os fallbacks já cobrem solo e clima).
-- **Catálogo:** unificar `catalog/crops.yaml` e o catálogo interno do motor.
+- **Confidence traffic light** (🔴 refer to a professional, 🟡 indicative, 🟢 well supported): not in the
+  response yet. Proposal: a `confianca{nivel, motivos[]}` field on every ranking item and on `atual`.
+- **Region:** decide whether the demo stays in Western Paraná or the region lock is removed. Removing it
+  means changing the area check in `servico.py`, the early return in `engine.enriquecer()`, and wiring the
+  unused `clima/lookup.py:fallback_power()`.
+- **Catalog:** unify `catalog/crops.yaml` and the engine's internal catalog.

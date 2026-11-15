@@ -1,28 +1,30 @@
-# Motor de rotação — Oeste do PR (protótipo)
+# Rotation engine — Western Paraná
 
-Motor de recomendação de rotação de culturas, focado no Oeste do Paraná (50 municípios, IBGE 4106).
-É o **backend do MVP**: a API daqui é o contrato C3 em [`../docs/contratos.md`](../docs/contratos.md).
+Crop-rotation recommendation engine focused on Western Paraná (50 municipalities, IBGE 4106).
+It is the **MVP backend**: its API is contract C3 in [`../docs/contratos.md`](../docs/contratos.md).
 
-- Lógica do motor: [`docs/motor.md`](docs/motor.md)
-- Arquitetura de dados: [`docs/arquitetura.md`](docs/arquitetura.md) · fontes: [`docs/datasets.md`](docs/datasets.md)
-- API (FastAPI) e como usar: [`api/README.md`](api/README.md)
+- Engine logic: [`docs/motor.md`](docs/motor.md)
+- Data architecture: [`docs/arquitetura.md`](docs/arquitetura.md) · sources: [`docs/datasets.md`](docs/datasets.md)
+- API (FastAPI) and how to use it: [`api/README.md`](api/README.md)
 
-## Como rodar
+These linked docs are still in Portuguese.
+
+## How to run
 
 ```bash
 cd motor_field_shift
 uv sync
-# gerar os dados (não versionados): ver "Dados necessários" em api/README.md
+# generate the data (not versioned): see "Dados necessários" in api/README.md
 uv run uvicorn field_shift_api.main:app --app-dir api --reload   # http://localhost:8000/docs
-uv run pytest                                                    # testes unitários
+uv run pytest                                                    # unit tests
 ```
 
-## O que tem
+## What's inside
 
-| Pasta | Conteúdo |
+| Folder | Contents |
 | --- | --- |
-| `src/field_shift/motor/` | camada de serviço: `diagnosticar()`, `recomendar()` |
-| `src/field_shift/app/` | regras duras, critérios, nota ponderada, cards (`engine.py`) + app Streamlit (`mvp.py`) |
-| `src/field_shift/{clima,regiao,solo,agua,pam,renda}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, balanço hídrico FAO-56, IBGE PAM, preços/custos |
-| `ingest/` | scripts que baixam e pré-calculam os dados da região |
-| `api/` | API FastAPI, testes e exemplos de resposta reais |
+| `src/field_shift/motor/` | service layer: `diagnosticar()`, `recomendar()` |
+| `src/field_shift/app/` | hard rules, criteria, weighted score, cards (`engine.py`) + Streamlit app (`mvp.py`) |
+| `src/field_shift/{clima,regiao,solo,agua,pam,renda}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, FAO-56 water balance, IBGE PAM, prices/costs |
+| `ingest/` | scripts that download and pre-compute the region's data |
+| `api/` | FastAPI app, tests and real response examples |

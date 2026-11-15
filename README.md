@@ -176,7 +176,7 @@ Key decisions:
 | --- | --- |
 | **No user accounts or database in the MVP.** The farm profile lives in the browser and is sent with every request. | Keeps the backend stateless and the scope small enough for a 48-hour hackathon |
 | **No LLM.** Hard rules, a weighted score, the FAO-56 water balance and classic statistics. Explanations are built from the computed evidence. | Every number can be traced to a source, and the tool never invents a recommendation |
-| **Pre-computed regional data** with live NASA POWER / SoilGrids as fallback | Fast responses and offline demos. Live sources fill gaps |
+| **Pre-computed regional data** with live NASA POWER / SoilGrids as fallback | Fast responses and offline demos. Today the fallbacks only fill gaps inside the region |
 | **`motor_field_shift/` is the backend** | It already is a complete stateless FastAPI service. A second backend would split the team |
 
 ---
@@ -275,7 +275,7 @@ curl -s -X POST localhost:8000/v1/recomendacao \
 | 422 | `{"erro": "fora_da_regiao"}` | Area outside Western Paraná |
 | 422 | validation error | Malformed request body |
 | 400 | `{"erro": "entrada_invalida"}` | Invalid adjustment, or restrictions eliminated every rotation |
-| 504 | `{"erro": "timeout_externo"}` | An external source did not answer |
+| 504 | `{"erro": "timeout_externo"}` | Reserved for external timeouts. Not returned yet: these failures currently come back as 500 |
 | 500 | `{"erro": "interno"}` | Unexpected error |
 
 Every engine error also carries a human-readable `mensagem`.
@@ -375,7 +375,8 @@ gh pr create --base main
 - [x] FastAPI with diagnosis, recommendation, climate and context routes
 - [x] NATIVA frontend with demo flows
 - [x] Crop catalog (summer and winter crops) with sources
-- [x] Live NASA POWER / SoilGrids fallback code
+- [x] Live NASA POWER / SoilGrids fallback code (inside the region only)
+- [ ] Nationwide coverage: remove the region lock and wire the fallbacks for any area in Brazil
 - [ ] **Frontend calls the API** instead of the demo data in `frontend/src/data.ts`
 - [ ] Demo farm moved to Western Paraná (it is currently in Sorriso, MT)
 - [ ] Confidence traffic light: 🔴 see a professional · 🟡 indicative · 🟢 well supported
