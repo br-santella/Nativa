@@ -32,7 +32,7 @@ uv run uvicorn field_shift_api.main:app --app-dir api --reload
 On startup the API calls `service.warm_up()` (preloads the data). If data is missing, it starts
 anyway and `GET /health` responds `"status": "degradado"` with the reason in `detalhe`.
 
-Tests: `uv run pytest` (fake service) and `uv run pytest -m integration` (real service and data in `data/`).
+Tests: `uv run pytest` (unit tests; the engine tests marked `needs_data` are skipped when `data/` is missing) and `uv run pytest -m integration` (real service and data in `data/`).
 
 ### Required data in `data/`
 

@@ -149,8 +149,11 @@ This file is the living list of open items for the project (crop-rotation engine
 - **Unit tests that need the local data**: without `data/raw` and `data/processed`, 75 tests of the default `uv run pytest` fail
   (`test_service.py`, `test_rotations.py`, `test_statewide.py`, `test_crop_calendar.py`...); with the data all 362 pass. Mark them
   `integration` (or skip when the data is missing) so the default run works on a fresh clone.
-  Files: `tests/`, `pyproject.toml`.
-  Status: open
+  Files: `tests/`.
+  Done (15/11/2026): the 61 test functions that read the data carry `@needs_data` (`tests/local_data.py`), skipped when the data is
+  missing (fresh clone: 288 passed, 80 skipped, 0 failed) and run as usual with it (368 passed). They stay in the default run, so
+  whoever has the data keeps the coverage.
+  Status: done
 
 - **Live NASA POWER fallback is dead code in the API**: `engine.get_climate` fetches POWER live when the pre-computed table has no cell,
   but `service._context` then raises `OutOfRegion` (422) for any mode other than `regiao`, so the fetch is wasted. The docs now describe
