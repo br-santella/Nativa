@@ -1,6 +1,6 @@
 export const MAP_LAYERS = {
   satellite: { pt: "Satélite", en: "Satellite", id: "", nativeZoom: 19, legend: "" },
-  precipitation: { pt: "Precipitação · média diária (mm/h)", en: "Precipitation · daily average (mm/h)", id: "IMERG_Precipitation_Rate", nativeZoom: 6, legend: "GPM_Precipitation_Rate_H.svg" },
+  precipitation: { pt: "Precipitação · intensidade média no dia (mm/h)", en: "Precipitation · average rate over the day (mm/h)", id: "IMERG_Precipitation_Rate", nativeZoom: 6, legend: "GPM_Precipitation_Rate_H.svg" },
   temperature: { pt: "Temperatura da superfície", en: "Land surface temperature", id: "MODIS_Terra_Land_Surface_Temp_Day", nativeZoom: 7, legend: "MODIS_Land_Surface_Temp_H.svg" },
   vegetation: { pt: "Vegetação · NDVI (8 dias)", en: "Vegetation · NDVI (8 days)", id: "MODIS_Terra_NDVI_8Day", nativeZoom: 9, legend: "MODIS_NDVI_H.svg" },
   moisture: { pt: "Umidade superficial do solo", en: "Surface soil moisture", id: "SMAP_L4_Analyzed_Surface_Soil_Moisture", nativeZoom: 6, legend: "SMAP_Analyzed_Soil_Moisture_H.svg" },

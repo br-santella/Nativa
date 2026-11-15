@@ -1766,7 +1766,7 @@
        "nivel": "não se aplica",
        "texto": "sem venda de grão; semente disponível em revendas"
       },
-      "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,75. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+      "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa, Milho verão → milho safrinha + braquiária, tem nota 75/100. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
       "riscos": [
        "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
       ]
@@ -3404,7 +3404,7 @@
      "nivel": "não se aplica",
      "texto": "sem venda de grão; semente disponível em revendas"
     },
-    "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,75. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+    "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa, Milho verão → milho safrinha + braquiária, tem nota 75/100. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
     "riscos": [
      "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
     ]
@@ -7720,7 +7720,7 @@
       "nivel": "não se aplica",
       "texto": "sem venda de grão; semente disponível em revendas"
      },
-     "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa (Milho verão → milho safrinha + braquiária) tem nota 0,75. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+     "por_que": "É a rotação atual; ficou em 6º lugar entre 10 opções válidas. A melhor alternativa, Milho verão → milho safrinha + braquiária, tem nota 75/100. Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
      "riscos": [
       "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."
      ]

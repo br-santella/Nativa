@@ -28,7 +28,8 @@ def test_soil_units_and_percentage_points(monkeypatch):
     assert result['value'] == 40
     assert result['delta'] == 10
     data['daily_units']['soil_moisture_0_to_7cm_mean'] = '%'
-    with pytest.raises(ValueError): m.soil(0, 0, TODAY)
+    with pytest.raises(ValueError):
+        m.soil(0, 0, TODAY)
 
 
 def test_ndvi_quality_mask_keeps_negative_values(monkeypatch):

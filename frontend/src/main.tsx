@@ -4,6 +4,12 @@ import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
 import { months, initialFarm, initialCrops, series, info, } from "./data";
+/** Number in the active language (decimal comma in pt-BR, point in English). */
+const num = (n: number, digits = 1) => n.toLocaleString(locale(), { minimumFractionDigits: digits, maximumFractionDigits: digits });
+/** Area in hectares as typed or saved (always with a point), shown in the active language. */
+const ha = (v: string | number) => Number.isFinite(Number(v)) && String(v).trim() !== "" ? Number(v).toLocaleString(locale(), { maximumFractionDigits: 2 }) : String(v);
+/** Ids of the sample crops: their area follows the property when it changes. */
+const SAMPLE_CROP_IDS = new Set(initialCrops.map((c) => c.id));
 import type { Farm, Crop } from "./data";
 import "./styles.css";
 import "./overview-theme.css";
@@ -50,7 +56,7 @@ function CoverageNotice() {
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [timelineYear, setTimelineYear] = useState("2026"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
     const [deletedCrops, setDeletedCrops] = useState<{ crop: Crop; nextId?: number }[]>([]);
@@ -257,8 +263,7 @@ function App() {
               </text>)))}
           </g>
         </svg>
-        <small>{__text("\u25CF NASA")}{__text(" ")}
-          {__text(kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER")}{__text("\u00B7 s\u00E9rie fict\u00EDcia")}</small>
+        <small>{`● NASA ${kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} · `}{__text("s\u00E9rie fict\u00EDcia")}</small>
       </div>);
     }
     function Overview() {
@@ -274,7 +279,7 @@ function App() {
           <dl>
             <div><dt><PropertyIcon kind="crop" />{__text("CULTIVO ATUAL")}</dt><dd>{__text(farm.crop)}</dd></div>
             <div><dt><PropertyIcon kind="location" />{__text("Localização")}</dt><dd>{farm.city} · {__text(farm.country)}</dd></div>
-            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{farm.area} ha</dd></div>
+            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{ha(farm.area)} ha</dd></div>
           </dl>
         </section>
         <div className="overview-map">
@@ -301,10 +306,10 @@ function App() {
         <div className="section-heading">
           <div>
             <h2>{__text("Uma vis\u00E3o de cada safra")}</h2>
-            <p>{__text("Talh\u00E3o 01 \u2022")}{__text(farm.area)}{__text("ha \u2022 plantio, desenvolvimento e colheita")}</p>
+            <p>{__text("Talh\u00E3o 01")} • {ha(farm.area)} ha • {__text("plantio, desenvolvimento e colheita")}</p>
           </div>
-          <select aria-label={__text("Ano do calend\u00E1rio")} value={year} onChange={(e) => setYear(e.target.value)}>
-            {__text(["2025", "2024", "2023"].map((y) => (<option key={y} value={y}>{__text(y)}</option>)))}
+          <select aria-label={__text("Ano do calend\u00E1rio")} value={timelineYear} onChange={(e) => setTimelineYear(e.target.value)}>
+            {["2026", "2025", "2024"].map((y) => (<option key={y} value={y}>{y}</option>))}
           </select>
         </div>
         <div className="timeline-scroll">
@@ -314,23 +319,20 @@ function App() {
               {__text(months.map((m) => (<span key={m}>{__text(m)}</span>)))}
             </div>
             <div className="timeline-row">
-              <strong>{__text("Soja")}{__text(Number(year) - 1)}{__text("/")}{__text(year.slice(2))}
-              </strong>
+              <strong>{__text("Soja")} {Number(timelineYear) - 1}/{timelineYear.slice(2)}</strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "1/3" }}>{__text("Desenvolvimento")}</span>
-                <span className="harvest" style={{ gridColumn: "3/4" }}>{__text("Colheita")}</span>
-                <span style={{ gridColumn: "10/11" }}>{__text("Plantio")}</span>
-                <span style={{ gridColumn: "11/13" }}>{__text("Soja")}{__text(year)}{__text("/")}{__text(String(Number(year) + 1).slice(2))}
-                </span>
+                <span className="harvest" style={{ gridColumn: "1/2" }}>{__text("Colheita")}</span>
+                <span style={{ gridColumn: "9/10" }}>{__text("Plantio")}</span>
+                <span style={{ gridColumn: "10/13" }}>{__text("Soja")} {timelineYear}/{String(Number(timelineYear) + 1).slice(2)}</span>
               </div>
             </div>
             <div className="timeline-row">
               <strong>{__text("Milho safrinha")}</strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "3/4" }}>{__text("Plantio")}</span>
-                <span style={{ gridColumn: "4/7" }}>{__text("Desenvolvimento")}</span>
-                <span className="harvest" style={{ gridColumn: "7/8" }}>{__text("Colheita")}</span>
-                <span className="bare" style={{ gridColumn: "8/10" }}>{__text("Solo descoberto")}</span>
+                <span style={{ gridColumn: "2/3" }}>{__text("Plantio")}</span>
+                <span style={{ gridColumn: "3/6" }}>{__text("Desenvolvimento")}</span>
+                <span className="harvest" style={{ gridColumn: "6/7" }}>{__text("Colheita")}</span>
+                <span className="bare" style={{ gridColumn: "7/9" }}>{__text("Solo descoberto")}</span>
               </div>
             </div>
           </div>
@@ -345,6 +347,9 @@ function App() {
     }
     function History() {
         const fmt = (s: string) => new Date(s + "T12:00:00").toLocaleDateString(locale());
+        const fmtLong = (s: string) => new Date(s + "T12:00:00").toLocaleDateString(locale(), { day: "numeric", month: "short", year: "numeric" });
+        // The crop still in the field (latest planting not yet harvested), if any.
+        const current = crops.filter((c) => c.status !== "Concluído").sort((a, b) => b.plant.localeCompare(a.plant))[0];
         return (<>
         <div className="page-heading">
           <div>
@@ -358,16 +363,16 @@ function App() {
           <section className="panel current-crop">
             <small>{__text("CULTIVO ATUAL \u2022 TALH\u00C3O 01")}</small>
             <div>
-              <h2>{__text(farm.crop)}</h2>
-              <span>{__text("Em crescimento")}</span>
+              <h2>{__text(current?.crop ?? farm.crop)}</h2>
+              <span>{__text(current?.status ?? "Em crescimento")}</span>
             </div>
-            <p>{__text("Plantio: 15 out 2025 \u2192 Colheita prevista: 20 fev 2026")}</p>
+            {current && <p>{__text("Plantio:")} {fmtLong(current.plant)} → {__text("Colheita prevista:")} {fmtLong(current.harvest)}</p>}
           </section>
           <section className="panel">
             <h2>{__text("Seu hist\u00F3rico em n\u00FAmeros")}</h2>
             <div className="numbers">
               <div>
-                <strong>{__text(crops.length + 2)}</strong>
+                <strong>{crops.length}</strong>
                 <small>{__text("cultivos registrados")}</small>
               </div>
               <div>
@@ -409,14 +414,14 @@ function App() {
               <tbody>
                 {__text(crops.map((c) => (<tr key={c.id}>
                     <td>
-                      {__text(c.crop)}{__text("\u2022")}{__text(c.season)}
+                      {__text(c.crop)} • {c.season}
                     </td>
                     <td>{__text(fmt(c.plant))}</td>
                     <td>
                       {__text(fmt(c.harvest))}
                       {__text(c.status !== "Concluído" ? "*" : "")}
                     </td>
-                    <td>{__text(c.area)}{__text("ha")}</td>
+                    <td>{ha(c.area)} ha</td>
                     <td>
                       {__text(c.yield ? c.yield + " sc/ha" : "Ainda não colhida")}
                     </td>
@@ -433,8 +438,7 @@ function App() {
               </tbody>
             </table>
           </div>
-          <small>{__text("* Data prevista, n\u00E3o observada. Mostrando")}{__text(crops.length)}{__text("de")}{__text(" ")}
-            {__text(crops.length + 2)}{__text("cultivos.")}</small>
+          <small>{__text("* Data prevista, n\u00E3o observada.")}</small>
         </section>
         <section className="callout">
           <div>
@@ -475,27 +479,23 @@ function App() {
                     <h2>
                       {__text([
                     "Temperatura média",
-                    "Precipitação acumulada",
+                    "Precipitação média mensal",
                     "Umidade do solo ⓘ",
                     "Vigor da vegetação ⓘ",
                 ][i])}
                     </h2>
-                    <p>{__text("NASA")}{__text(i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER")}{__text("\u2022 exemplo de s\u00E9rie hist\u00F3rica")}</p>
+                    <p>{`NASA ${i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER"} • `}{__text("exemplo de s\u00E9rie hist\u00F3rica")}</p>
                   </div>
                   <strong className={"climate-number n" + i}>
                     {__text([
+                    `${num(year === "2025" ? 24.8 : year === "2024" ? 23.1 : 25.8)} °C`,
                     year === "2025"
-                        ? "24,8 °C"
+                        ? "121 mm"
                         : year === "2024"
-                            ? "23,1 °C"
-                            : "25,8 °C",
-                    year === "2025"
-                        ? "142 mm"
-                        : year === "2024"
-                            ? "132 mm"
-                            : "148 mm",
+                            ? "113 mm"
+                            : "126 mm",
                     "32%",
-                    "0,76",
+                    num(0.76, 2),
                 ][i])}
                   </strong>
                 </div>
@@ -569,6 +569,7 @@ function App() {
             }} onSave={(nextFarm, inputs) => {
                 setFarm(nextFarm);
                 setDraft(nextFarm);
+                setCrops((p) => p.map((c) => SAMPLE_CROP_IDS.has(c.id) ? { ...c, area: nextFarm.area } : c));
                 setSetupInputs(inputs);
                 setPersisted(true);
                 toast("Alterações salvas. Os cenários foram recalculados.");
@@ -682,7 +683,7 @@ function App() {
           </div>
           <div className="carousel-controls">
             <div>
-              {__text(heroImgs.map((_, i) => (<button key={i} aria-label={__text("Ir para imagem " + (i + 1))} aria-pressed={slide === i} className={slide === i ? "active" : ""} onClick={() => setSlide(i)}/>)))}
+              {__text(heroImgs.map((_, i) => (<button key={i} aria-label={`${__text("Ir para imagem")} ${i + 1}`} aria-pressed={slide === i} className={slide === i ? "active" : ""} onClick={() => setSlide(i)}/>)))}
               <small>{__text("0")}{__text(slide + 1)}{__text("/ 03")}</small>
             </div>
             <div>
@@ -713,6 +714,7 @@ function App() {
         return <PropertyWizard initial={draft} brand={<Logo />} onHome={() => go("landing")} onComplete={(nextFarm, inputs) => {
             setFarm(nextFarm);
             setDraft(nextFarm);
+            setCrops((p) => p.map((c) => SAMPLE_CROP_IDS.has(c.id) ? { ...c, area: nextFarm.area } : c));
             setSetupInputs(inputs);
             setPersisted(true);
             go("overview");
@@ -721,8 +723,8 @@ function App() {
     function AddCrop() {
         const [value, setValue] = useState({
             crop: "Milho",
-            plant: "2026-03-05",
-            harvest: "2026-07-28",
+            plant: "2027-02-01",
+            harvest: "2027-06-25",
             area: farm.area,
             yield: "",
         });
@@ -743,7 +745,7 @@ function App() {
                     ...p,
                 ]);
                 setModal(null);
-                toast("Cultivo adicionado nesta sessão.");
+                toast("Cultivo adicionado.");
             }}>
         <h2>{__text("Adicionar cultivo")}</h2>
         <p>{__text("Registre um exemplo para explorar o hist\u00F3rico da propriedade.")}</p>
@@ -784,7 +786,7 @@ function App() {
           </p>))}
         <p>{__text("As datas podem coexistir com outros cultivos no mesmo ano.")}</p>
         <button type="submit" className="button">{__text("Salvar cultivo")}</button>
-        <small>{__text("Dados mantidos somente nesta sess\u00E3o.")}</small>
+        <small>{__text(persisted ? "Fica salvo neste navegador, junto com a propriedade." : "Dados mantidos somente nesta sess\u00E3o.")}</small>
       </form>);
     }
     function ModalContent() {
@@ -801,7 +803,7 @@ function App() {
           <button className="property-choice" onClick={() => open(null)}>
             <strong>{__text(farm.name)}{__text("\u2713")}</strong>
             <small>
-              {__text(farm.city)}{__text("\u2022")}{__text(farm.area)}{__text("ha")}</small>
+              {farm.city} • {ha(farm.area)} ha</small>
           </button>
           <p>{__text("Uma propriedade est\u00E1 dispon\u00EDvel nesta demonstra\u00E7\u00E3o.")}</p>
           <CoverageNotice />
@@ -854,7 +856,7 @@ function App() {
               <Logo toggleSidebar />
               <button className="sidebar-close" aria-label={__text("Fechar navegação")} onClick={() => setMenu(false)}><span aria-hidden="true">×</span></button>
             </div>
-            <small className="nav-section">{__text("PRINCIPAL")}</small>
+            <small className="nav-section">{__text("Principal")}</small>
             <nav id="dashboard-nav">
               {__text(navItems.map(([id, label, img]) => (<React.Fragment key={id}>
                   <button className={page === id ? "selected" : ""} aria-current={page === id ? "page" : undefined} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
