@@ -3,7 +3,7 @@ const BASE = (import.meta.env.VITE_API_URL ?? "http://localhost:8000").replace(/
 
 export type Pesos = { renda: number; solo: number; agua: number; pragas: number; risco: number };
 
-export type Area = { talhao_id: string } | { lat: number; lon: number };
+export type Area = { talhao_id: string } | { lat: number; lon: number } | { geometry: { type: string; coordinates: unknown[] } };
 
 export type Card = {
   por_que: string;
@@ -90,10 +90,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const health = (lang: Lang) => request<Health>(`/health?lang=${lang}`);
 
-export const recomendacao = (e: EntradaRecomendacao, lang: Lang) =>
+export const recomendacao = (e: EntradaRecomendacao, lang: Lang, inputs?: Record<string, unknown>) =>
   request<Recomendacao>(`/v1/recomendacao?lang=${lang}`, {
     method: "POST",
     body: JSON.stringify({
+      ...inputs,
       area: e.area,
       rotacao_atual: e.rotacaoAtual,
       pesos: e.pesos,

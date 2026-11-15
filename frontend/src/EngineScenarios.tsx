@@ -1,3 +1,6 @@
+import setupOptions from "./setup-options.json";
+const optionsRotationName = (id: string) => setupOptions.combinacoes.find(x => x.id === id)?.nome ?? id;
+import type { SetupInputs } from "./PropertyWizard";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { ApiError, health, pesosDosSliders, recomendacao } from "./api";
@@ -156,7 +159,8 @@ function Card({ item, cor, melhor, rotulo }: { item: ItemRanking; cor: string; m
 }
 
 /** Seção "Compare os cenários" com dados reais do motor: rotação atual + 2 melhores alternativas. */
-export default function EngineScenarios({ weights, latitude, longitude, irrigation, crops, onSources }: {
+export default function EngineScenarios({ weights, latitude, longitude, irrigation, crops, onSources, setupInputs }: {
+  setupInputs?: SetupInputs;
   weights: number[];
   latitude: string;
   longitude: string;
@@ -184,13 +188,14 @@ export default function EngineScenarios({ weights, latitude, longitude, irrigati
         if (h.status !== "ok") return null;
         return recomendacao(
           {
-            area,
-            rotacaoAtual: rotacao.id,
-            pesos: pesosDosSliders(weights),
-            colheitaPrevista: rotacao.colheitaPrevista,
+            area: setupInputs?.area ?? area,
+            rotacaoAtual: setupInputs?.rotacao_atual ?? rotacao.id,
+            pesos: { ...pesosDosSliders(weights), pragas: setupInputs?.pesos.pragas ?? 3 },
+            colheitaPrevista: setupInputs ? setupInputs.colheita_prevista : rotacao.colheitaPrevista,
             irrigacao: irrigacaoDaFazenda(irrigation),
           },
           lang,
+          setupInputs,
         );
       })
       .then((r) => ativo && setRes(r))
@@ -203,7 +208,7 @@ export default function EngineScenarios({ weights, latitude, longitude, irrigati
     return () => {
       ativo = false;
     };
-  }, [weights, latitude, longitude, irrigation, rotacao.id, rotacao.colheitaPrevista, lang]);
+  }, [weights, latitude, longitude, irrigation, rotacao.id, rotacao.colheitaPrevista, lang, setupInputs]);
 
   const degradada = api != null && api.status !== "ok";
   const statusApi =
@@ -216,8 +221,8 @@ export default function EngineScenarios({ weights, latitude, longitude, irrigati
           : t("conectada");
   const contexto = (
     <small>
-      {rotulo} • {t("rotação atual:")} {rotacao.rotulo}{" "}
-      {t(rotacao.doHistorico ? "(do histórico de cultivo)" : "(padrão: histórico sem uma safra completa)")} • API:{" "}
+      {setupInputs ? (emIngles() ? "Your selected area" : "Sua área selecionada") : rotulo} • {t("rotação atual:")} {setupInputs ? t(optionsRotationName(setupInputs.rotacao_atual)) : rotacao.rotulo}{" "}
+      {setupInputs ? (emIngles() ? "(provided by you)" : "(informada por você)") : t(rotacao.doHistorico ? "(do histórico de cultivo)" : "(padrão: histórico sem uma safra completa)")} • API:{" "}
       {statusApi}
       {carregando && res ? ` • ${t("recalculando…")}` : ""}
       {res?.semeadura_2a
@@ -228,7 +233,7 @@ export default function EngineScenarios({ weights, latitude, longitude, irrigati
 
   const atual = res?.atual;
   const agora = res?.agora ?? (res ? { ranking: res.ranking, alternativas: res.alternativas, eliminadas: res.eliminadas } : null);
-  const itens = agora ? [...(atual ? [atual] : []), ...agora.alternativas.slice(0, atual ? 2 : 3)] : [];
+  const itens = agora ? [...(atual ? [atual] : []), ...agora.alternativas.slice(0, setupInputs?.n_alternativas ?? (atual ? 2 : 3))] : [];
   const proxima = res?.proxima_safra?.alternativas[0];
 
   if (erro || !res || itens.length === 0) {
