@@ -16,9 +16,9 @@ export const initialFarm = {
   name: "Fazenda Boa Vista",
   city: "Toledo, PR",
   country: "Brasil",
-  latitude: "-24.81",
-  longitude: "-53.55",
-  area: "120",
+  latitude: "-24.81473",
+  longitude: "-53.55361",
+  area: "103.87",
   texture: "Argiloso",
   ph: "5.8",
   drainage: "Moderada",
@@ -34,40 +34,40 @@ export const initialCrops = [
   {
     id: 1,
     crop: "Soja",
-    season: "2025/26",
-    plant: "2025-10-15",
-    harvest: "2026-02-20",
-    area: "120",
+    season: "2026/27",
+    plant: "2026-09-25",
+    harvest: "2027-01-10",
+    area: "103.87",
     yield: "",
     status: "Em crescimento",
   },
   {
     id: 2,
     crop: "Milho",
-    season: "2025",
-    plant: "2025-03-05",
-    harvest: "2025-07-28",
-    area: "120",
+    season: "2026",
+    plant: "2026-02-01",
+    harvest: "2026-06-25",
+    area: "103.87",
     yield: "98",
     status: "Concluído",
   },
   {
     id: 3,
     crop: "Soja",
-    season: "2024/25",
-    plant: "2024-10-12",
-    harvest: "2025-02-22",
-    area: "120",
+    season: "2025/26",
+    plant: "2025-09-28",
+    harvest: "2026-01-15",
+    area: "103.87",
     yield: "58",
     status: "Concluído",
   },
   {
     id: 4,
     crop: "Milho",
-    season: "2024",
-    plant: "2024-03-10",
-    harvest: "2024-07-30",
-    area: "120",
+    season: "2025",
+    plant: "2025-02-03",
+    harvest: "2025-06-28",
+    area: "103.87",
     yield: "92",
     status: "Concluído",
   },
@@ -83,7 +83,7 @@ export const info = {
   sources: {
     title: "Fontes, escala e incerteza",
     subtitle:
-      "Referências de produtos NASA. Todos os valores desta experiência são fictícios.",
+      "Como cada fonte entra na NATIVA. Indicadores e cenários usam dados reais do ponto cadastrado; as séries da Análise Climática são ilustrativas.",
     items: [
       [
         "NASA POWER",
@@ -99,7 +99,7 @@ export const info = {
       ],
       [
         "Sem validação agronômica",
-        "Cenários ilustrativos: confirme a adequação com assistência técnica local.",
+        "Os cenários do motor são estimativas: confirme a adequação com assistência técnica local.",
       ],
     ],
   },
@@ -153,8 +153,37 @@ export const info = {
       ],
       [
         "Sobre esta demonstração",
-        "Os cenários e indicadores são ilustrativos. Nenhum produto NASA está conectado nesta versão.",
+        "Indicadores e cenários usam NASA POWER, MODIS e outras bases públicas para a localização cadastrada. As séries da Análise Climática são ilustrativas.",
       ],
     ],
   },
 };
+// Single list of data sources shown in Settings, grouped by where each one feeds the app.
+export const dataSources = {
+  engine: [
+    ["NASA POWER", "Clima diário desde 1991 • chuva, temperatura, geada e veranicos"],
+    ["SoilGrids", "Argila, areia, carbono orgânico, pH e água disponível no solo"],
+    ["MapBiomas", "Histórico de uso da terra, 2019–2024"],
+    ["IBGE PAM", "Produtividade municipal das culturas"],
+  ],
+  indicators: [
+    ["NASA POWER", "Temperatura média e precipitação acumulada"],
+    ["Open-Meteo • ERA5-Land", "Umidade do solo"],
+    ["NASA MODIS • ORNL DAAC", "Índice de vegetação (NDVI), a cada 16 dias"],
+    ["Esri World Imagery", "Imagem de satélite do mapa"],
+  ],
+  illustrative: [
+    ["NASA POWER", "Séries de temperatura e precipitação"],
+    ["NASA SMAP", "Série de umidade superficial do solo"],
+    ["NASA MODIS", "Série de vigor da vegetação (NDVI)"],
+  ],
+};
+
+/** Texture class from a soil test (simplified SiBCS textural groups), so the texture label never contradicts clay/sand values. */
+export function textureFromSoil(clay: number, sand: number): string {
+  const silt = 100 - clay - sand;
+  if (clay >= 35) return "Argiloso";
+  if (sand - clay > 70) return "Arenoso";
+  if (silt >= 50) return "Siltoso";
+  return "Franco";
+}
