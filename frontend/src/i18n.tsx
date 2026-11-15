@@ -30,5 +30,5 @@ export function LanguageProvider({children}: {children: ReactNode}) {
 export const useLanguage = () => useContext(Context);
 export function LanguageSwitcher() {
   const {language, setLanguage} = useLanguage();
-  return <label className="language-switcher"><span aria-hidden="true">◎</span><select aria-label={language === 'en' ? 'Language' : 'Idioma'} value={language} onChange={e => setLanguage(e.target.value as Language)}><option value="en" lang="en">English</option><option value="pt" lang="pt-BR">Português</option></select></label>;
+  return <label className="language-switcher"><svg className="language-globe" aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7.5h14M5 16.5h14"/></svg><select aria-label={language === 'en' ? 'Language' : 'Idioma'} value={language} onChange={e => setLanguage(e.target.value as Language)}><option value="en" lang="en">EN</option><option value="pt" lang="pt-BR">PT</option></select></label>;
 }
