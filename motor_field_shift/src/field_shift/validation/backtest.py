@@ -23,8 +23,8 @@ import numpy as np
 import pandas as pd
 
 from field_shift.app import engine as E
-from field_shift.pam.produtividade import expected_yield
-from field_shift.renda.historico import _conab_line, conab_costs  # noqa: F401 (re-exported for the tests)
+from field_shift.pam.productivity import expected_yield
+from field_shift.income.history import _conab_line, conab_costs  # noqa: F401 (re-exported for the tests)
 
 ROOT = Path(__file__).resolve().parents[3]
 RAW = ROOT / "data/raw"
@@ -164,8 +164,8 @@ GRAIN = {"milho_safrinha": ("milho_2safra", "milho_total", "milho_2safra"),   # 
 def _cover_cost_bags() -> dict:
     """Establishment cost of covers/fallow in soybean bags (current reference cost ÷ current soybean price), kept constant in
     bags across years (no historical series exists)."""
-    from field_shift.renda.renda import carregar_referencia
-    ref = carregar_referencia()
+    from field_shift.income.income import load_reference
+    ref = load_reference()
     soy = ref["precos"]["soja"]["valor"]
     return {k: ref["custos"][k]["coe"] / soy for k in ("aveia", "milheto_crotalaria", "pousio", "braquiaria_consorcio")}
 
@@ -188,7 +188,7 @@ def decision_backtest(with_bonus: bool = False, expectation: str = "mean", price
             continue
         for cod in ys["milho_safrinha"].columns:
             for opt in OPTIONS:
-                bonus = E.SEGUNDA[opt]["bonus_sc"] if with_bonus else 0.0
+                bonus = E.SECOND[opt]["bonus_sc"] if with_bonus else 0.0
                 if opt in GRAIN:
                     y = ys[opt]
                     hist = y.loc[(y.index >= year - WINDOW) & (y.index < year), cod].dropna() if cod in y.columns else pd.Series()

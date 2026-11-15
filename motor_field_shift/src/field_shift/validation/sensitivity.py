@@ -17,8 +17,8 @@ import pandas as pd
 from scipy.stats import kendalltau
 
 from field_shift.app import engine as E
-from field_shift.motor import servico as S
-from field_shift.renda.renda import carregar_referencia
+from field_shift.core import service as S
+from field_shift.income.income import load_reference
 
 PERTURBATION = 0.20  # ±20 % one-at-a-time
 
@@ -55,32 +55,32 @@ class Context:
 
 def build_context(sc: Scenario) -> Context:
     """Climate/soil/yield context of the scenario, computed once (the expensive part) through the service internals."""
-    inp = S._normalizar_entradas(sc.sowing, None, sc.current, None, None, None, sc.irrigation, None, None)
-    base = S._cronologia_e_contexto(sc.area, inp, sc.sowing, sc.stage, sc.harvest, sc.reference_date)
+    inp = S._normalize_inputs(sc.sowing, None, sc.current, None, None, None, sc.irrigation, None, None)
+    base = S._timeline_and_context(sc.area, inp, sc.sowing, sc.stage, sc.harvest, sc.reference_date)
     return Context(sc, base["rk"], inp["pesos_n"], inp["verao_atual"])
 
 
 def rank(ctx: Context, weights: dict | None = None, adjustments: dict | None = None) -> pd.DataFrame:
     """Valid candidates of the current summer's block, best first (columns: id, nota and the 5 criteria)."""
-    res = E.pontuar(weights or ctx.weights, ctx.rk, adjustments or {}, None)
+    res = E.score_rotation(weights or ctx.weights, ctx.rk, adjustments or {}, None)
     tab = res["tabela"]
-    tab = tab[tab["candidata"].map(lambda n: E.CATALOGO[n]["verao"] == ctx.summer)].reset_index(drop=True)
-    tab.insert(0, "id", tab["candidata"].map(lambda n: E.CATALOGO[n]["id"]))
+    tab = tab[tab["candidata"].map(lambda n: E.CATALOG[n]["verao"] == ctx.summer)].reset_index(drop=True)
+    tab.insert(0, "id", tab["candidata"].map(lambda n: E.CATALOG[n]["id"]))
     return tab.drop(columns=["contrib"])
 
 
 @contextlib.contextmanager
 def catalog_overrides(fn: Callable[[dict], None]) -> Iterator[None]:
     """Apply ``fn(entry)`` to a copy of every CATALOGO entry; restores the original entries on exit."""
-    saved = {n: c for n, c in E.CATALOGO.items()}
+    saved = {n: c for n, c in E.CATALOG.items()}
     try:
         for n, c in saved.items():
             new = copy.deepcopy(c)
             fn(new)
-            E.CATALOGO[n] = new
+            E.CATALOG[n] = new
         yield
     finally:
-        E.CATALOGO.update(saved)
+        E.CATALOG.update(saved)
 
 
 # --------------------------------------------------------------------------- parameters
@@ -96,7 +96,7 @@ class Param:
     adjust: Callable[[float], dict] | None = None                    # factor -> internal ajustes dict
 
 
-def _segunda_patch(crop: str, attr: str, base: float):
+def _second_patch(crop: str, attr: str, base: float):
     def make(f: float):
         def fn(c: dict):
             if c["segunda"] != crop:
@@ -105,7 +105,7 @@ def _segunda_patch(crop: str, attr: str, base: float):
             if attr == "bonus_sc":
                 c["bonus_sc"] = v + c["bonus_verao_sc"]
             elif attr == "pragas":
-                pen = E.PENALIDADE_MILHO_SOBRE_MILHO if c["milho_sobre_milho"] else 0.0
+                pen = E.CORN_ON_CORN_PENALTY if c["milho_sobre_milho"] else 0.0
                 c["pragas_base"] = min(1.0, v)
                 c["pragas"] = max(0.0, min(1.0, v) - pen)
             elif attr == "dias_descobertos":
@@ -119,38 +119,38 @@ def _segunda_patch(crop: str, attr: str, base: float):
 def _summer_bonus_patch(f: float):
     def fn(c: dict):
         if c["verao"] == "milho_verao":
-            c["bonus_verao_sc"] = E.VERAO["milho_verao"]["bonus_sc"] * f
-            c["bonus_sc"] = E.SEGUNDA[c["segunda"]]["bonus_sc"] + c["bonus_verao_sc"]
+            c["bonus_verao_sc"] = E.SUMMER["milho_verao"]["bonus_sc"] * f
+            c["bonus_sc"] = E.SECOND[c["segunda"]]["bonus_sc"] + c["bonus_verao_sc"]
     return fn
 
 
 def _corn_on_corn_patch(f: float):
     def fn(c: dict):
         if c["milho_sobre_milho"]:
-            c["pragas"] = max(0.0, c["pragas_base"] - E.PENALIDADE_MILHO_SOBRE_MILHO * f)
+            c["pragas"] = max(0.0, c["pragas_base"] - E.CORN_ON_CORN_PENALTY * f)
     return fn
 
 
-SEGUNDA_ATTRS = {"bonus_sc": "bonus on following soybean (sc/ha)", "cobertura": "soil cover (0–1)",
+SECOND_ATTRS = {"bonus_sc": "bonus on following soybean (sc/ha)", "cobertura": "soil cover (0–1)",
                  "n_fix": "N fixation/cycling (0–1)", "dias_descobertos": "bare-soil days", "pragas": "pest-cycle break (0–1)"}
 
 
 def parameters() -> list[Param]:
     """Every parameter flagged as an estimate in the catalog/reference, plus the market prices (data, but volatile)."""
     ps = []
-    for crop, s in E.SEGUNDA.items():
+    for crop, s in E.SECOND.items():
         if crop == "soja_safrinha":  # always eliminated by the hard rules
             continue
-        for attr, lab in SEGUNDA_ATTRS.items():
+        for attr, lab in SECOND_ATTRS.items():
             if attr == "bonus_sc" and s[attr] == 0:
                 continue
             ps.append(Param(f"segunda.{crop}.{attr}", "catalog", f"{s['nome']}: {lab}", float(s[attr]),
-                            patch=_segunda_patch(crop, attr, float(s[attr]))))
+                            patch=_second_patch(crop, attr, float(s[attr]))))
     ps.append(Param("verao.milho_verao.bonus_sc", "catalog", "summer corn: bonus on following soybean (sc/ha)",
-                    E.VERAO["milho_verao"]["bonus_sc"], patch=_summer_bonus_patch))
-    ps.append(Param("penalty.corn_on_corn", "penalty", "corn-on-corn pest penalty", E.PENALIDADE_MILHO_SOBRE_MILHO,
+                    E.SUMMER["milho_verao"]["bonus_sc"], patch=_summer_bonus_patch))
+    ps.append(Param("penalty.corn_on_corn", "penalty", "corn-on-corn pest penalty", E.CORN_ON_CORN_PENALTY,
                     patch=_corn_on_corn_patch))
-    ref = carregar_referencia()
+    ref = load_reference()
     line = ref.get("linha_custo_padrao", "coe")
     for k, c in ref["custos"].items():
         if c.get("estimativa"):
@@ -201,9 +201,9 @@ def weight_extremes(ctx: Context) -> pd.DataFrame:
     """Each weight set to 0 and to 10, the others at the default."""
     base = list(rank(ctx)["id"])
     rows = []
-    for k in E.PESOS_PADRAO:
+    for k in E.DEFAULT_WEIGHTS:
         for v in (0, 10):
-            w = dict(E.PESOS_PADRAO, **{k: v})
+            w = dict(E.DEFAULT_WEIGHTS, **{k: v})
             rows.append(dict(scenario=ctx.scenario.key, weight=k, value=v, **compare(base, list(rank(ctx, weights=w)["id"]))))
     return pd.DataFrame(rows)
 
@@ -214,7 +214,7 @@ def weight_monte_carlo(ctx: Context, n: int = 1000, seed: int = 42) -> pd.DataFr
     top1: dict[str, int] = {}
     top3: dict[str, int] = {}
     for _ in range(n):
-        w = {k: float(v) for k, v in zip(E.PESOS_PADRAO, rng.uniform(0, 10, len(E.PESOS_PADRAO)))}
+        w = {k: float(v) for k, v in zip(E.DEFAULT_WEIGHTS, rng.uniform(0, 10, len(E.DEFAULT_WEIGHTS)))}
         ids = list(rank(ctx, weights=w)["id"])
         top1[ids[0]] = top1.get(ids[0], 0) + 1
         for i in ids[:3]:

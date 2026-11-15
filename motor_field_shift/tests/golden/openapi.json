@@ -1,0 +1,3021 @@
+{
+ "components": {
+  "schemas": {
+   "Ajustes": {
+    "additionalProperties": false,
+    "description": "Preços e custos próprios do produtor (sobrescrevem os valores de referência).",
+    "examples": [
+     {
+      "precos": {
+       "milho": 58.0,
+       "soja": 125.0,
+       "trigo": 82.0
+      }
+     },
+     {
+      "produtividade": {
+       "milho": 120.0,
+       "soja": 70.0,
+       "trigo": 50.0
+      }
+     }
+    ],
+    "properties": {
+     "custos": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "minimum": 0.0,
+         "type": "number"
+        },
+        "propertyNames": {
+         "enum": [
+          "soja",
+          "milho",
+          "milho_2safra",
+          "milho_verao",
+          "milho_1safra",
+          "trigo",
+          "feijao",
+          "feijao_2safra",
+          "sorgo",
+          "aveia",
+          "milheto_crotalaria",
+          "braquiaria_consorcio",
+          "pousio",
+          "nabo_forrageiro",
+          "aveia_nabo"
+         ]
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Custo por cultura em R$/ha ('milho' é alias de 'milho_2safra'; 'milho_verao' de 'milho_1safra'; 'feijao' de 'feijao_2safra').",
+      "title": "Custos"
+     },
+     "linha_custo": {
+      "anyOf": [
+       {
+        "enum": [
+         "coe",
+         "cot",
+         "ct"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "'coe' (operacional efetivo), 'cot' (operacional total) ou 'ct' (custo total).",
+      "title": "Linha Custo"
+     },
+     "precos": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "minimum": 0.0,
+         "type": "number"
+        },
+        "propertyNames": {
+         "enum": [
+          "soja",
+          "milho",
+          "trigo",
+          "feijao",
+          "sorgo"
+         ]
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Preço em R$/saca (60 kg). 'milho' vale para o milho verão e o safrinha.",
+      "title": "Precos"
+     },
+     "produtividade": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "exclusiveMinimum": 0.0,
+         "maximum": 500.0,
+         "type": "number"
+        },
+        "propertyNames": {
+         "enum": [
+          "soja",
+          "milho",
+          "milho_2safra",
+          "milho_verao",
+          "trigo",
+          "feijao",
+          "sorgo"
+         ]
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Produtividade própria em sc/ha (soja, milho = 2ª safra, milho_verao = 1ª safra, trigo, feijao, sorgo); 'milho' é alias de 'milho_2safra'. Substitui o rendimento da PAM do município na margem; o cenário de ano ruim escala proporcionalmente (próprio × p20/média da PAM). A soja informada também muda a escala S da renda.",
+      "title": "Produtividade"
+     }
+    },
+    "title": "Ajustes",
+    "type": "object"
+   },
+   "AnaliseSolo": {
+    "additionalProperties": false,
+    "description": "Análise de solo do produtor. Substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico.\nInforme argila_pct e areia_pct (juntos), cad_mm_cm, ou ao menos um campo de fertilidade.\n\nFertilidade (opcional, qualquer subconjunto; unidades do laudo): se NÃO informada, não entra na análise (sem estimativa nem valor\npadrão) e o card diz que não foi considerada. Se informada: custo de calagem (saturação por bases, precisa de V% e CTC) e de adubação\nP/K na margem, penalidade no critério solo para cultura sensível em solo ácido/pobre e bônus para cobertura recicladora.",
+    "examples": [
+     {
+      "areia_pct": 10,
+      "argila_pct": 65,
+      "cad_mm_cm": 1.4,
+      "materia_organica_pct": 3.5,
+      "ph": 5.4
+     },
+     {
+      "areia_pct": 30,
+      "argila_pct": 45,
+      "carbono_organico_g_kg": 18
+     },
+     {
+      "al_cmolc_dm3": 1.2,
+      "ctc_cmolc_dm3": 9,
+      "k_cmolc_dm3": 0.12,
+      "p_mg_dm3": 4,
+      "v_pct": 38
+     }
+    ],
+    "properties": {
+     "al_cmolc_dm3": {
+      "anyOf": [
+       {
+        "maximum": 15.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Alumínio trocável, cmolc/dm³. Fertilidade (opcional).",
+      "title": "Al Cmolc Dm3"
+     },
+     "areia_pct": {
+      "anyOf": [
+       {
+        "maximum": 100.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Areia (%). Areia + argila ≤ 100.",
+      "title": "Areia Pct"
+     },
+     "argila_pct": {
+      "anyOf": [
+       {
+        "maximum": 100.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Argila (%).",
+      "title": "Argila Pct"
+     },
+     "ca_cmolc_dm3": {
+      "anyOf": [
+       {
+        "maximum": 40.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Cálcio, cmolc/dm³. Fertilidade (opcional).",
+      "title": "Ca Cmolc Dm3"
+     },
+     "cad_mm_cm": {
+      "anyOf": [
+       {
+        "maximum": 3.0,
+        "minimum": 0.3,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Capacidade de água disponível (mm de água por cm de solo, 0,3 a 3). Se vier, é usada direto na CAD.",
+      "title": "Cad Mm Cm"
+     },
+     "carbono_organico_g_kg": {
+      "anyOf": [
+       {
+        "maximum": 580.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Carbono orgânico (g/kg). Alternativa a materia_organica_pct.",
+      "title": "Carbono Organico G Kg"
+     },
+     "ctc_cmolc_dm3": {
+      "anyOf": [
+       {
+        "maximum": 60.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "CTC a pH 7, cmolc/dm³. Fertilidade (opcional).",
+      "title": "Ctc Cmolc Dm3"
+     },
+     "k_cmolc_dm3": {
+      "anyOf": [
+       {
+        "maximum": 10.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Potássio, cmolc/dm³. Fertilidade (opcional).",
+      "title": "K Cmolc Dm3"
+     },
+     "materia_organica_pct": {
+      "anyOf": [
+       {
+        "maximum": 100.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Matéria orgânica (%). Alternativa a carbono_organico_g_kg.",
+      "title": "Materia Organica Pct"
+     },
+     "mg_cmolc_dm3": {
+      "anyOf": [
+       {
+        "maximum": 20.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Magnésio, cmolc/dm³. Fertilidade (opcional).",
+      "title": "Mg Cmolc Dm3"
+     },
+     "p_mg_dm3": {
+      "anyOf": [
+       {
+        "maximum": 500.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Fósforo (Mehlich-1), mg/dm³. Fertilidade (opcional).",
+      "title": "P Mg Dm3"
+     },
+     "ph": {
+      "anyOf": [
+       {
+        "maximum": 9.0,
+        "minimum": 3.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "pH em água (3 a 9).",
+      "title": "Ph"
+     },
+     "profundidade_cm": {
+      "anyOf": [
+       {
+        "maximum": 200.0,
+        "minimum": 1.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Profundidade da amostra (cm; padrão 20, ou seja, 0–20 cm). A amostra é tomada como representativa do perfil.",
+      "title": "Profundidade Cm"
+     },
+     "v_pct": {
+      "anyOf": [
+       {
+        "maximum": 100.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Saturação por bases V% (0–100). Fertilidade (opcional). Com CTC, calcula a calagem; sem V%, é derivada se vierem Ca, Mg, K e CTC.",
+      "title": "V Pct"
+     }
+    },
+    "title": "AnaliseSolo",
+    "type": "object"
+   },
+   "Area": {
+    "additionalProperties": false,
+    "description": "Área de análise. Informe EXATAMENTE UMA das formas: `geometry`, `lat`+`lon` ou `talhao_id`.",
+    "examples": [
+     {
+      "talhao_id": "72638"
+     }
+    ],
+    "properties": {
+     "geometry": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "GeoJSON Polygon, MultiPolygon ou Feature em EPSG:4326 (lon, lat). Máx. 5000 ha.",
+      "title": "Geometry"
+     },
+     "lat": {
+      "anyOf": [
+       {
+        "maximum": 90.0,
+        "minimum": -90.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Latitude (vira um quadrado de ~100 ha).",
+      "title": "Lat"
+     },
+     "lon": {
+      "anyOf": [
+       {
+        "maximum": 180.0,
+        "minimum": -180.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Longitude (vira um quadrado de ~100 ha).",
+      "title": "Lon"
+     },
+     "talhao_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Id de um talhão demo (ver GET /v1/talhoes/demo).",
+      "title": "Talhao Id"
+     }
+    },
+    "title": "Area",
+    "type": "object"
+   },
+   "AreaOut": {
+    "additionalProperties": true,
+    "properties": {
+     "area_ha": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Area Ha"
+     },
+     "centroide": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Centroide"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "geometry": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Geometry"
+     },
+     "municipio": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Municipio"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "origem": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Origem"
+     },
+     "talhao_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Talhao Id"
+     }
+    },
+    "title": "AreaOut",
+    "type": "object"
+   },
+   "Bloco": {
+    "additionalProperties": true,
+    "description": "Ranking de um conjunto de combinações; `posicao` recomeça em 1 em cada bloco.",
+    "properties": {
+     "alternativas": {
+      "default": [],
+      "description": "Melhores do bloco, sem a atual (até `n_alternativas`).",
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Alternativas",
+      "type": "array"
+     },
+     "eliminadas": {
+      "default": [],
+      "items": {
+       "$ref": "#/components/schemas/Eliminada"
+      },
+      "title": "Eliminadas",
+      "type": "array"
+     },
+     "ranking": {
+      "default": [],
+      "items": {
+       "$ref": "#/components/schemas/ItemRanking"
+      },
+      "title": "Ranking",
+      "type": "array"
+     }
+    },
+    "title": "Bloco",
+    "type": "object"
+   },
+   "Card": {
+    "additionalProperties": true,
+    "properties": {
+     "avisos": {
+      "default": [],
+      "items": {},
+      "title": "Avisos",
+      "type": "array"
+     },
+     "beneficios": {
+      "default": [],
+      "items": {},
+      "title": "Beneficios",
+      "type": "array"
+     },
+     "evidencias": {
+      "default": [],
+      "items": {},
+      "title": "Evidencias",
+      "type": "array"
+     },
+     "lacunas": {
+      "default": [],
+      "items": {},
+      "title": "Lacunas",
+      "type": "array"
+     },
+     "mercado": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Viabilidade de mercado no Oeste do PR: nivel, texto, estimativa.",
+      "title": "Mercado"
+     },
+     "por_que": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Por Que"
+     },
+     "riscos": {
+      "default": [],
+      "items": {},
+      "title": "Riscos",
+      "type": "array"
+     }
+    },
+    "title": "Card",
+    "type": "object"
+   },
+   "Centroide": {
+    "additionalProperties": true,
+    "properties": {
+     "lat": {
+      "title": "Lat",
+      "type": "number"
+     },
+     "lon": {
+      "title": "Lon",
+      "type": "number"
+     }
+    },
+    "required": [
+     "lat",
+     "lon"
+    ],
+    "title": "Centroide",
+    "type": "object"
+   },
+   "ClimaOut": {
+    "additionalProperties": true,
+    "properties": {
+     "celula": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Celula"
+     },
+     "diagnostico": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Diagnostico"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     },
+     "geada_por_semeadura": {
+      "default": [],
+      "items": {
+       "$ref": "#/components/schemas/GeadaPorSemeadura"
+      },
+      "title": "Geada Por Semeadura",
+      "type": "array"
+     },
+     "riscos": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Riscos"
+     },
+     "semeadura_safrinha": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Semeadura Safrinha"
+     }
+    },
+    "title": "ClimaOut",
+    "type": "object"
+   },
+   "ContextoIn": {
+    "examples": [
+     {
+      "area": {
+       "talhao_id": "72638"
+      },
+      "semeadura_safrinha": "01/02"
+     }
+    ],
+    "properties": {
+     "area": {
+      "$ref": "#/components/schemas/Area"
+     },
+     "semeadura_safrinha": {
+      "default": "01/02",
+      "description": "Data de semeadura da safrinha (dd/mm); usada no histórico por fase do ENSO.",
+      "enum": [
+       "15/01",
+       "01/02",
+       "15/02",
+       "01/03",
+       "15/03"
+      ],
+      "title": "Semeadura Safrinha",
+      "type": "string"
+     }
+    },
+    "required": [
+     "area"
+    ],
+    "title": "ContextoIn",
+    "type": "object"
+   },
+   "CulturaAtual": {
+    "additionalProperties": true,
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "nome": {
+      "title": "Nome",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "nome"
+    ],
+    "title": "CulturaAtual",
+    "type": "object"
+   },
+   "CulturaRef": {
+    "additionalProperties": true,
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "nome": {
+      "title": "Nome",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "nome"
+    ],
+    "title": "CulturaRef",
+    "type": "object"
+   },
+   "DataOrigem": {
+    "additionalProperties": true,
+    "properties": {
+     "data": {
+      "description": "dd/mm",
+      "title": "Data",
+      "type": "string"
+     },
+     "origem": {
+      "title": "Origem",
+      "type": "string"
+     }
+    },
+    "required": [
+     "data",
+     "origem"
+    ],
+    "title": "DataOrigem",
+    "type": "object"
+   },
+   "DiagnosticoIn": {
+    "examples": [
+     {
+      "area": {
+       "talhao_id": "72638"
+      },
+      "semeadura_safrinha": "01/02"
+     },
+     {
+      "area": {
+       "geometry": {
+        "coordinates": [
+         [
+          [
+           -53.3045,
+           -24.9045
+          ],
+          [
+           -53.2955,
+           -24.9045
+          ],
+          [
+           -53.2955,
+           -24.8955
+          ],
+          [
+           -53.3045,
+           -24.8955
+          ],
+          [
+           -53.3045,
+           -24.9045
+          ]
+         ]
+        ],
+        "type": "Polygon"
+       }
+      },
+      "semeadura_safrinha": "15/02"
+     },
+     {
+      "area": {
+       "lat": -24.95,
+       "lon": -53.45
+      }
+     }
+    ],
+    "properties": {
+     "analise_solo": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/AnaliseSolo"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Análise de solo do produtor (substitui o SoilGrids no bloco solo)."
+     },
+     "area": {
+      "$ref": "#/components/schemas/Area"
+     },
+     "semeadura_safrinha": {
+      "default": "01/02",
+      "description": "Data de semeadura da safrinha (dd/mm).",
+      "enum": [
+       "15/01",
+       "01/02",
+       "15/02",
+       "01/03",
+       "15/03"
+      ],
+      "title": "Semeadura Safrinha",
+      "type": "string"
+     }
+    },
+    "required": [
+     "area"
+    ],
+    "title": "DiagnosticoIn",
+    "type": "object"
+   },
+   "DiagnosticoOut": {
+    "additionalProperties": true,
+    "properties": {
+     "area": {
+      "$ref": "#/components/schemas/AreaOut"
+     },
+     "avisos": {
+      "default": [],
+      "items": {
+       "type": "string"
+      },
+      "title": "Avisos",
+      "type": "array"
+     },
+     "clima": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/ClimaOut"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "fertilidade": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Só se o produtor informou fertilidade em `analise_solo`: valores, classes (P, K, V%, Al), origem da V%, severidade de acidez e itens não informados.",
+      "title": "Fertilidade"
+     },
+     "historico": {
+      "default": [],
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Historico",
+      "type": "array"
+     },
+     "produtividade": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Produtividade"
+     },
+     "relevo": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Relevo"
+     },
+     "rotacao_detectada": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/RotacaoDetectada"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "solo": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Solo"
+     }
+    },
+    "required": [
+     "area"
+    ],
+    "title": "DiagnosticoOut",
+    "type": "object"
+   },
+   "Eliminada": {
+    "additionalProperties": true,
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "id_legado": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Id Legado"
+     },
+     "motivos": {
+      "default": [],
+      "items": {
+       "type": "string"
+      },
+      "title": "Motivos",
+      "type": "array"
+     },
+     "rotacao": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rotacao"
+     },
+     "segunda": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CulturaRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "verao": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CulturaRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "required": [
+     "id"
+    ],
+    "title": "Eliminada",
+    "type": "object"
+   },
+   "ErroOut": {
+    "properties": {
+     "erro": {
+      "title": "Erro",
+      "type": "string"
+     },
+     "mensagem": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mensagem"
+     }
+    },
+    "required": [
+     "erro"
+    ],
+    "title": "ErroOut",
+    "type": "object"
+   },
+   "GeadaPorSemeadura": {
+    "additionalProperties": true,
+    "properties": {
+     "anos_com_evento": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Anos Com Evento"
+     },
+     "n_anos": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "N Anos"
+     },
+     "prob": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Prob"
+     },
+     "semeadura": {
+      "title": "Semeadura",
+      "type": "string"
+     }
+    },
+    "required": [
+     "semeadura"
+    ],
+    "title": "GeadaPorSemeadura",
+    "type": "object"
+   },
+   "HealthOut": {
+    "properties": {
+     "dados_carregados": {
+      "title": "Dados Carregados",
+      "type": "boolean"
+     },
+     "detalhe": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Detalhe"
+     },
+     "status": {
+      "enum": [
+       "ok",
+       "degradado"
+      ],
+      "title": "Status",
+      "type": "string"
+     },
+     "versao": {
+      "title": "Versao",
+      "type": "string"
+     }
+    },
+    "required": [
+     "status",
+     "dados_carregados",
+     "versao"
+    ],
+    "title": "HealthOut",
+    "type": "object"
+   },
+   "Irrigacao": {
+    "additionalProperties": false,
+    "description": "Irrigação disponível na área. Irriga milho, milho+braquiária, trigo, sorgo e feijão da 2ª janela (não cobertura, pousio nem o verão).",
+    "examples": [
+     {
+      "custo_r_mm_ha": 4.5,
+      "disponivel": true,
+      "lamina_max_mm_dia": 6
+     }
+    ],
+    "properties": {
+     "custo_r_mm_ha": {
+      "anyOf": [
+       {
+        "maximum": 100.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Custo por mm aplicado por ha (R$; padrão 4,0, estimativa a validar).",
+      "title": "Custo R Mm Ha"
+     },
+     "disponivel": {
+      "description": "Há irrigação na área?",
+      "title": "Disponivel",
+      "type": "boolean"
+     },
+     "lamina_max_mm_dia": {
+      "anyOf": [
+       {
+        "exclusiveMinimum": 0.0,
+        "maximum": 30.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Lâmina máxima por dia (mm; padrão 6).",
+      "title": "Lamina Max Mm Dia"
+     }
+    },
+    "required": [
+     "disponivel"
+    ],
+    "title": "Irrigacao",
+    "type": "object"
+   },
+   "ItemAtual": {
+    "additionalProperties": true,
+    "description": "Rotação atual. Se eliminada por regra dura: posicao/nota nulos, eliminada=true e motivos.",
+    "properties": {
+     "atual": {
+      "default": false,
+      "title": "Atual",
+      "type": "boolean"
+     },
+     "avaliada": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "false se a atual não está em 'rotacoes' (não foi avaliada).",
+      "title": "Avaliada"
+     },
+     "card": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Card"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "contribuicoes": {
+      "additionalProperties": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "default": {},
+      "title": "Contribuicoes",
+      "type": "object"
+     },
+     "criterios": {
+      "additionalProperties": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "default": {},
+      "title": "Criterios",
+      "type": "object"
+     },
+     "eliminada": {
+      "default": false,
+      "title": "Eliminada",
+      "type": "boolean"
+     },
+     "ganho_vs_atual": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Como melhora (ou piora) a produção contra a rotação atual, sempre com `origem`: `soja_seguinte_sc` (central), `soja_seguinte_sc_faixa` [min, max] e `soja_seguinte_rs` (R$/ha, bônus do catálogo × preço DERAL) com `fonte` (estimativa, validar com agrônomo/Embrapa), `renda_2a_safra` e `margem_total` (R$/ha; dado), `solo` (dias de solo descoberto e cobertura; negativo em dias = melhora), `agua` e `risco_climatico` (diferença de critério; dado). Nulo na própria atual ou se a atual foi eliminada.",
+      "title": "Ganho Vs Atual"
+     },
+     "id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Id"
+     },
+     "id_legado": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Slug antigo (só soja no verão): milho_safrinha = soja__milho_safrinha.",
+      "title": "Id Legado"
+     },
+     "irrigacao": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Presente só se a candidata é irrigada: lamina_media_mm_ano e custo_r_ha.",
+      "title": "Irrigacao"
+     },
+     "margem": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Margem"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "motivos": {
+      "default": [],
+      "items": {
+       "type": "string"
+      },
+      "title": "Motivos",
+      "type": "array"
+     },
+     "nota": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nota"
+     },
+     "posicao": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Posicao"
+     },
+     "rotacao": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rotacao"
+     },
+     "segunda": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CulturaRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "verao": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CulturaRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "title": "ItemAtual",
+    "type": "object"
+   },
+   "ItemMargem": {
+    "additionalProperties": true,
+    "properties": {
+     "cultura": {
+      "title": "Cultura",
+      "type": "string"
+     },
+     "custo": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Custo"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     },
+     "margem_r_ha": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Margem R Ha"
+     },
+     "preco": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Preco"
+     },
+     "rendimento_sc_ha": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rendimento Sc Ha"
+     }
+    },
+    "required": [
+     "cultura"
+    ],
+    "title": "ItemMargem",
+    "type": "object"
+   },
+   "ItemRanking": {
+    "additionalProperties": true,
+    "properties": {
+     "atual": {
+      "default": false,
+      "title": "Atual",
+      "type": "boolean"
+     },
+     "card": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Card"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "contribuicoes": {
+      "additionalProperties": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "default": {},
+      "title": "Contribuicoes",
+      "type": "object"
+     },
+     "criterios": {
+      "additionalProperties": {
+       "anyOf": [
+        {
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "default": {},
+      "title": "Criterios",
+      "type": "object"
+     },
+     "ganho_vs_atual": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Como melhora (ou piora) a produção contra a rotação atual, sempre com `origem`: `soja_seguinte_sc` (central), `soja_seguinte_sc_faixa` [min, max] e `soja_seguinte_rs` (R$/ha, bônus do catálogo × preço DERAL) com `fonte` (estimativa, validar com agrônomo/Embrapa), `renda_2a_safra` e `margem_total` (R$/ha; dado), `solo` (dias de solo descoberto e cobertura; negativo em dias = melhora), `agua` e `risco_climatico` (diferença de critério; dado). Nulo na própria atual ou se a atual foi eliminada.",
+      "title": "Ganho Vs Atual"
+     },
+     "id": {
+      "description": "Id estável '<verao>__<segunda>' (ex.: soja__milho_safrinha).",
+      "title": "Id",
+      "type": "string"
+     },
+     "id_legado": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Slug antigo (só soja no verão): milho_safrinha = soja__milho_safrinha.",
+      "title": "Id Legado"
+     },
+     "irrigacao": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Presente só se a candidata é irrigada: lamina_media_mm_ano e custo_r_ha.",
+      "title": "Irrigacao"
+     },
+     "margem": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Margem"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "nota": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nota"
+     },
+     "posicao": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Posicao"
+     },
+     "rotacao": {
+      "title": "Rotacao",
+      "type": "string"
+     },
+     "segunda": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CulturaRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "verao": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CulturaRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "required": [
+     "id",
+     "rotacao"
+    ],
+    "title": "ItemRanking",
+    "type": "object"
+   },
+   "Maquinas": {
+    "additionalProperties": false,
+    "description": "Máquinas que o produtor tem. Omitido = tem. `false` não elimina a rotação: gera aviso e custo extra de terceirização.",
+    "properties": {
+     "plataforma_milho": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Plataforma de colheita de milho (exigida por milho verão, milho safrinha e milho+braquiária; um custo por colheita).",
+      "title": "Plataforma Milho"
+     },
+     "semeadora_consorcio": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Semeadora de consórcio/caixa extra (exigida por milho+braquiária).",
+      "title": "Semeadora Consorcio"
+     }
+    },
+    "title": "Maquinas",
+    "type": "object"
+   },
+   "Margem": {
+    "additionalProperties": true,
+    "properties": {
+     "ano_ruim_r_ha": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ano Ruim R Ha"
+     },
+     "escala_S_r_ha": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Escala S R Ha"
+     },
+     "incremental_r_ha": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Incremental R Ha"
+     },
+     "itens": {
+      "default": [],
+      "items": {
+       "$ref": "#/components/schemas/ItemMargem"
+      },
+      "title": "Itens",
+      "type": "array"
+     },
+     "total_r_ha": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total R Ha"
+     }
+    },
+    "title": "Margem",
+    "type": "object"
+   },
+   "Metodologia": {
+    "additionalProperties": true,
+    "properties": {
+     "ajustes_aplicados": {
+      "default": [],
+      "items": {
+       "type": "string"
+      },
+      "title": "Ajustes Aplicados",
+      "type": "array"
+     },
+     "criterios": {
+      "additionalProperties": true,
+      "default": {},
+      "title": "Criterios",
+      "type": "object"
+     },
+     "formula": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Formula"
+     },
+     "versao": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Versao"
+     }
+    },
+    "title": "Metodologia",
+    "type": "object"
+   },
+   "Municipio": {
+    "additionalProperties": true,
+    "properties": {
+     "cod_ibge": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cod Ibge"
+     },
+     "nome": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nome"
+     }
+    },
+    "title": "Municipio",
+    "type": "object"
+   },
+   "Pesos": {
+    "additionalProperties": false,
+    "description": "Importância de cada critério, de 0 a 10. Omitidos usam o padrão (renda 5, demais 3).",
+    "properties": {
+     "agua": {
+      "anyOf": [
+       {
+        "maximum": 10.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Agua"
+     },
+     "pragas": {
+      "anyOf": [
+       {
+        "maximum": 10.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pragas"
+     },
+     "renda": {
+      "anyOf": [
+       {
+        "maximum": 10.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Renda"
+     },
+     "risco": {
+      "anyOf": [
+       {
+        "maximum": 10.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Risco"
+     },
+     "solo": {
+      "anyOf": [
+       {
+        "maximum": 10.0,
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Solo"
+     }
+    },
+    "title": "Pesos",
+    "type": "object"
+   },
+   "RecomendacaoIn": {
+    "examples": [
+     {
+      "area": {
+       "talhao_id": "72638"
+      },
+      "data_referencia": "2026-12-01",
+      "estagio_verao": "enchimento_graos",
+      "rotacao_atual": "soja__milho_safrinha"
+     },
+     {
+      "area": {
+       "talhao_id": "72638"
+      },
+      "data_referencia": "2026-12-01",
+      "estagio_verao": "grao_leitoso",
+      "rotacao_atual": "milho_verao__aveia",
+      "rotacoes": [
+       {
+        "segunda": "aveia_nabo",
+        "verao": "milho_verao"
+       },
+       {
+        "segunda": "trigo",
+        "verao": "milho_verao"
+       },
+       {
+        "segunda": "milho_safrinha",
+        "verao": "soja"
+       }
+      ]
+     },
+     {
+      "area": {
+       "talhao_id": "72638"
+      },
+      "colheita_prevista": "20/01",
+      "n_alternativas": 3,
+      "rotacao_atual": "soja__milho_safrinha",
+      "semeadura_safrinha": "01/02"
+     },
+     {
+      "ajustes": {
+       "linha_custo": "cot",
+       "precos": {
+        "milho": 58.0,
+        "soja": 125.0,
+        "trigo": 82.0
+       }
+      },
+      "area": {
+       "geometry": {
+        "coordinates": [
+         [
+          [
+           -53.3045,
+           -24.9045
+          ],
+          [
+           -53.2955,
+           -24.9045
+          ],
+          [
+           -53.2955,
+           -24.8955
+          ],
+          [
+           -53.3045,
+           -24.8955
+          ],
+          [
+           -53.3045,
+           -24.9045
+          ]
+         ]
+        ],
+        "type": "Polygon"
+       }
+      },
+      "estagio_verao": "floracao",
+      "pesos": {
+       "agua": 3,
+       "pragas": 5,
+       "renda": 8,
+       "risco": 4,
+       "solo": 3
+      },
+      "rotacao_atual": "soja__milho_safrinha"
+     },
+     {
+      "ajustes": {
+       "produtividade": {
+        "milho": 110.0,
+        "soja": 65.0,
+        "trigo": 50.0
+       }
+      },
+      "analise_solo": {
+       "areia_pct": 10,
+       "argila_pct": 65,
+       "cad_mm_cm": 1.4,
+       "materia_organica_pct": 3.5
+      },
+      "area": {
+       "talhao_id": "72638"
+      },
+      "estagio_verao": "maturacao",
+      "irrigacao": {
+       "disponivel": true
+      },
+      "restricoes": {
+       "culturas_excluidas": [
+        "trigo"
+       ],
+       "maquinas": {
+        "plataforma_milho": true,
+        "semeadora_consorcio": false
+       }
+      },
+      "rotacao_atual": "soja__milho_safrinha"
+     }
+    ],
+    "properties": {
+     "ajustes": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Ajustes"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "analise_solo": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/AnaliseSolo"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Análise de solo do produtor: substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico."
+     },
+     "area": {
+      "$ref": "#/components/schemas/Area"
+     },
+     "colheita_prevista": {
+      "anyOf": [
+       {
+        "pattern": "^\\d{2}/\\d{2}$",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Colheita prevista do verão (dd/mm). Se vier, tem precedência sobre `estagio_verao`.",
+      "title": "Colheita Prevista"
+     },
+     "data_referencia": {
+      "anyOf": [
+       {
+        "format": "date",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Data de hoje para o produtor (ISO, AAAA-MM-DD; padrão: hoje). Torna a conta do estágio determinística.",
+      "title": "Data Referencia"
+     },
+     "estagio_verao": {
+      "anyOf": [
+       {
+        "enum": [
+         "vegetativo",
+         "floracao",
+         "formacao_vagens",
+         "enchimento_graos",
+         "maturacao",
+         "colhida",
+         "pendoamento",
+         "grao_leitoso",
+         "grao_farinaceo"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Estágio da cultura de verão da rotação atual (a colheita estimada = data_referencia + dias típicos do estágio; estimativa, validar com Embrapa). Soja: vegetativo, floracao (R1–R2), formacao_vagens (R3–R4), enchimento_graos (R5–R6), maturacao (R7–R8), colhida. Milho verão: vegetativo, pendoamento (VT–R1), grao_leitoso (R2–R3), grao_farinaceo (R4–R5), maturacao (R6), colhida. Estágio de outra cultura dá 422. Ver GET /v1/opcoes.",
+      "title": "Estagio Verao"
+     },
+     "incluir_diagnostico": {
+      "default": true,
+      "description": "Inclui o diagnóstico completo na resposta.",
+      "title": "Incluir Diagnostico",
+      "type": "boolean"
+     },
+     "irrigacao": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Irrigacao"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Irrigação disponível (muda o critério água, o risco e a margem)."
+     },
+     "n_alternativas": {
+      "default": 3,
+      "description": "Quantas alternativas devolver.",
+      "maximum": 6.0,
+      "minimum": 1.0,
+      "title": "N Alternativas",
+      "type": "integer"
+     },
+     "pesos": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Pesos"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Pesos dos critérios (0 a 10)."
+     },
+     "problemas_area": {
+      "anyOf": [
+       {
+        "items": {
+         "enum": [
+          "nematoide",
+          "mofo_branco",
+          "cigarrinha",
+          "compactacao"
+         ],
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Problemas da área (opcional; lista fechada: nematoide, mofo_branco, cigarrinha, compactacao). Ajustam os critérios pragas e solo por cultura (estimativa de catálogo, validar com agrônomo/Embrapa): mofo-branco pesa em feijão, soja e nabo; nematoide favorece crotalária/milheto e braquiária e pesa em feijão e soja; cigarrinha pesa no milho (mais no milho sobre milho); compactação favorece nabo e braquiária. Se não vier, nada muda e o card diz que não foi considerado. Valor fora da lista dá 422.",
+      "examples": [
+       [
+        "mofo_branco",
+        "nematoide"
+       ]
+      ],
+      "title": "Problemas Area"
+     },
+     "restricoes": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Restricoes"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Culturas excluídas, máquinas que o produtor tem e culturas sem comprador local."
+     },
+     "rotacao_atual": {
+      "description": "OBRIGATÓRIA. Rotação que o produtor usa hoje (id '<verao>__<segunda>' ou slug antigo = soja no verão). A cultura de verão dela define o bloco `agora`; as combinações com outro verão vão em `proxima_safra`.",
+      "enum": [
+       "soja__milho_safrinha",
+       "soja__milho_braquiaria",
+       "soja__trigo",
+       "soja__aveia",
+       "soja__milheto_crotalaria",
+       "soja__pousio",
+       "soja__soja_safrinha",
+       "soja__sorgo",
+       "soja__feijao_safrinha",
+       "soja__nabo_forrageiro",
+       "soja__aveia_nabo",
+       "milho_verao__milho_safrinha",
+       "milho_verao__milho_braquiaria",
+       "milho_verao__trigo",
+       "milho_verao__aveia",
+       "milho_verao__milheto_crotalaria",
+       "milho_verao__pousio",
+       "milho_verao__soja_safrinha",
+       "milho_verao__sorgo",
+       "milho_verao__feijao_safrinha",
+       "milho_verao__nabo_forrageiro",
+       "milho_verao__aveia_nabo",
+       "milho_safrinha",
+       "milho_braquiaria",
+       "trigo",
+       "aveia",
+       "milheto_crotalaria",
+       "pousio",
+       "soja_safrinha"
+      ],
+      "title": "Rotacao Atual",
+      "type": "string"
+     },
+     "rotacoes": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/RotacaoSelecionada"
+        },
+        "minItems": 1,
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Rotações a avaliar. Se vier, o motor avalia e ranqueia só essas (cada par cai em `agora` ou `proxima_safra` pelo verão); se não vier, avalia todas as combinações do catálogo. Lista não vazia e sem duplicatas. Combinação eliminada pelas regras volta em 'eliminadas' com motivo (não é erro).",
+      "title": "Rotacoes"
+     },
+     "semeadura_safrinha": {
+      "anyOf": [
+       {
+        "enum": [
+         "15/01",
+         "01/02",
+         "15/02",
+         "01/03",
+         "15/03"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Semeadura da 2ª janela (dd/mm). Opcional: sem ela, é a primeira data (15/01, 01/02, 15/02, 01/03, 15/03) a partir da colheita estimada. Se vier junto com estágio/colheita, vale esta, mas não pode ser anterior à colheita (422). Sem estágio, colheita e semeadura: premissa (colheita do catálogo e 01/02), com aviso.",
+      "title": "Semeadura Safrinha"
+     }
+    },
+    "required": [
+     "area",
+     "rotacao_atual"
+    ],
+    "title": "RecomendacaoIn",
+    "type": "object"
+   },
+   "RecomendacaoOut": {
+    "additionalProperties": true,
+    "properties": {
+     "agora": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Bloco"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Bloco principal: combinações com o MESMO verão da atual (o que entra depois da colheita)."
+     },
+     "alternativas": {
+      "default": [],
+      "description": "Alias de `agora.alternativas` (compatibilidade).",
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Alternativas",
+      "type": "array"
+     },
+     "atual": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/ItemAtual"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "avisos": {
+      "default": [],
+      "items": {
+       "type": "string"
+      },
+      "title": "Avisos",
+      "type": "array"
+     },
+     "colheita_estimada": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/DataOrigem"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "dd/mm; origem: estagio | informada | premissa."
+     },
+     "cultura_atual": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CulturaAtual"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Cultura de verão da rotação atual."
+     },
+     "diagnostico": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/DiagnosticoOut"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "dias_ate_colheita": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Nulo quando a colheita é a premissa do catálogo.",
+      "title": "Dias Ate Colheita"
+     },
+     "eliminadas": {
+      "default": [],
+      "description": "União das eliminadas de `agora` e `proxima_safra` (compatibilidade).",
+      "items": {
+       "$ref": "#/components/schemas/Eliminada"
+      },
+      "title": "Eliminadas",
+      "type": "array"
+     },
+     "entrada": {
+      "additionalProperties": true,
+      "default": {},
+      "title": "Entrada",
+      "type": "object"
+     },
+     "estagio_verao": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Estágio informado, com dias típicos até a colheita e a fonte (estimativa).",
+      "title": "Estagio Verao"
+     },
+     "metodologia": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Metodologia"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "proxima_safra": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Bloco"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Combinações com OUTRO verão (decisão da próxima safra), comparadas à atual; mesma semeadura da 2ª janela."
+     },
+     "ranking": {
+      "default": [],
+      "description": "Alias de `agora.ranking` (compatibilidade).",
+      "items": {
+       "$ref": "#/components/schemas/ItemRanking"
+      },
+      "title": "Ranking",
+      "type": "array"
+     },
+     "semeadura_2a": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/DataOrigem"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Semeadura da 2ª janela usada (origem: derivada | informada | premissa); nulo se a colheita é tarde demais."
+     }
+    },
+    "title": "RecomendacaoOut",
+    "type": "object"
+   },
+   "Restricoes": {
+    "additionalProperties": false,
+    "description": "Restrições de execução e de mercado do produtor.",
+    "examples": [
+     {
+      "culturas_excluidas": [
+       "trigo"
+      ],
+      "maquinas": {
+       "plataforma_milho": true,
+       "semeadora_consorcio": false
+      },
+      "sem_comprador": [
+       "aveia_grao"
+      ]
+     }
+    ],
+    "properties": {
+     "culturas_excluidas": {
+      "anyOf": [
+       {
+        "items": {
+         "enum": [
+          "soja__milho_safrinha",
+          "soja__milho_braquiaria",
+          "soja__trigo",
+          "soja__aveia",
+          "soja__milheto_crotalaria",
+          "soja__pousio",
+          "soja__soja_safrinha",
+          "soja__sorgo",
+          "soja__feijao_safrinha",
+          "soja__nabo_forrageiro",
+          "soja__aveia_nabo",
+          "milho_verao__milho_safrinha",
+          "milho_verao__milho_braquiaria",
+          "milho_verao__trigo",
+          "milho_verao__aveia",
+          "milho_verao__milheto_crotalaria",
+          "milho_verao__pousio",
+          "milho_verao__soja_safrinha",
+          "milho_verao__sorgo",
+          "milho_verao__feijao_safrinha",
+          "milho_verao__nabo_forrageiro",
+          "milho_verao__aveia_nabo",
+          "milho_safrinha",
+          "milho_braquiaria",
+          "trigo",
+          "aveia",
+          "milheto_crotalaria",
+          "pousio",
+          "soja_safrinha"
+         ],
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Rotações que o produtor não quer/pode fazer (id '<verao>__<segunda>' ou slug antigo, que vale para soja no verão); vão para 'eliminadas' (motivo: excluída pelo produtor).",
+      "title": "Culturas Excluidas"
+     },
+     "maquinas": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Maquinas"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "sem_comprador": {
+      "anyOf": [
+       {
+        "items": {
+         "enum": [
+          "milho",
+          "trigo",
+          "sorgo",
+          "feijao",
+          "aveia_grao"
+         ],
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Culturas de venda sem comprador local. 'milho' elimina as rotações com milho (verão ou safrinha); 'trigo', 'sorgo' e 'feijao' eliminam as que vendem essa cultura; 'aveia_grao' é aceito mas não tem efeito (a aveia é tratada como cobertura, sem venda de grão).",
+      "title": "Sem Comprador"
+     }
+    },
+    "title": "Restricoes",
+    "type": "object"
+   },
+   "RotacaoDetectada": {
+    "additionalProperties": true,
+    "properties": {
+     "dias_solo_descoberto": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dias Solo Descoberto"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     },
+     "rotacao": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rotacao"
+     }
+    },
+    "title": "RotacaoDetectada",
+    "type": "object"
+   },
+   "RotacaoSelecionada": {
+    "additionalProperties": false,
+    "description": "Uma rotação pedida: cultura de verão + cultura da 2ª janela (enums fechados; ver GET /v1/opcoes).",
+    "examples": [
+     {
+      "segunda": "milho_safrinha",
+      "verao": "soja"
+     }
+    ],
+    "properties": {
+     "segunda": {
+      "description": "Cultura da 2ª janela (safrinha, inverno ou cobertura).",
+      "enum": [
+       "milho_safrinha",
+       "milho_braquiaria",
+       "trigo",
+       "aveia",
+       "milheto_crotalaria",
+       "pousio",
+       "soja_safrinha",
+       "sorgo",
+       "feijao_safrinha",
+       "nabo_forrageiro",
+       "aveia_nabo"
+      ],
+      "title": "Segunda",
+      "type": "string"
+     },
+     "verao": {
+      "description": "Cultura de verão (1ª safra).",
+      "enum": [
+       "soja",
+       "milho_verao"
+      ],
+      "title": "Verao",
+      "type": "string"
+     }
+    },
+    "required": [
+     "verao",
+     "segunda"
+    ],
+    "title": "RotacaoSelecionada",
+    "type": "object"
+   }
+  }
+ },
+ "info": {
+  "description": "\nAPI do **Field Shift**: apoio à decisão de **rotação de culturas** (safrinha / entressafra) para o\n**Paraná inteiro** (399 municípios, código IBGE 41). Dado um talhão (id demo), um polígono GeoJSON\nou um ponto lat/lon, devolve um diagnóstico da área e um ranking de rotações com nota, margem\nestimada (R$/ha) e um cartão explicativo por opção.\n\nÁreas fora do Paraná retornam **422** (`fora_da_regiao`).\n\n**Atenção:** fora do **Oeste do Paraná**, os custos e preços usados na renda e o calendário (vazio\nsanitário e janela de semeadura da soja) continuam sendo a referência do Oeste e podem diferir na\nregião; a resposta traz um aviso nesse caso. Confirme a portaria vigente da ADAPAR e o ZARC do município.\n\n**Fontes de dados:** NASA POWER (clima), SoilGrids (solo), MapBiomas (uso e cobertura do solo),\nNASADEM (relevo), IBGE PAM (produtividade municipal), SEAB/DERAL (custos e preços regionais) e\nCONAB (preços e custos de referência).\n\nOs números de renda e risco são **estimativas** para apoiar a conversa com o agrônomo, não\nsubstituem o ZARC nem a recomendação técnica.\n",
+  "title": "Field Shift API"
+ },
+ "openapi": "3.1.0",
+ "paths": {
+  "/health": {
+   "get": {
+    "operationId": "health_health_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HealthOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Estado do serviço",
+    "tags": [
+     "saúde"
+    ]
+   }
+  },
+  "/v1/clima": {
+   "get": {
+    "operationId": "clima_v1_clima_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "lat",
+      "required": true,
+      "schema": {
+       "examples": [
+        -24.95
+       ],
+       "maximum": 90,
+       "minimum": -90,
+       "title": "Lat",
+       "type": "number"
+      }
+     },
+     {
+      "in": "query",
+      "name": "lon",
+      "required": true,
+      "schema": {
+       "examples": [
+        -53.45
+       ],
+       "maximum": 180,
+       "minimum": -180,
+       "title": "Lon",
+       "type": "number"
+      }
+     },
+     {
+      "in": "query",
+      "name": "semeadura_safrinha",
+      "required": false,
+      "schema": {
+       "default": "01/02",
+       "enum": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+       ],
+       "title": "Semeadura Safrinha",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ClimaOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "400": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Entrada inválida segundo o motor (`entrada_invalida`)."
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Fora do Paraná (`fora_da_regiao`) ou erro de validação do corpo."
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Erro interno (`interno`)."
+     }
+    },
+    "summary": "Atalho: só o bloco de clima para um ponto",
+    "tags": [
+     "motor"
+    ]
+   }
+  },
+  "/v1/contexto": {
+   "get": {
+    "description": "Mesmo contexto do POST, para talhão demo ou ponto. Para polígono use `POST /v1/contexto`.",
+    "operationId": "contexto_get_v1_contexto_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "talhao_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "examples": [
+        "72638"
+       ],
+       "title": "Talhao Id"
+      }
+     },
+     {
+      "in": "query",
+      "name": "lat",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "maximum": 90,
+         "minimum": -90,
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "examples": [
+        -24.95
+       ],
+       "title": "Lat"
+      }
+     },
+     {
+      "in": "query",
+      "name": "lon",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "maximum": 180,
+         "minimum": -180,
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "examples": [
+        -53.45
+       ],
+       "title": "Lon"
+      }
+     },
+     {
+      "in": "query",
+      "name": "semeadura_safrinha",
+      "required": false,
+      "schema": {
+       "default": "01/02",
+       "enum": [
+        "15/01",
+        "01/02",
+        "15/02",
+        "01/03",
+        "15/03"
+       ],
+       "title": "Semeadura Safrinha",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Contexto Get V1 Contexto Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "400": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Entrada inválida segundo o motor (`entrada_invalida`)."
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Fora do Paraná (`fora_da_regiao`) ou erro de validação do corpo."
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Erro interno (`interno`)."
+     }
+    },
+    "summary": "Situação atual (informativa) por talhao_id ou ponto lat/lon",
+    "tags": [
+     "contexto"
+    ]
+   },
+   "post": {
+    "description": "Consulta fontes oficiais (NOAA, NASA SMAP, IDR-PR/ADAPAR) sobre eventos em curso. Não prevê nada e não altera\nranking nem nota. Cada fonte falha isoladamente: `{\"disponivel\": false, \"motivo\": ...}`.",
+    "operationId": "contexto_post_v1_contexto_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ContextoIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Contexto Post V1 Contexto Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "400": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Entrada inválida segundo o motor (`entrada_invalida`)."
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Fora do Paraná (`fora_da_regiao`) ou erro de validação do corpo."
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Erro interno (`interno`)."
+     }
+    },
+    "summary": "Situação atual (informativa): ENSO, umidade do solo SMAP, MJO, pragas em surto",
+    "tags": [
+     "contexto"
+    ]
+   }
+  },
+  "/v1/diagnostico": {
+   "post": {
+    "operationId": "diagnostico_v1_diagnostico_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DiagnosticoIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DiagnosticoOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "400": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Entrada inválida segundo o motor (`entrada_invalida`)."
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Fora do Paraná (`fora_da_regiao`) ou erro de validação do corpo."
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Erro interno (`interno`)."
+     }
+    },
+    "summary": "Diagnóstico da área (relevo, solo, histórico, clima, produtividade)",
+    "tags": [
+     "motor"
+    ]
+   }
+  },
+  "/v1/opcoes": {
+   "get": {
+    "operationId": "opcoes_v1_opcoes_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Opcoes V1 Opcoes Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Culturas de verão e da 2ª janela, combinações, pesos padrão e metadados do motor",
+    "tags": [
+     "metadados"
+    ]
+   }
+  },
+  "/v1/recomendacao": {
+   "post": {
+    "operationId": "recomendacao_v1_recomendacao_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/RecomendacaoIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/RecomendacaoOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "400": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Entrada inválida segundo o motor (`entrada_invalida`)."
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Fora do Paraná (`fora_da_regiao`) ou erro de validação do corpo."
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroOut"
+        }
+       }
+      },
+      "description": "Erro interno (`interno`)."
+     }
+    },
+    "summary": "O que entra depois da colheita do verão e como melhora a produção (`agora`), mais a próxima safra",
+    "tags": [
+     "motor"
+    ]
+   }
+  },
+  "/v1/talhoes/demo": {
+   "get": {
+    "operationId": "talhoes_demo_v1_talhoes_demo_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "title": "Response Talhoes Demo V1 Talhoes Demo Get"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Talhões de demonstração",
+    "tags": [
+     "metadados"
+    ]
+   }
+  }
+ }
+}

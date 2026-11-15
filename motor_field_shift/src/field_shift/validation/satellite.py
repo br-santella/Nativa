@@ -164,17 +164,17 @@ def field_years(ndvi: pd.DataFrame, max_gap_days: int = 45) -> pd.DataFrame:
             continue
         clear_days = obs[(obs["frac_clear"] >= MIN_CLEAR) & obs["ndvi_mean"].notna()]["data"].drop_duplicates().sort_values()
         for year in range(2019, 2025):
-            ini, fim = pd.Timestamp(year, 9, 1), pd.Timestamp(year + 1, 8, 31)
-            if ini < s.index.min() or fim > s.index.max():
+            start, end = pd.Timestamp(year, 9, 1), pd.Timestamp(year + 1, 8, 31)
+            if start < s.index.min() or end > s.index.max():
                 continue
-            cd = clear_days[(clear_days >= ini - pd.Timedelta(days=20)) & (clear_days <= fim + pd.Timedelta(days=20))]
+            cd = clear_days[(clear_days >= start - pd.Timedelta(days=20)) & (clear_days <= end + pd.Timedelta(days=20))]
             gap = cd.diff().dt.days.max() if len(cd) > 1 else 999
-            t = s[ini:fim]
+            t = s[start:end]
             p, _ = find_peaks(t.values, height=0.6, prominence=0.2, distance=40)  # same rule as the engine
             summer = s[pd.Timestamp(year, 11, 1):pd.Timestamp(year + 1, 2, 28)]
             rows.append(dict(id=fid, year=f"{year}/{str(year + 1)[2:]}", y0=year, peaks=len(p), max_gap=float(gap),
-                             bare_days=int((t < E.LIMIAR_SOLO).sum()),
-                             bare_days_2nd_window=int((s[pd.Timestamp(year + 1, 1, 15):pd.Timestamp(year + 1, 8, 31)] < E.LIMIAR_SOLO).sum()),
+                             bare_days=int((t < E.SOIL_THRESHOLD).sum()),
+                             bare_days_2nd_window=int((s[pd.Timestamp(year + 1, 1, 15):pd.Timestamp(year + 1, 8, 31)] < E.SOIL_THRESHOLD).sum()),
                              summer_peak=float(summer.max()), summer_integral=float(s[pd.Timestamp(year, 10, 1):pd.Timestamp(year + 1, 3, 31)].sum())))
     fy = pd.DataFrame(rows)
     fy = fy[fy["max_gap"] <= max_gap_days].copy()

@@ -57,9 +57,9 @@ def main() -> None:
                                     bare_2nd_window_median=("bare_days_2nd_window", "median"))
     print("\n### Bare-soil days (NDVI < 0.35)\n")
     print(bare.to_markdown(floatfmt=".1f"))
-    print(f"\ncatalog dias_descobertos: off-season corn {E.SEGUNDA['milho_safrinha']['dias_descobertos']}, "
-          f"fallow {E.SEGUNDA['pousio']['dias_descobertos']} (difference "
-          f"{E.SEGUNDA['pousio']['dias_descobertos'] - E.SEGUNDA['milho_safrinha']['dias_descobertos']})")
+    print(f"\ncatalog dias_descobertos: off-season corn {E.SECOND['milho_safrinha']['dias_descobertos']}, "
+          f"fallow {E.SECOND['pousio']['dias_descobertos']} (difference "
+          f"{E.SECOND['pousio']['dias_descobertos'] - E.SECOND['milho_safrinha']['dias_descobertos']})")
 
     eff = S.following_soy_effect(fy)
     eff.to_csv(S.OUT / "satellite_following_soy.csv", index=False)
@@ -77,7 +77,7 @@ def main() -> None:
         if curves:
             m = pd.concat(curves, axis=1).median(axis=1)
             ax.plot(m.index, m.values, color=color, label=f"{lab} (n={len(curves)})")
-    ax.axhline(E.LIMIAR_SOLO, color="gray", ls=":", label="bare-soil threshold 0.35")
+    ax.axhline(E.SOIL_THRESHOLD, color="gray", ls=":", label="bare-soil threshold 0.35")
     ax.set_xticks([0, 61, 122, 181, 242, 303, 364], ["Sep", "Nov", "Jan", "Mar", "May", "Jul", "Aug"])
     ax.set_ylabel("median NDVI (HLS)")
     ax.legend(fontsize=7)

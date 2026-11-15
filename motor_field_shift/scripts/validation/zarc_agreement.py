@@ -96,7 +96,7 @@ def main() -> None:
     fig.suptitle(f"ZARC {Z.SEASON} vs engine (rainfed, best soil class)")
     fig.tight_layout()
     fig.savefig(FIG, dpi=110)
-    print(f"\nfigure: {FIG.relative_to(ROOT)}; engine sowing dates: {E.SEMEADURAS}")
+    print(f"\nfigure: {FIG.relative_to(ROOT)}; engine sowing dates: {E.SOWINGS_2ND}")
 
 
 if __name__ == "__main__":

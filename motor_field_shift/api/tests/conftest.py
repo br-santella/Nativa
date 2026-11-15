@@ -8,36 +8,36 @@ import types
 import pytest
 
 try:  # serviço real, se já existir
-    from field_shift.motor import servico  # noqa: F401
+    from field_shift.core import service  # noqa: F401
 
-    SERVICO_REAL = True
+    REAL_SERVICE = True
 except ImportError:  # registra um módulo mínimo para a API poder ser importada
-    SERVICO_REAL = False
+    REAL_SERVICE = False
     import field_shift
 
-    _mod = types.ModuleType("field_shift.motor.servico")
+    _mod = types.ModuleType("field_shift.core.service")
 
-    class ForaDaRegiao(Exception): ...
+    class OutOfRegion(Exception): ...
 
-    class EntradaInvalida(Exception): ...
+    class InvalidInput(Exception): ...
 
-    _mod.ForaDaRegiao = ForaDaRegiao
-    _mod.EntradaInvalida = EntradaInvalida
-    _mod.ROTACOES = {"milho_safrinha": "Milho safrinha"}
-    for _n in ("opcoes", "diagnosticar", "recomendar", "aquecer"):
+    _mod.OutOfRegion = OutOfRegion
+    _mod.InvalidInput = InvalidInput
+    _mod.ROTATIONS = {"milho_safrinha": "Milho safrinha"}
+    for _n in ("options", "diagnose", "recommend", "warm_up"):
         setattr(_mod, _n, lambda *a, **k: None)
-    _pkg = types.ModuleType("field_shift.motor")
+    _pkg = types.ModuleType("field_shift.core")
     _pkg.__path__ = []
-    _pkg.servico = _mod
-    sys.modules["field_shift.motor"] = _pkg
-    sys.modules["field_shift.motor.servico"] = _mod
-    field_shift.motor = _pkg
+    _pkg.service = _mod
+    sys.modules["field_shift.core"] = _pkg
+    sys.modules["field_shift.core.service"] = _mod
+    field_shift.core = _pkg
 
 from fastapi.testclient import TestClient  # noqa: E402
 
-from field_shift.motor import servico as svc  # noqa: E402
+from field_shift.core import service as svc  # noqa: E402
 
-CLIMA = {
+CLIMATE = {
     "fonte": "NASA POWER",
     "celula": {"lat": -24.75, "lon": -53.25},
     "semeadura_safrinha": "01/02",
@@ -58,7 +58,7 @@ DIAG = {
     "solo": {"argila": 55},
     "historico": [{"ano": 2023, "classe": "soja"}],
     "rotacao_detectada": {"rotacao": "milho_safrinha", "fonte": "mapbiomas", "dias_solo_descoberto": 30},
-    "clima": CLIMA,
+    "clima": CLIMATE,
     "produtividade": {"soja": 58},
     "avisos": [],
 }
@@ -110,7 +110,7 @@ REC = {
     "metodologia": {"formula": "soma ponderada", "criterios": {}, "versao": "0.1"},
 }
 REC["agora"] = {"ranking": REC["ranking"], "alternativas": [], "eliminadas": REC["eliminadas"]}
-OPCOES = {
+OPTIONS = {
     "rotacoes": [{"id": "soja__milho_safrinha", "nome": "Soja → milho safrinha"}],
     "culturas_verao": [{"id": "soja", "nome": "Soja", "tipo": "grão"}],
     "culturas_segunda": [{"id": "milho_safrinha", "nome": "Milho safrinha", "tipo": "grão"}],
@@ -126,29 +126,29 @@ OPCOES = {
 
 
 @pytest.fixture
-def chamadas():
+def calls():
     return []
 
 
 @pytest.fixture
-def falso(monkeypatch, chamadas):
-    def diagnosticar(area, semeadura_safrinha="01/02", **kw):
-        chamadas.append(("diagnosticar", area, {"semeadura_safrinha": semeadura_safrinha, **kw}))
+def fake(monkeypatch, calls):
+    def diagnose(area, sowing_second="01/02", **kw):
+        calls.append(("diagnose", area, {"sowing_second": sowing_second, **kw}))
         return DIAG
 
-    def recomendar(area, semeadura_safrinha="01/02", **kw):
-        chamadas.append(("recomendar", area, {"semeadura_safrinha": semeadura_safrinha, **kw}))
+    def recommend(area, sowing_second="01/02", **kw):
+        calls.append(("recommend", area, {"sowing_second": sowing_second, **kw}))
         return REC
 
-    monkeypatch.setattr(svc, "aquecer", lambda: None)
-    monkeypatch.setattr(svc, "opcoes", lambda: OPCOES)
-    monkeypatch.setattr(svc, "diagnosticar", diagnosticar)
-    monkeypatch.setattr(svc, "recomendar", recomendar)
+    monkeypatch.setattr(svc, "warm_up", lambda: None)
+    monkeypatch.setattr(svc, "options", lambda: OPTIONS)
+    monkeypatch.setattr(svc, "diagnose", diagnose)
+    monkeypatch.setattr(svc, "recommend", recommend)
     return svc
 
 
 @pytest.fixture
-def client(falso):
+def client(fake):
     from field_shift_api.main import app
 
     with TestClient(app, raise_server_exceptions=False) as c:

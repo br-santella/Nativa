@@ -45,7 +45,7 @@ CROP_LABEL = {"Milho 2ª Safra": "milho 2ª safra", "Milho 2ª Safra consorciado
 ZONED = set(SECOND_SOWING.values()) | set(SECOND_FIXED.values()) | {v[0] for v in SUMMER.values()}
 
 
-def decendio(ddmm: str) -> int:
+def dekad(ddmm: str) -> int:
     """Ten-day period of the year (1–36): days 1–10, 11–20 and 21–end of each month."""
     d, m = map(int, ddmm.split("/"))
     return (m - 1) * 3 + (0 if d <= 10 else 1 if d <= 20 else 2) + 1
@@ -87,7 +87,7 @@ def status(cod_ibge: str, crop: str, sowing: str) -> dict | None:
     t = table()
     if t is None:
         return None
-    dec = decendio(sowing)
+    dec = dekad(sowing)
     base = dict(cultura=CROP_LABEL.get(crop, crop), cultura_zarc=crop, semeadura=sowing, decendio=dec)
     key = (str(cod_ibge), crop, dec)
     if key not in t.index:
@@ -108,40 +108,40 @@ def rotation_status(c: dict, cod_ibge: str | None, sowing_2nd: str | None, fixed
     checks = []
     zc, sow = SUMMER[c["verao"]]
     checks.append(status(cod_ibge, zc, sow))
-    seg = c["segunda"]
-    if seg in SECOND_SOWING and sowing_2nd:
-        checks.append(status(cod_ibge, SECOND_SOWING[seg], sowing_2nd))
-    elif seg in SECOND_FIXED:
-        checks.append(status(cod_ibge, SECOND_FIXED[seg], fixed_sowing))
+    sec_ = c["segunda"]
+    if sec_ in SECOND_SOWING and sowing_2nd:
+        checks.append(status(cod_ibge, SECOND_SOWING[sec_], sowing_2nd))
+    elif sec_ in SECOND_FIXED:
+        checks.append(status(cod_ibge, SECOND_FIXED[sec_], fixed_sowing))
     checks = [x for x in checks if x is not None]
-    not_zoned = seg not in SECOND_SOWING and seg not in SECOND_FIXED
+    not_zoned = sec_ not in SECOND_SOWING and sec_ not in SECOND_FIXED
     out = [x for x in checks if not x["indicado"]]
     return dict(indicado=not out, culturas=checks, segunda_sem_zoneamento=not_zoned, fonte=SOURCE)
 
 
-def warning_text(zs: dict, municipio: str) -> str | None:
+def warning_text(zs: dict, municipality: str) -> str | None:
     """Card warning for the crops outside ZARC (None when everything checked is indicated)."""
     if zs is None:
         return None
     fora = [x for x in zs["culturas"] if not x["indicado"]]
     if not fora:
         return None
-    partes = [f"{x['cultura']} semeado(a) em {x['semeadura']} ({x['motivo']})" for x in fora]
-    return (f"Fora do {SOURCE.split(' (')[0]} em {municipio}: " + "; ".join(partes)
+    parts = [f"{x['cultura']} semeado(a) em {x['semeadura']} ({x['motivo']})" for x in fora]
+    return (f"Fora do {SOURCE.split(' (')[0]} em {municipality}: " + "; ".join(parts)
             + ". Sem ZARC não há acesso ao crédito rural com juros controlados, ao Proagro nem ao seguro rural subvencionado "
               "(aviso informativo: não muda a nota).")
 
 
-def evidence_text(zs: dict, municipio: str) -> str | None:
+def evidence_text(zs: dict, municipality: str) -> str | None:
     """One evidence line with the ZARC class of every checked crop."""
     if zs is None or not zs["culturas"]:
         return None
-    partes = []
+    parts = []
     for x in zs["culturas"]:
         if x["indicado"]:
-            partes.append(f"{x['cultura']} em {x['semeadura']}: indicado, risco {x['risco_pct']}% "
+            parts.append(f"{x['cultura']} em {x['semeadura']}: indicado, risco {x['risco_pct']}% "
                           f"({x['solos_indicados_pct']}% das classes de solo; {x['portaria']})")
         else:
-            partes.append(f"{x['cultura']} em {x['semeadura']}: não indicado")
+            parts.append(f"{x['cultura']} em {x['semeadura']}: não indicado")
     extra = " A cobertura da 2ª janela não tem zoneamento ZARC." if zs["segunda_sem_zoneamento"] else ""
-    return f"{SOURCE}, {municipio}: " + "; ".join(partes) + "." + extra
+    return f"{SOURCE}, {municipality}: " + "; ".join(parts) + "." + extra

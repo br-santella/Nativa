@@ -9,14 +9,14 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from field_shift.motor import servico
+from field_shift.core import service
 
 from . import __version__
-from .rotas import health_router, router
+from .routes import health_router, router
 
 log = logging.getLogger("field_shift_api")
 
-DESCRICAO = """
+DESCRIPTION = """
 API do **Field Shift**: apoio à decisão de **rotação de culturas** (safrinha / entressafra) para o
 **Paraná inteiro** (399 municípios, código IBGE 41). Dado um talhão (id demo), um polígono GeoJSON
 ou um ponto lat/lon, devolve um diagnóstico da área e um ranking de rotações com nota, margem
@@ -40,19 +40,19 @@ substituem o ZARC nem a recomendação técnica.
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.dados_ok = False
-    app.state.dados_erro = None
+    app.state.data_error = None
     try:
-        servico.aquecer()
+        service.warm_up()
         app.state.dados_ok = True
     except Exception as exc:  # a API sobe mesmo sem dados; /health mostra "degradado"
         log.exception("falha ao carregar dados no startup")
-        app.state.dados_erro = f"{type(exc).__name__}: {exc}"
+        app.state.data_error = f"{type(exc).__name__}: {exc}"
     yield
 
 
 app = FastAPI(
     title="Field Shift API",
-    description=DESCRICAO,
+    description=DESCRIPTION,
     version=__version__,
     lifespan=lifespan,
 )
@@ -66,23 +66,23 @@ app.include_router(health_router)
 app.include_router(router)
 
 
-@app.exception_handler(servico.ForaDaRegiao)
-async def _fora_da_regiao(request: Request, exc: Exception) -> JSONResponse:
+@app.exception_handler(service.OutOfRegion)
+async def _out_of_region(request: Request, exc: Exception) -> JSONResponse:
     return JSONResponse(status_code=422, content={"erro": "fora_da_regiao", "mensagem": str(exc)})
 
 
-@app.exception_handler(servico.EntradaInvalida)
-async def _entrada_invalida(request: Request, exc: Exception) -> JSONResponse:
+@app.exception_handler(service.InvalidInput)
+async def _invalid_input(request: Request, exc: Exception) -> JSONResponse:
     return JSONResponse(status_code=400, content={"erro": "entrada_invalida", "mensagem": str(exc)})
 
 
-@app.exception_handler(servico.ErroConsultaExterna)
-async def _erro_consulta_externa(request: Request, exc: Exception) -> JSONResponse:
+@app.exception_handler(service.ExternalQueryError)
+async def _external_query_error(request: Request, exc: Exception) -> JSONResponse:
     return JSONResponse(status_code=504, content={"erro": "timeout_externo", "mensagem": str(exc)})
 
 
 @app.exception_handler(Exception)
-async def _interno(request: Request, exc: Exception) -> JSONResponse:
+async def _internal(request: Request, exc: Exception) -> JSONResponse:
     log.error("erro inesperado em %s %s", request.method, request.url.path, exc_info=exc)
     return JSONResponse(
         status_code=500,

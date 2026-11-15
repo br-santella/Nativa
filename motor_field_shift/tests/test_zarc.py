@@ -3,15 +3,15 @@ import pytest
 
 from field_shift import zarc as Z
 from field_shift.app import engine as E
-from field_shift.motor import recomendar
+from field_shift.core import recommend
 
 needs_table = pytest.mark.skipif(not Z.TABLE.exists(), reason="run ingest/zarc_pr.py first")
 TOLEDO = "4127700"
 
 
 @pytest.mark.parametrize("ddmm,dec", [("01/01", 1), ("15/01", 2), ("21/01", 3), ("01/03", 7), ("15/03", 8), ("15/10", 29), ("31/12", 36)])
-def test_decendio(ddmm, dec):
-    assert Z.decendio(ddmm) == dec
+def test_dekad(ddmm, dec):
+    assert Z.dekad(ddmm) == dec
 
 
 @needs_table
@@ -24,23 +24,23 @@ def test_status_toledo_corn():
 
 @needs_table
 def test_rotation_status_checks_summer_and_second_crop():
-    c = E.CATALOGO[E.NOME_DE["soja__milho_safrinha"]]
+    c = E.CATALOG[E.NOME_DE["soja__milho_safrinha"]]
     zs = Z.rotation_status(c, TOLEDO, "15/03", "01/05")
     assert [x["cultura_zarc"] for x in zs["culturas"]] == ["Soja", "Milho 2ª Safra"] and zs["indicado"] is False
     assert "Fora do ZARC" in Z.warning_text(zs, "Toledo")
-    cover = Z.rotation_status(E.CATALOGO[E.NOME_DE["soja__milheto_crotalaria"]], TOLEDO, "15/03", "01/05")
+    cover = Z.rotation_status(E.CATALOG[E.NOME_DE["soja__milheto_crotalaria"]], TOLEDO, "15/03", "01/05")
     assert cover["indicado"] is True and cover["segunda_sem_zoneamento"] is True
 
 
 @needs_table
 def test_zarc_never_changes_scores(monkeypatch):
-    kw = dict(rotacao_atual="soja__milho_safrinha", colheita_prevista="10/03", data_referencia="2026-12-01")
-    with_z = recomendar({"talhao_id": "72638"}, **kw)
+    kw = dict(current_rotation="soja__milho_safrinha", expected_harvest="10/03", reference_date="2026-12-01")
+    with_z = recommend({"talhao_id": "72638"}, **kw)
     monkeypatch.setattr(Z, "table", lambda: None)
-    without = recomendar({"talhao_id": "72638"}, **kw)
+    without = recommend({"talhao_id": "72638"}, **kw)
     assert [(x["id"], x["nota"]) for x in with_z["agora"]["ranking"]] == [(x["id"], x["nota"]) for x in without["agora"]["ranking"]]
-    milho = {x["id"]: x for x in with_z["agora"]["ranking"]}["soja__milho_safrinha"]
-    assert milho["zarc"]["indicado"] is False and any("Fora do ZARC" in a for a in milho["card"]["avisos"])
+    corn = {x["id"]: x for x in with_z["agora"]["ranking"]}["soja__milho_safrinha"]
+    assert corn["zarc"]["indicado"] is False and any("Fora do ZARC" in a for a in corn["card"]["avisos"])
     assert any("rotação atual está fora do ZARC" in a for a in with_z["avisos"])
     assert all("zarc" not in x for x in without["agora"]["ranking"])
-    assert any(E.AVISO_ZARC in r for r in without["agora"]["ranking"][0]["card"]["riscos"])
+    assert any(E.ZARC_WARNING in r for r in without["agora"]["ranking"][0]["card"]["riscos"])

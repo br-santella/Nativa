@@ -23,13 +23,13 @@ from shapely.geometry import box
 
 from field_shift import zarc as RZ
 from field_shift.app import engine as E
-from field_shift.clima.lookup import MUN, indicadores_para
+from field_shift.climate.lookup import MUN, indicators_for
 
 ROOT = Path(__file__).resolve().parents[3]
 RAW = RZ.RAW_DIR
 ZARC_PR = RZ.RAW_PR
 SEASON = RZ.SEASON
-OESTE_MESO = "06"  # IBGE mesoregion "Oeste Paranaense" (Cod_Meso in the ZARC table)
+OESTE_MESOREGION = "06"  # IBGE mesoregion "Oeste Paranaense" (Cod_Meso in the ZARC table)
 OUT_CLASS = RZ.NOT_INDICATED  # "not indicated" in ordinal comparisons (above the 40 % class)
 HALF_SIDE_DEG = 0.0045  # ~100 ha square around the municipality centroid for the soil (SoilGrids) of the water balance
 
@@ -49,7 +49,7 @@ FIXED_CROPS = {
 }
 
 
-decendio = RZ.decendio
+dekad = RZ.dekad
 
 
 @lru_cache(maxsize=1)
@@ -79,25 +79,25 @@ def municipalities() -> pd.DataFrame:
     m = gpd.read_file(MUN)
     meso = zarc_pr()[["geocodigo", "Cod_Meso"]].drop_duplicates().set_index("geocodigo")["Cod_Meso"]
     m["geocodigo"] = m["cod_ibge"].astype(str)
-    m["oeste"] = m["geocodigo"].map(meso).eq(OESTE_MESO)
+    m["oeste"] = m["geocodigo"].map(meso).eq(OESTE_MESOREGION)
     return pd.DataFrame(m.drop(columns="geometry"))
 
 
 def engine_side(lat: float, lon: float, sowing: str) -> dict | None:
     """Engine context of one municipality and sowing date: climate risks of the cell plus the soil (SoilGrids, ~100 ha square at
     the centroid) that the water balance needs, exactly as `engine.enriquecer` builds it for a field."""
-    info = indicadores_para(lat, lon)
+    info = indicators_for(lat, lon)
     if info is None:
         return None
-    rk = E.clima_regiao(info, sowing)
+    rk = E.region_climate(info, sowing)
     h = HALF_SIDE_DEG
-    rk = E.enriquecer(rk, dict(poly=box(lon - h, lat - h, lon + h, lat + h)))
+    rk = E.enrich(rk, dict(poly=box(lon - h, lat - h, lon + h, lat + h)))
     rk["semeadura"] = sowing
     return rk
 
 
-def _candidate(segunda: str, verao: str = "soja") -> dict:
-    return E.CATALOGO[E.NOME_DE[E.id_rotacao(verao, segunda)]]
+def _candidate(second: str, summer: str = "soja") -> dict:
+    return E.CATALOG[E.NOME_DE[E.rotation_id(summer, second)]]
 
 
 def engine_loss(c: dict, rk: dict) -> float:
@@ -111,11 +111,11 @@ def second_window_table() -> pd.DataFrame:
     """One row per (municipality, second-window crop, engine sowing date) with the engine and ZARC views."""
     rows = []
     for m in municipalities().itertuples():
-        for sow in E.SEMEADURAS:
+        for sow in E.SOWINGS_2ND:
             rk = engine_side(m.lat_c, m.lon_c, sow)
             if rk is None:
                 continue
-            dec = decendio(sow)
+            dec = dekad(sow)
             for crop, zname in SECOND_CROPS.items():
                 c = _candidate(crop)
                 z = zarc_classes(zname)
@@ -124,7 +124,7 @@ def second_window_table() -> pd.DataFrame:
                     continue
                 p = engine_loss(c, rk)
                 rows.append(dict(geocodigo=m.geocodigo, municipio=m.nome, oeste=m.oeste, crop=crop, sowing=sow, decendio=dec,
-                                 engine_valid=not E.checar_regras(c, rk), engine_loss=p, engine_class=loss_class(p),
+                                 engine_valid=not E.check_rules(c, rk), engine_loss=p, engine_class=loss_class(p),
                                  zarc_class=int(hit["best"].iloc[0]), zarc_share_soils=float(hit["share_soils"].iloc[0])))
     df = pd.DataFrame(rows)
     df["zarc_indicated"] = df["zarc_class"] < OUT_CLASS
@@ -136,25 +136,25 @@ def fixed_date_table() -> pd.DataFrame:
     """Winter crops and summer crops at the engine's fixed sowing dates: ZARC class and, for wheat, the engine frost risk."""
     rows = []
     for m in municipalities().itertuples():
-        rk = engine_side(m.lat_c, m.lon_c, E.SEMEADURAS[0])
+        rk = engine_side(m.lat_c, m.lon_c, E.SOWINGS_2ND[0])
         if rk is None:
             continue
         for crop, (zname, sow) in FIXED_CROPS.items():
             z = zarc_classes(zname)
-            hit = z[(z["geocodigo"] == m.geocodigo) & (z["decendio"] == decendio(sow))]
+            hit = z[(z["geocodigo"] == m.geocodigo) & (z["decendio"] == dekad(sow))]
             if hit.empty:
                 continue
-            p = engine_loss(_candidate(crop), rk) if crop in E.SEGUNDA else None
+            p = engine_loss(_candidate(crop), rk) if crop in E.SECOND else None
             rows.append(dict(geocodigo=m.geocodigo, municipio=m.nome, oeste=m.oeste, crop=crop, sowing=sow,
                              zarc_class=int(hit["best"].iloc[0]), zarc_share_soils=float(hit["share_soils"].iloc[0]),
                              engine_loss=p, engine_class=None if p is None else loss_class(p)))
     return pd.DataFrame(rows)
 
 
-def last_indicated(crop: str, geocodigo: str, start: int = 1, end: int = 12) -> int | None:
+def last_indicated(crop: str, geocode: str, start: int = 1, end: int = 12) -> int | None:
     """Last ZARC-indicated ten-day period of the second window (Jan–Apr) for the municipality (best soil)."""
     z = zarc_classes(crop)
-    z = z[(z["geocodigo"] == geocodigo) & z["decendio"].between(start, end) & (z["best"] < OUT_CLASS)]
+    z = z[(z["geocodigo"] == geocode) & z["decendio"].between(start, end) & (z["best"] < OUT_CLASS)]
     return int(z["decendio"].max()) if len(z) else None
 
 

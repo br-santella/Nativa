@@ -20,7 +20,7 @@ from golden_requests import all_requests  # noqa: E402
 GOLDEN = Path(__file__).parent / "golden"
 VOLATILE_KEYS = {"cache_utilizado", "consultado_em", "versao"}
 
-pytestmark = pytest.mark.integracao
+pytestmark = pytest.mark.integration
 
 
 def _scrub(obj):
@@ -55,3 +55,15 @@ def test_golden(client, name):
         pytest.skip("golden updated")
     expected = json.loads(path.read_text(encoding="utf-8"))
     assert got == expected
+
+
+def test_openapi_unchanged(client):
+    """The OpenAPI document (paths, operationIds, schema names and fields) is part of the public contract."""
+    got = client.app.openapi()
+    got = json.loads(json.dumps(got))
+    got["info"].pop("version", None)
+    path = GOLDEN / "openapi.json"
+    if os.environ.get("UPDATE_GOLDEN") == "1":
+        path.write_text(json.dumps(got, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
+        pytest.skip("golden updated")
+    assert got == json.loads(path.read_text(encoding="utf-8"))
