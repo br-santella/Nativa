@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { Farm } from "./data";
+import { textureFromSoil } from "./data";
 import type { Area } from "./api";
 import type { SetupInputs } from "./PropertyWizard";
 import { PROBLEMS, commodities, hectares, soilFields, soilMax, square } from "./PropertyWizard";
@@ -103,6 +104,8 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
     const areaChanged = !same({ mode, demo, vertices, pointHa }, initialArea);
     const dirty = areaChanged || !same(draftFarm, farm) || !same(draft, inputs) || !same(draftWeights, weights);
     const rotation = options.combinacoes.find((c) => c.id === draft?.rotacao_atual);
+    const soilTest = draft?.analise_solo;
+    const testedTexture = soilTest?.argila_pct !== undefined && soilTest?.areia_pct !== undefined ? textureFromSoil(soilTest.argila_pct, soilTest.areia_pct) : null;
     const summer = options.culturas_verao.find((c) => c.id === rotation?.verao);
 
     /** Moves the map (and, when marking a point, the pin) to a city or an address. */
@@ -198,6 +201,7 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
                 ...built.farm,
                 irrigation: draft.irrigacao.disponivel ? "Sim" : "Não",
                 crop: draft.rotacao_atual.startsWith("soja__") ? "Soja" : "Milho",
+                ...(testedTexture ? { texture: testedTexture } : {}),
                 ...(soil.ph !== undefined ? { ph: String(soil.ph) } : {}),
                 ...(soil.materia_organica_pct !== undefined ? { organic: String(soil.materia_organica_pct) } : {}),
             };
@@ -216,7 +220,8 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
     }
 
     return (<section className="property-settings">
-      <div className="section-heading">
+      <header className="settings-heading">
+        <span className="settings-step" aria-hidden="true">01</span>
         <div>
           <h2>{t("Minha Propriedade")}</h2>
           <p>{t(savedAt
@@ -224,7 +229,7 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
             : "Ainda não salvos: conclua o cadastro ou salve as alterações para guardá-los.")}
             {savedAt && <> {t("Último salvamento:")} {new Date(savedAt).toLocaleString(locale())}.</>}</p>
         </div>
-      </div>
+      </header>
 
       <section className="panel settings-area">
         <h2>{t("Sua área")}</h2>
@@ -344,7 +349,9 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
         <section className="panel">
           <h2>{t("Solo e água")}</h2>
           <dl className="preferences">
-            <Select label="Textura do solo" value={draftFarm.texture} values={["Argiloso", "Arenoso", "Franco", "Siltoso", "Não informado"]} onChange={(v) => field("texture", v)}/>
+            {testedTexture
+                ? <Row label="Textura do solo"><span>{t(testedTexture)} <small className="settings-derived">{t("• pela análise de solo (argila e areia)")}</small></span></Row>
+                : <Select label="Textura do solo" value={draftFarm.texture} values={["Argiloso", "Arenoso", "Franco", "Siltoso", "Não informado"]} onChange={(v) => field("texture", v)}/>}
             <Select label="Drenagem" value={draftFarm.drainage} values={["Moderada", "Boa", "Baixa", "Não informado"]} onChange={(v) => field("drainage", v)}/>
             {draft
                 ? <YesNo label="Irrigação" value={draft.irrigacao.disponivel} onChange={(v) => set({ irrigacao: { disponivel: v } })}/>

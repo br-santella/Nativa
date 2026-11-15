@@ -4436,3 +4436,124 @@ small.error.full {
   .overview-page .overview-indicators .metric,
   .live-farm-map :is(.map-controls button, .map-fullscreen) { transition: none; }
 }
+
+/* Settings: numbered sections matching the Overview / Rotation Strategies headings. */
+.settings-heading {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.settings-step {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #ffbf2266;
+  background: #ffbf2212;
+  color: var(--agro-yellow);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.settings-heading h2 {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+}
+.settings-heading p {
+  margin-top: 5px;
+  color: var(--agro-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 760px;
+}
+.settings-section {
+  margin-bottom: 40px;
+}
+.settings-section > .text-link {
+  font-size: 13px;
+}
+.settings-sources {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 18px;
+}
+.settings-sources h3 {
+  font-size: 16px;
+  color: var(--green);
+}
+.settings-sources h3.warm {
+  color: var(--agro-yellow);
+}
+.settings-sources .panel > p {
+  font-size: 12px;
+  margin-top: 6px;
+  color: var(--agro-muted);
+}
+.settings-sources .source-list {
+  margin: 14px 0 0;
+}
+.settings-sources .source-list > div {
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.settings-sources .source-list > div:last-child {
+  border-bottom: 0;
+}
+.settings-sources .source-list dt {
+  width: auto;
+}
+.engine-status {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--agro-muted);
+}
+.engine-status.ok {
+  color: var(--green);
+}
+.engine-status.degraded,
+.engine-status.offline {
+  color: var(--agro-yellow);
+}
+.settings-storage dl {
+  margin: 16px 0 10px;
+}
+.settings-storage dl > div {
+  flex-direction: column;
+  gap: 4px;
+  border-color: #2d5546;
+}
+.settings-storage dt {
+  color: var(--green);
+  font-weight: 600;
+}
+.settings-storage dd {
+  color: #d9e6d6;
+}
+.settings-storage > small {
+  color: #c3d8bd;
+}
+.settings-derived {
+  color: var(--agro-muted);
+  font-size: 11px;
+}
+.current-crop p + p {
+  margin-top: 8px;
+}
+@media (max-width: 1020px) {
+  .settings-sources {
+    grid-template-columns: 1fr;
+  }
+}
+.settings-sources .panel > h3,
+.settings-section .panel > .preferences {
+  margin-top: 0;
+}
