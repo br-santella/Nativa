@@ -1,21 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'motion/react';
-function interpolate(p: number, xs: number[], ys: number[]) {
-  if (p <= xs[0]) return ys[0];
-  for(let i=1;i<xs.length;i++) if(p <= xs[i]) return ys[i-1]+(ys[i]-ys[i-1])*(p-xs[i-1])/(xs[i]-xs[i-1]);
-  return ys[ys.length-1];
-}
 import './climate-story.css';
 
-const quotes = [
-  'A chuva chegou quando a gente menos esperava.',
-  'O período de plantio já não é tão previsível.',
-  'Cada safra parece trazer um desafio diferente.',
-];
-const windows = [[0, .04, .15, .23], [.19, .27, .47, .54], [.49, .56, .74, .82], [.77, .85, 1, 1]];
+const sources = {
+  inmet: { label: 'INMET · balanço do El Niño 2023–2024', url: 'https://portal.inmet.gov.br/noticias/el-ni%C3%B1o-saiba-como-foi-a-atua%C3%A7%C3%A3o-do-fen%C3%B4meno-no-brasil' },
+  ibgeSafra: { label: 'IBGE · estimativa da safra, novembro de 2024', url: 'https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/42191-em-novembro-ibge-preve-safra-de-294-3-milhoes-de-toneladas-para-2024-e-de-314-8-milhoes-de-toneladas-para-2025' },
+  emater: { label: 'Emater/RS-Ascar · relatório de maio de 2024, pp. 9–11 e 23', url: 'https://www.estado.rs.gov.br/upload/arquivos/202406/relatorio-sisperdas-evento-enchentes-em-maio-2024.pdf' },
+  ibgePrecos: { label: 'IBGE · IPCA de maio de 2024, divulgado em 11/06/2024', url: 'https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/40340-ipca-foi-de-0-46-em-maio' },
+  contextoPrecos: { label: 'Agência Gov / IBGE · contexto da alta da batata, 11/06/2024', url: 'https://agenciagov.ebc.com.br/noticias/202406/inflacao-acumulada-maio-menor-que-ano-passado' },
+  mcti: { label: 'MCTI · estudo de atribuição das chuvas no RS, 03/06/2024', url: 'https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/noticias/2024/06/mudanca-climatica-dobrou-a-probabilidade-de-ocorrencia-de-chuvas-extremas-no-sul-do-brasil/' },
+};
+const cases = [
+  { place: 'BRASIL · EL NIÑO 2023–2024', title: 'O mesmo fenômeno. Extremos diferentes.', metric: '−12%', caption: 'na produção estimada de soja em Mato Grosso em 2024, frente a 2023.', text: 'Enquanto o Sul enfrentava excesso de chuva, falta de água e calor afetavam lavouras no Centro-Oeste.', source: 'INMET · IBGE, estimativa de novembro de 2024', refs: ['inmet', 'ibgeSafra'] },
+  { place: 'RIO GRANDE DO SUL · MAIO DE 2024', title: 'A colheita que a água levou.', metric: '2,7 milhões', caption: 'de toneladas de soja perdidas, segundo estimativa da Emater/RS-Ascar.', text: 'Em Agudo, o relatório também registrou perdas em lavouras de arroz. A água atingiu a safra que ainda estava no campo.', source: 'Emater/RS-Ascar · levantamento de maio de 2024', refs: ['emater'] },
+  { place: 'BRASIL · PREÇOS AO CONSUMIDOR · MAIO DE 2024', title: 'O impacto não para na porteira.', metric: '+20,61%', caption: 'no preço da batata-inglesa no Brasil em um mês, pelo IPCA.', text: 'As chuvas no RS atingiram parte da produção. A transição entre safras também reduziu a oferta — a alta não teve uma causa única.', source: 'IBGE · maio de 2024 em relação a abril', refs: ['ibgePrecos', 'contextoPrecos'] },
+  { place: 'RIO GRANDE DO SUL · ABASTECIMENTO · 22/05/2024', title: 'Do campo à mesa da escola.', metric: '380 escolas', caption: 'abertas relataram dificuldade para obter ao menos um alimento normalmente adquirido.', text: 'Proteínas, frutas e hortaliças estavam entre os itens afetados. Lavouras perdidas e acessos interrompidos atingiam também a alimentação da população.', source: 'Emater/RS-Ascar · dados da SEDUC em 22/05/2024', refs: ['emater'] },
+] as const;
+const windows = [[0, .025, .08, .12], [.09, .14, .25, .29], [.26, .31, .46, .50], [.47, .52, .65, .69], [.66, .71, .82, .86], [.83, .89, 1, 1]];
+function interpolate(p: number, xs: number[], ys: number[]) {
+  if (p <= xs[0]) return ys[0];
+  for (let i = 1; i < xs.length; i++) if (p <= xs[i]) return ys[i - 1] + (ys[i] - ys[i - 1]) * (p - xs[i - 1]) / (xs[i] - xs[i - 1]);
+  return ys[ys.length - 1];
+}
 function Scene({ progress, index, children }: { progress: number; index: number; children: React.ReactNode }) {
-  const opacity = interpolate(progress, windows[index], [index === 0 ? 1 : 0, 1, 1, index === 3 ? 1 : 0]);
-  const y = interpolate(progress, windows[index], [24, 0, 0, -20]);
+  const opacity = interpolate(progress, windows[index], [0, 1, 1, index === 5 ? 1 : 0]);
+  const y = interpolate(progress, windows[index], [18, 0, 0, -18]);
   return <div className={`climate-scene climate-scene-${index}`} style={{ opacity, transform: `translateY(${y}px)` }} aria-hidden="true">{children}</div>;
 }
 function Photo({ progress, src, range, initial = false }: { progress: number; src: string; range: number[]; initial?: boolean }) {
@@ -23,64 +32,59 @@ function Photo({ progress, src, range, initial = false }: { progress: number; sr
   const y = interpolate(progress, [0, 1], [2, -4]);
   const [failed, setFailed] = useState(false);
   return <div className="climate-photo" style={{ opacity, transform: `translateY(${y}%)` }}>
-    {failed ? <span className="climate-image-placeholder">Imagem de referência indisponível · paisagem agrícola</span> : <img src={src} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} />}
+    {failed ? <span className="climate-image-placeholder">Imagem de apoio indisponível · paisagem agrícola</span> : <img src={src} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} />}
   </div>;
 }
-function Quote({ progress, index }: { progress: number; index: number }) {
-  const starts = [.50, .59, .68]; const start = starts[index];
-  const opacity = interpolate(progress, [start, start + .025, start + .07, start + .095], [0, 1, 1, 0]);
-  const y = interpolate(progress, [start, start + .025, start + .095], [25, 0, -12]);
-  return <blockquote className={`climate-quote climate-quote-${index}`} style={{ opacity, transform: `translateY(${y}px)` }} aria-hidden="true"><span className="climate-quote-mark">“</span><p>{quotes[index]}</p><small>Relato ilustrativo</small></blockquote>;
+function Evidence({ item }: { item: typeof cases[number] }) {
+  return <div className="climate-evidence"><small className="climate-case-place">{item.place}</small><h2>{item.title}</h2><strong className="climate-case-metric">{item.metric}</strong><p className="climate-case-caption">{item.caption}</p><p className="climate-case-text">{item.text}</p><small className="climate-case-source">{item.source}</small></div>;
 }
 export default function ClimateStory({ calmImage }: { calmImage: string }) {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const [p, setProgress] = useState(0);
   useEffect(() => {
-    if(reduced) return;
+    if (reduced) return;
     let frame = 0;
-    const update = () => {
-      frame = 0;
-      const el = ref.current;
-      if(el) { const rect = el.getBoundingClientRect(); setProgress(Math.max(0, Math.min(1, -rect.top / Math.max(1, rect.height - innerHeight)))); }
-    };
-    const schedule = () => { if(!frame) frame = requestAnimationFrame(update); };
-    update(); addEventListener('scroll', schedule, {passive:true}); addEventListener('resize', schedule);
+    const update = () => { frame = 0; const el = ref.current; if (el) { const rect = el.getBoundingClientRect(); setProgress(Math.max(0, Math.min(1, -rect.top / Math.max(1, rect.height - innerHeight)))); } };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update(); addEventListener('scroll', schedule, { passive: true }); addEventListener('resize', schedule);
     return () => { cancelAnimationFrame(frame); removeEventListener('scroll', schedule); removeEventListener('resize', schedule); };
   }, [reduced]);
-  const darkness = interpolate(p, [0, .2, .5, .75, .88], [.12, .38, .45, .6, 1]);
-  const rain = interpolate(p, [.27, .30], [0, 1]);
-  const dry = interpolate(p, [.34, .37], [0, 1]);
-  const heat = interpolate(p, [.41, .44], [0, 1]);
-  return <section ref={ref} id="produto" className={`climate-story${reduced ? ' climate-story-reduced' : ''}`} aria-labelledby="climate-story-title">
-    <div className="climate-accessible">
-      <h2 id="climate-story-title">Por gerações, aprendemos a cultivar seguindo os ciclos da natureza.</h2>
-      <p>Mas o clima já não segue o mesmo calendário.</p><p>Chuvas imprevisíveis. Secas prolongadas. Temperaturas extremas.</p>
-      {quotes.map(q => <blockquote key={q}>{q}<small>Relato ilustrativo</small></blockquote>)}
-      <p>Como planejar a próxima safra quando o clima se torna imprevisível?</p>
-    </div>
-    {reduced ? <div className="climate-static">
-      <article style={{ backgroundImage: `linear-gradient(#010e1155,#010e11cc),url(${calmImage})` }}><small>01 / O PROBLEMA</small><h3>Por gerações, aprendemos a cultivar seguindo os ciclos da natureza.</h3></article>
-      <article style={{ backgroundImage: 'linear-gradient(#010e1166,#010e11dd),url(/assets/story-flood.webp)' }}><h3>Mas o clima já não segue o mesmo calendário.</h3><p>Chuvas imprevisíveis.<br/>Secas prolongadas.<br/>Temperaturas extremas.</p></article>
-      <article className="climate-static-quotes"><small>VOZES DO CAMPO · RELATOS ILUSTRATIVOS</small>{quotes.map(q=><blockquote key={q}>“{q}”</blockquote>)}</article>
-      <article><h3>Como planejar a <em>próxima safra</em> quando o clima se torna imprevisível?</h3></article>
-    </div> : <div className="climate-sticky">
-      <div className="climate-images" aria-hidden="true">
-        <Photo progress={p} src={calmImage} range={[0,.05,.16,.28]} initial />
-        <Photo progress={p} src="/assets/story-flood.webp" range={[.17,.25,.30,.38]} />
-        <Photo progress={p} src="/assets/story-submerged.webp" range={[.30,.38,.42,.51]} />
-        <Photo progress={p} src="/assets/story-drought.webp" range={[.43,.51,.56,.65]} />
-        <Photo progress={p} src="/assets/story-heat.webp" range={[.57,.65,.76,.87]} />
-      </div>
-      <div className="climate-darkness" style={{opacity:darkness}} />
-      <div className="climate-vignette" />
-      <div className="climate-chapter" aria-hidden="true"><span>01</span> O PROBLEMA</div>
-      <Scene progress={p} index={0}><h2>Por gerações, aprendemos a cultivar seguindo os ciclos da natureza.</h2><span className="climate-scroll-cue">Uma história que está mudando <i>↓</i></span></Scene>
-      <Scene progress={p} index={1}><h2>Mas o clima já não segue o mesmo calendário.</h2><div className="climate-weather"><p style={{opacity:rain}}>Chuvas imprevisíveis.</p><p style={{opacity:dry}}>Secas prolongadas.</p><p style={{opacity:heat}}>Temperaturas extremas.</p></div></Scene>
-      <Scene progress={p} index={2}><div className="climate-human"><small>POR TRÁS DE CADA SAFRA, UMA VIDA.</small><h2>A incerteza também<br/>chega ao campo.</h2></div></Scene>
-      {quotes.map((q,i)=><Quote key={q} progress={p} index={i}/>)}
-      <Scene progress={p} index={3}><h2>Como planejar a <em>próxima safra</em> quando o clima se torna imprevisível?</h2></Scene>
-      <span className="climate-photo-note" aria-hidden="true">Fotografias de referência · cenas sem associação aos relatos</span>
-    </div>}
-  </section>;
+  const darkness = interpolate(p, [0, .15, .4, .65, .85, .91], [.15, .56, .59, .72, .9, 1]);
+  return <>
+    <section ref={ref} id="produto" className={`climate-story${reduced ? ' climate-story-reduced' : ''}`} aria-labelledby="climate-story-title">
+      {!reduced && <div className="climate-accessible">
+        <h2 id="climate-story-title">Quando o clima muda, a vida muda junto.</h2>
+        <p>Por gerações, aprendemos a cultivar seguindo os ciclos da natureza.</p>
+        {cases.map(item => <article key={item.title}><h3>{item.title}</h3><p>{item.place}</p><p>{item.metric} {item.caption}</p><p>{item.text}</p><p>{item.source}</p></article>)}
+        <p>Como planejar a próxima safra quando o clima se torna imprevisível?</p>
+      </div>}
+      {reduced ? <div className="climate-static">
+        <article style={{ backgroundImage: `linear-gradient(#010e1155,#010e11cc),url(${calmImage})` }}><small>01 / O PROBLEMA</small><h2 id="climate-story-title">Por gerações, aprendemos a cultivar seguindo os ciclos da natureza.</h2></article>
+        {cases.map(item => <article key={item.title}><Evidence item={item}/></article>)}
+        <article><h2>Como planejar a <em>próxima safra</em> quando o clima se torna imprevisível?</h2></article>
+      </div> : <div className="climate-sticky">
+        <div className="climate-images" aria-hidden="true">
+          <Photo progress={p} src={calmImage} range={[0,.025,.09,.16]} initial />
+          <Photo progress={p} src="/assets/story-drought.webp" range={[.09,.16,.25,.32]} />
+          <Photo progress={p} src="/assets/story-flood.webp" range={[.26,.32,.39,.46]} />
+          <Photo progress={p} src="/assets/story-submerged.webp" range={[.39,.46,.59,.67]} />
+          <Photo progress={p} src={calmImage} range={[.60,.68,.78,.89]} />
+        </div>
+        <div className="climate-darkness" style={{ opacity: darkness }}/><div className="climate-vignette"/>
+        <div className="climate-chapter" aria-hidden="true"><span>01</span> O PROBLEMA</div>
+        <Scene progress={p} index={0}><h2>Por gerações, aprendemos a cultivar seguindo os ciclos da natureza.</h2><span className="climate-scroll-cue">Mas a mudança já faz parte da nossa história <i>↓</i></span></Scene>
+        {cases.map((item, i) => <Scene key={item.title} progress={p} index={i + 1}><Evidence item={item}/></Scene>)}
+        <Scene progress={p} index={5}><h2>Como planejar a <em>próxima safra</em> quando o clima se torna imprevisível?</h2></Scene>
+        <span className="climate-photo-note" aria-hidden="true">Imagens de apoio · não são registros dos casos citados</span>
+      </div>}
+    </section>
+    <div className="climate-sources"><details><summary>Fontes e contexto dos casos reais</summary><div className="climate-sources-body">
+      <p>Casos históricos de 2023–2024. Estimativas, locais e períodos acompanham cada dado; não são projeções para a próxima safra.</p>
+      <p>O El Niño é um fenômeno natural. Sua atuação e as mudanças climáticas contribuíram para intensificar as chuvas de 2024 no RS; o desastre envolveu múltiplos fatores. A alta de um alimento não pode ser atribuída apenas às enchentes.</p>
+      <p>Na produção de soja em Mato Grosso, a comparação é a estimativa do IBGE de novembro de 2024 frente a 2023, não uma perda isolada atribuída apenas ao El Niño. As perdas de soja no RS são estimativas do levantamento de maio de 2024 da Emater/RS-Ascar.</p>
+      <ul>{Object.entries(sources).map(([key, source]) => <li key={key}><a href={source.url} target="_blank" rel="noreferrer">{source.label} ↗</a></li>)}</ul>
+      <p>As fotografias são imagens de apoio, sem associação documental aos locais citados. Os textos são sínteses das fontes, não depoimentos de agricultores.</p>
+    </div></details></div>
+  </>;
 }
