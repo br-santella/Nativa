@@ -78,61 +78,11 @@ export const series = {
   moisture: [38, 40, 39, 34, 29, 25, 24, 25, 29, 34, 38, 40],
   ndvi: [0.7, 0.76, 0.68, 0.5, 0.62, 0.7, 0.6, 0.4, 0.32, 0.5, 0.62, 0.74],
 };
-export const scenarios = [
-  {
-    name: "Rotação atual",
-    sequence: "Soja → Milho → Pousio",
-    calendar: "Soja / Milho / Pousio",
-    water: "Maior demanda",
-    soil: "Cobertura limitada",
-    climate: "Exposição na seca",
-    benefit: "Aproveita a estrutura e a experiência já disponíveis.",
-    risk: "Solo descoberto no intervalo entre safras.",
-    detail:
-      "O pousio pode deixar o solo sem cobertura, aumentando a exposição à erosão e à perda de água por evaporação. A intensidade depende das condições locais.",
-    notes: [48, 52, 82, 62],
-    color: "#93a8ad",
-  },
-  {
-    name: "Conservação do solo",
-    sequence: "Soja → Milho + braquiária",
-    calendar: "Soja / Milho + Braquiária / Cobertura",
-    water: "Menor perda por evaporação",
-    soil: "Mais cobertura e palhada",
-    climate: "Proteção no período seco",
-    benefit: "Mantém cobertura e diversifica o sistema radicular.",
-    risk: "Exige manejo da cobertura e ajuste da semeadura.",
-    detail:
-      "A palhada e as raízes da braquiária podem proteger a superfície, favorecer infiltração e contribuir para a matéria orgânica ao longo do tempo. O resultado depende da implantação e do manejo.",
-    notes: [84, 92, 74, 82],
-    color: "#a8c9a3",
-  },
-  {
-    name: "Adaptação climática",
-    sequence: "Sorgo → Crotalária → Soja",
-    calendar: "Sorgo / Crotalária / Soja",
-    water: "Menor demanda potencial",
-    soil: "Diversificação de raízes",
-    climate: "Maior tolerância à seca",
-    benefit: "Diversifica culturas e a exposição ao risco climático.",
-    risk: "Depende de mercado, sementes e janela de plantio.",
-    detail:
-      "O sorgo apresenta tolerância relativa ao déficit hídrico. A crotalária pode contribuir para a ciclagem de nutrientes, com resposta dependente da espécie, do solo e do manejo.",
-    notes: [88, 78, 65, 90],
-    color: "#e9b857",
-  },
-];
 export const profiles = {
   soil: [80, 90, 60, 75],
   water: [100, 20, 20, 100],
   profit: [0, 0, 100, 0],
 };
-export function score(notes: number[], weights: number[]) {
-  const total = weights.reduce((a, b) => a + b, 0);
-  return total
-    ? Math.round(notes.reduce((s, n, i) => s + n * weights[i], 0) / total)
-    : 0;
-}
 export const info = {
   sources: {
     title: "Fontes, escala e incerteza",
