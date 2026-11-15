@@ -100,7 +100,18 @@
       "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_1a_safra_serie_historica_1997-2026.xls",
       "aba": "Ponta Grossa-PR-2026",
       "consulta": "2026-11-14",
-      "curto": "CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026)"
+      "curto": "CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026)",
+      "escala_produtividade": {
+        "referencia_sc_ha": 200.0,
+        "proporcional_r_ha": 4631.0,
+        "componentes": {
+          "Fertilizantes": 3249.9,
+          "Transporte externo": 606.0,
+          "Armazenagem": 610.58,
+          "CESSR": 164.52
+        },
+        "premissa": "estimativa — validar: só fertilizantes, transporte externo, armazenagem e CESSR escalam com a produtividade; sementes, defensivos, máquinas, mão de obra, administração, assistência técnica e juros ficam fixos por hectare"
+      }
     },
     "feijao_2safra": {
       "coe": 4452.6,

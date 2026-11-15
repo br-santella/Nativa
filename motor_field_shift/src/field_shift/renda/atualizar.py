@@ -59,6 +59,10 @@ COBERTURAS = {  # R$/ha: ponto médio das faixas de referência
     "aveia_nabo": (400.0, "mix aveia + nabo forrageiro como cobertura (semente das duas + semeadura): faixa R$ 350–450/ha"),
 }
 ESTIM_VALIDAR = "estimativa — validar"
+# Crops whose CONAB reference yield is far from the municipal PAM yield: their yield-driven cost is rescaled at runtime.
+YIELD_SCALED_CROPS = ("milho_1safra",)
+YIELD_DRIVEN_ITEMS = {"Fertilizantes": "9 - Fertilizantes", "Transporte externo": "14 - Transporte Externo",
+                      "Armazenagem": "16 - Despesas de armazenagem", "CESSR": "23 - CESSR"}
 RAZAO_SORGO_MILHO = 0.80  # preço do sorgo ≈ 80% do preço do milho (sem série SEAB/DERAL do sorgo) — estimativa, validar
 
 
@@ -102,6 +106,25 @@ def _linhas(f: Path, aba: str) -> dict:
     return dict(coe=g("CUSTO VARIÁVEL"), cot=g("CUSTO OPERACIONAL"), ct=g("CUSTO TOTAL"))
 
 
+def yield_scaling(f: Path, aba: str) -> dict:
+    """Split the CONAB variable cost into the part that moves with yield and the part that does not.
+
+    The CONAB sheet is built for a reference yield (e.g. 12 t/ha). When the municipal yield is lower, only the
+    yield-driven line items shrink: fertilizer (dose is set from the yield target), external transport, storage and
+    CESSR (levy on revenue). Seed, pesticides, machinery, labour, administration, technical assistance and interest
+    stay fixed per hectare. This is a modelling premise, not a CONAB figure.
+    """
+    d = pd.read_excel(f, sheet_name=aba, header=None).dropna(how="all").dropna(how="all", axis=1)
+    ref_kg = float(d[d[0].astype(str).str.contains("Produtividade Média", regex=False)].iloc[0, 0]
+                   .split(":")[1].replace("kg/ha", "").strip().replace(".", "").replace(",", "."))
+    parts = {}
+    for label, pat in YIELD_DRIVEN_ITEMS.items():
+        parts[label] = round(float(d[d[0].astype(str).str.contains(pat, regex=False)].iloc[0, 1]), 2)
+    return dict(referencia_sc_ha=round(ref_kg / 60, 2), proporcional_r_ha=round(sum(parts.values()), 2), componentes=parts,
+                premissa="estimativa — validar: só fertilizantes, transporte externo, armazenagem e CESSR escalam com a produtividade; "
+                         "sementes, defensivos, máquinas, mão de obra, administração, assistência técnica e juros ficam fixos por hectare")
+
+
 def custos() -> dict:
     out = {}
     for chave, (url, aba, rotulo) in {**CUSTOS, **CUSTO_PROXY}.items():
@@ -112,6 +135,8 @@ def custos() -> dict:
             fonte=rotulo + ". coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); "
                   "cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
             url=url, aba=aba, consulta=str(date.today()), curto=CURTO[chave])
+        if chave in YIELD_SCALED_CROPS:
+            out[chave]["escala_produtividade"] = yield_scaling(f, aba)
     for chave, (v, desc) in COBERTURAS.items():
         out[chave] = dict(coe=v, cot=v, ct=v, unidade="R$/ha", estimativa=True,
                           fonte=f"{ESTIM_VALIDAR if chave in ('nabo_forrageiro', 'aveia_nabo') else ESTIM}: {desc}", url=None,

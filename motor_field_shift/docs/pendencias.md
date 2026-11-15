@@ -37,7 +37,9 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Unrealistic summer-corn cost**: the CONAB cost for first-season corn in Paraná only exists for Ponta Grossa and was computed for 12 t/ha, while Toledo produces about 7.6 t/ha. The result is a margin of roughly −BRL 4,600/ha in the `proxima_safra` block. Proposed fix: scale the variable cost to the local yield (cost/t × municipal yield).
   Files: `src/field_shift/renda/renda.py`, `src/field_shift/renda/atualizar.py`, `data/ref/precos_custos.json`.
-  Status: pending
+  Done (15/11/2026): the CONAB sheet is split into yield-driven lines (fertilizer 3,249.90 + external transport 606.00 + storage 610.58 + CESSR 164.52 = R$ 4,631/ha) and fixed lines (seed, pesticides, machinery, labour, administration, technical assistance, interest). The yield-driven part is multiplied by local yield / reference yield (200 sc/ha); the block is stored as `escala_produtividade` in `precos_custos.json` (extracted by `atualizar.yield_scaling`). Toledo (141.5 sc/ha, factor 0.71): variable cost R$ 9,656 → R$ 8,302, summer-corn margin −R$ 2,030 → −R$ 676/ha. A bad year keeps the scaled cost (inputs are already spent); a farmer-typed cost is never scaled; the cost source text says the adjustment was applied. Tests: `tests/test_renda_escala.py`.
+  Depends on an agronomist: which lines really move with yield (premise: fertilizer follows the yield target; seed and pesticides do not) and whether municipal PAM yield (~142 sc/ha) is comparable to a high-technology 12 t/ha package. The margin is still negative at the 12-month average price (R$ 53.89/sc): the summer-corn rotation is not profitable at this yield and price, which is a result, not a bug.
+  Status: done
 
 - ~~**Soybean "bad year" higher than the average**~~ — fixed: mean, CV, trend and p20 all use the same 10-year window (`YIELD_WINDOW_YEARS` in `pam/produtividade.py`); regression test `test_p20_never_above_mean`.
   Files: `src/field_shift/pam/produtividade.py`.
@@ -125,7 +127,8 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Summer corn cost reference does not match local yield**: `milho_1safra` uses the CONAB Ponta Grossa cost (R$ 9.656/ha, reference 12 t/ha ≈ 200 sc/ha) against the PAM municipal yield (~140 sc/ha in Toledo); break-even is ~179 sc/ha, so every `milho_verao__*` candidate shows a large negative margin. Options: scale the variable cost by local/reference yield, or add an explicit card warning.
   Files: `data/ref/precos_custos.json`, `src/field_shift/renda/renda.py`.
-  Status: pending
+  Done (15/11/2026): same fix as "Unrealistic summer-corn cost" above (yield-driven lines scaled, card source text flags it as an estimate to validate).
+  Status: done
 
 - **Fertility cost only charged on grain second crops**: liming and extra P/K enter only when the 2nd crop is a grain (`V2 = None` for cover crops/fallow), so with fertility informed cover crops gain ~R$ 550/ha in the comparison, and the summer crop (soy vs. summer corn in `proxima_safra`) never carries it. Liming is an area-level need; decide (agronomist) whether it applies to every rotation.
   Files: `src/field_shift/app/estado_area.py`.

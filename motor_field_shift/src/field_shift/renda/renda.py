@@ -127,14 +127,38 @@ def _rend_efetivo(rend: dict, aj: dict) -> dict:
     return out
 
 
+def yield_cost_factor(ref: dict, aj: dict, k: str, sc_ha: float) -> float | None:
+    """Ratio local yield / CONAB reference yield, for crops whose CONAB cost sheet has a yield-driven split.
+
+    None when the crop has no split or the farmer typed their own cost (their number is used as given).
+    """
+    scale = ref["custos"][k].get("escala_produtividade")
+    if scale is None or k in (aj.get("custo") or {}):
+        return None
+    return sc_ha / scale["referencia_sc_ha"]
+
+
+def _scaled_cost(ref: dict, k: str, cost: float, factor: float | None) -> float:
+    """Remove the yield-driven share of `cost` that the local yield does not justify (applies to every cost line:
+    the fixed lines `cot`/`ct` only add costs that do not depend on yield)."""
+    if factor is None:
+        return cost
+    return cost - ref["custos"][k]["escala_produtividade"]["proporcional_r_ha"] * (1 - factor)
+
+
 def _item(ref, aj, rend, k, rendimento="sc_ha") -> dict:
     c = _custo(ref, aj, k)
+    factor = None
     if k in CULTURAS_VENDA:
+        factor = yield_cost_factor(ref, aj, k, rend[k]["sc_ha"])
+        c_base = c
+        c = _scaled_cost(ref, k, c, factor)  # a bad year keeps the same cost: inputs are already spent
         pk = CULTURAS_VENDA[k]
         pr = _preco(ref, aj, pk)
         sc = rend[k]["sc_ha"]
         ruim = rend[k]["p20_sc_ha"]
-        return dict(chave=k, rotulo=ROTULO[k], sc_ha=sc, preco=pr, custo=c, preco_usuario=pk in (aj.get("preco") or {}),
+        return dict(chave=k, rotulo=ROTULO[k], sc_ha=sc, preco=pr, custo=c, custo_base=c_base, fator_escala_custo=factor,
+                    preco_usuario=pk in (aj.get("preco") or {}),
                     custo_usuario=k in (aj.get("custo") or {}), receita=sc * pr, margem=sc * pr - c,
                     cv=rend[k]["cv"], anos=rend[k]["anos"],
                     margem_ano_ruim=None if ruim is None else ruim * pr - c, sc_ha_ruim=ruim,
@@ -191,7 +215,13 @@ def fonte_custo(i: dict, linha: str) -> str:
     if i["custo_usuario"]:
         return "informado pelo usuário"
     c = carregar_referencia()["custos"][i["chave"]]
-    return c["curto"] if c["estimativa"] else f"{c['curto']}, {LINHA_NOME[linha]}"
+    texto = c["curto"] if c["estimativa"] else f"{c['curto']}, {LINHA_NOME[linha]}"
+    f = i.get("fator_escala_custo")
+    if f is not None:
+        ref_sc = c["escala_produtividade"]["referencia_sc_ha"]
+        texto += (f"; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local "
+                  f"({i['sc_ha']:.0f} sc/ha contra {ref_sc:.0f} sc/ha da referência CONAB) — estimativa, validar")
+    return texto
 
 
 def fonte_preco(i: dict) -> str:
