@@ -81,9 +81,9 @@ This file is the living list of open items for the project (crop-rotation engine
 
 ## Future features
 
-- **Multi-year rotation plan**: the ranking evaluates one season at a time. A 2–3 year plan (for example, soybean/corn → soybean/wheat → summer corn/oat).
-  Files: `src/field_shift/motor/plano.py` (draft, 337 lines), `POST /v1/plano` in `api/field_shift_api/rotas.py`, `PlanoIn`/`PlanoOut` in `schemas.py`.
-  Status: in progress (WIP, paused 15/11/2026 to save tokens). Draft of the module, route and schemas exists and the existing 89 tests still pass, but the plan is untested and unreviewed. Still to do: `api/tests/test_plano.py` (anos outside 2–3, no consecutive summer soybean, restrictions respected, `recomendar` unchanged, `problemas_area` effect, `ganho_vs_repetir_atual`); document `/v1/plano` in `api/README.md` and `docs/motor.md`; save the example generator as `scripts/generate_examples.py` and regenerate `api/exemplos/*.json` (they still carry the old "fertilidade do solo não usada" phrase and lack the new gap lines); new examples `plano_plurianual_talhao_72638.json`, `recomendacao_estado_area_mofo_nematoide.json`, `recomendacao_estado_area_fertilidade_pobre.json`; list the estimated parameters (transition penalties/bonuses, typical dates) as items to validate. Code in English (see CLAUDE.md).
+- **Multi-year rotation plan**: the ranking evaluates one season at a time. A 2–3 year plan is missing (for example, soybean/corn → soybean/wheat → summer corn/oat).
+  Files: `src/field_shift/motor/`.
+  Status: pending. An untested draft (`motor/plano.py`, `POST /v1/plano`) lives only on the local branch `feat/motor-estado-area-plano-plurianual`; resume from there (needs tests, docs, new examples and the example generator).
 
 - **Field problems reported by the farmer**: a closed-list field, for example `problemas_area: ["nematoide", "mofo_branco", "cigarrinha", "compactacao"]`, that adjusts the pest and soil criteria (white mold hurts beans; nematodes favor brachiaria and penalize beans and soybean; leafhopper weighs on corn after corn; compaction favors radish and brachiaria). Optional: if not provided, it does not enter the analysis.
   Files: `api/field_shift_api/schemas.py`, `src/field_shift/motor/servico.py`, `src/field_shift/app/estado_area.py`, `catalog/vocabulario.yaml`.

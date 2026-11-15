@@ -302,7 +302,7 @@ class ContextoIn(BaseModel):
 
 
 class _EntradaMotor(BaseModel):
-    """Campos comuns de `RecomendacaoIn` e `PlanoIn` (mesmas entradas do motor)."""
+    """Campos comuns das entradas do motor."""
 
     area: Area
     rotacao_atual: RotacaoSlug = Field(
@@ -425,38 +425,6 @@ class RecomendacaoIn(_EntradaMotor):
                     "analise_solo": {"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "cad_mm_cm": 1.4},
                     "restricoes": {"culturas_excluidas": ["trigo"], "maquinas": {"plataforma_milho": True, "semeadora_consorcio": False}},
                     "irrigacao": {"disponivel": True},
-                },
-            ]
-        }
-    )
-
-
-class PlanoIn(_EntradaMotor):
-    """Plano plurianual: mesmas entradas de `RecomendacaoIn` (a safra 1 usa a cronologia derivada da colheita do verão atual)."""
-
-    anos: int = Field(3, ge=2, le=3, description="Quantas safras seguintes ao verão atual planejar (2 ou 3).")
-    n_planos: int = Field(3, ge=1, le=5, description="Quantos planos distintos devolver (os de maior pontuação).")
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            "examples": [
-                {
-                    "area": {"talhao_id": "72638"},
-                    "rotacao_atual": "soja__milho_safrinha",
-                    "estagio_verao": "enchimento_graos",
-                    "data_referencia": "2026-12-01",
-                    "anos": 3,
-                    "n_planos": 3,
-                },
-                {
-                    "area": {"talhao_id": "72638"},
-                    "rotacao_atual": "soja__milho_safrinha",
-                    "estagio_verao": "enchimento_graos",
-                    "data_referencia": "2026-12-01",
-                    "anos": 2,
-                    "n_planos": 1,
-                    "problemas_area": ["mofo_branco", "nematoide"],
-                    "restricoes": {"culturas_excluidas": ["trigo"]},
                 },
             ]
         }
@@ -646,57 +614,6 @@ class RecomendacaoOut(_Saida):
     eliminadas: list[Eliminada] = Field([], description="União das eliminadas de `agora` e `proxima_safra` (compatibilidade).")
     avisos: list[str] = []
     metodologia: Metodologia | None = None
-
-
-class SafraPlano(_Saida):
-    ano_safra: int = Field(..., description="1..N (safra 0 = rotação atual, só usada nas transições).")
-    verao: CulturaRef | None = None
-    segunda: CulturaRef | None = None
-    rotacao: str = Field(..., description="Id '<verao>__<segunda>'.")
-    nome: str | None = None
-    nota: float | None = Field(None, description="Nota da safra (escala 0–1 do motor), já sem o bônus da soja seguinte quando o verão seguinte não é soja.")
-    margem_r_ha: float | None = Field(None, description="R$/ha da safra (dado: PAM × preço SEAB/DERAL − custo CONAB), com o bônus da soja seguinte só se aplicável.")
-    semeadura_2a: dict[str, Any] | None = None
-    criterios: dict[str, float | None] = {}
-    bonus_soja_seguinte_contado: bool | None = None
-    porque: str | None = None
-
-
-class TransicaoPlano(_Saida):
-    de: str
-    para: str
-    de_safra: int
-    para_safra: int
-    efeito: float = Field(..., description="Efeito na pontuação (negativo = penalidade); estimativa de catálogo, validar com agrônomo/Embrapa.")
-    motivo: str
-    fonte: str | None = None
-
-
-class Plano(_Saida):
-    posicao: int
-    nota: float = Field(..., description="Pontuação do plano ÷ nº de safras (soma das notas por safra + termos de transição e do plano).")
-    nota_total: float | None = None
-    margem_total_r_ha: dict[str, Any] = Field(..., description="{valor (R$/ha somados nas safras), origem}.")
-    safras: list[SafraPlano] = []
-    transicoes: list[TransicaoPlano] = []
-    termos_plano: list[dict[str, Any]] = Field([], description="Diversificação de famílias e cobertura recicladora no horizonte (estimativas).")
-    resumo: str | None = None
-    fonte: str | None = None
-    ganho_vs_repetir_atual: dict[str, Any] | None = Field(
-        None,
-        description="Plano contra repetir a rotação atual todas as safras (mesma pontuação): diferença de nota, de margem total e dos critérios; "
-        "`repetir_atual` traz penalidades ou, se eliminada, os motivos; `aviso` quando a repetição é penalizada.",
-    )
-
-
-class PlanoOut(_Saida):
-    entrada: dict[str, Any] = {}
-    cultura_atual: CulturaAtual | None = None
-    colheita_estimada: DataOrigem | None = None
-    cronologia: dict[str, Any] | None = Field(None, description="Semeaduras usadas: derivada (safra 1, mesmo verão) e típicas (demais).")
-    planos: list[Plano] = []
-    avisos: list[str] = []
-    metodologia: dict[str, Any] | None = Field(None, description="Fórmula, premissas, termos de transição (valores estimados), ajustes aplicados.")
 
 
 class HealthOut(BaseModel):

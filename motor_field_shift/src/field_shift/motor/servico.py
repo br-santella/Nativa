@@ -730,7 +730,7 @@ def _data_referencia(d) -> date | None:
 
 def _normalizar_entradas(semeadura_safrinha, pesos, rotacao_atual, ajustes, analise_solo, restricoes, irrigacao, rotacoes,
                          problemas_area) -> dict:
-    """Valida e normaliza as entradas compartilhadas por `recomendar` e `plano_plurianual` (mesma ordem de erros)."""
+    """Valida e normaliza as entradas de `recomendar` (mesma ordem de erros)."""
     if rotacao_atual is None:
         raise EntradaInvalida("'rotacao_atual' é obrigatória (id '<verao>__<segunda>', ex.: soja__milho_safrinha).")
     if semeadura_safrinha is not None:
@@ -978,8 +978,6 @@ def _combinacoes() -> list[dict]:
 def opcoes() -> dict:
     """Catálogo para montar o formulário: culturas de verão e da 2ª janela, combinações (rotações), semeaduras, critérios, pesos,
     referência de renda, região, talhões demo."""
-    from field_shift.motor import plano as _plano  # import tardio: plano importa este módulo
-
     ref = carregar_referencia()
     fontes = [dict(item=f"preço {k}", fonte=v["fonte"], periodo=v.get("periodo"), estimativa=v.get("estimativa", False), url=v.get("url"))
               for k, v in ref["precos"].items()]
@@ -1002,12 +1000,6 @@ def opcoes() -> dict:
             precos={k: v["valor"] for k, v in ref["precos"].items()},
             custos={k: {l: v[l] for l in ("coe", "cot", "ct") if l in v} for k, v in ref["custos"].items()},
             linha_custo_padrao=ref["linha_custo_padrao"], fontes=fontes),
-        plano=dict(rota="/v1/plano", anos_validos=[2, 3], anos_padrao=3, n_planos_max=5, n_planos_padrao=3,
-                   termos_transicao=dict(soja_verao_consecutiva=-_plano.PEN_SOJA_CONSECUTIVA,
-                                         milho_verao_consecutivo=-_plano.PEN_MILHO_VERAO_CONSECUTIVO,
-                                         segunda_janela_repetida={k: -v[0] for k, v in _plano.PEN_SEGUNDA_REPETIDA.items()},
-                                         bonus_por_familia_alem_da_primeira=_plano.BONUS_FAMILIA,
-                                         bonus_cobertura_recicladora=_plano.BONUS_COBERTURA, fonte=_plano.FONTE_TERMOS)),
         regiao=_regiao_info(), talhoes_demo=_talhoes_demo()))
 
 
