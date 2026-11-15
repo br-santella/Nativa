@@ -189,7 +189,7 @@ input[type="file"] {
   color: #b8d3b2;
 }
 .button.lime {
-  background: #91ac32;
+  background: #40b975;
   color: #172a19;
   border-radius: 28px;
   padding: 12px 22px;
@@ -343,7 +343,7 @@ input[type="file"] {
 .main-content {
   margin-left: 224px;
   padding: 18px 32px 48px 40px;
-  max-width: 1530px;
+  max-width: none;
   min-height: calc(100vh - 88px);
 }
 .page-heading {
@@ -681,19 +681,6 @@ input[type="file"] {
   top: 45px;
   width: 54px;
   height: 54px;
-}
-.metric-ring img {
-  position: absolute;
-  inset: 0;
-  width: 54px;
-  height: 54px;
-  object-fit: contain;
-}
-.metric-ring img:last-child {
-  width: 30px;
-  height: 24px;
-  left: 12px;
-  top: 15px;
 }
 .mini-bars {
   position: absolute;
@@ -1698,7 +1685,7 @@ td:first-child {
   background: #102522;
 }
 .preview-dots i {
-  background: #91ac32;
+  background: #40b975;
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -2172,9 +2159,6 @@ footer > small:last-child {
   margin-top: 22px;
 }
 @media (min-width: 1650px) {
-  .main-content {
-    margin-right: auto;
-  }
   .overview-map {
     grid-template-columns: minmax(0, 1fr) 272px;
   }
@@ -3406,12 +3390,6 @@ footer > small:last-child {
   white-space: nowrap;
   font-size: 12px;
 }
-.metric-ring img:last-child {
-  width: 27px;
-  height: 38.496px;
-  left: 13.5px;
-  top: 8px;
-}
 .metric-spark {
   width: 86.5152px;
   height: 23.6826px;
@@ -3911,4 +3889,515 @@ small.error.full {
   .settings-area .wizard-sample {
     grid-template-columns: 1fr;
   }
+}
+
+.live-farm-map .farm-map-canvas { position: absolute; inset: 0; z-index: 0; background: #d9e5dd; }
+.live-farm-map .map-controls, .live-farm-map .map-fullscreen, .live-farm-map .map-farm { z-index: 1; }
+.live-farm-map .map-fullscreen { bottom: 40px; }
+.live-farm-map .map-farm { bottom: 40px; max-width: calc(100% - 100px); pointer-events: none; }
+.live-farm-map .leaflet-control-attribution { font-size: 10px; color: #172c24; background: #fffffff0; }
+.live-farm-map .leaflet-control-attribution a { color: #005b42; }
+.farm-map-status { position: absolute; z-index: 2; top: 16px; left: 16px; right: 80px; padding: 12px; margin: 0; border-radius: 4px; background: #061c20ed; color: #f0f6f4; font-size: 12px; }
+.live-farm-map button:focus-visible { outline: 2px solid #ffbf22; outline-offset: 2px; }
+.live-farm-map button:disabled { opacity: .5; cursor: default; }
+
+.farm-map-layers {
+  position: absolute; z-index: 2; top: 16px; left: 16px;
+  width: min(260px, calc(100% - 90px)); padding: 12px;
+  display: grid; gap: 10px; background: #061c20ed; border-radius: 4px;
+}
+.farm-map-layers label { display: grid; gap: 6px; font-size: 11px; color: #c2d5d2; }
+.farm-map-layers :is(select, input) { width: 100%; min-width: 0; }
+.farm-map-layers :is(select, input[type="date"]) { min-height: 36px; padding: 6px; color: #f0f6f4; background: #10292d; border: 1px solid #45625c; border-radius: 4px; color-scheme: dark; }
+.farm-map-layers input[type="range"] { accent-color: #8cbb64; }
+.farm-map-layers :is(select, input):focus-visible { outline: 2px solid #ffbf22; outline-offset: 2px; }
+.farm-map-data { position: absolute; z-index: 1; right: 72px; bottom: 40px; width: 260px; max-width: calc(100% - 96px); padding: 10px; background: #fffffff2; color: #172c24; border-radius: 4px; }
+.farm-map-data strong, .farm-map-data small { display: block; font-size: 10px; line-height: 1.4; }
+.farm-map-data img { display: block; width: 100%; height: auto; margin: 6px 0; }
+.live-farm-map:has(.farm-map-data) .map-farm { display: none; }
+.live-farm-map .farm-map-status { top: auto; bottom: 170px; }
+@media (max-width: 700px) {
+  .live-farm-map:has(.farm-map-data) { min-height: 560px; }
+  .farm-map-data { left: 14px; right: auto; width: 240px; }
+  .farm-map-layers { top: 14px; left: 14px; }
+}
+
+/* Keep the overview indicators beside the map, in a single vertical column. */
+.dashboard .overview-map {
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: stretch;
+}
+.overview-map > .farm-map { height: auto; min-height: clamp(620px, 68svh, 760px); }
+.overview-indicators { min-width: 0; }
+.overview-indicators .metrics { grid-template-columns: minmax(0, 1fr); gap: 12px; height: 100%; }
+.overview-indicators .metric { height: auto; min-height: 144px; padding: 16px; }
+.overview-indicators .metric-title { font-size: 12px; }
+.overview-indicators .metric-value { margin-top: 8px; }
+.overview-indicators .metric-value strong { font-size: 30px; }
+.overview-indicators .metric-source { left: 16px; bottom: 14px; }
+.overview-indicators :is(.metric-spark, .mini-bars, .metric-ring, .ndvi-bars) { right: 16px; top: 48px; transform: scale(.8); transform-origin: right top; }
+.overview-map > .farm-context { grid-column: 1 / -1; }
+@container dashboard-content (max-width: 860px) {
+  .dashboard .overview-map { grid-template-columns: minmax(0, 1fr); }
+  .overview-map > .farm-map { min-height: clamp(360px, 60svh, 600px); }
+  .overview-indicators .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); height: auto; }
+  .overview-indicators .metric { min-height: 160px; }
+}
+@container dashboard-content (max-width: 500px) {
+  .overview-indicators .metrics { grid-template-columns: minmax(0, 1fr); }
+}
+
+.overview-current-crop {
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+  padding: 14px 20px; margin-bottom: 16px;
+  background: #10292d; border-left: 3px solid #8cbb64; border-radius: 4px;
+}
+.overview-current-crop > div { min-width: 140px; max-width: 100%; overflow-wrap: anywhere; }
+.overview-current-crop small { font-size: 10px; color: #9aadb0; letter-spacing: .08em; }
+.overview-current-crop h2 { margin: 6px 0 0; color: #d9e9ce; font-size: 26px; }
+.overview-current-crop dl { display: flex; gap: 32px; flex-wrap: wrap; margin: 0; }
+.overview-current-crop dl > div { display: block; padding: 0; border: 0; }
+.overview-current-crop dt { font-size: 11px; color: #9aadb0; }
+.overview-current-crop dd { margin: 6px 0 0; font-size: 14px; color: #f0f6f4; overflow-wrap: anywhere; }
+@container dashboard-content (max-width: 500px) {
+  .overview-current-crop { padding: 12px 16px; gap: 16px; }
+  .overview-current-crop dl { gap: 16px 24px; }
+}
+
+.metric-ring svg { display: block; width: 100%; height: 100%; }
+
+.season-overview { margin: 32px 0 24px; }
+.season-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.season-heading small, .season-rotation small { color: #9aadb0; font-size: 10px; letter-spacing: .08em; }
+.season-heading h2 { margin: 6px 0 0; font-size: 26px; }
+.season-period { color: #c8dcb5; background: #193b32; padding: 9px 14px; border-radius: 4px; font-size: 13px; white-space: nowrap; }
+.season-rotation { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: #10292d; border-left: 3px solid #8cbb64; border-radius: 4px; margin-bottom: 16px; }
+.season-rotation h3 { margin: 8px 0 0; font-size: 20px; color: #d9e9ce; }
+.season-rotation > span { color: #9aadb0; font-size: 11px; }
+.season-analysis-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.season-analysis-card { padding: 24px; border: 1px solid #28464b; border-radius: 4px; min-width: 0; }
+.season-analysis-card h3 { margin: 0 0 20px; font-size: 17px; }
+.season-analysis-card h4 { margin: 12px 0; font-size: 16px; line-height: 1.5; }
+.season-analysis-card p { font-size: 13px; line-height: 1.7; color: #b3c5c3; }
+.season-analysis-card > small { display: block; color: #9aadb0; font-size: 11px; line-height: 1.6; }
+.season-analysis-card dl { margin: 0 0 20px; }
+.season-analysis-card dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid #28464b; font-size: 12px; }
+.season-analysis-card dd { margin: 0; }
+.season-analysis-card .season-score { color: #d9e9ce; font-size: 36px; font-weight: 600; line-height: 1.2; margin: 0 0 16px; }
+.season-score small { font-size: 12px; color: #9aadb0; font-weight: 400; margin-left: 6px; }
+.season-improvement { background: #102c26; border-color: #365747; }
+.season-soil-score { margin-bottom: 16px; }
+.season-soil-score > div { display: flex; justify-content: space-between; gap: 12px; font-size: 11px; }
+.season-soil-score progress { width: 100%; height: 8px; margin-top: 10px; accent-color: #62dca1; }
+.season-attention { border-top: 1px solid #28464b; padding-top: 16px; margin-top: 16px; }
+.season-attention small { color: #e9bc6c; font-size: 10px; }
+.season-attention p { margin-bottom: 0; }
+.season-status { color: #9aadb0; font-size: 12px; line-height: 1.6; margin: 12px 0 20px; }
+@container dashboard-content (max-width: 900px) {
+  .season-analysis-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@container dashboard-content (max-width: 500px) {
+  .season-analysis-card { padding: 18px; }
+  .season-rotation { padding: 18px; }
+}
+
+/* Dark surfaces with green data accents and yellow for primary actions. */
+.overview-page {
+  --overview-surface: #071719;
+  --overview-field: #0b2024;
+  --overview-border: #263e43;
+  --overview-accent: #ffbf22;
+  --overview-green: #62dca1;
+  --overview-muted: #96b2a5;
+  color: #edf1e6;
+}
+.overview-page :is(.overview-current-crop, .metric, .season-rotation, .season-analysis-card, .plan-banner) {
+  background: var(--overview-surface);
+  border: 1px solid var(--overview-border);
+  border-radius: 10px;
+}
+.overview-page :is(.overview-current-crop, .season-rotation) {
+  border-left: 3px solid #7fab72;
+}
+.overview-page :is(.overview-current-crop h2, .season-heading h2, .season-analysis-card h3, .plan-banner h2) {
+  color: #edf1e6;
+}
+.overview-page :is(.overview-current-crop > div > small, .season-heading small) {
+  color: var(--overview-accent);
+}
+.overview-page :is(.season-rotation small, .season-rotation h3, .season-soil-score strong) {
+  color: var(--overview-green);
+}
+.overview-page :is(.metric-value strong, .season-analysis-card .season-score) { color: #edf1e6; }
+.overview-page .season-improvement .season-score { color: var(--overview-accent); }
+.overview-page :is(.metric-title, .metric-value small, .metric-source, .overview-current-crop dt, .season-rotation > span, .season-analysis-card > small, .season-score small, .season-status) {
+  color: var(--overview-muted);
+}
+.overview-page .delta { color: var(--overview-green); }
+.overview-page .delta.warm { color: #edca73 !important; }
+.overview-page .metric { transition: background 160ms ease, border-color 160ms ease; }
+.overview-page .metric:hover {
+  background: var(--overview-field);
+  border-color: #7fab72;
+}
+.overview-page .metric:focus-visible {
+  outline: 2px solid var(--overview-accent);
+  outline-offset: 3px;
+}
+.overview-page .mini-bars i { background: #52c7ab; }
+.overview-page .ndvi-bars i { background: #40b975; }
+.overview-page .metric-ring circle:first-child { stroke: #294036; }
+.overview-page .metric-ring circle:last-child { stroke: var(--overview-green); }
+.overview-page .season-period {
+  color: var(--overview-green);
+  background: #10292d;
+  border: 1px solid #2b4448;
+}
+.overview-page .season-improvement { background: var(--overview-surface); border-color: var(--overview-accent); }
+.overview-page .season-analysis-card p { color: #b1c0b5; }
+.overview-page .season-analysis-card dl > div,
+.overview-page .season-attention { border-color: #2d443a; }
+.overview-page .season-attention small { color: var(--overview-accent); }
+.overview-page .season-soil-score progress { accent-color: var(--overview-green); }
+.overview-page .plan-banner .button {
+  background: var(--overview-accent);
+  color: #152217;
+  border-radius: 8px;
+}
+.overview-page .plan-banner .button:hover { background: #ffd066; }
+.live-farm-map :is(.farm-map-layers, .map-farm, .map-controls button, .map-fullscreen) {
+  background: #071719f2;
+  border: 1px solid #263e43;
+}
+.live-farm-map .farm-map-layers label { color: #a7b8aa; }
+.live-farm-map .farm-map-layers :is(select, input[type="date"]) {
+  background: #0a1c20;
+  border-color: #263e43;
+  color: #edf1e6;
+}
+.live-farm-map .farm-map-layers input[type="range"] { accent-color: #62dca1; }
+.live-farm-map :is(.map-controls button, .map-fullscreen, .map-farm strong) { color: #62dca1; }
+.live-farm-map :is(.map-controls button, .map-fullscreen):hover:not(:disabled) { border-color: #7fab72; background: #10292d; }
+.live-farm-map .farm-map-layers :is(select, input):focus-visible { outline-color: #ffbf22; }
+@media (prefers-reduced-motion: reduce) {
+  .overview-page .metric { transition: none; }
+}
+
+.dashboard .property-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  width: clamp(180px, 24vw, 280px);
+  min-height: 44px;
+  padding: 10px 14px;
+  text-align: left;
+  background: #071719;
+  color: #edf1e6;
+  border: 1px solid #263e43;
+  border-radius: 8px;
+}
+.property-select-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.property-select-chevron { width: 18px; height: 18px; flex-shrink: 0; color: #62dca1; }
+.dashboard .property-select:hover { border-color: #ffbf2280; }
+.dashboard .property-select:focus-visible { outline: 2px solid #ffbf22; outline-offset: 3px; }
+@media (max-width: 700px) {
+  .dashboard .property-select { width: auto; gap: 8px; padding-inline: 10px; }
+}
+
+.overview-page > .demo { margin-bottom: 14px; }
+
+.dashboard .topbar { height: 64px; }
+.dashboard .main-content { padding-top: 10px; min-height: calc(100vh - 64px); }
+
+.overview-current-crop {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.1fr) minmax(0, 2fr);
+  gap: 32px;
+}
+.overview-current-crop dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, .7fr);
+  gap: 24px;
+}
+.overview-current-crop dl > div { min-width: 0; }
+@container dashboard-content (max-width: 800px) {
+  .overview-current-crop { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+@container dashboard-content (max-width: 500px) {
+  .overview-current-crop dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+}
+
+.overview-current-crop > div > small,
+.overview-current-crop dt { display: flex; align-items: center; gap: 8px; }
+.property-summary-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: #62dca115;
+  color: #62dca1;
+}
+.overview-current-crop > div .property-summary-icon { background: #ffbf220c; color: #ffbf22; }
+.property-summary-icon svg { display: block; width: 18px; height: 18px; }
+
+/* Fill the available viewport beside either sidebar width. */
+.dashboard .main-content {
+  max-width: none;
+  margin-right: 0;
+  padding-inline: clamp(16px, 2vw, 32px);
+}
+
+/* Reference card composition: slim ribbons, clear titles, aligned action footers. */
+.overview-page .overview-current-crop h2 { font-size: 22px; line-height: 1.3; }
+.overview-page .overview-indicators .metric { overflow: hidden; border-color: var(--overview-border); }
+.overview-page .overview-indicators .metric-title {
+  margin: -16px -16px 12px;
+  padding: 5px 14px;
+  background: #10292d;
+  border-bottom: 1px solid var(--overview-border);
+  color: #a7beb9;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.overview-page .overview-indicators .metric-value { margin-top: 0; }
+.overview-page .overview-indicators .metric:first-child .metric-value strong { color: var(--overview-accent); }
+.season-heading-title { display: flex; align-items: flex-start; gap: 12px; min-width: 0; flex: 1; }
+.season-heading-title > div { min-width: 0; }
+.season-heading .season-period { flex-shrink: 0; }
+.season-step {
+  display: grid; place-items: center; flex: 0 0 30px; height: 30px;
+  border: 1px solid #ffbf2255; border-radius: 50%; background: #ffbf2208;
+  color: #ffbf22; font-size: 11px;
+}
+.overview-page .season-heading h2 { margin: 0; font-size: 21px; font-weight: 500; line-height: 1.4; }
+.season-heading-title p { max-width: 640px; margin: 4px 0 0; color: #96b2a5; font-size: 12px; line-height: 1.6; }
+.overview-page .season-analysis-grid { gap: 14px; }
+.overview-page .season-analysis-card {
+  display: flex; flex-direction: column; align-items: stretch;
+  padding: 18px; overflow: hidden; border-radius: 12px;
+}
+.season-card-ribbon {
+  margin: -18px -18px 18px; padding: 5px 16px;
+  background: #005c43; border-bottom: 1px solid #294741;
+  color: #c4f2db; font-size: 10px; line-height: 1.5; letter-spacing: .02em;
+}
+.season-current .season-card-ribbon { background: #1b3436; color: #a6bfc0; }
+.overview-page .season-improvement .season-card-ribbon { background: #ffbf22; color: #152217; border-color: #ffbf22; font-weight: 600; }
+.overview-page .season-analysis-card h3 {
+  margin: 0 0 18px; padding: 0; border: 0; background: none;
+  color: #e5eddf; font-size: 17px; font-weight: 600; line-height: 1.4;
+}
+.overview-page .season-analysis-card h4 { font-size: 14px; color: #dbe7dc; }
+.overview-page .season-analysis-card p { font-size: 12px; line-height: 1.7; }
+.overview-page .season-analysis-card dl > div {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px; padding: 14px 0; border-color: #263e43;
+}
+.overview-page .season-analysis-card dd { text-align: right; color: #dbe7dc; }
+.overview-page .season-analysis-card:not(.season-improvement) .season-score { color: #94b8b4; }
+.overview-page .season-analysis-card .season-score { font-size: 40px; font-weight: 500; line-height: 1.1; margin: 0 0 16px; }
+.season-card-footer { display: block; margin-top: auto; padding: 24px 0 0; background: transparent; border: 0; gap: 0; }
+.season-card-footer button {
+  display: block; width: 100%; min-height: 38px; padding: 9px 12px; text-align: left;
+  border: 1px solid #208862; border-radius: 6px; background: #006b4f;
+  color: #d7e5d9; font-size: 12px;
+}
+.season-card-footer button:hover { background: #00835f; border-color: #34c985; }
+.season-card-footer button:focus-visible { outline: 2px solid #ffbf22; outline-offset: 3px; }
+.season-improvement .season-card-footer button { background: #ffbf22; border-color: #ffbf22; color: #152217; }
+.season-improvement .season-card-footer button:hover { background: #ffd066; }
+.overview-page .plan-banner { padding: 24px; }
+.overview-page .plan-banner h2 { font-size: 24px; }
+.overview-page .plan-banner p { font-size: 13px; }
+.overview-page .plan-banner .button { border-radius: 6px; font-size: 13px; }
+
+.scenario.panel { background: #071719; border: 1px solid #263e43; border-radius: 12px; padding: 44px 18px 18px; overflow: hidden; }
+.scenario.panel.recommended { border-color: #ffbf22; }
+.scenario.panel .scenario-ribbon { background: #005c43; color: #c4f2db; font-size: 10px; line-height: 1.5; padding: 6px 16px; }
+.scenario.panel.recommended .scenario-ribbon { background: #ffbf22; color: #152217; }
+.scenario.panel h2 { font-size: 18px; line-height: 1.5; }
+.scenario.panel .score strong { font-size: 40px; font-weight: 500; }
+.scenario.panel dl > div { border-color: #263e43; padding: 14px 0; }
+.scenario.panel .button { border-radius: 6px; background: #006b4f; color: #d7e5d9; }
+.scenario.panel.recommended .button { background: #ffbf22; color: #152217; }
+@container dashboard-content (max-width: 500px) {
+  .season-heading { align-items: flex-start; }
+  .season-heading-title { gap: 10px; }
+  .season-heading-title p { font-size: 11px; }
+  .season-period { padding: 7px 9px; font-size: 11px; }
+}
+
+.season-soil-score progress { appearance: none; border: 0; border-radius: 3px; overflow: hidden; background: #1c3435; }
+.season-soil-score progress::-webkit-progress-bar { background: #1c3435; }
+.season-soil-score progress::-webkit-progress-value { background: #34c985; }
+.season-soil-score progress::-moz-progress-bar { background: #34c985; }
+
+.dashboard .sidebar nav .selected,
+.dashboard .sidebar-bottom .selected { background: #00573f; color: #c4f2db; }
+.dashboard .sidebar .selected::before { background: #34c985; }
+
+.overview-intro { margin: 0 0 18px; color: #9aadb0; font-size: 14px; line-height: 1.6; }
+@media (max-width: 700px) {
+  .overview-intro { font-size: 13px; margin-bottom: 14px; }
+}
+
+.overview-title { margin: 0 0 8px; }
+
+/* Fine alignment and hierarchy for the existing property information header. */
+.overview-page .overview-current-crop {
+  align-items: start;
+  border-color: #263e43a6;
+  border-left-width: 2px;
+  border-left-color: #7fab72a6;
+}
+.overview-current-crop dl { align-items: start; }
+.overview-page .overview-current-crop > div > small,
+.overview-page .overview-current-crop dt {
+  min-height: 26px;
+  gap: 8px;
+  color: var(--overview-muted);
+  font-size: 10.5px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: .025em;
+}
+.overview-page .overview-current-crop h2 {
+  margin: 6px 0 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: -.02em;
+}
+.overview-current-crop dd {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+}
+.overview-current-crop .property-summary-icon { width: 26px; height: 26px; }
+.overview-current-crop .property-summary-icon svg { width: 17px; height: 17px; }
+@media (hover: hover) {
+  .overview-page .overview-current-crop:hover {
+    border-color: #36504699;
+    border-left-color: #7fab72b3;
+  }
+}
+@container dashboard-content (max-width: 800px) {
+  .overview-page .overview-current-crop dd { line-height: 22px; }
+}
+
+/* Focused polish for existing monitoring controls and indicator cards. */
+.live-farm-map .map-controls { top: 16px; right: 16px; gap: 8px; }
+.live-farm-map :is(.map-controls button, .map-fullscreen) {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 8px;
+  line-height: 1;
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+.live-farm-map :is(.map-controls button, .map-fullscreen) svg { width: 19px; height: 19px; }
+.live-farm-map .map-fullscreen { right: 16px; }
+.live-farm-map .farm-map-layers { top: 16px; left: 16px; border-radius: 8px; }
+.live-farm-map .farm-property-marker { filter: drop-shadow(0 0 4px #00a66c66); }
+.live-farm-map .map-farm {
+  left: 16px;
+  padding: 10px 12px;
+  min-height: 0;
+  border: 1px solid #36504699;
+  border-radius: 8px;
+  background: #071719d9;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.live-farm-map .map-farm strong { font-size: 12.5px; font-weight: 600; line-height: 18px; }
+.live-farm-map .map-farm small { margin: 3px 0 0; color: #c3d0c7; font-size: 11px; line-height: 16px; }
+.overview-page .overview-indicators .metric {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  grid-template-rows: 22px minmax(54px, 1fr) auto auto;
+  padding: 0;
+  border-color: #263e43a6;
+  border-radius: 10px;
+  transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
+}
+.overview-page .overview-indicators .metric-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 3px 16px;
+  font-size: 10px;
+  line-height: 14px;
+  border-bottom-color: #263e4366;
+}
+.overview-page .overview-indicators .metric-value {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+  align-items: baseline;
+  gap: 6px;
+  margin: 10px 0 0 16px;
+  white-space: nowrap;
+}
+.overview-page .overview-indicators .metric-value strong {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.025em;
+}
+.overview-page .overview-indicators .metric-value small { font-size: 11px; line-height: 1.4; }
+.overview-page .overview-indicators .delta {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin: 6px 16px 0;
+  font-size: 10px;
+  line-height: 14px;
+}
+.overview-page .overview-indicators .metric-source {
+  position: static;
+  grid-column: 1 / -1;
+  grid-row: 4;
+  align-self: end;
+  margin: 10px 16px 14px;
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: .01em;
+}
+.overview-page .overview-indicators :is(.metric-spark, .mini-bars, .metric-ring, .ndvi-bars) {
+  position: static;
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  justify-self: end;
+  margin: 10px 16px 0 0;
+  transform: none;
+}
+.overview-page .overview-indicators .metric-spark { width: 80px; height: 28px; object-fit: contain; }
+.overview-page .overview-indicators .mini-bars { width: 76px; height: 44px; gap: 4px; }
+.overview-page .overview-indicators .mini-bars i { flex: 1; min-width: 0; }
+.overview-page .overview-indicators .metric-ring { width: 52px; height: 52px; }
+.overview-page .overview-indicators .ndvi-bars { width: 76px; gap: 3px; }
+.overview-page .overview-indicators .ndvi-bars i { flex: 1; width: auto; min-width: 0; }
+@media (hover: hover) {
+  .overview-page .overview-indicators .metric:hover { border-color: #62dca199; }
+}
+.overview-page .overview-indicators .metric.is-selected {
+  border-color: #62dca1;
+  background: var(--overview-field);
+  box-shadow: inset 0 0 0 1px #62dca126;
+}
+.overview-page .overview-indicators .metric.is-selected .metric-title { border-bottom-color: #62dca14d; }
+@media (prefers-reduced-motion: reduce) {
+  .overview-page .overview-indicators .metric,
+  .live-farm-map :is(.map-controls button, .map-fullscreen) { transition: none; }
 }

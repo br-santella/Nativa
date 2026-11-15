@@ -72,3 +72,12 @@ Not sent yet: the soil fields of My Property (the engine's `analise_solo` needs 
 Sign-up, the contact form and the soil report upload are still demo-only (no account, message or upload).
 
 Reference design: https://www.figma.com/design/NnT2Qj3CEQCMaquaWkEKUi/Untitled?node-id=0-1
+
+
+### Interactive property map
+
+The overview map defaults to Esri World Imagery. NASA GIBS overlays are available for daily average precipitation rate (IMERG, mm/h), daytime land surface temperature (MODIS; not air temperature), rolling 8-day NDVI, and surface soil moisture (SMAP). The layer selector includes an observation date and opacity control; the initial observation date is seven days before the current date to accommodate product processing delays. Imagery is not live, and thematic layers show observations rather than forecasts. Coverage can be missing because of clouds, unavailable observations or gaps in a product's archive.
+
+NASA layers use their published Web Mercator native zoom levels (6–9) and automatically open at a regional scale. Zoom is capped at the selected layer’s native resolution, including keyboard, touch and wheel interaction. The zoom-in button is disabled at that limit; satellite zoom is additionally checked against Esri’s tile coverage for the visible area. Higher zoom is held until that check completes, and the map zooms back if the new area lacks imagery. Requests use `blankTile=false` so missing imagery is not rendered as the provider’s grey placeholder. Dates, official color legends and provider attribution remain visible. The selected layer/date/opacity are preserved when opening the enlarged map. No additional API key is required for these configured public endpoints.
+
+Sources: [NASA GIBS access documentation](https://nasa-gibs.github.io/gibs-api-docs/access-basics/), [NASA layer catalog](https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml), [Esri World Imagery](https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer).

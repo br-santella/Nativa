@@ -7,6 +7,10 @@ import { months, initialFarm, initialCrops, series, profiles, info, } from "./da
 import type { Farm, Crop } from "./data";
 import "./styles.css";
 import EngineScenarios from "./EngineScenarios";
+import SeasonOverview from "./SeasonOverview";
+import PropertyIcon from "./PropertyIcon";
+import FarmMap from "./FarmMap";
+import { initialMapView, INDICATOR_LAYERS, MAP_LAYERS, selectMapLayer } from "./mapLayers";
 import PropertyWizard from "./PropertyWizard";
 import type { SetupInputs } from "./PropertyWizard";
 import PropertySettings from "./PropertySettings";
@@ -44,7 +48,7 @@ function CoverageNotice() {
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(saved?.weights ?? profiles.soil), [applied, setApplied] = useState<number[]>(saved?.weights ?? profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState(saved?.settings ?? {
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(saved?.weights ?? profiles.soil), [applied, setApplied] = useState<number[]>(saved?.weights ?? profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
     const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
@@ -73,6 +77,7 @@ function App() {
             window.removeEventListener("keydown", closeOnEscape);
         };
     }, [menu]);
+    const [mapView, setMapView] = useState(initialMapView);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
     // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
     const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
@@ -245,72 +250,6 @@ function App() {
           {__text(kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER")}{__text("\u00B7 s\u00E9rie fict\u00EDcia")}</small>
       </div>);
     }
-    function Map({ expanded = false }: {
-        expanded?: boolean;
-    }) {
-        return (<div className={"farm-map " + (expanded ? "expanded" : "")}>
-        <div className="map-image" style={{ transform: `scale(${zoom})` }}>
-          <img src={A.imgPlanoGeografico} alt={__text("Vista a\u00E9rea ilustrativa de campos agr\u00EDcolas")}/>
-          <img className="field-boundary" src={A.imgLimiteFicticio} alt={__text("Limite fict\u00EDcio da propriedade")}/>
-        </div>
-        <select className="map-layer" aria-label={__text("Camada do mapa")} value={layer} onChange={(e) => setLayer(e.target.value)}>
-          {__text([
-                "Vegetação (NDVI)",
-                "Umidade do solo",
-                "Precipitação",
-                "Temperatura",
-            ].map((x) => (<option key={x} value={x}>{__text(x)}</option>)))}
-        </select>
-        <div className="map-controls">
-          <button aria-label={__text("Aproximar mapa")} onClick={() => setZoom((v) => Math.min(2.4, v + 0.2))}>{__text("+")}</button>
-          <button aria-label={__text("Afastar mapa")} onClick={() => setZoom((v) => Math.max(1, v - 0.2))}>{__text("\u2212")}</button>
-          <button aria-label={__text("Centralizar propriedade")} onClick={() => setZoom(1)}>{__text("\u2316")}</button>
-        </div>
-        <div className="map-farm">
-          <strong>{__text(farm.name)}</strong>
-          <small>{__text(farm.area)}{__text("ha \u2022 limite fict\u00EDcio")}</small>
-        </div>
-        <small className="map-disclaimer">{__text("Imagem ilustrativa \u2022 limites fict\u00EDcios, sem georreferenciamento")}</small>
-        <div className="map-legend">
-          <span>
-            {__text(layer === "Vegetação (NDVI)"
-                ? "NDVI · 0,2–0,9"
-                : layer + " · exemplo")}
-          </span>
-          <div>
-            {__text(["#c4ad70", "#c3d58b", "#90b66c", "#4d8153", "#315b3d"].map((c) => (<i key={c} style={{ background: c }}/>)))}
-          </div>
-        </div>
-        <button className="map-fullscreen" aria-label={__text(expanded ? "Fechar mapa ampliado" : "Ampliar mapa")} onClick={() => open(expanded ? null : "map")}>
-          <img src={A.imgTelaCheia} alt={__text("")}/>
-        </button>
-      </div>);
-    }
-    function ClimateSummary() {
-        return (<section className="panel climate-summary">
-        <div className="section-heading">
-          <div>
-            <h2>{__text("Como o clima est\u00E1 mudando?")}</h2>
-            <p>{__text("Jan\u2013Dez")}{__text(year)}{__text("\u00B7 compara\u00E7\u00E3o entre meses \u00B7 valores demonstrativos")}</p>
-          </div>
-          <select aria-label={__text("Per\u00EDodo dos gr\u00E1ficos")} value={period} onChange={(e) => setPeriod(e.target.value)}>
-            <option value="12">{__text("\u00DAltimos 12 meses")}</option>
-            <option value="6">{__text("\u00DAltimos 6 meses")}</option>
-          </select>
-        </div>
-        <div className="charts-three">
-          {__text((["temperature", "rain", "moisture"] as const).map((kind, i) => (<div key={kind}>
-              <div className="chart-title">
-                <strong>
-                  {__text(["Temperatura", "Precipitação", "Umidade do solo"][i])}
-                </strong>
-                <small>{__text(["°C", "mm/mês", "%"][i])}</small>
-              </div>
-              <Chart kind={kind}/>
-            </div>)))}
-        </div>
-      </section>);
-    }
     function MetricCards() {
         return (<div className="metrics">
         {__text([
@@ -332,28 +271,23 @@ function App() {
                 ],
                 ["Umidade do solo", "32", "%", "↗ +4 p.p. no mês", "SMAP"],
                 ["Índice de vegetação", "0,76", "NDVI", "↗ +0,08 no mês", "MODIS"],
-            ].map((m, i) => (<button className="metric panel" key={m[0]} onClick={() => open("indicators")}>
+            ].map((m, i) => (<button type="button" className={"metric panel" + (mapView.layer === INDICATOR_LAYERS[i] ? " is-selected" : "")} key={m[0]} aria-pressed={mapView.layer === INDICATOR_LAYERS[i]} aria-controls="property-map" title={locale() === "en-US" ? MAP_LAYERS[INDICATOR_LAYERS[i]].en : MAP_LAYERS[INDICATOR_LAYERS[i]].pt} onClick={() => setMapView(current => selectMapLayer(current, INDICATOR_LAYERS[i]))}>
             <span className="metric-title">{__text(m[0])}</span>
             <div className="metric-value">
-              <motion.strong data-node-id={["3:330", "3:336", "3:342", "3:348"][i]} initial={reduced ? false : { opacity: 0.8, y: 3 }} animate={reduced
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: [0.8, 1, 1], y: [3, 0, 0] }} transition={{
-                    duration: 2,
-                    times: [0, 0.325, 1],
-                    ease: ["easeOut", "linear"],
-                    repeat: Infinity,
-                }}>
+              <strong data-node-id={["3:330", "3:336", "3:342", "3:348"][i]}>
                 {__text(m[1])}
-              </motion.strong>
+              </strong>
               <small>{__text(m[2])}</small>
             </div>
             <span className={"delta " + (i < 2 ? "warm" : "")}>{__text(m[3])}</span>
             <small className="metric-source">{__text("NASA")}{__text(m[4])}{__text("\u2022 exemplo")}</small>
             {__text(i === 0 ? (<img className="metric-spark" src={A.imgMinigraficoDeTemperatura} alt={__text("")}/>) : i === 1 ? (<div className="mini-bars">
                 {__text([14, 24, 18, 35, 27, 42, 33].map((v, n) => (<i key={n} style={{ height: v }}/>)))}
-              </div>) : i === 2 ? (<div className="metric-ring">
-                <img src={A.imgUmidadeCircular} alt={__text("")}/>
-                <img src={A.img32DeUmidade} alt={__text("")}/>
+              </div>) : i === 2 ? (<div className="metric-ring" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <circle cx="32" cy="32" r="26" stroke="#29494d" strokeWidth="6" />
+                  <circle cx="32" cy="32" r="26" stroke="#a8c9a3" strokeWidth="6" pathLength="100" strokeDasharray={`${Math.max(0, Math.min(100, Number(m[1].replace(",", "."))))} 100`} transform="rotate(-90 32 32)" />
+                </svg>
               </div>) : (<div className="ndvi-bars">
                 {__text(Array.from({ length: 9 }, (_, n) => (<i key={n} style={{ opacity: n > 6 ? 0.25 : 1 }}/>)))}
               </div>))}
@@ -361,40 +295,28 @@ function App() {
       </div>);
     }
     function Overview() {
-        return (<>
-        <div className="page-heading">
-          <h1>{__text("Minha Propriedade")}</h1>
-        </div>
+        return (<div className="overview-page">
+        <h1 className="overview-title">{__text("Visão Geral")}</h1>
+        <p className="overview-intro">{__text("Acompanhe sua propriedade, entenda o ciclo atual e explore possibilidades para a próxima safra.")}</p>
         <Demo />
+        <section className="overview-current-crop" aria-labelledby="overview-current-crop-title">
+          <div>
+            <small id="overview-current-crop-title"><PropertyIcon kind="farm" />{__text("Nome da propriedade")}</small>
+            <h2>{farm.name}</h2>
+          </div>
+          <dl>
+            <div><dt><PropertyIcon kind="crop" />{__text("CULTIVO ATUAL")}</dt><dd>{__text(farm.crop)}</dd></div>
+            <div><dt><PropertyIcon kind="location" />{__text("Localização")}</dt><dd>{farm.city} · {__text(farm.country)}</dd></div>
+            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{farm.area} ha</dd></div>
+          </dl>
+        </section>
         <div className="overview-map">
-          <Map />
-          <aside className="farm-context">
-            <h2>{__text(farm.name)}</h2>
-            <p>
-              {__text(farm.city)}{__text("\u00B7")}{__text(farm.country)}
-            </p>
-            <small>
-              {__text(farm.latitude)}{__text("/")}{__text(farm.longitude)}{__text("\u2022 coordenadas fict\u00EDcias")}</small>
-            <div className="current-context">
-              <small>{__text("CULTIVO ATUAL")}</small>
-              <strong>{__text(farm.crop)}</strong>
-              <span>{__text("Talh\u00E3o 01 \u00B7")}{__text(farm.area)}{__text("ha")}</span>
-            </div>
-            <hr />
-            <h3>{__text("Um novo olhar para o pr\u00F3ximo ciclo.")}</h3>
-            <LinkButton onClick={() => go("settings")}>{__text("Ver minha propriedade \u2192")}</LinkButton>
-            <LinkButton onClick={() => open("sources")}>{__text("Fontes e limita\u00E7\u00F5es \u2192")}</LinkButton>
+          <FarmMap id="property-map" view={mapView} onViewChange={setMapView} farm={farm} area={setupInputs?.area} onExpand={() => open("map")} />
+          <aside className="overview-indicators" aria-label={__text("Indicadores")}>
+            {MetricCards()}
           </aside>
         </div>
-        <MetricCards />
-        <button className="disclosure" aria-expanded={explain} onClick={() => setExplain(!explain)}>{__text("Entenda os indicadores")}<span>{__text(explain ? "−" : "⌄")}</span>
-        </button>
-        {__text(explain && (<div className="panel inline-info">
-            {__text(info.indicators.items.map(([t, d]) => (<div key={t}>
-                <h3>{__text(t)}</h3>
-                <p>{__text(d)}</p>
-              </div>)))}
-          </div>))}
+        <SeasonOverview onNavigate={go} farm={farm} crops={crops} weights={applied} setupInputs={setupInputs} />
         <section className="plan-banner">
           <div>
             <h2>{__text("Planeje sua pr\u00F3xima safra.")}</h2>
@@ -405,11 +327,7 @@ function App() {
             {__text([A.imgRotation, A.imgFieldRows, A.imgSprout, A.imgWarmAccent].map((src, i) => (<img key={src} className={"art-" + i} src={src} alt={__text("")}/>)))}
           </div>
         </section>
-        <ClimateSummary />
-        <button className="disclosure" aria-expanded={calendar} onClick={() => setCalendar(!calendar)}>{__text("Calend\u00E1rio agr\u00EDcola")}<span>{__text(calendar ? "−" : "⌄")}</span>
-        </button>
-        {__text(calendar && <Timeline />)}
-      </>);
+      </div>);
     }
     function Timeline() {
         return (<section className="panel timeline-panel">
@@ -941,9 +859,8 @@ function App() {
             return <AddCrop />;
         if (modal === "map")
             return (<>
-          <h2>{__text("Mapa \u2022")}{__text(layer)}</h2>
-          <p>{__text("Camada demonstrativa \u2022 valores e \u00E1reas sem georreferenciamento.")}</p>
-          <Map expanded/>
+          <h2>{__text("Minha Propriedade")}</h2>
+          <FarmMap view={mapView} onViewChange={setMapView} farm={farm} area={setupInputs?.area} expanded onExpand={() => open(null)} />
         </>);
         if (modal === "property")
             return (<>
@@ -1026,8 +943,10 @@ function App() {
             <LanguageSwitcher />
             <button className="mobile-menu" aria-expanded={menu} aria-controls="dashboard-sidebar" aria-label={__text("Abrir navega\u00E7\u00E3o")} onClick={() => setMenu(true)}>{__text("\u2630")}</button>
             <span className="mobile-brand">{__text("NATIVA")}</span>
-            <button className="property-select" onClick={() => open("property")}>
-              {__text(farm.name)}{__text("\u2304")}</button>
+            <button className="property-select" title={farm.name} aria-haspopup="dialog" aria-expanded={modal === "property"} onClick={() => open("property")}>
+              <span className="property-select-name">{farm.name}</span>
+              <svg className="property-select-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
           </header>
           <main className="main-content">
             {__text(page === "overview"
