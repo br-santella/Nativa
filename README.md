@@ -14,6 +14,10 @@ Developed for the NASA Space Apps Challenge 2026 challenge
 > Field Shift does not replace the advice of an agronomist. Income and risk figures are estimates. They
 > do not replace ZARC (the official agricultural climate-risk zoning) or a technical recommendation.
 
+> [!NOTE]
+> **Coverage:** for now the app only covers the state of **Paraná (PR)**. Areas outside it return
+> `422 fora_da_regiao`. We plan to expand coverage to other Brazilian states in the future.
+
 ---
 
 ## Contents
@@ -380,7 +384,7 @@ gh pr create --base main
 
 | Limitation | Effect |
 | --- | --- |
-| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows and market texts come from Western Paraná; outside it the cover crop still ranks first more often (71 % of municipalities, on soil and pests) although it lost to off-season corn on realized income; the card states the income given up (`docs/validation.md` §7) | An area outside Paraná returns 422; outside Western Paraná the response warns |
+| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows and market texts come from Western Paraná; outside it the cover crop still ranks first more often (71 % of municipalities, on soil and pests) although it lost to off-season corn on realized income; the card states the income given up (`docs/validation.md` §7) | An area outside Paraná returns 422; outside Western Paraná the response warns. Expanding to other states is planned |
 | **Climate cells of ~50 km** (NASA POWER) | Local microclimate is not represented |
 | **Soil water capacity** from Saxton & Rawls (2006), calibrated on temperate soils | Tends to underestimate it in clay-rich tropical Latosols. A farmer soil analysis replaces it |
 | **Income** from municipal averages and reference prices | Farm margins differ; yields, prices and costs can be overridden in the request |
