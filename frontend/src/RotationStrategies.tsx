@@ -1,7 +1,7 @@
 // "Estratégias de Rotação": the engine's result explained to the farmer.
 // 01 priorities (from the setup, editable) -> 02 the options chosen in the setup -> 03 current rotation vs one option.
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties } from "react";
 import { ApiError, health, recomendacao } from "./api";
 import type { DataOrigem, Health, ItemRanking, Lang, Pesos, Recomendacao } from "./api";
 import type { SetupInputs } from "./PropertyWizard";
@@ -123,7 +123,7 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
   const options = block ? block.alternativas.slice(0, base.n_alternativas) : [];
   const evaluated = block?.ranking.length ?? 0;
 
-  const bestId = [...(current && !current.eliminada ? [current] : []), ...options].reduce<ItemRanking | null>((best, it) => (it.nota ?? -1) > (best?.nota ?? -1) ? it : best, null)?.id;
+  const bestId = options.reduce<ItemRanking | null>((best, it) => (it.nota ?? -1) > (best?.nota ?? -1) ? it : best, null)?.id;
 
   // Card titles: each option gets the criterion where it gains most over today (weighted by the priorities)
   // that a better-ranked option has not taken yet.
@@ -188,16 +188,19 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
    <section className="rs-section">
     <header className="rs-heading"><span className="rs-step">02</span><div>
      <h2>{say("Suas opções", "Your options")}</h2>
-     <p>{say(`As ${base.n_alternativas} alternativas com maior nota para as suas prioridades, ao lado da rotação que você usa hoje. A nota vai de 0 a 100 e junta os cinco critérios com os pesos acima.`,
-      `The ${base.n_alternativas} alternatives with the highest score for your priorities, next to the rotation you use today. The score goes from 0 to 100 and combines the five criteria with the weights above.`)}</p>
+     <p>{say(`As ${base.n_alternativas} alternativas com maior nota para as suas prioridades. A nota vai de 0 a 100 e junta os cinco critérios com os pesos acima.`,
+      `The ${base.n_alternativas} alternatives with the highest score for your priorities. The score goes from 0 to 100 and combines the five criteria with the weights above.`)}</p>
     </div></header>
     {statusLine && <p className="rs-status" role="status">{statusLine}</p>}
     {!res ? <Placeholder error={error} degraded={api != null && api.status !== "ok"} en={en}/> : <>
+     {current && <p className="rs-baseline">{current.eliminada
+      ? say(`A sua rotação de hoje (${current.rotacao}) foi eliminada pelas regras do motor, então as opções não têm com o que ser comparadas.`, `Your current rotation (${current.rotacao}) was ruled out by the engine rules, so the options have nothing to be compared with.`)
+      : <>{say("Comparadas com a sua rotação de hoje:", "Compared with your rotation today:")} <strong>{current.rotacao}</strong> · {say("nota", "score")} <strong>{score(current.nota)}</strong>{current.posicao != null && evaluated > 0 ? say(` (${current.posicao}ª entre ${evaluated} avaliadas)`, ` (#${current.posicao} of ${evaluated} evaluated)`) : ""}</>}</p>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
-     <div className="rs-cards">
-      {[...(current ? [current] : []), ...options].map(item => <ScenarioCard key={item.id} item={item} rank={options.indexOf(item) + 1} current={current} best={item.id === bestId}
+     <div className={"rs-cards" + (options.length <= 2 ? " is-few" : "")} style={{ "--rs-cols": options.length <= 4 ? options.length : Math.ceil(options.length / 2) } as CSSProperties}>
+      {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
-       compared={target?.id === item.id} onCompare={item.atual ? undefined : () => compareWith(item.id)}/>)}
+       compared={target?.id === item.id} onCompare={() => compareWith(item.id)}/>)}
      </div>
      <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
       "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
@@ -208,12 +211,19 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
    {res && current && target && <section className="rs-section" ref={compareRef}>
     <header className="rs-heading"><span className="rs-step">03</span><div>
      <h2>{say("Compare lado a lado", "Compare side by side")}</h2>
-     <p>{say("Sua rotação de hoje contra uma das opções, critério por critério.", "Your current rotation against one of the options, criterion by criterion.")}</p>
+     <p>{say("Sua rotação de hoje, à esquerda, contra a opção escolhida, à direita. No meio, o que você ganha e o que você perde ao trocar.", "Your rotation today on the left against the chosen option on the right. In the middle, what you gain and what you lose by switching.")}</p>
     </div></header>
     <div className="rs-pills" role="radiogroup" aria-label={say("Opção para comparar", "Option to compare")}>
      {options.map((o, i) => <label key={o.id}><input type="radio" name="compare" checked={target.id === o.id} onChange={() => setCompareId(o.id)}/><span>#{i + 1} {o.rotacao}</span></label>)}
     </div>
-    <Comparison current={current} option={target} rank={options.indexOf(target) + 1} en={en} money={money} signedMoney={signedMoney}/>
+    <div className="rs-versus">
+     <ScenarioCard item={current} rank={0} current={null} best={false} theme={null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data}
+      evaluated={evaluated} en={en} money={money} compared={false} compact/>
+     <Versus current={current} option={target} rank={options.indexOf(target) + 1} total={options.length} en={en} money={money} signedMoney={signedMoney}
+      onStep={step => { const i = options.indexOf(target); setCompareId(options[(i + step + options.length) % options.length].id); }}/>
+     <ScenarioCard item={target} rank={options.indexOf(target) + 1} current={current} best={false} theme={themes.get(target.id) ?? null} harvest={res.colheita_estimada?.data}
+      sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money} compared compact/>
+    </div>
    </section>}
 
    {/* Notes */}
@@ -251,9 +261,11 @@ const SHORT_NAMES: Record<string, { pt: string; en: string }> = {
   pragas: { pt: "Pragas", en: "Pests" }, risco: { pt: "Clima", en: "Climate" },
 };
 
-function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evaluated, en, money, compared, onCompare }: {
+function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evaluated, en, money, compared, onCompare, compact = false }: {
   item: ItemRanking; rank: number; current: ItemRanking | null; best: boolean; theme: CriterionId | null; harvest?: string; sowing?: string;
   evaluated: number; en: boolean; money: (v: number) => string; compared: boolean; onCompare?: () => void;
+  /** Comparison view: no details panel and no buttons. */
+  compact?: boolean;
 }) {
   const say = (pt: string, english: string) => (en ? english : pt);
   const tx = (text: { pt: string; en: string }) => (en ? text.en : text.pt);
@@ -290,15 +302,15 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
      <div className="rs-card-note is-attention"><small>{say("Ponto de atenção", "Point of attention")}</small><p>{item.card?.riscos[0] ?? "—"}</p></div>
     </>}
    </div>
-   {open && item.card && <div className="rs-details">
+   {!compact && open && item.card && <div className="rs-details">
     <p>{item.card.por_que}</p>
     {item.card.evidencias.length > 0 && <><h4>{say("De onde vêm esses números", "Where these numbers come from")}</h4><ul>{item.card.evidencias.map(e => <li key={e}>{e}</li>)}</ul></>}
     {item.card.lacunas.length > 0 && <><h4>{say("O que ainda falta saber", "What is still unknown")}</h4><ul>{item.card.lacunas.map(e => <li key={e}>{e}</li>)}</ul></>}
    </div>}
-   <div className="rs-card-actions">
+   {!compact && <div className="rs-card-actions">
     {item.card && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? say("Ocultar detalhes", "Hide details") : say("Entender este cenário →", "Understand this scenario →")}</button>}
     {onCompare && <button type="button" className="rs-link-button" onClick={onCompare}>{say("Comparar com a de hoje", "Compare with today’s")}</button>}
-   </div>
+   </div>}
   </article>;
 }
 
@@ -319,62 +331,57 @@ function Calendar({ months, summer, second, en }: { months: MonthUse[]; summer: 
   </div>;
 }
 
-function Comparison({ current, option, rank, en, money, signedMoney }: { current: ItemRanking; option: ItemRanking; rank: number; en: boolean } & MoneyFns) {
+type Point = { label: string; text: string; delta: string; up: boolean };
+
+/** Middle column of the comparison: what the option gains and loses against today's rotation. */
+function Versus({ current, option, rank, total, en, money, signedMoney, onStep }: {
+  current: ItemRanking; option: ItemRanking; rank: number; total: number; en: boolean; onStep: (step: number) => void;
+} & MoneyFns) {
   const say = (pt: string, english: string) => (en ? english : pt);
-  const cs = score(current.nota), os = score(option.nota) ?? 0;
-  const rows: { label: string; hint?: string; a: ReactNode; b: ReactNode; diff: ReactNode }[] = [];
-  rows.push({ label: say("Nota geral", "Overall score"), hint: say("Média ponderada com as suas prioridades", "Weighted with your priorities"),
-    a: cs != null ? <Bar value={cs} color={CURRENT_COLOR}/> : "—", b: <Bar value={os} color={OPTION_COLOR}/>, diff: cs != null ? <Delta value={os - cs} en={en}/> : null });
+  const tx = (text: { pt: string; en: string }) => (en ? text.en : text.pt);
+  const pros: Point[] = [], cons: Point[] = [], same: string[] = [];
+  const baseline = current.eliminada ? null : current;
+  const cs = baseline ? score(baseline.nota) : null, os = score(option.nota) ?? 0;
   for (const c of CRITERIA) {
-    const a = score(current.criterios?.[c.id]), b = score(option.criterios?.[c.id]);
-    rows.push({ label: en ? c.name.en : c.name.pt, hint: en ? c.hint.en : c.hint.pt,
-      a: a != null ? <Bar value={a} color={CURRENT_COLOR}/> : "—", b: b != null ? <Bar value={b} color={OPTION_COLOR}/> : "—", diff: a != null && b != null ? <Delta value={b - a} en={en}/> : null });
+    const b = option.criterios?.[c.id], a = baseline?.criterios?.[c.id];
+    if (b == null || a == null) continue;
+    const diff = Math.round(b * 100) - Math.round(a * 100);
+    const before = tx(levelLabel(c.id, a)), after = tx(levelLabel(c.id, b));
+    if (diff === 0) { same.push(tx(c.name)); continue; }
+    const text = before === after ? (diff > 0 ? say(`${after}, um pouco melhor`, `${after}, slightly better`) : say(`${after}, um pouco pior`, `${after}, slightly worse`)) : `${before} → ${after}`;
+    (diff > 0 ? pros : cons).push({ label: tx(c.name), text, delta: `${diff > 0 ? "+" : "−"}${Math.abs(diff)}`, up: diff > 0 });
   }
-  const moneyRow = (label: string, hint: string, a?: number, b?: number) => rows.push({ label, hint,
-    a: a != null ? <span className="rs-money-cell">{money(a)}</span> : "—", b: b != null ? <span className="rs-money-cell">{money(b)}</span> : "—",
-    diff: a != null && b != null ? <span className={"rs-delta " + (b - a > 0 ? "is-up" : b - a < 0 ? "is-down" : "is-same")}>{signedMoney(b - a)}</span> : null });
-  moneyRow(say("Renda da 2ª safra", "Second-crop income"), say("R$/ha, só a cultura que entra depois da colheita", "BRL/ha, only the crop after the harvest"), current.margem?.incremental_r_ha, option.margem?.incremental_r_ha);
-  moneyRow(say("Margem da rotação no ano", "Yearly rotation margin"), say("R$/ha, verão + 2ª safra", "BRL/ha, summer + second crop"), current.margem?.total_r_ha, option.margem?.total_r_ha);
-
-  return <div className="rs-compare">
-   <div className="rs-compare-table" role="table" aria-label={say("Comparação critério por critério", "Criterion by criterion comparison")}>
-    <div className="rs-compare-head" role="row">
-     <span role="columnheader"/>
-     <span role="columnheader"><em><i style={{ background: CURRENT_COLOR }}/>{say("Hoje", "Today")}</em><small>{current.rotacao}</small></span>
-     <span role="columnheader"><em><i style={{ background: OPTION_COLOR }}/>{say(`Opção #${rank}`, `Option #${rank}`)}</em><small>{option.rotacao}</small></span>
-     <span role="columnheader">{say("Diferença", "Difference")}</span>
-    </div>
-    {rows.map(r => <div className="rs-compare-row" role="row" key={r.label}>
-     <span role="rowheader"><strong>{r.label}</strong>{r.hint && <small>{r.hint}</small>}</span>
-     <span role="cell">{r.a}</span><span role="cell">{r.b}</span><span role="cell">{r.diff}</span>
-    </div>)}
+  const moneyPoint = (label: string, a?: number, b?: number) => {
+    if (a == null || b == null || Math.round(b - a) === 0) return;
+    (b > a ? pros : cons).push({ label, text: `${money(a)} → ${money(b)} /ha`, delta: signedMoney(b - a), up: b > a });
+  };
+  moneyPoint(say("Renda da 2ª safra", "Second-crop income"), baseline?.margem?.incremental_r_ha, option.margem?.incremental_r_ha);
+  moneyPoint(say("Margem da rotação no ano", "Yearly rotation margin"), baseline?.margem?.total_r_ha, option.margem?.total_r_ha);
+  const list = (points: Point[]) => <ul className="rs-points">{points.map(p => <li key={p.label} className={p.up ? "is-up" : "is-down"}>
+    <span className="rs-points-arrow" aria-hidden="true">{p.up ? "↑" : "↓"}</span>
+    <span><strong>{p.label}</strong><small>{p.text}</small></span>
+    <b>{p.delta}</b>
+   </li>)}</ul>;
+  return <div className="rs-versus-middle">
+   <div className="rs-versus-nav">
+    <button type="button" onClick={() => onStep(-1)} disabled={total < 2} aria-label={say("Opção anterior", "Previous option")}>‹</button>
+    <span>{say(`Opção #${rank} de ${total}`, `Option #${rank} of ${total}`)}</span>
+    <button type="button" onClick={() => onStep(1)} disabled={total < 2} aria-label={say("Próxima opção", "Next option")}>›</button>
    </div>
-   <div className="rs-compare-side">
-    <Radar current={current} option={option} en={en}/>
-    {option.card?.por_que && <div className="rs-what-changes"><h4>{say("O que muda, segundo o motor", "What changes, according to the engine")}</h4><p>{option.card.por_que}</p></div>}
-    <div className="rs-lists">
-     {(option.card?.beneficios.length ?? 0) > 0 && <div><h4>{say("Pontos a favor", "In favour")}</h4><ul className="rs-benefits">{option.card!.beneficios.map(b => <li key={b}>{b}</li>)}</ul></div>}
-     {(option.card?.riscos.length ?? 0) > 0 && <div><h4>{say("Pontos de atenção", "Watch out for")}</h4><ul className="rs-risks">{option.card!.riscos.map(b => <li key={b}>{b}</li>)}</ul></div>}
-    </div>
+   {cs != null && <div className="rs-versus-score">
+    <span>{say("Nota geral", "Overall score")}</span>
+    <strong>{cs} → {os}</strong>
+    <b className={os > cs ? "is-up" : os < cs ? "is-down" : ""}>{os === cs ? say("igual", "same") : `${os > cs ? "+" : "−"}${Math.abs(os - cs)} ${say("pontos", "points")}`}</b>
+   </div>}
+   <div className="rs-versus-block">
+    <h4 className="is-up">{say(`Vantagens ao trocar (${pros.length})`, `Gains from switching (${pros.length})`)}</h4>
+    {pros.length ? list(pros) : <p className="rs-versus-empty">{say("Nenhuma em relação a hoje.", "None compared with today.")}</p>}
    </div>
+   <div className="rs-versus-block">
+    <h4 className="is-down">{say(`Desvantagens ao trocar (${cons.length})`, `Losses from switching (${cons.length})`)}</h4>
+    {cons.length ? list(cons) : <p className="rs-versus-empty">{say("Nenhuma em relação a hoje.", "None compared with today.")}</p>}
+   </div>
+   {same.length > 0 && <p className="rs-versus-same">{say("Sem diferença: ", "No difference: ")}{same.join(", ")}</p>}
+   {option.card?.por_que && <details className="rs-versus-why"><summary>{say("O que muda, segundo o motor", "What changes, according to the engine")}</summary><p>{option.card.por_que}</p></details>}
   </div>;
-}
-
-function Bar({ value, color }: { value: number; color: string }) {
-  return <span className="rs-cell-bar"><span className="rs-cell-track"><span style={{ width: `${value}%`, background: color }}/></span><b>{value}</b></span>;
-}
-
-/** Radar of the five criteria for the current rotation and the compared option. */
-function Radar({ current, option, en }: { current: ItemRanking; option: ItemRanking; en: boolean }) {
-  const c = 130, r = 92;
-  const point = (i: number, v: number) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / CRITERIA.length; return [c + Math.cos(a) * r * v, c + Math.sin(a) * r * v]; };
-  const polygon = (values: number[]) => values.map((v, i) => point(i, v).join(",")).join(" ");
-  const values = (it: ItemRanking) => CRITERIA.every(k => typeof it.criterios?.[k.id] === "number") ? CRITERIA.map(k => it.criterios![k.id]) : null;
-  const a = current.eliminada ? null : values(current), b = values(option);
-  return <svg className="rs-radar" viewBox="-40 -6 340 272" role="img" aria-label={en ? "Radar of the five criteria" : "Radar dos cinco critérios"}>
-   {[0.25, 0.5, 0.75, 1].map(f => <polygon key={f} points={polygon(CRITERIA.map(() => f))} fill="none" stroke="#2d4a3f"/>)}
-   {CRITERIA.map((k, i) => { const [x, y] = point(i, 1), [lx, ly] = point(i, 1.2); return <g key={k.id}><line x1={c} y1={c} x2={x} y2={y} stroke="#2d4a3f"/><text x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fontSize="11" fill="#a5b8a6">{en ? k.name.en : k.name.pt}</text></g>; })}
-   {a && <polygon points={polygon(a)} fill={CURRENT_COLOR} fillOpacity={0.12} stroke={CURRENT_COLOR} strokeWidth={2} strokeDasharray="5 4"/>}
-   {b && <polygon points={polygon(b)} fill={OPTION_COLOR} fillOpacity={0.16} stroke={OPTION_COLOR} strokeWidth={2}/>}
-  </svg>;
 }
