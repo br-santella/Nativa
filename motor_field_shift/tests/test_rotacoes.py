@@ -105,8 +105,8 @@ def test_renda_do_milho_verao():
 def test_soja_no_verao_mantem_as_notas_antigas():
     todas = _rec(semeadura_safrinha="01/02")
     antigas = {x["id"]: x["nota"] for x in todas["ranking"] if "id_legado" in x}
-    assert antigas == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.764, "milho_safrinha": 0.709, "milheto_crotalaria": 0.759,
-                                                     "aveia": 0.703, "pousio": 0.555, "trigo": 0.471}.items()}
+    assert antigas == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.821, "milho_safrinha": 0.774, "milheto_crotalaria": 0.757,
+                                                     "aveia": 0.7, "pousio": 0.55, "trigo": 0.466}.items()}
 
 
 # --------------------------------------------------------------------------- culturas novas

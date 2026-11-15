@@ -83,7 +83,7 @@ _DESCRICAO = {  # por cultura da 2ª janela
     "pousio": "Sem cultura na segunda janela; solo exposto e sem renda adicional.",
     "soja_safrinha": "Soja sobre soja no mesmo ano agrícola; proibida pela regulação (sempre eliminada).",
     "sorgo": "Sorgo granífero na segunda safra: tolerante à seca, sem cigarrinha do milho; usa o maquinário e o canal de venda de grãos.",
-    "feijao_safrinha": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e veranico e hospedeiro do mofo-branco.",
+    "feijao_safrinha": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e a déficit hídrico e hospedeiro do mofo-branco.",
     "nabo_forrageiro": "Cobertura de nabo forrageiro: ciclagem de nutrientes e supressão de daninhas, palha de decomposição rápida; sem venda de grão.",
     "aveia_nabo": "Mix de cobertura aveia + nabo forrageiro: palha duradoura e ciclagem de nutrientes, sem venda de grão.",
 }
@@ -97,8 +97,9 @@ _CRIT_METODO = {
     "agua": "Média nos 34 anos (1991–2024) de ΣETa/ΣETc na fase crítica da 2ª cultura, por balanço hídrico diário "
             "(NASA POWER + CAD do solo do polígono, SoilGrids); depende da data de semeadura. Pousio = 1,0.",
     "pragas": "Potencial de quebra de ciclo de pragas e doenças por rotação; valor de catálogo (0–1), estimativa a validar.",
-    "risco": "Π(1 − p) dos riscos climáticos da 2ª cultura (geada, veranico) em 1991–2024, célula NASA POWER ~50 km; "
-             "sem risco considerado = 1,0.",
+    "risco": "Π(1 − p) dos riscos climáticos da 2ª cultura em 1991–2024: geada na fase crítica (célula NASA POWER ~50 km) e "
+             "déficit hídrico na fase crítica (anos com ETa/ETc < 0,55 no balanço diário com o solo da área; sem solo, veranico "
+             "≥ 15 dias em mar–abr); sem risco considerado = 1,0.",
 }
 
 _CUSTO_ALIAS = {"milho": "milho_2safra", "milho_verao": "milho_1safra", "feijao": "feijao_2safra"}
@@ -643,6 +644,30 @@ def _verao_segunda(nome: str) -> dict:
     return dict(verao=dict(id=c["verao"], nome=c["nome_verao"]), segunda=dict(id=c["segunda"], nome=_maiuscula(c["nome_segunda"])))
 
 
+# Score gap below which the top options are a technical tie: ±20 % on single catalog estimates (prices, pest break, cover,
+# bonus) moves the gap between the top two of field 72638 by up to ~0.02 (docs/validation.md §1.2).
+TECHNICAL_TIE = 0.02
+
+
+def technical_tie(itens: list[dict]) -> dict | None:
+    """Options within TECHNICAL_TIE of the first one (at least two), or None. Adds a warning to the card of each tied option."""
+    if len(itens) < 2 or itens[0]["nota"] is None:
+        return None
+    top = itens[0]["nota"]
+    tied = [x for x in itens if x["nota"] is not None and top - x["nota"] < TECHNICAL_TIE - 1e-9]
+    if len(tied) < 2:
+        return None
+    nomes = [x["rotacao"] for x in tied]
+    gap = top - tied[-1]["nota"]
+    texto = (f"Empate técnico: {', '.join(nomes[:-1])} e {nomes[-1]} estão a menos de {TECHNICAL_TIE:.2f} ponto da melhor nota "
+             f"(diferença {gap:.3f})".replace(".", ",")
+             + ". Variações pequenas nas estimativas (preços, quebra de ciclo de pragas, cobertura, bônus na soja) trocam a "
+               "ordem entre elas; escolha pelo que pesa mais na sua realidade (renda, máquinas, mercado, histórico da área).")
+    for x in tied:
+        x["card"]["avisos"].insert(0, texto)
+    return dict(ids=[x["id"] for x in tied], diferenca=round(gap, 3), limiar=TECHNICAL_TIE, texto=texto)
+
+
 def _item_ranking(pos, nome, linha, marg, atual, rk, dias_ndvi, por_que_cmp=None) -> dict:
     card = E.montar_card(linha, atual, rk, dias_ndvi, marg, por_que_cmp)
     itens = []
@@ -666,6 +691,8 @@ def _item_ranking(pos, nome, linha, marg, atual, rk, dias_ndvi, por_que_cmp=None
         contribuicoes={k: float(v) for k, v in linha["contrib"].items()}, margem=margem,
         card=dict(por_que=card["por_que"], evidencias=card["evidencia"], beneficios=card["beneficios"],
                   lacunas=card["lacunas"], riscos=card["revisar"], avisos=avisos + card["avisos"], mercado=card["mercado"]),
+        **({"zarc": card["zarc"]} if card["zarc"] is not None else {}),
+        **({"historico_renda": card["historico"]} if card.get("historico") is not None else {}),
         **({"irrigacao": dict(lamina_media_mm_ano=round(card["irrigacao"]["lamina_media_mm"], 1),
                                            custo_r_ha=float(round(card["irrigacao"]["custo_r_ha"])))}
            if card["irrigacao"] else {}))
@@ -702,7 +729,7 @@ def _ajustes_aplicados(aj: dict, solo, restr, irr) -> list[str]:
                      "de terceirização (estimativas, validar).")
     if irr and irr["disponivel"]:
         o.append(f"Irrigação disponível (R$ {irr['custo_r_mm_ha']:g}/mm/ha, lâmina máx. {irr['lamina_max_mm_dia']:g} mm/dia): irriga "
-                 "milho, milho+braquiária, trigo, sorgo e feijão quando a depleção passa de p (0,55; feijão 0,45); água sobe, veranico não conta no risco e a "
+                 "milho, milho+braquiária, trigo, sorgo e feijão quando a depleção passa de p (0,55; feijão 0,45); água sobe, o déficit hídrico não conta no risco e a "
                  "margem desconta lâmina × custo. O ganho de produtividade da irrigação não é modelado; cobertura e pousio não são irrigados.")
     return o
 
@@ -734,7 +761,7 @@ def _ganho_vs_atual(res: dict, nome: str, nome_atual: str) -> dict | None:
         agua=dict(criterio=round(float(t.loc[nome, "agua"] - t.loc[nome_atual, "agua"]), 3),
                   origem="dado: balanço hídrico diário com NASA POWER e CAD do solo"),
         risco_climatico=dict(criterio=round(float(t.loc[nome, "risco"] - t.loc[nome_atual, "risco"]), 3),
-                             origem="dado: geada e veranico em NASA POWER (1991–2024)"))
+                             origem="dado: geada (NASA POWER) e déficit hídrico (balanço diário NASA POWER + solo), 1991–2024"))
 
 
 def _data_referencia(d) -> date | None:
@@ -862,7 +889,7 @@ def recomendar(area: dict, semeadura_safrinha: str | None = None, pesos: dict | 
       "sem_comprador": ["milho"|"trigo"|"aveia_grao"]}. Excluída/sem comprador -> eliminada; máquina false -> aviso + custo
       extra de terceirização (estimativa); máquina omitida = tem.
     irrigacao (opcional): {"disponivel": bool, "custo_r_mm_ha": 4,0, "lamina_max_mm_dia": 6}. Irriga milho, milho+braquiária,
-      trigo, sorgo e feijão da 2ª janela (não cobertura/pousio nem o verão): água sobe, veranico não conta no risco, margem desconta lâmina × custo. O ganho de
+      trigo, sorgo e feijão da 2ª janela (não cobertura/pousio nem o verão): água sobe, o déficit hídrico não conta no risco, margem desconta lâmina × custo. O ganho de
       produtividade da irrigação NÃO é modelado.
     n_alternativas: 1–6 melhores rotações de cada bloco, excluindo a atual. Se a atual estiver eliminada pelas regras duras
     (ex.: soja__soja_safrinha ou colheita tarde demais), `atual` traz {"eliminada": True, "motivos": [...]}, sem posição nem nota
@@ -905,12 +932,18 @@ def recomendar(area: dict, semeadura_safrinha: str | None = None, pesos: dict | 
             item["ganho_vs_atual"] = _ganho_vs_atual(res, n, nome_atual)
             itens.append(_arredondar_ranking(item))
         el = [dict(**_ids(_SLUG_DE[n]), **_verao_segunda(n), rotacao=n, motivos=list(m)) for n, m in elim.items() if no_agora(n) == agora]
-        return dict(ranking=itens, alternativas=[r for r in itens if not r["atual"]][:n_alternativas], eliminadas=el)
+        empate = technical_tie(itens)
+        return dict(ranking=itens, alternativas=[r for r in itens if not r["atual"]][:n_alternativas], eliminadas=el,
+                    empate_tecnico=empate)
 
     agora, proxima = bloco(True), bloco(False)
     if sel is not None and not agora["ranking"] and not proxima["ranking"]:
         avisos.append("Todas as rotações pedidas em 'rotacoes' foram eliminadas pelas regras ou restrições (veja 'eliminadas').")
     atual = next((r for r in agora["ranking"] if r["atual"]), None)
+    if atual is not None and atual.get("zarc") and not atual["zarc"]["indicado"]:
+        fora = ", ".join(f"{x['cultura']} em {x['semeadura']}" for x in atual["zarc"]["culturas"] if not x["indicado"])
+        avisos.append(f"A rotação atual está fora do {atual['zarc']['fonte'].split(' (')[0]} no município ({fora}): sem acesso ao "
+                      "crédito rural com juros controlados, ao Proagro nem ao seguro rural subvencionado (aviso informativo).")
     if atual is None and nome_atual in res["eliminadas"]:
         mot = res["eliminadas"][nome_atual]
         atual = dict(posicao=None, **_ids(rotacao_atual), rotacao=nome_atual, nota=None, atual=True, eliminada=True, motivos=list(mot))

@@ -17,6 +17,9 @@ from scipy.signal import find_peaks
 from field_shift import calendario as cal
 from field_shift.app import estado_area
 from field_shift.agua import agua_fase_critica
+from field_shift.agua.balanco import DEFICIT_THRESHOLD, SEMEADURA_TRIGO
+from field_shift import zarc
+from field_shift.renda import historico as renda_historico
 from field_shift.calendario import DIAS_PREPARO_2A, SEMEADURA_PADRAO, SEMEADURAS
 from field_shift.clima.lookup import indicadores_para
 from field_shift.pam import produtividade as pam_produtividade
@@ -273,13 +276,13 @@ def fmt_pam(rk: dict) -> str | None:
 # `milho`: é milho (milho sobre milho, após o milho verão, tem penalidade de pragas).
 SEGUNDA = {
     "milho_safrinha": dict(nome="milho safrinha", tipo="grão", dias_descobertos=60, cobertura=0.6, n_fix=0.4, pragas=0.5, agua=0.7,
-        renda_itens=["milho_2safra"], ciclo_agua="safrinha", kc=0.85, bonus_sc=1.0, riscos=["geada_safrinha", "veranico_safrinha"],
+        renda_itens=["milho_2safra"], ciclo_agua="safrinha", kc=0.85, bonus_sc=1.0, riscos=["geada_safrinha", "deficit_hidrico"],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=None, milho=True,
         irrigavel=True, req_maquinas=("plataforma_milho",), vende=("milho",),
         mercado_oeste_pr=dict(nivel="alto", texto="cooperativas e agroindústria de aves e suínos do Oeste do PR")),
     "milho_braquiaria": dict(nome="milho safrinha + braquiária", tipo="grão", dias_descobertos=30, cobertura=0.9, n_fix=0.4, pragas=0.65, agua=0.75,
         renda_itens=["milho_2safra", "braquiaria_consorcio"], ciclo_agua="safrinha", kc=0.90, bonus_sc=3.0,
-        riscos=["geada_safrinha", "veranico_safrinha"], soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=None, milho=True,
+        riscos=["geada_safrinha", "deficit_hidrico"], soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=None, milho=True,
         irrigavel=True, req_maquinas=("plataforma_milho", "semeadora_consorcio"), vende=("milho",),
         mercado_oeste_pr=dict(nivel="alto", texto="milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas")),
     "trigo": dict(nome="trigo", tipo="grão", dias_descobertos=70, cobertura=0.6, n_fix=0.3, pragas=0.6, agua=0.6,
@@ -301,12 +304,12 @@ SEGUNDA = {
         irrigavel=False, req_maquinas=(), vende=(),
         mercado_oeste_pr=dict(nivel="não se aplica", texto="sem produção na 2ª janela")),
     "soja_safrinha": dict(nome="soja safrinha", tipo="grão", dias_descobertos=60, cobertura=0.4, n_fix=0.8, pragas=0.0, agua=0.8,
-        renda_itens=["milho_2safra"], ciclo_agua="safrinha", kc=1.0, bonus_sc=0.0, riscos=["veranico_safrinha"],
+        renda_itens=["milho_2safra"], ciclo_agua="safrinha", kc=1.0, bonus_sc=0.0, riscos=["deficit_hidrico"],
         soja_viva_vazio=True, ano_soja_2=True, segue_semeadura=True, janela=None, milho=False,
         irrigavel=False, req_maquinas=(), vende=(),
         mercado_oeste_pr=dict(nivel="alto", texto="mesma cadeia da soja (mas a rotação é proibida pela regulação)")),
     # Culturas novas (grãos/cobertura que usam o maquinário e o canal de venda de grãos). Valores de catálogo: estimativas de referência.
-    # Sorgo granífero: gramínea sem a cigarrinha do milho, tolerante à seca (sem veranico no risco); janela 15/01–15/03 e ciclo ~125 d
+    # Sorgo granífero: gramínea sem a cigarrinha do milho, tolerante à seca (sem déficit hídrico no risco); janela 15/01–15/03 e ciclo ~125 d
     # (FAO-56 tab. 11); colhe com a plataforma de soja/grãos adaptada.
     "sorgo": dict(nome="sorgo", tipo="grão", dias_descobertos=55, cobertura=0.7, n_fix=0.3, pragas=0.55, agua=0.5,
         renda_itens=["sorgo"], ciclo_agua="safrinha", kc=0.77, bonus_sc=1.0, riscos=["geada_safrinha"],
@@ -314,9 +317,9 @@ SEGUNDA = {
         irrigavel=True, req_maquinas=(), vende=("sorgo",),
         mercado_oeste_pr=dict(nivel="médio", texto="ração animal e cooperativas, com demanda menor que a do milho")),
     # Feijão 2ª safra ("das secas"): ciclo curto (~90 d), pouca palha e hospedeiro do mofo-branco, que também ataca a soja (pragas baixas,
-    # sem bônus); janela 15/01–28/02 (estimativa a partir do ZARC/IDR-PR; geada e veranico pesam).
+    # sem bônus); janela 15/01–28/02 (estimativa a partir do ZARC/IDR-PR; geada e déficit hídrico pesam).
     "feijao_safrinha": dict(nome="feijão safrinha", tipo="grão", dias_descobertos=75, cobertura=0.4, n_fix=0.4, pragas=0.3, agua=0.7,
-        renda_itens=["feijao_2safra"], ciclo_agua="safrinha", kc=0.84, bonus_sc=0.0, riscos=["geada_safrinha", "veranico_safrinha"],
+        renda_itens=["feijao_2safra"], ciclo_agua="safrinha", kc=0.84, bonus_sc=0.0, riscos=["geada_safrinha", "deficit_hidrico"],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=("15/01", "28/02"), milho=False,
         irrigavel=True, req_maquinas=(), vende=("feijao",),
         mercado_oeste_pr=dict(nivel="médio", texto="cerealistas e cooperativas, com preço volátil e menos compradores que milho e soja")),
@@ -429,9 +432,22 @@ def irrigacao_info(nome: str, riscos: dict) -> dict | None:
 
 
 def riscos_efetivos(nome: str, c: dict, riscos: dict) -> list[str]:
-    """Riscos climáticos da candidata; o veranico deixa de valer se ela é irrigada (a geada continua)."""
+    """Riscos climáticos da candidata; o déficit hídrico deixa de valer se ela é irrigada (a geada continua)."""
     irr = irrigacao_info(nome, riscos) is not None
-    return [r for r in c["riscos"] if not (irr and r == "veranico_safrinha")]
+    return [r for r in c["riscos"] if not (irr and r in DRY_RISKS)]
+
+
+DRY_RISKS = ("deficit_hidrico", "veranico_safrinha")
+
+
+def risk_probability(nome: str, r: str, riscos: dict) -> float:
+    """Probability (0–1) of climate risk `r` for candidate `nome`. "deficit_hidrico" is crop-, sowing- and soil-specific: share
+    of the years with ETa/ETc < DEFICIT_THRESHOLD in the critical phase (FAO-56 daily balance). Without soil (no balance), it
+    falls back to the cell's dry-spell frequency (≥ 15 days in Mar–Apr). Other risks are cell-level frequencies."""
+    if r == "deficit_hidrico":
+        b = agua_balanco(nome, riscos)
+        return b["deficit_prob"] if b is not None else float(riscos["veranico_safrinha"])
+    return float(riscos[r])
 
 
 def checar_restricoes(nome: str, c: dict, riscos: dict) -> list[str]:
@@ -481,10 +497,18 @@ def agua_atendida(c: dict, riscos: dict, nome: str | None = None) -> tuple[float
 
 CRITERIOS = {"renda": "Renda", "solo": "Saúde do solo", "agua": "Água", "pragas": "Quebra de pragas", "risco": "Risco climático"}
 RISCO_NOME = {"geada_safrinha": "geada no milho safrinha", "veranico_safrinha": "veranico no safrinha",
+              "deficit_hidrico": "déficit hídrico na fase crítica",
               "geada_trigo": "geada no trigo (florescimento)"}
 
 
-def _texto_risco(r: str, riscos: dict, cultura: str = "milho") -> str:
+def _texto_risco(r: str, riscos: dict, cultura: str = "milho", nome: str | None = None) -> str:
+    if r == "deficit_hidrico":
+        b = agua_balanco(nome, riscos) if nome else None
+        if b is not None:
+            return (f"Déficit hídrico na fase crítica ({b['fase']}, semeadura em {b['semeadura']}): água no solo abaixo de "
+                    f"{DEFICIT_THRESHOLD:.0%} da demanda em {b['deficit_years']} de {b['n_anos']} anos ({b['deficit_prob']:.0%}); "
+                    f"balanço hídrico diário NASA POWER + solo, CAD {b['taw_mm']:.0f} mm.")
+        r = "veranico_safrinha"  # no soil: fall back to the cell's dry-spell frequency
     p, n = riscos[r], riscos["n_anos"]
     k = round(p * n)
     fonte_c = ("NASA POWER 1991–2024, célula ~50 km" if riscos.get("modo") == "regiao"
@@ -562,7 +586,7 @@ def pontuar(pesos: dict[str, float], riscos: dict, ajustes: dict | None = None, 
     # Risco: 1 - P(algum risco); com vários riscos independentes, critério = Π(1 - pᵢ). Sem risco = 1,0.
     # Candidata irrigada: o veranico não conta (a geada continua).
     rs_ef = {n: riscos_efetivos(n, c, riscos) for n, c in validas.items()}
-    risco_abs = {n: float(np.prod([1 - riscos[r] for r in rs_ef[n]])) if rs_ef[n] else 1.0 for n in validas}
+    risco_abs = {n: float(np.prod([1 - risk_probability(n, r, riscos) for r in rs_ef[n]])) if rs_ef[n] else 1.0 for n in validas}
     # Solo: média de cobertura, fixação de N e (1 - dias descobertos/180), todos 0–1 absolutos.
     solo = {n: (c["cobertura"] + c["n_fix"] + max(0.0, 1 - c["dias_descobertos"] / DIAS_REF_SOLO)) / 3
             for n, c in validas.items()}
@@ -629,7 +653,9 @@ def fmt_margem(m: dict, riscos: dict) -> list[str]:
                           f"R$ {i['preco']:.2f}/sc ({fonte_preco(i)}) − custo R$ {_r(i['custo'])}/ha ({fonte_custo(i, m['linha_custo'])}) "
                           f"= R$ {_r(i['margem'])}/ha ({ruim}).")
         elif i["sc_ha"] is not None:
-            linhas.append(f"{i['rotulo']}: {i['sc_ha']:.0f} sc/ha (PAM {local} {i['anos']}) × R$ {i['preco']:.2f}/sc ({fonte_preco(i)}) − custo "
+            orig = (f"tendência da PAM {local} {i['anos']} projetada para a próxima safra; média {i['sc_ha_media']:.0f} sc/ha"
+                    if i.get("metodo_rend") == "tendência" and i.get("sc_ha_media") is not None else f"PAM {local} {i['anos']}")
+            linhas.append(f"{i['rotulo']}: {i['sc_ha']:.0f} sc/ha ({orig}) × R$ {i['preco']:.2f}/sc ({fonte_preco(i)}) − custo "
                           f"R$ {_r(i['custo'])}/ha ({fonte_custo(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha "
                           f"(CV do rendimento {i['cv']:.0%}; ano ruim, p20 da mesma janela de 10 anos = {i['sc_ha_ruim']:.0f} sc/ha → "
                           f"R$ {_r(i['margem_ano_ruim'])}/ha).")
@@ -725,8 +751,13 @@ def montar_card(linha: pd.Series, atual: bool, riscos: dict, dias_solo_ndvi: flo
     ev = [f"Dias de solo descoberto/ano (catálogo): ~{c['dias_descobertos']} dias."]
     if atual and not np.isnan(dias_solo_ndvi):
         ev.append(f"NDVI observado (NASA HLS): ~{dias_solo_ndvi:.0f} dias/ano com NDVI<{LIMIAR_SOLO}.")
+    hist = None
     if margem is not None:
         ev += fmt_margem(margem, riscos)
+        # 5-season track record of the second crop (informative, never in the score; docs/validation.md §3)
+        hist = renda_historico.track_record((riscos.get("municipio") or {}).get("cod_ibge"), c["segunda"])
+        if (h_txt := renda_historico.text(hist)):
+            ev.append(h_txt)
     ag, do_clima = agua_atendida(c, riscos, linha["candidata"])
     bal = agua_balanco(linha["candidata"], riscos)
     fonte_solo = ("análise de solo do produtor" if (riscos.get("solo") or {}).get("fonte") == "análise de solo do produtor"
@@ -750,9 +781,9 @@ def montar_card(linha: pd.Series, atual: bool, riscos: dict, dias_solo_ndvi: flo
                   f"da irrigação não é modelado, o rendimento esperado não muda).")
     rs_ef = riscos_efetivos(linha["candidata"], c, riscos)
     for r in rs_ef:
-        ev.append(_texto_risco(r, riscos, "milho" if c["milho"] else c["nome_segunda"]))
+        ev.append(_texto_risco(r, riscos, "milho" if c["milho"] else c["nome_segunda"], linha["candidata"]))
     if ir and len(rs_ef) < len(c["riscos"]):
-        ev.append("Veranico não conta no risco: a candidata é irrigada (a geada continua).")
+        ev.append("Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).")
     if not c["riscos"]:
         ev.append("Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).")
     ben = []
@@ -780,7 +811,14 @@ def montar_card(linha: pd.Series, atual: bool, riscos: dict, dias_solo_ndvi: flo
                  if c["verao"] != "soja" else []),
                "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); "
                "custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.", *ea["lacunas"]]
-    revisar = [AVISO_ZARC, "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.", *ea["revisar"]]
+    # ZARC: informative only (never changes the score). Without the table, keep the generic warning.
+    mun = riscos.get("municipio") or {}
+    zs = zarc.rotation_status(c, mun.get("cod_ibge"), riscos.get("semeadura"), SEMEADURA_TRIGO)
+    z_aviso = zarc.warning_text(zs, mun.get("nome", "município"))
+    z_ev = zarc.evidence_text(zs, mun.get("nome", "município"))
+    if z_ev:
+        ev.append(z_ev)
+    revisar = [*([] if zs is not None else [AVISO_ZARC]), "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.", *ea["revisar"]]
     if c["milho_sobre_milho"]:
         revisar.append(TEXTO_MILHO_SOBRE_MILHO)
         ev.append(f"Pragas: milho sobre milho, nota de catálogo {c['pragas_base']:.2f} − penalidade {PENALIDADE_MILHO_SOBRE_MILHO:.2f} "
@@ -789,18 +827,20 @@ def montar_card(linha: pd.Series, atual: bool, riscos: dict, dias_solo_ndvi: flo
         revisar.append(f"Geada (≤ 3 °C) no safrinha em {riscos['geada_safrinha']:.0%} dos anos"
                        + (f" com semeadura em {riscos['semeadura']}" if riscos.get("semeadura") else "")
                        + ": avaliar data de semeadura/híbrido.")
-    if "veranico_safrinha" in rs_ef and riscos["veranico_safrinha"] >= 0.2:
-        revisar.append(f"Veranico ≥15 dias em mar–abr em {riscos['veranico_safrinha']:.0%} dos anos.")
+    if "deficit_hidrico" in rs_ef and (p_def := risk_probability(linha["candidata"], "deficit_hidrico", riscos)) >= 0.2:
+        revisar.append(f"Déficit hídrico na fase crítica em {p_def:.0%} dos anos: avaliar data de semeadura/cultivar.")
     if "geada_trigo" in c["riscos"] and riscos["geada_trigo"] >= 0.2:
         revisar.append(f"Geada no florescimento do trigo em {riscos['geada_trigo']:.0%} dos anos.")
     if c["dias_descobertos"] >= 100: revisar.append("Muitos dias de solo exposto: risco de erosão e plantas daninhas.")
     maq = (riscos.get("restr") or {}).get("maquinas", {})
     avisos = list(dict.fromkeys(CUSTO_MAQUINA[m]["aviso"] for m in c["req_maquinas"] + c["req_maquinas_verao"] if maq.get(m) is False))
+    if z_aviso:
+        avisos.insert(0, z_aviso)
     mer = c["mercado_oeste_pr"]
     mercado = dict(nivel=mer["nivel"], texto=mer["texto"], estimativa=MERCADO_ESTIMATIVA)
     ev.append(f"Mercado no Oeste do PR: {mer['nivel']}; {mer['texto']} ({MERCADO_ESTIMATIVA}).")
     return dict(por_que=por_que, evidencia=ev, beneficios=ben or ["Sem benefício marcante nos critérios avaliados."],
-                lacunas=lacunas, revisar=revisar, avisos=avisos, mercado=mercado, irrigacao=ir)
+                lacunas=lacunas, revisar=revisar, avisos=avisos, mercado=mercado, irrigacao=ir, zarc=zs, historico=hist)
 
 
 def fmt_diagnostico(d: dict) -> list[str]:

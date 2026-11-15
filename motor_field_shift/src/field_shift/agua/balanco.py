@@ -28,6 +28,10 @@ ANOS = range(1991, 2025)
 P_DEPL = 0.55  # fração de depleção sem estresse — FAO-56 tabela 22 (milho/trigo ~0,55), validar
 SEMEADURA_TRIGO = "01/05"  # trigo e aveia: semeadura fixa em 01/05 — estimativa, validar com ZARC
 LIMIAR_FRACAO = 0.7  # ETa/ETc abaixo disto = estresse relevante na fase crítica
+# Water-deficit risk (risk criterion): a year counts as a loss when ETa/ETc in the critical phase (the ZARC "ISNA" concept) is
+# below this value. Calibrated in docs/validation.md §2.4: against IBGE PAM, off-season corn years below 0.55 failed in 65 % of
+# the cases vs 20 % otherwise (Oeste, 2003–2025), and it gave the best agreement with the ZARC risk classes (κ 0.63).
+DEFICIT_THRESHOLD = 0.55
 
 # Cada modelo: zr (m), kc=(ini, mid, end), est=(dias ini, desenv, mid, final) — FAO-56 tabelas 11 e 12 (estimativa, validar);
 # fase=(dia_ini, dia_fim) após a semeadura (None = usar fase_ini/fim do ciclo). `semeadura`: 'app' (data escolhida para o safrinha) ou 'fixa'
@@ -160,6 +164,7 @@ def _cached(cand: str, ponto_id: str, semeadura: str, cad_t: tuple, lamina_max=N
     r = r[~np.isnan(r)]
     return dict(lamina_media_mm=float(lam.mean()) if lamina_max is not None else 0.0, irrigado=lamina_max is not None,
                 lamina_max_mm_dia=lamina_max, media=float(r.mean()), frac_abaixo=float(np.mean(r < LIMIAR_FRACAO)), n_abaixo=int((r < LIMIAR_FRACAO).sum()),
+                deficit_prob=float(np.mean(r < DEFICIT_THRESHOLD)), deficit_years=int((r < DEFICIT_THRESHOLD).sum()),
                 n_anos=len(r), taw_mm=float(np.mean(tawl)), razoes=r,
                 fase=FASE_TXT[modelos[0]],
                 semeadura=_data_semeadura(MODELOS[modelos[0]], semeadura))

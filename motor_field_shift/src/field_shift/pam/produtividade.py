@@ -2,8 +2,9 @@
 de data/raw/ibge/pam_extra_pr.parquet (ou pam_extra_oeste_pr.parquet; sorgo e feijão 2ª safra; ingest/pam_culturas_extra.py), mesmo esquema.
 
 produtividade(cod_ibge) -> {cultura: {...}}; culturas: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
-Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos YIELD_WINDOW_YEARS (10) anos COM dado (até 2025, se existir): média, CV e tendência usam a mesma janela, a mesma do p20
-(ano ruim) em renda.py, para que o ano ruim nunca fique acima da média.
+Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos YIELD_WINDOW_YEARS (10) anos COM dado (até 2025, se existir).
+Expected yield (`kg_ha`/`sc_ha`) = linear trend of that window projected to the next season, clipped to the window's min–max
+(`expected_yield`); the plain mean stays in `media_kg_ha`/`media_sc_ha`. CV and the p20 "bad year" (renda.py) use the same window.
 """
 from __future__ import annotations
 
@@ -19,7 +20,8 @@ PAM_EXTRA_PR = ROOT / "data/raw/ibge/pam_extra_pr.parquet"  # sorgo e feijão 2�
 PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"  # só os 50 municípios do Oeste; usado se o do PR inteiro não existir
 SACA_KG = {"soja": 60, "milho_total": 60, "milho_1safra": 60, "milho_2safra": 60, "trigo": 60, "sorgo": 60, "feijao_2safra": 60}
 ANO_MIN = {"sorgo": 2013, "feijao_2safra": 2013}  # séries antigas/interrompidas do sorgo e do feijão 2ª safra não representam o manejo atual
-YIELD_WINDOW_YEARS = 10  # single window for mean, CV, trend and the p20 "bad year" (renda._p20_sc)
+YIELD_WINDOW_YEARS = 10  # single window for the expected yield (trend), CV and the p20 "bad year" (renda._p20_sc)
+MIN_YEARS_TREND = 5  # fewer years: the expected yield is the plain mean
 NOMES = {"soja": "soja", "milho_total": "milho", "milho_1safra": "milho 1ª safra", "milho_2safra": "milho 2ª safra",
          "trigo": "trigo", "aveia": "aveia", "sorgo": "sorgo", "feijao_2safra": "feijão 2ª safra"}
 
@@ -45,6 +47,22 @@ def serie(cod_ibge, cultura: str) -> pd.Series:
     return s[s.index >= ANO_MIN[cultura]] if cultura in ANO_MIN else s
 
 
+def expected_yield(u: pd.Series) -> tuple[float, float]:
+    """Expected yield (kg/ha) of the next season from the window `u` (index = year): the linear trend of the window projected to
+    the year after its last one, clipped to the window's [min, max]; the plain mean when there are fewer than MIN_YEARS_TREND
+    years. Returns (expected, slope kg/ha/yr; NaN without trend).
+
+    Why: in the historical backtest (docs/validation.md §3) the 10-year mean underestimated the next season by 7–12 % (median,
+    Oeste 2008–2025: technology gains), while the clipped trend has a bias of −1 % (off-season corn, wheat, summer corn) to −6 %
+    (soybean) with the same absolute error. The clip keeps one extreme year at the end of the window from throwing the projection
+    outside what the municipality has ever produced."""
+    if len(u) < MIN_YEARS_TREND:
+        return float(u.mean()), float("nan")
+    slope, icpt = np.polyfit(u.index.values.astype(float), u.values, 1)
+    proj = slope * (float(u.index[-1]) + 1) + icpt
+    return float(np.clip(proj, u.min(), u.max())), float(slope)
+
+
 def produtividade(cod_ibge, n_anos: int = YIELD_WINDOW_YEARS) -> dict:
     out = {}
     for cult in NOMES:
@@ -52,12 +70,13 @@ def produtividade(cod_ibge, n_anos: int = YIELD_WINDOW_YEARS) -> dict:
         if len(s) == 0:
             continue
         u = s.iloc[-n_anos:]
-        u10 = u  # same window for mean, CV and trend
-        tend = float(np.polyfit(u10.index.values, u10.values, 1)[0]) if len(u10) >= 4 else np.nan
+        exp, slope = expected_yield(u)
         out[cult] = dict(
-            kg_ha=float(u.mean()), sc_ha=float(u.mean() / SACA_KG[cult]) if cult in SACA_KG else None,
-            cv=float(u10.std(ddof=0) / u10.mean()) if len(u10) >= 4 else np.nan,
-            tendencia_kg_ha_ano=tend, anos=f"{int(u.index[0])}–{int(u.index[-1])}", n=len(u))
+            kg_ha=exp, sc_ha=exp / SACA_KG[cult] if cult in SACA_KG else None,
+            media_kg_ha=float(u.mean()), media_sc_ha=float(u.mean() / SACA_KG[cult]) if cult in SACA_KG else None,
+            metodo="tendência" if len(u) >= MIN_YEARS_TREND else "média",
+            cv=float(u.std(ddof=0) / u.mean()) if len(u) >= 4 else np.nan,
+            tendencia_kg_ha_ano=slope, anos=f"{int(u.index[0])}–{int(u.index[-1])}", n=len(u))
     return out
 
 
@@ -70,4 +89,5 @@ def texto(nome_mun: str, p: dict) -> str:
     if "aveia" in p:
         partes.append(f"aveia {p['aveia']['kg_ha']:.0f} kg/ha")
     anos = p[next(iter(p))]["anos"] if p else ""
-    return f"Rendimento médio em {nome_mun}, {anos}: " + ", ".join(partes) + "."
+    return (f"Rendimento esperado em {nome_mun} (tendência da PAM {anos}, projetada para a próxima safra): " + ", ".join(partes)
+            + ".")

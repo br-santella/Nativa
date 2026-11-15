@@ -65,10 +65,10 @@ def test_notas_72638(real):
     r = real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "semeadura_safrinha": "01/02"})
     rk = r.json()["ranking"]
     notas = {i.get("id_legado"): i["nota"] for i in rk if "id_legado" in i}  # as 6 rotações antigas (soja no verão)
-    assert notas["milho_braquiaria"] == 0.764
-    assert notas["milho_safrinha"] == 0.709 and notas["milheto_crotalaria"] == 0.759
-    assert notas["aveia"] == 0.703 and notas["pousio"] == 0.555 and notas["trigo"] == 0.471
-    assert rk[0]["margem"]["incremental_r_ha"] == 928 and rk[0]["margem"]["escala_S_r_ha"] == 1503
+    assert notas["milho_braquiaria"] == 0.821
+    assert notas["milho_safrinha"] == 0.774 and notas["milheto_crotalaria"] == 0.757
+    assert notas["aveia"] == 0.7 and notas["pousio"] == 0.55 and notas["trigo"] == 0.466
+    assert rk[0]["margem"]["incremental_r_ha"] == 1802 and rk[0]["margem"]["escala_S_r_ha"] == 1192
     assert rk[0]["id"] == "soja__milho_braquiaria" and rk[0]["card"]["por_que"].startswith("Em relação à atual (milho safrinha)")
 
 

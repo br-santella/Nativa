@@ -1,6 +1,7 @@
 """Margem por cultura e por rotação. Lógica pura (sem Streamlit).
 
-margem_cultura = rendimento_municipal (sc/ha, PAM, média dos últimos 10 anos) × preço − custo.
+margem_cultura = rendimento_municipal (sc/ha, PAM: tendência dos últimos 10 anos projetada para a próxima safra, limitada ao
+mín–máx da janela; pam.produtividade.expected_yield) × preço − custo.
 Cobertura/pousio: − custo. margem_rotacao = cultura de verão (soja ou milho verão) + 2ª cultura + bônus na soja seguinte
 (bonus_sc × preço da soja; inclui o bônus do milho verão no lugar da soja).
 margem_incremental = margem_rotacao − margem da soja de verão do município = (margem do verão − margem da soja) + margem da 2ª
@@ -64,7 +65,10 @@ def _serve(q: dict, c: str) -> bool:
 
 
 def _rend_cultura(q: dict, cod, c: str) -> dict:
-    return dict(sc_ha=q[c]["sc_ha"], cv=q[c]["cv"], p20_sc_ha=_p20_sc(cod, c), anos=q[c]["anos"])
+    p20 = _p20_sc(cod, c)
+    p20 = None if p20 is None else min(p20, q[c]["sc_ha"])  # the bad year never above the expected yield
+    return dict(sc_ha=q[c]["sc_ha"], cv=q[c]["cv"], p20_sc_ha=p20, anos=q[c]["anos"], media_sc_ha=q[c]["media_sc_ha"],
+                metodo=q[c]["metodo"])
 
 
 def _media_oeste(c: str) -> dict:
@@ -73,10 +77,13 @@ def _media_oeste(c: str) -> dict:
     for cod in _cods_oeste():
         q = pam_produtividade(cod)
         if _serve(q, c):
-            v.append((q[c]["sc_ha"], q[c]["cv"], _p20_sc(cod, c), q[c]["anos"]))
+            p20 = _p20_sc(cod, c)
+            v.append((q[c]["sc_ha"], q[c]["cv"], None if p20 is None else min(p20, q[c]["sc_ha"]), q[c]["anos"],
+                      q[c]["media_sc_ha"]))
     a = np.array([[x if x is not None else np.nan for x in t[:3]] for t in v], dtype=float)
     cv, p20 = (float(np.nanmean(a[:, k])) if not np.all(np.isnan(a[:, k])) else None for k in (1, 2))
-    return dict(sc_ha=float(np.nanmean(a[:, 0])), cv=cv, p20_sc_ha=p20, anos=v[-1][3], n_municipios=len(v))
+    return dict(sc_ha=float(np.nanmean(a[:, 0])), cv=cv, p20_sc_ha=p20, anos=v[-1][3], n_municipios=len(v),
+                media_sc_ha=float(np.mean([t[4] for t in v])), metodo="tendência")
 
 
 @lru_cache(maxsize=64)
@@ -162,7 +169,8 @@ def _item(ref, aj, rend, k, rendimento="sc_ha") -> dict:
                     custo_usuario=k in (aj.get("custo") or {}), receita=sc * pr, margem=sc * pr - c,
                     cv=rend[k]["cv"], anos=rend[k]["anos"],
                     margem_ano_ruim=None if ruim is None else ruim * pr - c, sc_ha_ruim=ruim,
-                    prod_usuario=bool(rend[k].get("usuario")), razao_p20=rend[k].get("razao_p20"), sc_ha_pam=rend[k].get("sc_ha_pam"))
+                    prod_usuario=bool(rend[k].get("usuario")), razao_p20=rend[k].get("razao_p20"), sc_ha_pam=rend[k].get("sc_ha_pam"),
+                    sc_ha_media=rend[k].get("media_sc_ha"), metodo_rend=rend[k].get("metodo"))
     return dict(chave=k, rotulo=ROTULO[k], sc_ha=None, preco=None, custo=c, preco_usuario=False,
                 custo_usuario=k in (aj.get("custo") or {}), receita=0.0, margem=-c, cv=None, anos=None,
                 margem_ano_ruim=-c, sc_ha_ruim=None)

@@ -40,6 +40,11 @@ This file is the living list of open items for the project (crop-rotation engine
   Not researched (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): they are modelling choices; replacing them is the literature survey in `pesquisa_ganho_soja_seguinte_PARCIAL.md`, still paused.
   Status: pending
 
+## Code in English + bilingual API
+
+- **Migrate all code to English and let the API answer in pt-BR or English**: queued for when credits are back. Full plan, phases and the start prompt in [`plan_english_migration.md`](plan_english_migration.md). pt-BR stays the default and must stay byte-identical (golden tests); `?lang=en` / `Accept-Language: en` switches the texts. Two decisions to confirm at the start: whether `lang=en` also renames JSON keys (D1) and whether `data/ref` JSON keys move to English (D2).
+  Status: queued
+
 ## Engine fixes
 
 - **Unrealistic summer-corn cost**: the CONAB cost for first-season corn in Paraná only exists for Ponta Grossa and was computed for 12 t/ha, while Toledo produces about 7.6 t/ha. The result is a margin of roughly −BRL 4,600/ha in the `proxima_safra` block. Proposed fix: scale the variable cost to the local yield (cost/t × municipal yield).
@@ -56,6 +61,42 @@ This file is the living list of open items for the project (crop-rotation engine
   Files: `api/field_shift_api/`.
   Done (15/11/2026): the old process (started 02:17 on 15/11, without `--reload`) was stopped and the API was restarted from the `fix/pendencias-motor` branch (`uvicorn field_shift_api.main:app --app-dir api --port 8000`, still without `--reload`). `GET /health` is `ok` and a Curitiba request returns the Região 1 calendar warning. Restart it again after any code change.
   Status: done
+
+- **Technical tie at the top of the ranking**: the sensitivity analysis (`docs/validation.md`, section 1) shows corn + brachiaria and millet/crotalaria 0.005–0.009 points apart on field 72638; ±20 % on 10 of 62 parameters (prices, pest break, cover, bonus) swaps them. Decide how to show it: e.g. flag a `empate_tecnico` when the top-2 differ by < ~0.02 and say so in the card text.
+  Files: `src/field_shift/motor/servico.py`, `src/field_shift/app/engine.py`.
+  Status: pending
+
+- **Validate the most sensitive catalog estimates**: priority list from the sensitivity analysis (`docs/validation.md` §1.2): pest-cycle break of corn + brachiaria, millet/crotalaria, oat + radish, oat and radish; soil cover and bonus of the top-2; millet/crotalaria cost; sorghum price and cost. Also confirm that the water criterion of off-season corn rising with later sowing (0.83 at 15/01 → 0.97 at 15/03) is realistic for Western Paraná.
+  Files: `src/field_shift/app/engine.py`, `data/ref/precos_custos.json`.
+  Status: pending (depends on an agronomist/Embrapa)
+
+- **Use the ZARC table in the engine**: the ZARC agreement (`docs/validation.md` §2) shows the engine keeps off-season corn sown on 01/03 and 15/03 valid where ZARC does not indicate it (48 % and 70 % of the Oeste municipalities; 622 of 1,995 crop × municipality × date cases in Paraná), and 36 cold municipalities have no 2nd-season corn zoning at all. Load the open ZARC table (`field_shift.validation.zarc` already parses it) and flag or eliminate candidates outside ZARC for the field's municipality and sowing date, citing the ordinance, instead of the generic `AVISO_ZARC`.
+  Files: `src/field_shift/app/engine.py`, `src/field_shift/zarc.py`, `ingest/zarc_pr.py`.
+  Status: done as a warning only (user decision: does not change the score). Each item has a `zarc` field and the card warns when outside ZARC; the generic `AVISO_ZARC` only when the table is not built. Open: the table is season 2025/2026 and Paraná only; rebuild it every season (`ingest/zarc_pr.py`).
+
+- **Sorghum window and frost model**: the engine window ends 15/03 but ZARC ends 10/03 in 42 % of the Oeste municipalities; the sorghum frost risk reuses the corn window and is too pessimistic at 01/03 (loss > 40 % in 68 % of the Oeste municipalities where ZARC indicates class 20). Also, the engine is more pessimistic than ZARC at intermediate sowing dates for corn (15/02 in the Oeste: mean loss 29 % vs ZARC 23 %); review the frost threshold (≤ 3 °C) and the dry-spell window. Update (`docs/validation.md` §2.4): the corn/beans pessimism was fixed by the water deficit (15/02 Oeste mean loss 29 % → 20 %, ZARC 23 %); sorghum is unchanged (κ 0.27, pessimistic in 34 % of cases). In the 36 municipalities without corn zoning the engine's lowest loss is now a median 12 % (only the ZARC warning flags them): a cold-season indicator over the whole cycle is missing.
+  Files: `src/field_shift/app/engine.py`, `src/field_shift/clima/indicadores.py`.
+  Status: pending
+
+- **Income expectation from the backtest**: the historical backtest (`docs/validation.md` §3) shows the 10-year PAM mean underestimates yields by 7–12 % (technology trend; trend over the same years: −1 %), and the income-only decision with the engine's current logic would have lost 3.4 soybean bags/ha/yr against always planting off-season corn in the Oeste (2008–2025; it picked fallow in 24 % of the cases on a single negative expected margin). Use the trend for the expected yield (keep p20 for the bad year, it is calibrated), and show the margin with a multi-year price ratio or the 5-season track record next to the current price.
+  Files: `src/field_shift/pam/produtividade.py`, `src/field_shift/renda/renda.py`.
+  Status: pending
+
+- **Dry-spell indicator has no predictive value**: against PAM off-season corn failures (yield ≥ 15 % below trend, 1,143 municipality-years), years flagged with a ≥ 15-day dry spell in Mar–Apr fail as often as the others (21 % vs 23 %), while frost years fail 1.4× more. Replace it with a deficit from the FAO-56 balance in the critical phase or POWER GWETROOT, and recalibrate the loss probability (engine 37 % vs observed 23 %).
+  Files: `src/field_shift/agua/balanco.py`, `src/field_shift/app/engine.py`.
+  Status: done. Risk `deficit_hidrico` = share of years with ETa/ETc < 0.55 in the critical phase (FAO-56 balance, field soil, sowing date); years below it failed in 65 % vs 20 % (PAM, Oeste); ZARC κ 0.54 → 0.63 (`docs/validation.md` §2.4). Without soil it falls back to the cell dry spell. Open: re-run the backtest loss calibration (§3) with the new risk.
+
+- **Bare-soil days of fallow overstated**: the satellite check (`docs/validation.md` §5) measures ~31 more bare days per year in single-crop years than in double-crop years around field 72638 (median 135 vs 104, NDVI < 0.35; ~22 in the 2nd window), while the catalog uses 150 vs 60 (difference 90). Review `dias_descobertos` of fallow and second crops, or say in the card that it is an agronomic estimate.
+  Files: `src/field_shift/app/engine.py`.
+  Status: pending
+
+- **Soybean bonus not detectable by NDVI**: after field + season fixed effects, the following soybean has the same NDVI peak (−0.007) and integral (−1.5) after off-season corn as after fallow (916 field-years). The bonus stays a literature estimate; confirm it with trials (paused survey) or per-field yield data.
+  Files: `src/field_shift/app/engine.py`.
+  Status: pending (depends on literature/field data)
+
+- **Card: income trade-off of cover crops**: in the Oeste history millet/crotalaria gives up ~12 soybean bags/ha/yr of realized income against off-season corn (bonus in the catalog: 3 bags/ha); when it ranks first, the card must state the trade-off in bags/ha.
+  Files: `src/field_shift/app/engine.py`.
+  Status: pending
 
 ## Data/infra
 

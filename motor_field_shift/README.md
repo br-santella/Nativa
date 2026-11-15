@@ -5,7 +5,7 @@ It is the project backend. Its API is contract C3 in [`../docs/contratos.md`](..
 
 Documentation (in Portuguese):
 
-- Engine logic: [`docs/motor.md`](docs/motor.md)
+- Engine logic: [`docs/motor.md`](docs/motor.md) · validation: [`docs/validation.md`](docs/validation.md)
 - Data architecture: [`docs/arquitetura.md`](docs/arquitetura.md) · sources: [`docs/datasets.md`](docs/datasets.md)
 - API (FastAPI) and usage: [`api/README.md`](api/README.md)
 

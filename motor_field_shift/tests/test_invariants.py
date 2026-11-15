@@ -105,7 +105,9 @@ def test_higher_corn_price_helps_corn_and_leaves_corn_free_unchanged():
             assert b.at[rid, "renda"] == pytest.approx(a.at[rid, "renda"]), rid
         else:
             assert b.at[rid, "renda"] >= a.at[rid, "renda"] - 1e-12, rid
-    assert b.at["soja__milho_safrinha", "renda"] > a.at["soja__milho_safrinha", "renda"]
+    # The income criterion is clipped at 1 (corn can already saturate it), so the strict check starts from a low corn price.
+    low = _by_id(rank(base(), adjustments={"preco": {"milho": 30.0}}))
+    assert b.at["soja__milho_safrinha", "renda"] > low.at["soja__milho_safrinha", "renda"]
 
 
 @pytest.mark.parametrize("cost_key", ["milho_2safra", "trigo", "aveia", "milheto_crotalaria", "aveia_nabo", "pousio"])

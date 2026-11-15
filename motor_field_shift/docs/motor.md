@@ -67,7 +67,7 @@ Example (field 72638, soybean in `enchimento_graos`, `data_referencia` 2026-12-0
 | Own yield (`ajustes.produtividade`) | Municipal PAM | **Income:** replaces the PAM yield in the margin (soybean, 2nd-season corn, summer corn, wheat, beans, sorghum); the bad year scales by own yield × p20/PAM average; the soybean value changes the scale S |
 | Soil analysis (`analise_solo`) | SoilGrids | **Water:** the available water capacity comes from the analysis (`cad_mm_cm` directly, or Saxton & Rawls with the provided sand, clay and organic matter), uniform over 0–60 cm. The diagnosis `solo` block then cites "farmer's soil analysis" |
 | Restrictions (`restricoes`) | None | **Hard rules:** excluded rotations (new id, or legacy slug = soybean in summer) and no local buyer (corn, wheat, sorghum, beans; also applies to the summer crop) eliminate the rotation. **Income:** a missing machine (corn header, one per corn harvest; intercrop seeder) does not eliminate; it adds an outsourcing cost (estimates: BRL 250/ha and BRL 80/ha) and a warning on the card. Each candidate shows `mercado_oeste_pr` (high/medium/low/not applicable; estimate to be validated) |
-| Irrigation (`irrigacao`) | Rainfed | **Water:** the balance irrigates second-window corn, corn+brachiaria, wheat, sorghum and beans when Dr > p·TAW (p = 0.55; beans 0.45), refilling up to capacity, limited by the maximum daily depth, over the whole cycle; the criterion goes up. **Risk:** dry spells stop counting for those candidates (frost still counts). **Income:** subtracts average depth × cost (BRL/mm/ha). Does not change the expected yield; cover crops and fallow are not irrigated |
+| Irrigation (`irrigacao`) | Rainfed | **Water:** the balance irrigates second-window corn, corn+brachiaria, wheat, sorghum and beans when Dr > p·TAW (p = 0.55; beans 0.45), refilling up to capacity, limited by the maximum daily depth, over the whole cycle; the criterion goes up. **Risk:** the water deficit stops counting for those candidates (frost still counts). **Income:** subtracts average depth × cost (BRL/mm/ha). Does not change the expected yield; cover crops and fallow are not irrigated |
 
 ## 4. Candidates: summer + second window
 
@@ -84,17 +84,17 @@ Each candidate is a pair (summer crop, second-window crop) in the same agricultu
 
 | Crop | Type | Sowing | Climate risk | Sale | Source of yield, price and cost |
 |---|---|---|---|---|---|
-| Off-season corn | Grain | the chosen date (15/01–15/03) | frost + dry spell | corn | PAM 2nd season; DERAL; CONAB Londrina |
-| Off-season corn + brachiaria | Intercrop | the chosen date | frost + dry spell | corn | same + brachiaria (estimate) |
+| Off-season corn | Grain | the chosen date (15/01–15/03) | frost + water deficit | corn | PAM 2nd season; DERAL; CONAB Londrina |
+| Off-season corn + brachiaria | Intercrop | the chosen date | frost + water deficit | corn | same + brachiaria (estimate) |
 | Wheat | Grain | 01/05 | wheat frost | wheat | PAM; DERAL; CONAB Ponta Grossa |
 | Sorghum (new) | Grain | the chosen date, window 15/01–15/03 | frost (drought tolerant) | sorghum | PAM sorghum (SIDRA 1612); estimated price (75% of DERAL corn, the CONAB minimum-price ratio); estimated cost (CONAB sorghum Rio Verde-GO) |
-| Off-season beans (new) | Grain | the chosen date, window 15/01–28/02 | frost + dry spell | beans | PAM 2nd-season beans (SIDRA 1002); DERAL black beans; CONAB 2nd-season beans Francisco Beltrão-PR |
+| Off-season beans (new) | Grain | the chosen date, window 15/01–28/02 | frost + water deficit | beans | PAM 2nd-season beans (SIDRA 1002); DERAL black beans; CONAB 2nd-season beans Francisco Beltrão-PR |
 | Oat (cover/straw) | Cover | 01/05 | none | no sale | estimated cost |
 | Millet/crotalaria | Cover | the chosen date | none | no sale | estimated cost |
 | Forage radish (new) | Cover | 01/04 | none | no sale | estimated cost |
 | Oat + radish (new) | Cover (mix) | 01/05 (oat) and 01/04 (radish) | none | no sale | estimated cost |
 | Fallow | No crop | n/a | none | no sale | estimated cost |
-| Off-season soybean | Grain | the chosen date | dry spell | n/a | blocked by the rules (always eliminated) |
+| Off-season soybean | Grain | the chosen date | water deficit | n/a | blocked by the rules (always eliminated) |
 
 Only grain crops and cover crops that use grain machinery, the same sales channel and fit the calendar are included. Sunflower, canola and dual-purpose wheat are left out.
 Off-season corn, corn + brachiaria and summer corn require a corn header (outsourcing cost per harvest if the farmer does not have one).
@@ -132,7 +132,7 @@ They eliminate the candidate before scoring. An eliminated candidate appears in 
 | Harvest after the last sowing date considered (15/03): too late | Eliminates the crops that follow the sowing date; wheat, oat, radish and fallow stay |
 | Sowing outside the crop's window (beans 15/01–28/02, sorghum 15/01–15/03; estimate based on ZARC/IDR-PR) | Eliminates |
 | Corn after corn (summer corn + off-season corn or corn + brachiaria) | **Does not eliminate**: pest criterion −0.25 and a risk text (corn leafhopper/corn stunt) |
-| ZARC | Credit/insurance warning only; does not eliminate |
+| ZARC | Warning only; does not eliminate and does not change the score. With the ZARC table built (`ingest/zarc_pr.py`), each candidate is checked against ZARC 2025/2026 for the field's municipality and sowing date (summer crop at its assumed date, second crop at the chosen or fixed date); outside ZARC the card gets a specific warning (crop, date, reason, loss of subsidised credit/Proagro/insurance) and the item a `zarc` field. Without the table, the generic warning is kept |
 
 In practice, soybean in the second window is **always eliminated**, even after summer corn (outside the legal soybean sowing window and the soybean-free period; after soybean, also soybean after soybean).
 When the current crop is soybean harvested around 02/01, the derived sowing is 15/01 and the summer-corn candidates (in `proxima_safra`) fall under the limitation described in section 10. With sowing on 01/02 (catalog assumption), summer corn followed by off-season corn, corn + brachiaria, millet/crotalaria, sorghum or beans is also eliminated by the summer harvest; from 15/02 (beans) or 01/03 (the others) it comes back into the ranking.
@@ -159,7 +159,7 @@ All on an absolute 0 to 1 scale (higher = better).
 | Off-season frost | T2M_MIN ≤ 3 °C between sowing+60 and sowing+120 days (flowering/grain fill) | Corn, corn + brachiaria |
 | Wheat frost | T2M_MIN ≤ 3 °C from 15/08 to 30/09 | Wheat |
 | Off-season frost (sorghum, beans) | same window as corn, as an approximation | Sorghum, beans |
-| Off-season dry spell | ≥ 15 consecutive days with rain < 1 mm in Mar–Apr | Corn, corn + brachiaria, beans (sorghum, drought tolerant, does not count dry spells) |
+| Water deficit in the critical phase | Share of the 34 years with ΣETa/ΣETc < 0.55 in the crop's critical phase (FAO-56 daily balance, field soil, chosen sowing date; same balance as §6.2). Without soil data it falls back to the cell's dry spell (≥ 15 consecutive days with rain < 1 mm in Mar–Apr). Irrigated candidates do not count it | Corn, corn + brachiaria, beans, off-season soybean (sorghum, drought tolerant, does not count it) |
 | Cover crops and fallow | No relevant risk | Score 1.0 |
 
 Example, off-season corn frost on field 72638, by sowing date:
@@ -168,7 +168,7 @@ Example, off-season corn frost on field 72638, by sowing date:
 |---|---|---|---|---|---|
 | Years with frost | 6% | 12% | 26% | 47% | 76% |
 
-**Validation:** against 7 INMET stations, the Tmin correlation is 0.94. POWER underestimates frost days by ~40%.
+**Validation:** against 7 INMET stations, the Tmin correlation is 0.94. POWER underestimates frost days by ~40%. The water-deficit threshold (0.55) was calibrated against IBGE PAM off-season corn failures and the ZARC classes; the old dry-spell count had no predictive value (`docs/validation.md` §2.4 and §3).
 
 ### 6.2 Water
 
@@ -349,11 +349,11 @@ Sowing late gives more water and much more frost. That is why off-season corn dr
 - Soil analysis: the sample (default 0–20 cm) is taken as representative of the whole root profile.
 - Machinery outsourcing, irrigation cost and market levels are estimates to be validated.
 - The summer crop (soybean or summer corn) does not enter the water and climate-risk criteria; only the second window does.
-- ZARC is not implemented yet.
+- ZARC is a warning only (it does not change the score); the table covers Paraná, season 2025/2026, rainfed, and must be rebuilt every season.
 - Stage durations and the catalog harvest dates are estimates, to be validated with Embrapa/an agronomist.
 - **Known limitation (open decision): sowing date of the `proxima_safra` block.** The block uses the same second-window sowing date as `agora`, derived from the harvest of the *current* crop (e.g. 15/01 for soybean harvested ~02/01). Summer corn in the next season is harvested later (~05/02), so with that date summer corn followed by off-season corn, corn + brachiaria, millet/crotalaria, sorghum or beans is eliminated, and the block ends up with only wheat, oat, radish and fallow (the off-season crops all disappear). The alternative is to compute the next season's sowing with the typical summer-corn harvest, so those candidates can be evaluated; it has not been decided yet and the current behavior was left as is. Tracked in `docs/pendencias.md`.
 
-**Next steps:** ZARC; regional costs; validation with an agronomist; SMAP for the current season; PAM × climate regression in income.
+**Next steps:** regional costs; validation with an agronomist; SMAP for the current season; PAM × climate regression in income.
 
 ## Current context (informational)
 

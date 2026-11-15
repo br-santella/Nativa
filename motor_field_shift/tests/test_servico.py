@@ -12,7 +12,7 @@ def recomendar(area, **kw):
     return _recomendar(area, **kw)
 
 # Notas das 6 rotações antigas (soja no verão), pelo slug antigo (`id_legado`): não mudam com o catálogo maior (escala absoluta).
-ESPERADO = {"milho_braquiaria": 0.764, "milho_safrinha": 0.709, "milheto_crotalaria": 0.759, "aveia": 0.703, "pousio": 0.555, "trigo": 0.471}
+ESPERADO = {"milho_braquiaria": 0.821, "milho_safrinha": 0.774, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.55, "trigo": 0.466}
 
 
 def _antigas(r):
@@ -34,14 +34,14 @@ def test_talhao_72638():
     assert [e["id"] for e in r["eliminadas"]][0] == "soja__soja_safrinha" and len(r["eliminadas"]) == 7
     # margem incremental e escala S (soja de Cascavel); saída arredondada (R$ sem casas, critérios com 3)
     m = _rk(r)
-    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 888 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 928
-    assert m["trigo"]["margem"]["escala_S_r_ha"] == 1503
-    assert r["ranking"][0]["criterios"]["renda"] == 0.809 and m["trigo"]["criterios"]["renda"] == 0.017
+    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 1762 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1802
+    assert m["trigo"]["margem"]["escala_S_r_ha"] == 1192
+    assert r["ranking"][0]["criterios"]["renda"] == 1.0 and m["trigo"]["criterios"]["renda"] == 0.0  # both clipped
     # "por quê" comparado com a atual
     top = r["ranking"][0]["card"]["por_que"]
-    assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top  # renda gap (928 vs 888) is now below the top-3 contribution cut
+    assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top  # income is clipped at 1 for both corn options
     atual = r["atual"]["card"]["por_que"]
-    assert atual.startswith("É a rotação atual; ficou em 4º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
+    assert atual.startswith("É a rotação atual; ficou em 2º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
     print("72638", round(dt, 2), "s", [(x["id"], round(x["nota"], 2)) for x in r["ranking"]])
 
 
@@ -250,3 +250,15 @@ if __name__ == "__main__":
     t0 = time.perf_counter(); aquecer(); print("aquecer (ja quente)", round(time.perf_counter() - t0, 2))
     t0 = time.perf_counter(); recomendar({"lat": -24.5, "lon": -53.9}); print("quente, ponto novo", round(time.perf_counter() - t0, 2))
     print("TUDO OK")
+
+
+def test_empate_tecnico():
+    # 15/03: millet/crotalaria and corn + brachiaria are less than 0.02 apart on field 72638
+    r = recomendar({"talhao_id": "72638"}, semeadura_safrinha="15/03", incluir_diagnostico=False)
+    e = r["agora"]["empate_tecnico"]
+    assert e is not None and e["ids"][:2] == ["soja__milheto_crotalaria", "soja__milho_braquiaria"] and 0 <= e["diferenca"] < 0.02
+    tied = [x for x in r["agora"]["ranking"] if x["id"] in e["ids"]]
+    assert all(x["card"]["avisos"][0].startswith("Empate técnico") for x in tied)
+    assert not any(a.startswith("Empate técnico") for x in r["agora"]["ranking"] if x["id"] not in e["ids"] for a in x["card"]["avisos"])
+    # 15/01: corn + brachiaria clearly ahead
+    assert recomendar({"talhao_id": "72638"}, semeadura_safrinha="15/01", incluir_diagnostico=False)["agora"]["empate_tecnico"] is None
