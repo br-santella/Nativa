@@ -49,26 +49,35 @@ Changes are kept in session memory. Reloading the page restores the example. Sig
 
 ## Data and backend
 
-Only the "Compare os cenários" section of `/#rotation` (`src/EngineScenarios.tsx`) talks to the engine API (`motor_field_shift`, contract in `motor_field_shift/api/README.md`). Every other screen still uses the demo data in `src/data.ts`.
+Only the Rotation strategies page (`/#rotation`, `src/RotationStrategies.tsx`) talks to the engine API (`motor_field_shift`, contract in `motor_field_shift/api/README.md`). Every other screen still uses the demo data in `src/data.ts`.
 
 The API address is `VITE_API_URL` (default `http://localhost:8000`), baked in at build time; it is the URL the browser uses (production value: `motor_field_shift/deploy/README.md`).
 
-Flow (`src/api.ts`): `GET /health`, then, if the status is `ok`, `POST /v1/recomendacao` with:
+Flow (`src/api.ts`): `GET /health`, then, if the status is `ok`, `POST /v1/recomendacao`. After the setup wizard (`/#demo`, `src/PropertyWizard.tsx`), the body is the wizard's answers (area, current rotation, stage or harvest, reference date, sowing date, known issues, soil analysis, prices, buyers, equipment, irrigation, number of alternatives) with the weights of the page. Without the wizard, the page builds it from the farm data:
 
 | Field | Source in the app |
 |---|---|
 | `area` | `{lat, lon}` from My Property (any point in Paraná); demo plot `{talhao_id: "72638"}` if the coordinates are invalid |
 | `rotacao_atual` | derived from the crop history (`src/rotacaoAtual.ts`); default `soja__milho_safrinha` |
 | `colheita_prevista` | harvest date (dd/mm) of the summer crop still in the field, when it is in the future; otherwise the engine uses the catalog assumption and says so in `avisos` |
-| `pesos` | the four sliders (0–100) divided by 10; `pragas` fixed at 3 |
+| `pesos` | the five weights (0–10) of the page, starting from the wizard profile; balanced profile (all 5) without the wizard |
 | `irrigacao` | "Disponibilidade de irrigação": Sim → `{disponivel: true}`, Não → `{disponivel: false}`, Não informado → omitted |
 
 Every call sends `?lang=pt-BR|en` following the app language switcher, so the engine texts (rotation names, cards, warnings, errors) come back in the same language as the interface; switching the language fetches again.
 
-The screen shows the current rotation and the two best alternatives of the `agora` block (same summer crop), the best option of the `proxima_safra` block (another summer crop), the 2nd-window sowing date the engine used, and the engine `avisos`.
+The page has three sections: the priorities (the four profiles of the wizard plus the five weights; a change re-runs the engine after 0.6 s), the alternatives of the `agora` block (same summer crop) as cards in a grid; the page asks the engine for 6 (`n_alternativas`) and shows the number chosen in the wizard, which a 1–6 picker changes without a new request (up to 4 in one row, 5 or 6 in two rows), compared with the current rotation, where each criterion is shown as a phrase by score band (`src/priorities.ts`) with an arrow against the current rotation, and an approximate 12-month calendar built from the engine's harvest and sowing dates plus typical cycle lengths (`src/rotationCalendar.ts`, display only), and a comparison in three columns: the current rotation card, the gains and losses of switching (overall score, each criterion, second-crop income, yearly margin, the card's `por_que`), and the card of the chosen alternative, with previous/next buttons to switch alternatives. A summary of the land (name, city, area, current rotation, estimated harvest and sowing date) sits next to the priorities. It also shows the estimated harvest, the second-window sowing date the engine used and the engine `avisos`.
 
-Not sent yet: the soil fields of My Property (the engine's `analise_solo` needs clay + sand, AWC or a fertility field, which the form does not collect), `problemas_area`, `restricoes` and `ajustes`. Endpoints not used yet: `/v1/opcoes`, `/v1/diagnostico`, `/v1/clima`, `/v1/contexto`.
+Not sent: the soil fields of My Property (the soil analysis is sent only from the wizard). Endpoints not used: `/v1/opcoes`, `/v1/diagnostico`, `/v1/clima`, `/v1/contexto`.
 
 Sign-up, the contact form and the soil report upload are still demo-only (no account, message or upload).
 
 Reference design: https://www.figma.com/design/NnT2Qj3CEQCMaquaWkEKUi/Untitled?node-id=0-1
+
+
+### Interactive property map
+
+The overview map defaults to Esri World Imagery. NASA GIBS overlays are available for daily average precipitation rate (IMERG, mm/h), daytime land surface temperature (MODIS; not air temperature), rolling 8-day NDVI, and surface soil moisture (SMAP). The layer selector includes an observation date and opacity control; the initial observation date is seven days before the current date to accommodate product processing delays. Imagery is not live, and thematic layers show observations rather than forecasts. Coverage can be missing because of clouds, unavailable observations or gaps in a product's archive.
+
+NASA layers use their published Web Mercator native zoom levels (6–9) and automatically open at a regional scale. Zoom is capped at the selected layer’s native resolution, including keyboard, touch and wheel interaction. The zoom-in button is disabled at that limit; satellite zoom is additionally checked against Esri’s tile coverage for the visible area. Higher zoom is held until that check completes, and the map zooms back if the new area lacks imagery. Requests use `blankTile=false` so missing imagery is not rendered as the provider’s grey placeholder. Dates, official color legends and provider attribution remain visible. The selected layer/date/opacity are preserved when opening the enlarged map. No additional API key is required for these configured public endpoints.
+
+Sources: [NASA GIBS access documentation](https://nasa-gibs.github.io/gibs-api-docs/access-basics/), [NASA layer catalog](https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml), [Esri World Imagery](https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer).

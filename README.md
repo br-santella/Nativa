@@ -135,7 +135,7 @@ npm run dev
 Production build: `npm run build && npm run preview`. The built `index.html` must be served over HTTP, not
 opened through `file://`.
 
-The "Compare os cenários" section of the Rotation page calls the API at `VITE_API_URL` (default
+The Rotation strategies page calls the API at `VITE_API_URL` (default
 `http://localhost:8000`, set at build time). The other screens use the demo data in `frontend/src/data.ts`.
 Details: [`frontend/README.md`](frontend/README.md#data-and-backend).
 

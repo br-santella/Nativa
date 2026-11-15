@@ -8,6 +8,7 @@ import './property-wizard.css';
 import LocationMap from './LocationMap';
 import type { LatLon, MapFocus } from './LocationMap';
 import { insideParana } from './coverage';
+import { PRIORITIES } from './priorities';
 
 export type SetupInputs = {
   area: Area; rotacao_atual: string; pesos: Pesos; n_alternativas: number;
@@ -192,7 +193,8 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
        restricoes: {sem_comprador: buyers, maquinas: {plataforma_milho: header, semeadora_consorcio: seeder}}, irrigacao: {disponivel: irrigation} });
    } catch (e) { setError((e as Error).message); }
  }
- const priorityName = priority === 'income' ? say('Mais retorno','More return') : priority === 'soil' ? say('Cuidar da terra','Care for the land') : priority === 'risk' ? say('Mais tranquilidade','More peace of mind') : priority === 'custom' ? say('Do seu jeito','Your own balance') : say('Equilíbrio','Balance');
+ const chosen = PRIORITIES.find(p => p.id === priority);
+ const priorityName = chosen ? (en ? chosen.short.en : chosen.short.pt) : say('Do seu jeito','Your own balance');
  const soilCount = Object.values(soil).filter(v => v !== '').length;
  const summer = options.culturas_verao.find(x => x.id === options.combinacoes.find(c => c.id === rotation)?.verao);
  const sample = options.talhoes_demo.find(x => x.id === demo)!;
@@ -290,12 +292,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
       <div className="wizard-live-note" role="status">{Object.values(soil).filter(v => v !== '').length ? say(`${Object.values(soil).filter(v => v !== '').length} informações do seu solo adicionadas.`, `${Object.values(soil).filter(v => v !== '').length} soil values added.`) : say('Por enquanto, vamos usar dados públicos de solo quando disponíveis.','For now, we’ll use public soil data where available.')}</div>
     </>}
     {step === 4 && <>
-      <div className="wizard-card-stack">{[
-       ['balanced', say('Um pouco de equilíbrio','A little balance'), say('Olhar para renda, solo, água e riscos juntos.','Consider income, soil, water and risks together.'), {renda:5,solo:5,agua:5,pragas:5,risco:5}, '✦'],
-       ['income', say('Mais retorno para a lavoura','More return from my crops'), say('Dar mais atenção ao resultado financeiro.','Give more attention to financial returns.'), {renda:9,solo:3,agua:3,pragas:3,risco:5}, '↗'],
-       ['soil', say('Cuidar da terra para o futuro','Care for the land’s future'), say('Priorizar o solo e o uso da água.','Focus on soil health and water use.'), {renda:4,solo:9,agua:8,pragas:5,risco:5}, '❋'],
-       ['risk', say('Mais tranquilidade no próximo ciclo','More peace of mind next season'), say('Dar mais peso aos riscos climáticos e pragas.','Give more weight to climate risks and pests.'), {renda:4,solo:4,agua:5,pragas:8,risco:9}, '◌'],
-      ].map(([id,title,description,preset,icon]) => <div key={String(id)}>{choice(priority === id, String(title), String(description), () => {setPriority(String(id));setWeights(preset as Pesos);}, String(icon))}</div>)}</div>
+      <div className="wizard-card-stack">{PRIORITIES.map(p => <div key={p.id}>{choice(priority === p.id, en ? p.title.en : p.title.pt, en ? p.description.en : p.description.pt, () => {setPriority(p.id);setWeights(p.pesos);}, p.icon)}</div>)}</div>
       {more(say('Ajuste do seu jeito','Make it your own'), <div className="wizard-slider-grid">{options.criterios.map(({id,nome}) => <label className="wizard-slider" key={id}><span>{t(nome)}<output className="wizard-weight-value">{weights[id as keyof Pesos]}<span>/10</span></output></span><input type="range" min="0" max="10" value={weights[id as keyof Pesos]} onChange={e => {setPriority('custom');setWeights({...weights,[id]:Number(e.target.value)});}}/><span className="wizard-range-labels"><span>{say('Menor prioridade','Lower priority')}</span><span>{say('Maior prioridade','Higher priority')}</span></span></label>)}</div>)}
     </>}
     {step === 5 && <>

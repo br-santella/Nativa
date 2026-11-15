@@ -18,6 +18,9 @@ export type ItemRanking = {
   posicao: number | null;
   id: string;
   rotacao: string;
+  /** Summer crop and second crop of the rotation (ids from GET /v1/opcoes, names in the response language). */
+  verao?: { id: string; nome: string };
+  segunda?: { id: string; nome: string };
   nota: number | null;
   atual: boolean;
   criterios?: { renda: number; solo: number; agua: number; pragas: number; risco: number };

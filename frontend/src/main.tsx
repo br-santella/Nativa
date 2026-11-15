@@ -1,12 +1,16 @@
 import { t as __text, t, locale, useLanguage, LanguageProvider, LanguageSwitcher } from "./i18n";
-import React, { useState, useEffect, useRef, } from "react";
+import React, { useState, useEffect, useMemo, useRef, } from "react";
 import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
-import { months, initialFarm, initialCrops, series, profiles, info, } from "./data";
+import { months, initialFarm, initialCrops, series, info, } from "./data";
 import type { Farm, Crop } from "./data";
 import "./styles.css";
-import EngineScenarios from "./EngineScenarios";
+import RotationStrategies from "./RotationStrategies";
+import SeasonOverview from "./SeasonOverview";
+import PropertyIcon from "./PropertyIcon";
+import FarmMap from "./FarmMap";
+import { initialMapView, INDICATOR_LAYERS, MAP_LAYERS, selectMapLayer } from "./mapLayers";
 import PropertyWizard from "./PropertyWizard";
 import type { SetupInputs } from "./PropertyWizard";
 import PropertySettings from "./PropertySettings";
@@ -31,6 +35,7 @@ const pages: Page[] = [
 ];
 function currentPage(): Page {
     const p = location.hash.slice(1) as Page;
+    if ((p as string) === "settings/property") return "settings";
     if (["signup", "onboard", "login"].includes(p)) return "demo";
     if (p === "farm") return "settings";
     return pages.includes(p) ? p : "landing";
@@ -43,7 +48,7 @@ function CoverageNotice() {
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(saved?.weights ?? profiles.soil), [applied, setApplied] = useState<number[]>(saved?.weights ?? profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState(saved?.settings ?? {
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
     const [deletedCrops, setDeletedCrops] = useState<{ crop: Crop; nextId?: number }[]>([]);
@@ -65,13 +70,44 @@ function App() {
         });
         setDeletedCrops(previous => previous.slice(0, -1));
     }
+    const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
+    const [compactViewport, setCompactViewport] = useState(() => window.matchMedia("(max-width: 1100px)").matches);
+    const sidebarCollapsed = sidebarPreference ?? compactViewport;
+    useEffect(() => {
+        const query = window.matchMedia("(max-width: 1100px)");
+        const update = () => setCompactViewport(query.matches);
+        query.addEventListener("change", update);
+        return () => query.removeEventListener("change", update);
+    }, []);
+    useEffect(() => {
+        if (!menu) return;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        const closeOnEscape = (event: KeyboardEvent) => {
+            if (event.key === "Escape") setMenu(false);
+        };
+        const desktop = window.matchMedia("(min-width: 701px)");
+        const closeOnDesktop = () => { if (desktop.matches) setMenu(false); };
+        desktop.addEventListener("change", closeOnDesktop);
+        window.addEventListener("keydown", closeOnEscape);
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            desktop.removeEventListener("change", closeOnDesktop);
+            window.removeEventListener("keydown", closeOnEscape);
+        };
+    }, [menu]);
+    const [mapView, setMapView] = useState(initialMapView);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
+    // Weights live in setupInputs.pesos (0–10). Settings and the saved state still use the four % values
+    // (water, soil, income, climate risk), derived here so they always match the Rotation page.
+    // Memoised: SeasonOverview re-runs the engine when this array changes.
+    const weights = useMemo(() => setupInputs ? [setupInputs.pesos.agua, setupInputs.pesos.solo, setupInputs.pesos.renda, setupInputs.pesos.risco].map((w) => w * 10) : [50, 50, 50, 50], [setupInputs]);
     // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
     const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
     useEffect(() => {
         if (persisted)
-            setSavedAt(persist({ farm, setupInputs, weights: applied, crops, settings }));
-    }, [persisted, farm, setupInputs, applied, crops, settings]);
+            setSavedAt(persist({ farm, setupInputs, weights, crops, settings }));
+    }, [persisted, farm, setupInputs, crops, settings]);
     function forgetProperty() {
         clearSaved();
         setPersisted(false);
@@ -81,11 +117,8 @@ function App() {
         setCrops(initialCrops);
         setDeletedCrops([]);
         setSetupInputs(undefined);
-        setWeights(profiles.soil);
-        setApplied(profiles.soil);
         toast("Dados da propriedade apagados deste navegador.");
     }
-    const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const reduced = useReducedMotion();
     useEffect(() => {
         if (page !== "landing" || reduced || carouselPaused || carouselFocused)
@@ -112,13 +145,10 @@ function App() {
         const t = setTimeout(() => setNotice(""), 4500);
         return () => clearTimeout(t);
     }, [notice]);
-    useEffect(() => () => {
-        if (timer.current)
-            clearTimeout(timer.current);
-    }, []);
     function go(p: Page) {
-        location.hash = p;
-        if (page === p) {
+        const target = p === "farm" ? "settings" : p;
+        location.hash = target;
+        if (page === target) {
             setMenu(false);
             setModal(null);
             window.scrollTo(0, 0);
@@ -126,18 +156,6 @@ function App() {
     }
     function toast(s: string) {
         setNotice(s);
-    }
-    function compare() {
-        if (!weights.some(Boolean)) {
-            toast("Defina pelo menos uma prioridade maior que zero.");
-            return;
-        }
-        setBusy(true);
-        timer.current = setTimeout(() => {
-            setApplied([...weights]);
-            setBusy(false);
-            toast("Comparação atualizada.");
-        }, 600);
     }
     const navItems: [
         Page,
@@ -150,8 +168,10 @@ function App() {
         ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
     ];
     const open = (m: Modal) => setModal(m);
-    function Logo() {
-        return (<button className="brand" onClick={() => go("landing")} aria-label={__text("NATIVA \u2014 in\u00EDcio")}>
+    function Logo({ toggleSidebar = false }: { toggleSidebar?: boolean } = {}) {
+        const mobileSidebar = toggleSidebar && window.matchMedia("(max-width: 700px)").matches;
+        const label = toggleSidebar ? (mobileSidebar ? "Fechar navegação" : sidebarCollapsed ? "Expandir menu" : "Recolher menu") : "NATIVA — início";
+        return (<button className="brand" onClick={() => toggleSidebar ? (mobileSidebar ? setMenu(false) : setSidebarPreference(!sidebarCollapsed)) : go("landing")} aria-label={__text(label)} title={toggleSidebar ? __text(label) : undefined} aria-expanded={toggleSidebar ? (mobileSidebar ? menu : !sidebarCollapsed) : undefined} aria-controls={toggleSidebar ? "dashboard-sidebar" : undefined}>
         <img src={A.imgLogoNativaEnviada} alt={__text("")}/>
         <span className="brand-wordmark"><strong>{__text("NATIVA")}</strong><small className="brand-slogan">Every harvest begins with a better decision</small></span>
       </button>);
@@ -235,72 +255,6 @@ function App() {
           {__text(kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER")}{__text("\u00B7 s\u00E9rie fict\u00EDcia")}</small>
       </div>);
     }
-    function Map({ expanded = false }: {
-        expanded?: boolean;
-    }) {
-        return (<div className={"farm-map " + (expanded ? "expanded" : "")}>
-        <div className="map-image" style={{ transform: `scale(${zoom})` }}>
-          <img src={A.imgPlanoGeografico} alt={__text("Vista a\u00E9rea ilustrativa de campos agr\u00EDcolas")}/>
-          <img className="field-boundary" src={A.imgLimiteFicticio} alt={__text("Limite fict\u00EDcio da propriedade")}/>
-        </div>
-        <select className="map-layer" aria-label={__text("Camada do mapa")} value={layer} onChange={(e) => setLayer(e.target.value)}>
-          {__text([
-                "Vegetação (NDVI)",
-                "Umidade do solo",
-                "Precipitação",
-                "Temperatura",
-            ].map((x) => (<option key={x} value={x}>{__text(x)}</option>)))}
-        </select>
-        <div className="map-controls">
-          <button aria-label={__text("Aproximar mapa")} onClick={() => setZoom((v) => Math.min(2.4, v + 0.2))}>{__text("+")}</button>
-          <button aria-label={__text("Afastar mapa")} onClick={() => setZoom((v) => Math.max(1, v - 0.2))}>{__text("\u2212")}</button>
-          <button aria-label={__text("Centralizar propriedade")} onClick={() => setZoom(1)}>{__text("\u2316")}</button>
-        </div>
-        <div className="map-farm">
-          <strong>{__text(farm.name)}</strong>
-          <small>{__text(farm.area)}{__text("ha \u2022 limite fict\u00EDcio")}</small>
-        </div>
-        <small className="map-disclaimer">{__text("Imagem ilustrativa \u2022 limites fict\u00EDcios, sem georreferenciamento")}</small>
-        <div className="map-legend">
-          <span>
-            {__text(layer === "Vegetação (NDVI)"
-                ? "NDVI · 0,2–0,9"
-                : layer + " · exemplo")}
-          </span>
-          <div>
-            {__text(["#c4ad70", "#c3d58b", "#90b66c", "#4d8153", "#315b3d"].map((c) => (<i key={c} style={{ background: c }}/>)))}
-          </div>
-        </div>
-        <button className="map-fullscreen" aria-label={__text(expanded ? "Fechar mapa ampliado" : "Ampliar mapa")} onClick={() => open(expanded ? null : "map")}>
-          <img src={A.imgTelaCheia} alt={__text("")}/>
-        </button>
-      </div>);
-    }
-    function ClimateSummary() {
-        return (<section className="panel climate-summary">
-        <div className="section-heading">
-          <div>
-            <h2>{__text("Como o clima est\u00E1 mudando?")}</h2>
-            <p>{__text("Jan\u2013Dez")}{__text(year)}{__text("\u00B7 compara\u00E7\u00E3o entre meses \u00B7 valores demonstrativos")}</p>
-          </div>
-          <select aria-label={__text("Per\u00EDodo dos gr\u00E1ficos")} value={period} onChange={(e) => setPeriod(e.target.value)}>
-            <option value="12">{__text("\u00DAltimos 12 meses")}</option>
-            <option value="6">{__text("\u00DAltimos 6 meses")}</option>
-          </select>
-        </div>
-        <div className="charts-three">
-          {__text((["temperature", "rain", "moisture"] as const).map((kind, i) => (<div key={kind}>
-              <div className="chart-title">
-                <strong>
-                  {__text(["Temperatura", "Precipitação", "Umidade do solo"][i])}
-                </strong>
-                <small>{__text(["°C", "mm/mês", "%"][i])}</small>
-              </div>
-              <Chart kind={kind}/>
-            </div>)))}
-        </div>
-      </section>);
-    }
     function MetricCards() {
         return (<div className="metrics">
         {__text([
@@ -322,28 +276,23 @@ function App() {
                 ],
                 ["Umidade do solo", "32", "%", "↗ +4 p.p. no mês", "SMAP"],
                 ["Índice de vegetação", "0,76", "NDVI", "↗ +0,08 no mês", "MODIS"],
-            ].map((m, i) => (<button className="metric panel" key={m[0]} onClick={() => open("indicators")}>
+            ].map((m, i) => (<button type="button" className={"metric panel" + (mapView.layer === INDICATOR_LAYERS[i] ? " is-selected" : "")} key={m[0]} aria-pressed={mapView.layer === INDICATOR_LAYERS[i]} aria-controls="property-map" title={locale() === "en-US" ? MAP_LAYERS[INDICATOR_LAYERS[i]].en : MAP_LAYERS[INDICATOR_LAYERS[i]].pt} onClick={() => setMapView(current => selectMapLayer(current, INDICATOR_LAYERS[i]))}>
             <span className="metric-title">{__text(m[0])}</span>
             <div className="metric-value">
-              <motion.strong data-node-id={["3:330", "3:336", "3:342", "3:348"][i]} initial={reduced ? false : { opacity: 0.8, y: 3 }} animate={reduced
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: [0.8, 1, 1], y: [3, 0, 0] }} transition={{
-                    duration: 2,
-                    times: [0, 0.325, 1],
-                    ease: ["easeOut", "linear"],
-                    repeat: Infinity,
-                }}>
+              <strong data-node-id={["3:330", "3:336", "3:342", "3:348"][i]}>
                 {__text(m[1])}
-              </motion.strong>
+              </strong>
               <small>{__text(m[2])}</small>
             </div>
             <span className={"delta " + (i < 2 ? "warm" : "")}>{__text(m[3])}</span>
             <small className="metric-source">{__text("NASA")}{__text(m[4])}{__text("\u2022 exemplo")}</small>
             {__text(i === 0 ? (<img className="metric-spark" src={A.imgMinigraficoDeTemperatura} alt={__text("")}/>) : i === 1 ? (<div className="mini-bars">
                 {__text([14, 24, 18, 35, 27, 42, 33].map((v, n) => (<i key={n} style={{ height: v }}/>)))}
-              </div>) : i === 2 ? (<div className="metric-ring">
-                <img src={A.imgUmidadeCircular} alt={__text("")}/>
-                <img src={A.img32DeUmidade} alt={__text("")}/>
+              </div>) : i === 2 ? (<div className="metric-ring" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <circle cx="32" cy="32" r="26" stroke="#29494d" strokeWidth="6" />
+                  <circle cx="32" cy="32" r="26" stroke="#a8c9a3" strokeWidth="6" pathLength="100" strokeDasharray={`${Math.max(0, Math.min(100, Number(m[1].replace(",", "."))))} 100`} transform="rotate(-90 32 32)" />
+                </svg>
               </div>) : (<div className="ndvi-bars">
                 {__text(Array.from({ length: 9 }, (_, n) => (<i key={n} style={{ opacity: n > 6 ? 0.25 : 1 }}/>)))}
               </div>))}
@@ -351,44 +300,28 @@ function App() {
       </div>);
     }
     function Overview() {
-        return (<>
-        <div className="page-heading overview-heading">
-          <div>
-            <h1>{__text("Sua propriedade, uma nova perspectiva.")}</h1>
-            <p>{__text("Explore sua fazenda com dados da NASA e descubra oportunidades para suas pr\u00F3ximas safras.")}</p>
-          </div>
-          <Btn onClick={() => go("rotation")}>{__text("\uFF0B Nova An\u00E1lise")}</Btn>
-        </div>
+        return (<div className="overview-page">
+        <h1 className="overview-title">{__text("Visão Geral")}</h1>
+        <p className="overview-intro">{__text("Acompanhe sua propriedade, entenda o ciclo atual e explore possibilidades para a próxima safra.")}</p>
         <Demo />
+        <section className="overview-current-crop" aria-labelledby="overview-current-crop-title">
+          <div>
+            <small id="overview-current-crop-title"><PropertyIcon kind="farm" />{__text("Nome da propriedade")}</small>
+            <h2>{farm.name}</h2>
+          </div>
+          <dl>
+            <div><dt><PropertyIcon kind="crop" />{__text("CULTIVO ATUAL")}</dt><dd>{__text(farm.crop)}</dd></div>
+            <div><dt><PropertyIcon kind="location" />{__text("Localização")}</dt><dd>{farm.city} · {__text(farm.country)}</dd></div>
+            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{farm.area} ha</dd></div>
+          </dl>
+        </section>
         <div className="overview-map">
-          <Map />
-          <aside className="farm-context">
-            <h2>{__text(farm.name)}</h2>
-            <p>
-              {__text(farm.city)}{__text("\u00B7")}{__text(farm.country)}
-            </p>
-            <small>
-              {__text(farm.latitude)}{__text("/")}{__text(farm.longitude)}{__text("\u2022 coordenadas fict\u00EDcias")}</small>
-            <div className="current-context">
-              <small>{__text("CULTIVO ATUAL")}</small>
-              <strong>{__text(farm.crop)}</strong>
-              <span>{__text("Talh\u00E3o 01 \u00B7")}{__text(farm.area)}{__text("ha")}</span>
-            </div>
-            <hr />
-            <h3>{__text("Um novo olhar para o pr\u00F3ximo ciclo.")}</h3>
-            <LinkButton onClick={() => go("settings")}>{__text("Ver minha propriedade \u2192")}</LinkButton>
-            <LinkButton onClick={() => open("sources")}>{__text("Fontes e limita\u00E7\u00F5es \u2192")}</LinkButton>
+          <FarmMap id="property-map" view={mapView} onViewChange={setMapView} farm={farm} area={setupInputs?.area} onExpand={() => open("map")} />
+          <aside className="overview-indicators" aria-label={__text("Indicadores")}>
+            {MetricCards()}
           </aside>
         </div>
-        <MetricCards />
-        <button className="disclosure" aria-expanded={explain} onClick={() => setExplain(!explain)}>{__text("Entenda os indicadores")}<span>{__text(explain ? "−" : "⌄")}</span>
-        </button>
-        {__text(explain && (<div className="panel inline-info">
-            {__text(info.indicators.items.map(([t, d]) => (<div key={t}>
-                <h3>{__text(t)}</h3>
-                <p>{__text(d)}</p>
-              </div>)))}
-          </div>))}
+        <SeasonOverview onNavigate={go} farm={farm} crops={crops} weights={weights} setupInputs={setupInputs} />
         <section className="plan-banner">
           <div>
             <h2>{__text("Planeje sua pr\u00F3xima safra.")}</h2>
@@ -399,11 +332,7 @@ function App() {
             {__text([A.imgRotation, A.imgFieldRows, A.imgSprout, A.imgWarmAccent].map((src, i) => (<img key={src} className={"art-" + i} src={src} alt={__text("")}/>)))}
           </div>
         </section>
-        <ClimateSummary />
-        <button className="disclosure" aria-expanded={calendar} onClick={() => setCalendar(!calendar)}>{__text("Calend\u00E1rio agr\u00EDcola")}<span>{__text(calendar ? "−" : "⌄")}</span>
-        </button>
-        {__text(calendar && <Timeline />)}
-      </>);
+      </div>);
     }
     function Timeline() {
         return (<section className="panel timeline-panel">
@@ -659,49 +588,7 @@ function App() {
             <p>{__text("Compare caminhos para a pr\u00F3xima safra, com as suas prioridades.")}</p>
           </div>
         </div>
-        <Demo />
-        <section className="panel priorities">
-          <h2>{__text("01 O que importa mais para a sua pr\u00F3xima safra?")}</h2>
-          <p>{__text("Ajuste os controles ou explore os tr\u00EAs perfis predefinidos de prioridade.")}</p>
-          <div className="sliders">
-            {__text([
-                "Economia de água",
-                "Saúde do solo",
-                "Rentabilidade",
-                "Resiliência climática",
-            ].map((label, i) => (<label key={label}>
-                <span>
-                  {__text(label)}
-                  <strong>{__text(weights[i])}{__text("%")}</strong>
-                </span>
-                <input type="range" min="0" max="100" value={weights[i]} aria-label={__text(label)} onChange={(e) => setWeights((prev) => prev.map((v, n) => (n === i ? +e.target.value : v)))}/>
-                <small>{__text("Menor")}<span>{__text("Maior")}</span>
-                </small>
-              </label>)))}
-          </div>
-          <div className="profile-buttons">
-            {__text(([
-                ["soil", "Solo equilibrado"],
-                ["water", "Água e clima"],
-                ["profit", "Rentabilidade"],
-            ] as const).map(([key, label]) => (<button key={key} className={weights.every((v, i) => v === profiles[key][i])
-                    ? "active"
-                    : ""} onClick={() => setWeights([...profiles[key]])}>
-                {__text(label)}
-              </button>)))}
-          </div>
-        </section>
-        <div className="section-heading scenarios-heading">
-          <div>
-            <h2>{__text("02 Compare os cen\u00E1rios")}</h2>
-            <p>{__text("Notas do motor (0\u2013100) ponderadas pelos objetivos acima, com dados reais da sua fazenda.")}</p>
-          </div>
-          <button className="button" onClick={compare} disabled={busy}>
-            {__text(busy ? "Comparando…" : "Comparar Estratégias")}
-          </button>
-        </div>
-        <EngineScenarios setupInputs={setupInputs} weights={applied} latitude={farm.latitude} longitude={farm.longitude} irrigation={farm.irrigation} crops={crops} onSources={() => open("sources")} />
-        <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
+        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} onPesosChange={(pesos) => setSetupInputs((current) => (current ? { ...current, pesos } : current))} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onSources={() => open("sources")} />
       </>);
     }
     function Settings() {
@@ -713,16 +600,14 @@ function App() {
           </div>
                   </div>
         <Demo />
-        <PropertySettings key={JSON.stringify([farm, setupInputs, applied])} farm={farm} inputs={setupInputs} weights={applied} savedAt={savedAt} report={report} onReport={(f) => {
+        <PropertySettings key={JSON.stringify([farm, setupInputs])} farm={farm} inputs={setupInputs} weights={weights} savedAt={savedAt} report={report} onReport={(f) => {
                 setReport(f);
                 if (f)
                     toast("Laudo selecionado localmente. Nenhum arquivo foi enviado.");
-            }} onSave={(nextFarm, inputs, nextWeights) => {
+            }} onSave={(nextFarm, inputs) => {
                 setFarm(nextFarm);
                 setDraft(nextFarm);
                 setSetupInputs(inputs);
-                setWeights(nextWeights);
-                setApplied(nextWeights);
                 setPersisted(true);
                 toast("Alterações salvas. Os cenários foram recalculados.");
             }} onRedo={() => go("demo")} onForget={forgetProperty}/>
@@ -868,9 +753,6 @@ function App() {
             setDraft(nextFarm);
             setSetupInputs(inputs);
             setPersisted(true);
-            const nextWeights = [inputs.pesos.agua * 10, inputs.pesos.solo * 10, inputs.pesos.renda * 10, inputs.pesos.risco * 10];
-            setWeights(nextWeights);
-            setApplied(nextWeights);
             go("overview");
         }} />;
     }
@@ -948,9 +830,8 @@ function App() {
             return <AddCrop />;
         if (modal === "map")
             return (<>
-          <h2>{__text("Mapa \u2022")}{__text(layer)}</h2>
-          <p>{__text("Camada demonstrativa \u2022 valores e \u00E1reas sem georreferenciamento.")}</p>
-          <Map expanded/>
+          <h2>{__text("Minha Propriedade")}</h2>
+          <FarmMap view={mapView} onViewChange={setMapView} farm={farm} area={setupInputs?.area} expanded onExpand={() => open(null)} />
         </>);
         if (modal === "property")
             return (<>
@@ -1004,34 +885,39 @@ function App() {
     }
     const inDashboard = !["landing", "demo", "about"].includes(page);
     return (<>
-      {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className="dashboard">
+      {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className={"dashboard" + (sidebarCollapsed ? " sidebar-collapsed" : "")}>
           {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
-          <aside className={"sidebar " + (menu ? "shown" : "")}>
-            <Logo />
+          <aside id="dashboard-sidebar" className={"sidebar " + (menu ? "shown" : "")}>
+            <div className="sidebar-header">
+              <Logo toggleSidebar />
+              <button className="sidebar-close" aria-label={__text("Fechar navegação")} onClick={() => setMenu(false)}><span aria-hidden="true">×</span></button>
+            </div>
             <small className="nav-section">{__text("PRINCIPAL")}</small>
-            <nav>
+            <nav id="dashboard-nav">
               {__text(navItems.map(([id, label, img], i) => (<React.Fragment key={id}>
-                  {__text(i === 3 && (<small className="nav-section planning">{__text("PLANEJAMENTO")}</small>))}
-                  <button className={page === id ? "selected" : ""} onClick={() => go(id)}>
+                  {__text(i === 2 && (<small className="nav-section planning">{__text("PLANEJAMENTO")}</small>))}
+                  <button className={page === id ? "selected" : ""} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
                     <img src={img} alt={__text("")}/>
-                    {__text(label)}
+                    <span className="nav-label">{__text(label)}</span>
                   </button>
                 </React.Fragment>)))}
             </nav>
             <div className="sidebar-bottom">
-              <button className={page === "settings" ? "selected" : ""} onClick={() => go("settings")}>
-                <img src={A.imgIconeDeNavegacao5} alt={__text("")}/>{__text("Configura\u00E7\u00F5es")}</button>
-              <button onClick={() => open("help")}>
-                <img src={A.imgIconeAjuda} alt={__text("")}/>{__text("Ajuda")}</button>
-              <LinkButton onClick={() => go("landing")}>{__text("Voltar ao in\u00EDcio \u2197")}</LinkButton>
+              <button className={page === "settings" || page === "farm" ? "selected" : ""} aria-label={__text("Configurações")} title={__text("Configurações")} onClick={() => go("settings")}>
+                <img src={A.imgIconeDeNavegacao5} alt={__text("")}/><span className="nav-label">{__text("Configura\u00E7\u00F5es")}</span></button>
+              <button aria-label={__text("Ajuda")} title={__text("Ajuda")} onClick={() => open("help")}>
+                <img src={A.imgIconeAjuda} alt={__text("")}/><span className="nav-label">{__text("Ajuda")}</span></button>
+              <button className="sidebar-home" aria-label={__text("Voltar ao início ↗")} title={__text("Voltar ao início ↗")} onClick={() => go("landing")}><span className="sidebar-home-icon" aria-hidden="true">↗</span><span className="nav-label">{__text("Voltar ao início ↗")}</span></button>
             </div>
           </aside>
           <header className="topbar">
             <LanguageSwitcher />
-            <button className="mobile-menu" aria-label={__text("Abrir navega\u00E7\u00E3o")} onClick={() => setMenu(true)}>{__text("\u2630")}</button>
+            <button className="mobile-menu" aria-expanded={menu} aria-controls="dashboard-sidebar" aria-label={__text("Abrir navega\u00E7\u00E3o")} onClick={() => setMenu(true)}>{__text("\u2630")}</button>
             <span className="mobile-brand">{__text("NATIVA")}</span>
-            <button className="property-select" onClick={() => open("property")}>
-              {__text(farm.name)}{__text("\u2304")}</button>
+            <button className="property-select" title={farm.name} aria-haspopup="dialog" aria-expanded={modal === "property"} onClick={() => open("property")}>
+              <span className="property-select-name">{farm.name}</span>
+              <svg className="property-select-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
           </header>
           <main className="main-content">
             {__text(page === "overview"
