@@ -33,13 +33,15 @@ type Props = {
   onPesosChange?: (pesos: Pesos) => void;
   /** Persists the number of options shown. */
   onCountChange?: (count: number) => void;
+  /** Number of options shown when there is no setup yet (kept by the app like `pesos`). */
+  count?: number;
   onSources: () => void;
   /** Reuse only the side-by-side comparison in the Overview. */
   comparisonOnly?: boolean;
 };
 
 /** Inputs used when the user reaches this page without going through the setup wizard. */
-function fallbackInputs(farm: Farm, crops: Crop[], pesos: Pesos = PRIORITIES[0].pesos): SetupInputs {
+function fallbackInputs(farm: Farm, crops: Crop[], pesos: Pesos = PRIORITIES[0].pesos, count = 3): SetupInputs {
   const lat = Number(farm.latitude), lon = Number(farm.longitude);
   const valid = farm.latitude.trim() !== "" && farm.longitude.trim() !== "" && Number.isFinite(lat) && Number.isFinite(lon);
   const current = rotacaoDoHistorico(crops);
@@ -47,7 +49,7 @@ function fallbackInputs(farm: Farm, crops: Crop[], pesos: Pesos = PRIORITIES[0].
     area: valid ? { lat, lon } : { talhao_id: DEMO_FIELD },
     rotacao_atual: current.id,
     pesos,
-    n_alternativas: 3,
+    n_alternativas: count,
     data_referencia: new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" }),
     problemas_area: [],
     restricoes: { sem_comprador: [], maquinas: { plataforma_milho: true, semeadora_consorcio: true } },
@@ -59,7 +61,7 @@ function fallbackInputs(farm: Farm, crops: Crop[], pesos: Pesos = PRIORITIES[0].
 
 const score = (v: number | null | undefined) => (v == null ? null : Math.round(v * 100));
 
-export default function RotationStrategies({ inputs, farm, crops, pesos: appPesos, onPesosChange, onCountChange, onSources, comparisonOnly = false }: Props) {
+export default function RotationStrategies({ inputs, farm, crops, pesos: appPesos, onPesosChange, onCountChange, count: appCount, onSources, comparisonOnly = false }: Props) {
   const { language } = useLanguage();
   const en = language === "en";
   const lang: Lang = en ? "en" : "pt-BR";
@@ -68,7 +70,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
   const money = (v: number) => `${v < 0 ? "−" : ""}R$ ${Math.abs(Math.round(v)).toLocaleString(en ? "en-US" : "pt-BR")}`;
   const signedMoney = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${money(Math.abs(v))}`;
 
-  const base = useMemo(() => inputs ?? fallbackInputs(farm, crops, appPesos), [inputs, farm, crops, appPesos]);
+  const base = useMemo(() => inputs ?? fallbackInputs(farm, crops, appPesos, appCount), [inputs, farm, crops, appPesos, appCount]);
 
   // 01 · priorities: edits apply automatically after a short pause.
   const [pesos, setPesos] = useState<Pesos>(base.pesos);
