@@ -68,10 +68,10 @@ def main() -> None:
 
     # Figure: min Kendall tau per parameter (worst case across scenarios/signs), 15 most sensitive.
     top = imp.sort_values("min_tau").head(15).iloc[::-1]
-    fig, ax = plt.subplots(figsize=(8, 5.5))
+    fig, ax = plt.subplots(figsize=(9.5, 5.5))
     colors = ["#c0392b" if f > 0 else "#2e86c1" for f in top["top1_flips"]]
     ax.barh(top["label"], 1 - top["min_tau"], color=colors)
-    ax.set_xlabel("1 − Kendall τ (worst case, ±20 %)  — higher = ranking changes more")
+    ax.set_xlabel("1 − Kendall τ, worst case at ±20 % (higher = ranking changes more)")
     ax.set_title("Ranking sensitivity to estimated parameters\n(red = flips the top-1 in at least one scenario)")
     ax.tick_params(axis="y", labelsize=8)
     fig.tight_layout()

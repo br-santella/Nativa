@@ -54,7 +54,8 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Running API out of date**: the uvicorn on port 8000 started at 19:41 on 14/11, without `--reload`, and serves the old code. It needs a restart. The response changes shape and `rotacao_atual` becomes required. Docs and examples already describe the new shape; the running process was not restarted by the docs task.
   Files: `api/field_shift_api/`.
-  Status: pending
+  Done (15/11/2026): the old process (started 02:17 on 15/11, without `--reload`) was stopped and the API was restarted from the `fix/pendencias-motor` branch (`uvicorn field_shift_api.main:app --app-dir api --port 8000`, still without `--reload`). `GET /health` is `ok` and a Curitiba request returns the Região 1 calendar warning. Restart it again after any code change.
+  Status: done
 
 ## Data/infra
 
