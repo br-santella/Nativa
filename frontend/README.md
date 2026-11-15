@@ -49,14 +49,26 @@ Changes are kept in session memory. Reloading the page restores the example. Sig
 
 ## Data and backend
 
-The frontend does not connect to a backend. There is no real authentication, database, AI agent or live connection to NASA. All indicators and scenarios are labeled as demo data, as in the Figma design.
+Only the "Compare os cenários" section of `/#rotation` (`src/EngineScenarios.tsx`) talks to the engine API (`motor_field_shift`, contract in `motor_field_shift/api/README.md`). Every other screen still uses the demo data in `src/data.ts`.
 
-The demo score is:
+The API address is `VITE_API_URL` (default `http://localhost:8000`), baked in at build time; it is the URL the browser uses (see `docker-compose.yml`).
 
-```
-score = round(sum(criterion_score × weight) / sum(weights))
-```
+Flow (`src/api.ts`): `GET /health`, then, if the status is `ok`, `POST /v1/recomendacao` with:
 
-Criteria: water, soil, profitability and resilience. The default profile produces 59 / 84 / 81. Water and climate produces 57 / 83 / 86. Profitability produces 82 / 74 / 65. All-zero weights are rejected by the interface. The scores are not a validated agronomic model.
+| Field | Source in the app |
+|---|---|
+| `area` | `{lat, lon}` from My Property (any point in Paraná); demo plot `{talhao_id: "72638"}` if the coordinates are invalid |
+| `rotacao_atual` | derived from the crop history (`src/rotacaoAtual.ts`); default `soja__milho_safrinha` |
+| `colheita_prevista` | harvest date (dd/mm) of the summer crop still in the field, when it is in the future; otherwise the engine uses the catalog assumption and says so in `avisos` |
+| `pesos` | the four sliders (0–100) divided by 10; `pragas` fixed at 3 |
+| `irrigacao` | "Disponibilidade de irrigação": Sim → `{disponivel: true}`, Não → `{disponivel: false}`, Não informado → omitted |
+
+Every call sends `?lang=pt-BR|en` following the app language switcher, so the engine texts (rotation names, cards, warnings, errors) come back in the same language as the interface; switching the language fetches again.
+
+The screen shows the current rotation and the two best alternatives of the `agora` block (same summer crop), the best option of the `proxima_safra` block (another summer crop), the 2nd-window sowing date the engine used, and the engine `avisos`.
+
+Not sent yet: the soil fields of My Property (the engine's `analise_solo` needs clay + sand, AWC or a fertility field, which the form does not collect), `problemas_area`, `restricoes` and `ajustes`. Endpoints not used yet: `/v1/opcoes`, `/v1/contexto`, `/v1/plano`, `/v1/culturas/fichas`.
+
+Sign-up, the contact form and the soil report upload are still demo-only (no account, message or upload).
 
 Reference design: https://www.figma.com/design/NnT2Qj3CEQCMaquaWkEKUi/Untitled?node-id=0-1
