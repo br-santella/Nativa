@@ -131,8 +131,8 @@ Cada opção do ranking traz um bloco `incerteza`, para o resultado não parecer
 | Campo | O que mostra | Exemplo (72638, milho + braquiária) |
 | --- | --- | --- |
 | Faixa da renda | Margem incremental na pior e na melhor das últimas 5 safras | R$ 60 a R$ 2.943/ha |
-| Faixa da nota | Nota com a renda nesses dois extremos | 0,679 a 0,817 |
-| Nota por safra | Nota repetindo cada safra do histórico | 2021: 0,679 · 2025: 0,817 |
+| Faixa da nota | Nota com a renda nesses dois extremos | 0,682 a 0,819 |
+| Nota por safra | Nota repetindo cada safra do histórico | 2021: 0,682 · 2025: 0,819 |
 | Risco climático | Probabilidade, eventos e confiança | 20 %, geada + déficit, confiança "baixa" |
 | Critérios estimados | Critérios que ainda são estimativa de catálogo | solo, pragas |
 

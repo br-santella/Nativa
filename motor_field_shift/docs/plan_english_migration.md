@@ -1,6 +1,6 @@
 # Plan: migrate all code to English + bilingual API (pt-BR / en)
 
-Status: **queued** (created 15/11/2026, to run when credits are back).
+Status: **done** (created and executed 15/11/2026; merged into `main`; see "Results log" below).
 Tracked in [`pendencias.md`](pendencias.md) → "Code in English + bilingual API".
 
 ## Prompt to start the work

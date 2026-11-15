@@ -3,7 +3,7 @@ const BASE = (import.meta.env.VITE_API_URL ?? "http://localhost:8000").replace(/
 
 export type Pesos = { renda: number; solo: number; agua: number; pragas: number; risco: number };
 
-export type Area = { talhao_id: string } | { lat: number; lon: number };
+export type Area = { talhao_id: string } | { lat: number; lon: number } | { geometry: { type: string; coordinates: unknown[] } };
 
 export type Card = {
   por_que: string;
@@ -27,13 +27,42 @@ export type ItemRanking = {
   motivos?: string[];
 };
 
+export type Eliminada = { id: string; rotacao: string; motivos: string[] };
+
+/** Ranking of one set of combinations; `posicao` restarts at 1 in each block. */
+export type Bloco = { ranking: ItemRanking[]; alternativas: ItemRanking[]; eliminadas: Eliminada[] };
+
+export type DataOrigem = { data: string; origem: "estagio" | "informada" | "premissa" | "derivada" };
+
 export type Recomendacao = {
-  ranking: ItemRanking[];
+  cultura_atual: { id: string; nome: string } | null;
+  colheita_estimada: DataOrigem | null;
+  semeadura_2a: DataOrigem | null;
+  dias_ate_colheita: number | null;
+  /** Same summer crop as the current rotation: what goes in after this harvest. */
+  agora: Bloco | null;
+  /** Other summer crop: decision for the next season, compared to the current rotation. */
+  proxima_safra: Bloco | null;
   atual: ItemRanking | null;
+  /** Compatibility aliases of `agora`. */
+  ranking: ItemRanking[];
   alternativas: ItemRanking[];
-  eliminadas: { id: string; rotacao: string; motivos: string[] }[];
+  eliminadas: Eliminada[];
   avisos: string[];
 };
+
+export type Irrigacao = { disponivel: boolean };
+
+export type EntradaRecomendacao = {
+  area: Area;
+  rotacaoAtual: string;
+  pesos?: Pesos;
+  colheitaPrevista?: string;
+  irrigacao?: Irrigacao;
+};
+
+/** API language: the response is translated on the server (`?lang` wins over the browser's Accept-Language). */
+export type Lang = "pt-BR" | "en";
 
 export type Health = { status: "ok" | "degradado"; dados_carregados: boolean; versao: string; detalhe: string | null };
 
@@ -59,12 +88,20 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return body as T;
 }
 
-export const health = () => request<Health>("/health");
+export const health = (lang: Lang) => request<Health>(`/health?lang=${lang}`);
 
-export const recomendacao = (area: Area, rotacaoAtual: string, pesos?: Pesos) =>
-  request<Recomendacao>("/v1/recomendacao", {
+export const recomendacao = (e: EntradaRecomendacao, lang: Lang, inputs?: Record<string, unknown>) =>
+  request<Recomendacao>(`/v1/recomendacao?lang=${lang}`, {
     method: "POST",
-    body: JSON.stringify({ area, rotacao_atual: rotacaoAtual, pesos, incluir_diagnostico: false }),
+    body: JSON.stringify({
+      ...inputs,
+      area: e.area,
+      rotacao_atual: e.rotacaoAtual,
+      pesos: e.pesos,
+      colheita_prevista: e.colheitaPrevista,
+      irrigacao: e.irrigacao,
+      incluir_diagnostico: false,
+    }),
   });
 
 /** Sliders do NATIVA (0–100: água, solo, rentabilidade, resiliência) -> pesos do motor (0–10). Ver docs/entradas.md. */
