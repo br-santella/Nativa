@@ -14,7 +14,7 @@ export default function SolutionStory({ earth, field, onExplore }: {
 }) {
     const reduced = useReducedMotion();
     const reveal = { initial: { opacity: reduced ? 1 : 0, y: reduced ? 0 : 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: .25 }, transition: { duration: reduced ? 0 : .8 } };
-    return <section className="solution-story" aria-labelledby="solution-title">
+    return <section id="como-funciona" className="solution-story" aria-labelledby="solution-title">
     <div className="solution-intro">
       <img src={earth} alt={__text("Ilustra\u00E7\u00E3o da Terra vista do espa\u00E7o com um sat\u00E9lite")} loading="lazy"/>
       <motion.div {...reveal} className="solution-intro-copy">

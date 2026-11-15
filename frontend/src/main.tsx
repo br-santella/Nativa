@@ -962,14 +962,15 @@ function App() {
     }
     function Landing() {
         const heroImgs = [
-            L.imgFotografiaComZoomSuave,
-            L.imgFotografiaComZoomSuave1,
-            L.imgFotografiaComZoomSuave2,
+            "/assets/hero-br-clima-v1.webp",
+            "/assets/hero-br-orbita-v1.webp",
+            "/assets/hero-br-produtor-v1.webp",
         ];
+        const heroDescriptions = ["Lavouras sob um céu de tempestade no Paraná · imagem ilustrativa gerada por IA", "Brasil visto do espaço · ilustração gerada por IA", "Produtor em uma paisagem rural do Paraná · imagem ilustrativa gerada por IA"];
         return (<div className="landing">
         <nav className="landing-nav">
-          <Logo />
           <LanguageSwitcher />
+          <Logo />
           <div>
             <a href="#como-funciona" onClick={(e) => {
                 e.preventDefault();
@@ -979,9 +980,7 @@ function App() {
             }}>{__text("Como funciona")}</a>
             <a href="#tecnologia" onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("tecnologia")?.scrollIntoView({
-                    behavior: reduced ? "instant" : "smooth",
-                });
+                open("technology");
             }}>{__text("Tecnologia")}</a>
             <button onClick={() => open("technology")}>{__text("Sobre n\u00F3s")}</button>
           </div>
@@ -990,18 +989,13 @@ function App() {
                 if (!event.currentTarget.contains(event.relatedTarget as Node | null))
                     setCarouselFocused(false);
             }}>
-          {__text(heroImgs.map((src, index) => (<img key={src} className={`hero-photo${slide === index ? " hero-photo-active" : ""}`} src={src} alt={__text(slide === index ? "Paisagem agrícola em destaque" : "")} aria-hidden={slide !== index} fetchPriority={index === 0 ? "high" : "auto"} decoding="async"/>)))}
+          {__text(heroImgs.map((src, index) => (<img key={src} className={`hero-photo${slide === index ? " hero-photo-active" : ""}`} src={src} alt={__text(slide === index ? heroDescriptions[index] : "")} aria-hidden={slide !== index} fetchPriority={index === 0 ? "high" : "auto"} decoding="async"/>)))}
           <div className="hero-shade"/>
+          <small className="hero-image-credit">{__text("Imagens ilustrativas geradas por IA")}</small>
           <div className="hero-content">
-            <small>{__text("INTELIG\u00CANCIA QUE VEM DO ESPA\u00C7O")}</small>
-            <h1>
-              {__text([
-                "O futuro da sua\nlavoura começa aqui.",
-                "Um novo olhar\npara a sua terra.",
-                "Da observação\nà próxima safra.",
-            ][slide])}
-            </h1>
-            <p>{__text("Transforme dados espaciais em decis\u00F5es inteligentes para sua propriedade.")}</p>
+            <small>{__text(["O CLIMA MUDA. SEU PLANEJAMENTO TAMBÉM.", "MAIS INFORMAÇÃO. MAIS PREPARO.", "DA ANÁLISE AO PRÓXIMO CICLO."][slide])}</small>
+            <h1>{__text(["Esteja preparado\npara as mudanças do clima.", "Decida com mais contexto.\nDo espaço à sua lavoura.", "Encontre caminhos\npara uma safra mais resiliente."][slide])}</h1>
+            <p>{__text(["Chuvas imprevisíveis e secas prolongadas exigem um novo planejamento. Explore sinais ambientais para preparar o próximo ciclo.", "Explore como observações de clima, solo e vegetação da NASA podem apoiar as decisões da sua propriedade.", "Compare estratégias de rotação considerando água, solo e clima antes de planejar o próximo plantio."][slide])}</p>
             <div>
               <button className="button yellow" onClick={() => go("signup")}>{__text("Come\u00E7ar gratuitamente \u2192")}</button>
               <button className="button outline" onClick={() => go("overview")}>{__text("Conhecer a plataforma")}</button>
@@ -1019,83 +1013,8 @@ function App() {
             </div>
           </div>
         </section>
-        <ClimateStory calmImage={L.imgFotografiaComZoomSuave}/>
+        <ClimateStory/>
         <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={() => go("overview")}/>
-        <section className="how-it-works" id="como-funciona">
-          <small>{__text("SIMPLES DE USAR. AMPLO EM POSSIBILIDADES.")}</small>
-          <h2>{__text("Da observa\u00E7\u00E3o \u00E0 decis\u00E3o.")}</h2>
-          <div className="steps">
-            {__text([
-                [
-                    "Localize sua propriedade.",
-                    "Comece pela sua terra. Informe onde você cultiva e o seu contexto.",
-                    L.imgIconeDoPasso1,
-                ],
-                [
-                    "Explore as condições ambientais.",
-                    "Veja clima, umidade e vegetação com uma nova perspectiva.",
-                    L.imgIconeDoPasso2,
-                ],
-                [
-                    "Compare estratégias de rotação.",
-                    "Explore caminhos para o próximo ciclo com as suas prioridades.",
-                    L.imgIconeDoPasso3,
-                ],
-            ].map(([t, d, img], i) => (<article key={t}>
-                <span>{__text("0")}{__text(i + 1)}</span>
-                <img src={img} alt={__text("")}/>
-                <h3>{__text(t)}</h3>
-                <p>{__text(d)}</p>
-              </article>)))}
-          </div>
-          <LinkButton onClick={() => go("overview")}>{__text("Comece pela nossa propriedade \u2192")}</LinkButton>
-        </section>
-        <section className="space-section" id="tecnologia">
-          <img src={L.imgFotografiaComZoomSuave1} alt={__text("A Terra vista do espa\u00E7o")}/>
-          <div>
-            <small>{__text("TECNOLOGIA NASA. CONTEXTO LOCAL.")}</small>
-            <h2>{__text("Uma nova perspectiva")}<br />{__text("sobre sua lavoura.")}</h2>
-            <h3>{__text("A observa\u00E7\u00E3o da Terra nos ajuda a enxergar al\u00E9m do que est\u00E1 \u00E0 vista.")}</h3>
-            <p>{__text("A NATIVA utiliza dados de observa\u00E7\u00E3o da NASA para explorar condi\u00E7\u00F5es ambientais e apoiar decis\u00F5es agr\u00EDcolas, integrando o espa\u00E7o, o contexto e a realidade da sua propriedade.")}</p>
-            <LinkButton onClick={() => open("technology")}>{__text("Conhe\u00E7a nossa tecnologia \u2192")}</LinkButton>
-            <div className="source-chips">
-              {__text(["POWER", "SMAP", "MODIS"].map((s) => (<span key={s}>
-                  {__text(s)}
-                  <small>{__text("NASA \u00B7 refer\u00EAncia")}</small>
-                </span>)))}
-            </div>
-          </div>
-        </section>
-        <section className="about-section">
-          <div>
-            <small>{__text("SOBRE O PROJETO")}</small>
-            <h2>{__text("Tecnologia espacial.")}<br />{__text("Prop\u00F3sito no campo.")}</h2>
-          </div>
-          <div>
-            <p>{__text("Desenvolvido para o NASA Space Apps Challenge 2026, a NATIVA explora novas formas de usar dados de observa\u00E7\u00E3o da Terra para ampliar as possibilidades do produtor rural.")}</p>
-            <LinkButton onClick={() => open("technology")}>{__text("Ci\u00EAncia aberta. Possibilidades para o campo.")}</LinkButton>
-          </div>
-        </section>
-        <section className="landing-cta">
-          <img src={L.imgFotografiaComZoomSuave2} alt={__text("Campos de cultivo")}/>
-          <div>
-            <small>{__text("DO SEU CAMPO PARA O FUTURO.")}</small>
-            <h2>{__text("Sua pr\u00F3xima safra come\u00E7a")}<br />{__text("com uma decis\u00E3o.")}</h2>
-            <p>{__text("Descubra novas possibilidades para sua propriedade.")}</p>
-            <button className="button yellow" onClick={() => go("signup")}>{__text("Come\u00E7ar gratuitamente \u2192")}</button>
-            <small>{__text("Explore a demonstra\u00E7\u00E3o gratuitamente.")}</small>
-          </div>
-        </section>
-        <footer>
-          <Logo />
-          <div>
-            <button onClick={() => open("technology")}>{__text("Sobre o projeto")}</button>
-            <button onClick={() => open("technology")}>{__text("Tecnologia")}</button>
-            <button onClick={() => open("contact")}>{__text("Contato")}</button>
-          </div>
-          <small>{__text("NASA Space Apps Challenge 2026")}</small>
-          <small>{__text("Prot\u00F3tipo demonstrativo \u2022 dados fict\u00EDcios e cen\u00E1rios sem valida\u00E7\u00E3o local.")}</small>
-        </footer>
       </div>);
     }
     function Signup() {

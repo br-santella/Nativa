@@ -1,4 +1,4 @@
-.climate-story{position:relative;height:300vh;height:300svh;background:#010e11;color:#f5f7f4;isolation:isolate;scroll-margin-top:0}
+.climate-story{position:relative;height:250vh;height:250svh;background:#010e11;color:#f5f7f4;isolation:isolate;scroll-margin-top:0}
 .climate-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#010e11}
 .climate-images,.climate-photo,.climate-darkness,.climate-vignette{position:absolute;inset:0;pointer-events:none}
 .climate-photo{inset:-5% 0;background:#010e11;will-change:transform,opacity}.climate-photo img{width:100%;height:100%;object-fit:cover;display:block}.climate-darkness{background:#010e11}.climate-vignette{background:linear-gradient(180deg,rgba(1,14,17,.35),transparent 27%,rgba(1,14,17,.2) 65%,#010e11),linear-gradient(90deg,rgba(1,14,17,.18),transparent 60%)}
