@@ -20,6 +20,7 @@ import {
 } from "./data";
 import type { Farm, Crop } from "./data";
 import "./styles.css";
+import ClimateStory from "./ClimateStory";
 
 const A = assets.overview,
   L = assets["13:16"];
@@ -1606,75 +1607,7 @@ function App() {
             </div>
           </div>
         </section>
-        <section className="landing-intro" id="produto">
-          <small>UM OLHAR COMPLETO. SEM COMPLICAÇÃO.</small>
-          <h2>
-            Conheça sua terra
-            <br />
-            como nunca antes.
-          </h2>
-          <p>
-            Clima, solo e vegetação. Conectados para abrir novas
-            <br />
-            possibilidades no campo.
-          </p>
-          <button
-            className="product-preview"
-            onClick={() => go("overview")}
-            aria-label="Explorar painel NATIVA"
-          >
-            <div className="preview-dots">
-              <i />
-              <i />
-              <i />
-            </div>
-            <aside>
-              <img src={L.imgLogoNoProduto} alt="" />
-              <strong>NATIVA</strong>
-              {[
-                "Visão Geral",
-                "Minha Propriedade",
-                "Análise Climática",
-                "Histórico de Cultivo",
-                "Estratégias de Rotação",
-              ].map((t) => (
-                <span key={t}>{t}</span>
-              ))}
-            </aside>
-            <div className="preview-main">
-              <h3>Visão Geral da Propriedade</h3>
-              <small>Sua terra, uma nova perspectiva</small>
-              <div className="preview-metrics">
-                {["24,8 °C", "142 mm", "32 %", "0,76 NDVI"].map((t) => (
-                  <div key={t}>
-                    {t}
-                    <small>Indicador demonstrativo</small>
-                  </div>
-                ))}
-              </div>
-              <div className="preview-bottom">
-                <img
-                  className="preview-map"
-                  src={L.imgMapaAgricola}
-                  alt="Mapa agrícola ilustrativo"
-                />
-                <div>
-                  <div className="preview-chart">
-                    <img src={L.imgSerieClimaticaDemonstrativa} alt="" />
-                    <img src={L.imgSerieClimaticaDemonstrativa1} alt="" />
-                  </div>
-                  <div className="preview-note">
-                    Explore as oportunidades da sua próxima safra.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </button>
-          <p className="green-text">
-            Sua propriedade no centro. Dados que ampliam sua visão.
-          </p>
-          <small>Conheça a experiência →</small>
-        </section>
+        <ClimateStory calmImage={L.imgFotografiaComZoomSuave} />
         <section className="how-it-works" id="como-funciona">
           <small>SIMPLES DE USAR. AMPLO EM POSSIBILIDADES.</small>
           <h2>Da observação à decisão.</h2>
