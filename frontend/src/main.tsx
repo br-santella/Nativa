@@ -58,6 +58,7 @@ function App() {
     const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState({
         temperature: "Graus Celsius (°C)",
     });
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>();
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const reduced = useReducedMotion();
@@ -1066,26 +1067,31 @@ function App() {
     }
     const inDashboard = !["landing", "demo", "about"].includes(page);
     return (<DraftContext.Provider value={{ draft, setDraft }}>
-      {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className="dashboard">
+      {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className={"dashboard" + (sidebarCollapsed ? " sidebar-collapsed" : "")}>
           {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
           <aside className={"sidebar " + (menu ? "shown" : "")}>
-            <Logo />
+            <div className="sidebar-header">
+              <Logo />
+              <button className="sidebar-toggle" aria-expanded={!sidebarCollapsed} aria-controls="dashboard-nav" aria-label={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} title={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} onClick={() => setSidebarCollapsed(v => !v)}>
+                <span aria-hidden="true">{sidebarCollapsed ? "»" : "«"}</span>
+              </button>
+            </div>
             <small className="nav-section">{__text("PRINCIPAL")}</small>
-            <nav>
+            <nav id="dashboard-nav">
               {__text(navItems.map(([id, label, img], i) => (<React.Fragment key={id}>
                   {__text(i === 2 && (<small className="nav-section planning">{__text("PLANEJAMENTO")}</small>))}
-                  <button className={page === id ? "selected" : ""} onClick={() => go(id)}>
+                  <button className={page === id ? "selected" : ""} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
                     <img src={img} alt={__text("")}/>
-                    {__text(label)}
+                    <span className="nav-label">{__text(label)}</span>
                   </button>
                 </React.Fragment>)))}
             </nav>
             <div className="sidebar-bottom">
-              <button className={page === "settings" || page === "farm" ? "selected" : ""} onClick={() => go("settings")}>
-                <img src={A.imgIconeDeNavegacao5} alt={__text("")}/>{__text("Configura\u00E7\u00F5es")}</button>
-              <button onClick={() => open("help")}>
-                <img src={A.imgIconeAjuda} alt={__text("")}/>{__text("Ajuda")}</button>
-              <LinkButton onClick={() => go("landing")}>{__text("Voltar ao in\u00EDcio \u2197")}</LinkButton>
+              <button className={page === "settings" || page === "farm" ? "selected" : ""} aria-label={__text("Configurações")} title={__text("Configurações")} onClick={() => go("settings")}>
+                <img src={A.imgIconeDeNavegacao5} alt={__text("")}/><span className="nav-label">{__text("Configura\u00E7\u00F5es")}</span></button>
+              <button aria-label={__text("Ajuda")} title={__text("Ajuda")} onClick={() => open("help")}>
+                <img src={A.imgIconeAjuda} alt={__text("")}/><span className="nav-label">{__text("Ajuda")}</span></button>
+              <button className="sidebar-home" aria-label={__text("Voltar ao início ↗")} title={__text("Voltar ao início ↗")} onClick={() => go("landing")}><span className="sidebar-home-icon" aria-hidden="true">↗</span><span className="nav-label">{__text("Voltar ao início ↗")}</span></button>
             </div>
           </aside>
           <header className="topbar">
