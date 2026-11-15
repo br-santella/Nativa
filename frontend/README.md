@@ -26,8 +26,8 @@ To open the built version, serve the `dist/` folder with an HTTP server. Do not 
 - `/#signup` and `/#onboard`: two-step demo sign-up.
 - `/#overview`: illustrative map, indicators, charts and expandable calendar.
 - `/#farm`: property, soil and irrigation form, and local selection of a soil report.
-- `/#history`: calendar and crop registration with date validation.
-- `/#climate`: demo series with year selection.
+- `/#crop-climate`: crop records (add, delete and undo), calendar and a compact climate sidebar. Each of the four indicators opens an accessible detail dialog with year/period filters, seasonality, sources and limitations. Climate values are illustrative; summary values are calculated from the selected demo series (rainfall sum, other indicators mean).
+- `/#history` and `/#climate`: legacy links redirect to `/#crop-climate`.
 - `/#rotation`: three scenarios, priority controls, comparison and details.
 - `/#settings`: preferences and data references.
 
@@ -35,6 +35,7 @@ To open the built version, serve the `dist/` folder with an HTTP server. Do not 
 
 - `src/main.tsx`: React application, navigation and interactions.
 - `src/styles.css`: visual tokens and responsive layout in plain CSS.
+- `src/crop-climate.css`: scoped styles for History and its indicator details.
 - `src/data.ts`: demo data, scenarios and scoring formula.
 - `src/assets.json`: references to the local images and vectors exported from Figma.
 - `public/assets/`: original image and SVG files from the design.
@@ -47,7 +48,7 @@ Navigation between screens; forms with validation; property editing; crop regist
 
 First-access tutorial (`src/OnboardingTour.tsx`): the first time the dashboard opens, a 10-step guided tour highlights the property selector, map and indicators, current season and each menu item (on phones, the ☰ button stands in for the hidden sidebar). Finishing or skipping stores `nativa-tour-done-v1` in `localStorage`; Help → "Ver tutorial guiado" replays it.
 
-Changes are kept in session memory. Reloading the page restores the example. Sign-up does not create real accounts, the contact form does not send messages and the selected soil report is not uploaded or interpreted.
+Before saving a property, changes are kept in session memory. After setup or saving the property, crop additions, deletions and undo updates use the existing local browser persistence. Undo history and climate filters remain in session memory; reloading clears them. Sign-up does not create real accounts, the contact form does not send messages and the selected soil report is not uploaded or interpreted.
 
 ## Data and backend
 

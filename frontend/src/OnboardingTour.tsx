@@ -36,13 +36,13 @@ const STEPS: Step[] = [
         body: "O coração da NATIVA: compare alternativas para a próxima safra e ajuste o peso de água, solo, renda e risco climático.",
     },
     {
-        target: '[data-tour="climate"]',
+        target: '[data-tour="crop-climate"]',
         fallback: MENU,
         title: "Análise Climática",
         body: "Chuva, temperatura e umidade do solo ao longo dos anos, para entender o clima da sua região.",
     },
     {
-        target: '[data-tour="history"]',
+        target: '[data-tour="crop-climate"]',
         fallback: MENU,
         title: "Histórico de Cultivo",
         body: "Registre o que foi plantado em cada safra. Quanto mais completo o histórico, melhores as recomendações.",

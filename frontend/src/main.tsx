@@ -15,6 +15,7 @@ const ha = (v: string | number) => Number.isFinite(Number(v)) && String(v).trim(
 const SAMPLE_CROP_IDS = new Set(initialCrops.map((c) => c.id));
 import type { Farm, Crop } from "./data";
 import "./styles.css";
+import "./crop-climate.css";
 import "./overview-theme.css";
 import RotationStrategies from "./RotationStrategies";
 import SeasonOverview from "./SeasonOverview";
@@ -34,21 +35,25 @@ import type { Pesos } from "./api";
 const saved = loadSaved();
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
-type Page = "about" | "landing" | "demo" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
-type Modal = null | "sources" | "indicators" | "help" | "technology" | "addCrop" | "property" | "contact" | "map";
+type Page = "about" | "landing" | "demo" | "overview" | "farm" | "crop-climate" | "rotation" | "settings";
+type Modal = null | "sources" | "indicators" | "help" | "technology" | "addCrop" | "property" | "contact" | "map" | "climate-detail";
 const pages: Page[] = [
     "about",
     "landing",
     "demo",
     "overview",
     "farm",
-    "history",
-    "climate",
+    "crop-climate",
     "rotation",
     "settings",
 ];
 function currentPage(): Page {
-    const p = location.hash.slice(1) as Page;
+    const hash = location.hash.slice(1);
+    if (hash === "history" || hash === "climate") {
+        history.replaceState(null, "", "#crop-climate");
+        return "crop-climate";
+    }
+    const p = hash as Page;
     if ((p as string) === "settings/property") return "settings";
     if (["signup", "onboard", "login"].includes(p)) return "demo";
     if (p === "farm") return "settings";
@@ -78,9 +83,15 @@ function CoverageNotice() {
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [calendarYear, setCalendarYear] = useState(""), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
+    const climateYears = ["2025", "2024", "2023"];
+    const availableYears = Array.from(new Set([...climateYears, ...crops.flatMap(c => {
+        const first = asDate(c.plant).getFullYear(), last = asDate(c.harvest).getFullYear();
+        return Array.from({ length: Math.max(0, last - first) + 1 }, (_, i) => String(first + i));
+    })])).sort().reverse();
+    const [climateIndicator, setClimateIndicator] = useState<keyof typeof series>("temperature");
     const [deletedCrops, setDeletedCrops] = useState<{ crop: Crop; nextId?: number }[]>([]);
     function deleteCrop(id: number) {
         const index = crops.findIndex(crop => crop.id === id);
@@ -213,9 +224,8 @@ function App() {
         string
     ][] = [
         ["overview", "Visão Geral", A.imgIconeDeNavegacao],
+        ["crop-climate", "Histórico", A.imgIconeDeNavegacao2],
         ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
-        ["climate", "Análise Climática", A.imgIconeDeNavegacao3],
-        ["history", "Histórico de Cultivo", A.imgIconeDeNavegacao2],
     ];
     const open = (m: Modal) => setModal(m);
     function Logo({ toggleSidebar = false }: { toggleSidebar?: boolean } = {}) {
@@ -253,10 +263,8 @@ function App() {
         kind?: keyof typeof series;
         large?: boolean;
     }) {
-        const vals = series[kind]
-            .slice(period === "6" ? 6 : 0)
-            .map((x) => year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x)
-            .map((x) => (kind === "temperature" ? toUnit(x) : x));
+        const vals = climateValues(kind);
+        if (!vals.length) return <p className="climate-unavailable" role="status">{__text("Sem série climática demonstrativa para este ano.")}</p>;
         const color = {
             temperature: "#efae38",
             rain: "#8ebdc6",
@@ -327,7 +335,7 @@ function App() {
             <MonitoringCards farm={farm} area={setupInputs?.area} fahrenheit={settings.temperature.startsWith("Graus Fahrenheit")} view={mapView} onChange={setMapView} />
           </aside>
         </div>
-        <SeasonOverview onNavigate={go} farm={farm} crops={crops} pesos={pesos} setupInputs={setupInputs} />
+        <SeasonOverview onNavigate={target => go(target === "history" ? "crop-climate" : target)} farm={farm} crops={crops} pesos={pesos} setupInputs={setupInputs} />
         <section className="plan-banner">
           <div>
             <h2>{__text("Planeje sua pr\u00F3xima safra.")}</h2>
@@ -343,12 +351,7 @@ function App() {
     }
     function Timeline() {
         // Calendar built from the crop history: one row per crop that overlaps the chosen year.
-        const years = Array.from(new Set(crops.flatMap((c) => {
-            const from = asDate(c.plant).getFullYear(), to = asDate(c.harvest).getFullYear();
-            return Array.from({ length: Math.max(0, to - from) + 1 }, (_, i) => String(from + i));
-        }))).sort().reverse();
-        const thisYear = String(new Date().getFullYear());
-        const shown = years.includes(calendarYear) ? calendarYear : years.includes(thisYear) ? thisYear : years[0] ?? thisYear;
+        const shown = year;
         const y = Number(shown);
         const covered = new Array(12).fill(false);
         const rows = [...sortedCrops].reverse().flatMap((c) => {
@@ -385,8 +388,8 @@ function App() {
             <h2>{__text("Uma vis\u00E3o de cada safra")}</h2>
             <p>{__text(PLOT_NAME)} • {ha(farm.area)} ha • {__text("plantio, desenvolvimento e colheita do hist\u00F3rico de cultivo")}</p>
           </div>
-          <select aria-label={__text("Ano do calend\u00E1rio")} value={shown} onChange={(e) => setCalendarYear(e.target.value)}>
-            {years.map((option) => (<option key={option} value={option}>{option}</option>))}
+          <select aria-label={__text("Ano do calend\u00E1rio")} value={year} onChange={(e) => { setYear(e.target.value); setPeriod("12"); }}>
+            {__text(availableYears.map((y) => (<option key={y} value={y}>{__text(y)}</option>)))}
           </select>
         </div>
         <div className="timeline-scroll">
@@ -417,53 +420,39 @@ function App() {
         </div>
       </section>);
     }
-    function History() {
-        const fmt = (s: string) => asDate(s).toLocaleDateString(locale());
-        const plantYears = new Set(crops.map((c) => asDate(c.plant).getFullYear())).size;
-        const perYear = plantYears ? crops.length / plantYears : 0;
-        const status = currentRecord ? cropStatus(currentRecord) : null;
-        return (<>
-        <div className="page-heading">
-          <div>
-            <h1>{__text("Hist\u00F3rico de Cultivo")}</h1>
-            <p>{__text("Cada safra conta uma parte da hist\u00F3ria da sua terra.")}</p>
+    const climateIndicators = {
+        temperature: { name: "Temperatura média", source: "NASA POWER", unit: tempUnit, color: "#efae38", description: "Meses mais quentes podem aumentar a demanda por água.", limitation: "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local." },
+        rain: { name: "Precipitação acumulada", source: "NASA POWER", unit: "mm", color: "#8ebdc6", description: "A chuva se concentra entre outubro e março neste exemplo.", limitation: "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local." },
+        moisture: { name: "Umidade do solo", source: "NASA SMAP", unit: "%", color: "#a8c9a3", description: "Água na camada superficial; não representa toda a zona de raízes.", limitation: "Umidade na camada superficial do solo. A conversão para percentual é ilustrativa e não descreve toda a zona de raízes." },
+        ndvi: { name: "Índice de vegetação (NDVI)", source: "NASA MODIS", unit: "", color: "#8ca53b", description: "NDVI indica atividade da vegetação, não rendimento da safra.", limitation: "Índice espectral relacionado ao vigor vegetal. Nuvens, resolução e época do ano afetam a leitura." },
+    };
+    function climateValues(kind: keyof typeof series) {
+        if (!climateYears.includes(year)) return [];
+        return series[kind].slice(period === "6" ? 6 : 0)
+            .map(x => year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x)
+            .map(x => kind === "temperature" ? toUnit(x) : x);
+    }
+    function climateValue(kind: keyof typeof series) {
+        const values = climateValues(kind);
+        if (!values.length) return __text("Dados indisponíveis");
+        const value = kind === "rain" ? values.reduce((a, b) => a + b, 0) : values.reduce((a, b) => a + b, 0) / values.length;
+        return value.toLocaleString(locale(), { maximumFractionDigits: kind === "ndvi" ? 2 : 1 });
+    }
+    function CropClimate() {
+        const fmt = (value: string) => new Date(value + "T12:00:00").toLocaleDateString(locale());
+        return <div className="crop-climate-page">
+          <div className="page-heading"><div>
+            <h1>{__text("Histórico")}</h1>
+            <p>{__text("Acompanhe suas safras e as condições climáticas da propriedade.")}</p>
+          </div></div>
+          <Demo />
+          <div className="crop-climate-layout">
+            <div className="crop-climate-main">
+        <section className="panel crop-records" aria-labelledby="crop-records-title">
+          <div className="section-heading">
+            <div><small>{__text("Histórico de Cultivo")}</small><h2 id="crop-records-title">{__text("Cultivos registrados")}</h2></div>
+            <Btn onClick={() => open("addCrop")}>{__text("＋ Adicionar cultivo")}</Btn>
           </div>
-          <Btn onClick={() => open("addCrop")}>{__text("\uFF0B Adicionar cultivo")}</Btn>
-        </div>
-        <Demo />
-        <div className="grid-two">
-          <section className="panel current-crop">
-            <small>{__text("CULTIVO ATUAL \u2022 TALH\u00C3O 01")}</small>
-            <div>
-              <h2>{__text(farm.crop)}</h2>
-              {status && <span>{__text(status)}</span>}
-            </div>
-            <p>{currentRecord
-                ? <>{__text("Plantio")}: {fmtDate(currentRecord.plant)} → {__text(status === "Concluído" ? "Colheita" : "Colheita prevista")}: {fmtDate(currentRecord.harvest)}</>
-                : __text("Sem registro deste cultivo no hist\u00F3rico.")}</p>
-            <p>{__text("Rota\u00E7\u00E3o atual")}: {__text(currentRotation)}</p>
-          </section>
-          <section className="panel">
-            <h2>{__text("Seu hist\u00F3rico em n\u00FAmeros")}</h2>
-            <div className="numbers">
-              <div>
-                <strong>{crops.length}</strong>
-                <small>{__text("cultivos registrados")}</small>
-              </div>
-              <div>
-                <strong>{plantYears}</strong>
-                <small>{__text("anos de hist\u00F3rico")}</small>
-              </div>
-              <div>
-                <strong>{num(perYear, Number.isInteger(perYear) ? 0 : 1)}</strong>
-                <small>{__text("cultivos por ano")}</small>
-              </div>
-            </div>
-          </section>
-        </div>
-        <Timeline />
-        <section className="panel">
-          <h2>{__text("Cultivos registrados")}</h2>
           <div className="crop-delete-feedback" role="status" aria-live="polite">
             {deletedCrops.length > 0 && <>
               <span>{__text("Cultivo excluído.")} {__text(deletedCrops.at(-1)!.crop.crop)} · {seasonOf(deletedCrops.at(-1)!.crop.plant)}</span>
@@ -518,76 +507,55 @@ function App() {
           </div>
           <small>{__text("* Data prevista, n\u00E3o observada. Situa\u00E7\u00E3o calculada pelas datas de plantio e colheita.")}</small>
         </section>
-        <section className="callout">
-          <div>
-            <h3>{__text("O pr\u00F3ximo ciclo come\u00E7a com o que voc\u00EA j\u00E1 aprendeu.")}</h3>
-            <p>{__text("Use seu hist\u00F3rico para explorar estrat\u00E9gias de rota\u00E7\u00E3o.")}</p>
+              <div className="crop-calendar"><Timeline /></div>
+
+            </div>
+            <aside className="panel crop-climate-sidebar" aria-labelledby="climate-summary-title">
+              <header><small>{__text("Análise Climática")}</small><h2 id="climate-summary-title">{__text("Resumo climático")}</h2><p>{__text("Clique em um indicador para explorar os detalhes.")}</p></header>
+              <div className="crop-climate-indicators">
+                {(Object.keys(climateIndicators) as (keyof typeof series)[]).map(kind => {
+                    const indicator = climateIndicators[kind];
+                    const values = climateValues(kind);
+                    const min = kind === "temperature" ? toUnit(15) : 0;
+                    const max = { temperature: toUnit(35), rain: 300, moisture: 60, ndvi: 1 }[kind];
+                    const points = values.map((v, i) => `${i * 240 / (values.length - 1)},${52 - (v - min) / (max - min || 1) * 40}`).join(" ");
+                    return <button type="button" className="climate-mini" key={kind} aria-haspopup="dialog" onClick={() => { setClimateIndicator(kind); open("climate-detail"); }}>
+                      <span className="climate-mini-heading"><span>{__text(indicator.name)}</span><span aria-hidden="true">↗</span></span>
+                      <span className="climate-mini-value" style={{ color: indicator.color }}>{climateValue(kind)} <small>{values.length ? indicator.unit : ""}</small></span>
+                      {values.length ? <svg viewBox="0 0 240 64" aria-hidden="true" focusable="false">
+                        {kind === "rain" ? values.map((v, i) => <rect key={i} x={i * 240 / values.length + 3} y={56 - v / max * 44} width={240 / values.length - 6} height={v / max * 44} rx="2" fill={indicator.color} />) : <polyline points={points} stroke={indicator.color} strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />}
+                      </svg> : <span className="climate-unavailable">{__text("Sem série climática demonstrativa para este ano.")}</span>}
+                      <span className="climate-mini-period">{__text(period === "6" ? "Jul–Dez" : "Jan–Dez")} {year} <span>{__text("Ver detalhes →")}</span></span>
+                    </button>;
+                })}
+              </div>
+              <p className="climate-summary-note">{__text("Séries demonstrativas, não medições da propriedade.")}</p>
+              <LinkButton onClick={() => open("sources")}>{__text("Fontes e limitações →")}</LinkButton>
+            </aside>
           </div>
-          <Btn onClick={() => go("rotation")}>{__text("Explorar estrat\u00E9gias \u2192")}</Btn>
-        </section>
-      </>);
-    }
-    function Climate() {
-        return (<>
-        <div className="page-heading">
-          <div>
-            <h1>{__text("An\u00E1lise Clim\u00E1tica")}</h1>
-            <p>{__text("Do hist\u00F3rico ao planejamento: entenda os sinais do clima.")}</p>
-          </div>
-        </div>
-        <Demo />
-        <div className="period-bar">
-          <span>{__text("Per\u00EDodo de an\u00E1lise")}</span>
-          <div>
-            {__text(["2023", "2024", "2025"].map((y) => (<button key={y} className={year === y ? "active" : ""} onClick={() => {
-                    setYear(y);
-                    setPeriod("12");
-                }}>
-                {__text(y)}
-              </button>)))}
-          </div>
-          <small>{__text("\u25CF Hist\u00F3rico ilustrativo")}</small>
-          <small className="warm">{__text("Estimativa ilustrativa")}</small>
-          <small>{__text("Proje\u00E7\u00E3o ilustrativa")}</small>
-        </div>
-        <div className="grid-two climate-grid">
-          {__text((["temperature", "rain", "moisture", "ndvi"] as const).map((kind, i) => (<section className="panel" key={kind}>
-                <div className="section-heading">
-                  <div>
-                    <h2>
-                      {__text([
-                    "Temperatura média",
-                    "Precipitação média mensal",
-                    "Umidade do solo ⓘ",
-                    "Vigor da vegetação ⓘ",
-                ][i])}
-                    </h2>
-                    <p>{`NASA ${i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER"} • `}{__text("exemplo de s\u00E9rie hist\u00F3rica")}</p>
-                  </div>
-                  <strong className={"climate-number n" + i}>
-                    {__text([
-                    `${num(toUnit(year === "2025" ? 24.8 : year === "2024" ? 23.1 : 25.8))} ${tempUnit}`,
-                    year === "2025"
-                        ? "121 mm"
-                        : year === "2024"
-                            ? "113 mm"
-                            : "126 mm",
-                    "32%",
-                    num(0.76, 2),
-                ][i])}
-                  </strong>
+              <section className="plan-banner crop-plan-banner">
+                <div>
+                  <h2>{__text("Planeje sua próxima safra.")}</h2>
+                  <p>{__text("Compare estratégias de rotação considerando o clima, o solo e as prioridades da sua propriedade.")}</p>
+                  <button type="button" className="button" onClick={() => go("rotation")}>{__text("Comparar estratégias →")}</button>
                 </div>
-                <Chart kind={kind} large/>
-                <p>
-                  {__text([
-                    "Meses mais quentes podem aumentar a demanda por água.",
-                    "A chuva se concentra entre outubro e março neste exemplo.",
-                    "Água na camada superficial; não representa toda a zona de raízes.",
-                    "NDVI indica atividade da vegetação, não rendimento da safra.",
-                ][i])}
-                </p>
-              </section>)))}
-        </div>
+                <div className="banner-art" aria-hidden="true">
+                  {[A.imgRotation, A.imgFieldRows, A.imgSprout, A.imgWarmAccent].map((src, i) => <img key={src} className={"art-" + i} src={src} alt="" />)}
+                </div>
+              </section>
+        </div>;
+    }
+    function ClimateDetail() {
+        const indicator = climateIndicators[climateIndicator];
+        return <div className="climate-detail">
+          <header><small>{indicator.source} · {__text("DADOS DEMONSTRATIVOS")}</small><h2 id="climate-detail-title">{__text(indicator.name)}</h2></header>
+          <div className="climate-detail-filters">
+            <label>{__text("Ano")}<select value={year} onChange={e => setYear(e.target.value)}>{availableYears.map(y => <option key={y}>{y}</option>)}</select></label>
+            <label>{__text("Período de análise")}<select value={period} onChange={e => setPeriod(e.target.value)}><option value="12">{__text("12 meses")}</option><option value="6">{__text("6 meses (Jul–Dez)")}</option></select></label>
+            <strong style={{ color: indicator.color }}>{climateValue(climateIndicator)} <small>{climateValues(climateIndicator).length ? indicator.unit : ""}</small></strong>
+          </div>
+          <Chart kind={climateIndicator} large />
+          <section className="climate-detail-explanation"><h3>{__text("Interpretação e limitações")}</h3><p>{__text(indicator.description)}</p><p>{__text(indicator.limitation)}</p><p>{__text("As linhas tracejadas são ilustrativas; não representam uma previsão meteorológica.")}</p></section>
         <div className="two-col">
           <section className="panel">
             <h2>{__text("Planeje com a sazonalidade")}</h2>
@@ -618,7 +586,7 @@ function App() {
           </div>
           <LinkButton onClick={() => open("sources")}>{__text("Ver detalhes \u2192")}</LinkButton>
         </section>
-      </>);
+        </div>;
     }
     function Rotation() {
         return (<>
@@ -1005,17 +973,15 @@ function App() {
           <main className="main-content">
             {__text(page === "overview"
                 ? Overview()
-                : page === "history"
-                        ? History()
-                        : page === "climate"
-                            ? Climate()
+                : page === "crop-climate"
+                        ? CropClimate()
                             : page === "rotation"
                                 ? Rotation()
                                 : Settings())}
           </main>
         </div>))}
-      {__text(modal !== null && (<Dialog onClose={() => open(null)} wide={modal === "map"}>
-          <ModalContent />
+      {__text(modal !== null && (<Dialog onClose={() => open(null)} wide={modal === "map" || modal === "climate-detail"} labelledBy={modal === "climate-detail" ? "climate-detail-title" : undefined}>
+          {modal === "climate-detail" ? ClimateDetail() : <ModalContent />}
         </Dialog>))}
       {tour && page === "overview" && (<OnboardingTour onClose={() => setTour(false)} onFinish={() => { setTour(false); go("rotation"); }}/>)}
       {__text(notice && (<div className="toast" role="status">{__text("\u2713")}{__text(notice)}
@@ -1035,20 +1001,23 @@ function EngineStatus() {
     const label = { checking: "verificando…", ok: "conectada", degraded: "degradada", offline: "indisponível" }[status];
     return (<small className={"engine-status " + status}>● {__text("API")}: {__text(label)}</small>);
 }
-function Dialog({ children, onClose, wide, }: {
+function Dialog({ children, onClose, wide, labelledBy, }: {
     children: React.ReactNode;
     onClose: () => void;
     wide: boolean;
+    labelledBy?: string;
 }) {
     const ref = useRef<HTMLDialogElement>(null);
     useEffect(() => {
         const d = ref.current;
+        const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         d?.showModal();
         return () => {
             d?.close();
+            if (previousFocus?.isConnected) previousFocus.focus();
         };
     }, []);
-    return (<dialog ref={ref} className={"modal " + (wide ? "modal-wide" : "")} aria-label={__text("Detalhes NATIVA")} onCancel={(e) => {
+    return (<dialog ref={ref} className={"modal " + (wide ? "modal-wide" : "")} aria-label={labelledBy ? undefined : __text("Detalhes NATIVA")} aria-labelledby={labelledBy} onCancel={(e) => {
             e.preventDefault();
             onClose();
         }} onClick={(e) => {
