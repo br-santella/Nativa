@@ -16,7 +16,8 @@ const cases = [
   { place: 'BRASIL · PREÇOS AO CONSUMIDOR · MAIO DE 2024', title: 'O impacto não para na porteira.', metric: '+20,61%', caption: 'no preço da batata-inglesa no Brasil em um mês, pelo IPCA.', text: 'As chuvas no RS atingiram parte da produção. A transição entre safras também reduziu a oferta — a alta não teve uma causa única.', source: 'IBGE · maio de 2024 em relação a abril', refs: ['ibgePrecos', 'contextoPrecos'] },
   { place: 'RIO GRANDE DO SUL · ABASTECIMENTO · 22/05/2024', title: 'Do campo à mesa da escola.', metric: '380 escolas', caption: 'abertas relataram dificuldade para obter ao menos um alimento normalmente adquirido.', text: 'Proteínas, frutas e hortaliças estavam entre os itens afetados. Lavouras perdidas e acessos interrompidos atingiam também a alimentação da população.', source: 'Emater/RS-Ascar · dados da SEDUC em 22/05/2024', refs: ['emater'] },
 ] as const;
-const windows = [[0, .025, .08, .12], [.09, .14, .25, .29], [.26, .31, .46, .50], [.47, .52, .65, .69], [.66, .71, .82, .86], [.83, .89, 1, 1]];
+// Text windows do not overlap: only the photographs crossfade.
+const windows = [[0, .025, .075, .10], [.105, .14, .245, .275], [.28, .315, .455, .485], [.49, .525, .645, .675], [.68, .715, .815, .845], [.85, .89, 1, 1]];
 function interpolate(p: number, xs: number[], ys: number[]) {
   if (p <= xs[0]) return ys[0];
   for (let i = 1; i < xs.length; i++) if (p <= xs[i]) return ys[i - 1] + (ys[i] - ys[i - 1]) * (p - xs[i - 1]) / (xs[i] - xs[i - 1]);
@@ -25,7 +26,7 @@ function interpolate(p: number, xs: number[], ys: number[]) {
 function Scene({ progress, index, children }: { progress: number; index: number; children: React.ReactNode }) {
   const opacity = interpolate(progress, windows[index], [0, 1, 1, index === 5 ? 1 : 0]);
   const y = interpolate(progress, windows[index], [18, 0, 0, -18]);
-  return <div className={`climate-scene climate-scene-${index}`} style={{ opacity, transform: `translateY(${y}px)` }} aria-hidden="true">{children}</div>;
+  return <div className={`climate-scene climate-scene-${index}`} style={{ opacity, visibility: opacity > 0 ? "visible" : "hidden", transform: `translateY(${y}px)` }} aria-hidden="true">{children}</div>;
 }
 function Photo({ progress, src, range, initial = false }: { progress: number; src: string; range: number[]; initial?: boolean }) {
   const opacity = interpolate(progress, range, [initial ? 1 : 0, 1, 1, 0]);
