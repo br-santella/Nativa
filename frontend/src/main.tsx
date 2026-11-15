@@ -12,11 +12,13 @@ const ha = (v: string | number) => Number.isFinite(Number(v)) && String(v).trim(
 const SAMPLE_CROP_IDS = new Set(initialCrops.map((c) => c.id));
 import type { Farm, Crop } from "./data";
 import "./styles.css";
+import "./overview-theme.css";
 import RotationStrategies from "./RotationStrategies";
 import SeasonOverview from "./SeasonOverview";
 import PropertyIcon from "./PropertyIcon";
 import FarmMap from "./FarmMap";
-import { initialMapView, INDICATOR_LAYERS, MAP_LAYERS, selectMapLayer } from "./mapLayers";
+import { initialMapView } from "./mapLayers";
+import MonitoringCards from "./MonitoringCards";
 import PropertyWizard from "./PropertyWizard";
 import type { SetupInputs } from "./PropertyWizard";
 import PropertySettings from "./PropertySettings";
@@ -160,6 +162,10 @@ function App() {
             window.scrollTo(0, 0);
         }
     }
+    // Once the property is set up, the demo entry points skip the signup and open the dashboard.
+    function enterDemo() {
+        go(persisted ? "overview" : "demo");
+    }
     function toast(s: string) {
         setNotice(s);
     }
@@ -169,9 +175,9 @@ function App() {
         string
     ][] = [
         ["overview", "Visão Geral", A.imgIconeDeNavegacao],
+        ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
         ["climate", "Análise Climática", A.imgIconeDeNavegacao3],
         ["history", "Histórico de Cultivo", A.imgIconeDeNavegacao2],
-        ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
     ];
     const open = (m: Modal) => setModal(m);
     function Logo({ toggleSidebar = false }: { toggleSidebar?: boolean } = {}) {
@@ -260,55 +266,11 @@ function App() {
         <small>{`● NASA ${kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} · `}{__text("s\u00E9rie fict\u00EDcia")}</small>
       </div>);
     }
-    function MetricCards() {
-        return (<div className="metrics">
-        {__text([
-                [
-                    "Temperatura média",
-                    settings.temperature.startsWith("Graus Fahrenheit")
-                        ? num(76.6)
-                        : num(24.8),
-                    settings.temperature.startsWith("Graus Fahrenheit") ? "°F" : "°C",
-                    "↗ +1,2 °C no histórico",
-                    "POWER",
-                ],
-                [
-                    "Precipitação média mensal",
-                    "121",
-                    "mm",
-                    "↘ −18% no histórico",
-                    "POWER",
-                ],
-                ["Umidade do solo", "32", "%", "↗ +4 p.p. no mês", "SMAP"],
-                ["Índice de vegetação", num(0.76, 2), "NDVI", "↗ +0,08 no mês", "MODIS"],
-            ].map((m, i) => (<button type="button" className={"metric panel" + (mapView.layer === INDICATOR_LAYERS[i] ? " is-selected" : "")} key={m[0]} aria-pressed={mapView.layer === INDICATOR_LAYERS[i]} aria-controls="property-map" title={locale() === "en-US" ? MAP_LAYERS[INDICATOR_LAYERS[i]].en : MAP_LAYERS[INDICATOR_LAYERS[i]].pt} onClick={() => setMapView(current => selectMapLayer(current, INDICATOR_LAYERS[i]))}>
-            <span className="metric-title">{__text(m[0])}</span>
-            <div className="metric-value">
-              <strong data-node-id={["3:330", "3:336", "3:342", "3:348"][i]}>
-                {__text(m[1])}
-              </strong>
-              <small>{__text(m[2])}</small>
-            </div>
-            <span className={"delta " + (i < 2 ? "warm" : "")}>{__text(m[3])}</span>
-            <small className="metric-source">{`NASA ${m[4]} • `}{__text("exemplo")}</small>
-            {__text(i === 0 ? (<img className="metric-spark" src={A.imgMinigraficoDeTemperatura} alt={__text("")}/>) : i === 1 ? (<div className="mini-bars">
-                {__text([14, 24, 18, 35, 27, 42, 33].map((v, n) => (<i key={n} style={{ height: v }}/>)))}
-              </div>) : i === 2 ? (<div className="metric-ring" aria-hidden="true">
-                <svg viewBox="0 0 64 64" fill="none">
-                  <circle cx="32" cy="32" r="26" stroke="#29494d" strokeWidth="6" />
-                  <circle cx="32" cy="32" r="26" stroke="#a8c9a3" strokeWidth="6" pathLength="100" strokeDasharray={`${Math.max(0, Math.min(100, Number(m[1].replace(",", "."))))} 100`} transform="rotate(-90 32 32)" />
-                </svg>
-              </div>) : (<div className="ndvi-bars">
-                {__text(Array.from({ length: 9 }, (_, n) => (<i key={n} style={{ opacity: n > 6 ? 0.25 : 1 }}/>)))}
-              </div>))}
-          </button>)))}
-      </div>);
-    }
     function Overview() {
         return (<div className="overview-page">
         <h1 className="overview-title">{__text("Visão Geral")}</h1>
         <p className="overview-intro">{__text("Acompanhe sua propriedade, entenda o ciclo atual e explore possibilidades para a próxima safra.")}</p>
-        <Demo />
+        <p className="demo">{locale() === "en-US" ? "Climate indicators: API estimates at the property reference point. Other demonstration information remains illustrative." : "Indicadores climáticos: estimativas via API no ponto de referência da propriedade. Outras informações de demonstração permanecem ilustrativas."}</p>
         <section className="overview-current-crop" aria-labelledby="overview-current-crop-title">
           <div>
             <small id="overview-current-crop-title"><PropertyIcon kind="farm" />{__text("Nome da propriedade")}</small>
@@ -323,7 +285,7 @@ function App() {
         <div className="overview-map">
           <FarmMap id="property-map" view={mapView} onViewChange={setMapView} farm={farm} area={setupInputs?.area} onExpand={() => open("map")} />
           <aside className="overview-indicators" aria-label={__text("Indicadores")}>
-            {MetricCards()}
+            <MonitoringCards farm={farm} area={setupInputs?.area} fahrenheit={settings.temperature.startsWith("Graus Fahrenheit")} view={mapView} onChange={setMapView} />
           </aside>
         </div>
         <SeasonOverview onNavigate={go} farm={farm} crops={crops} weights={weights} setupInputs={setupInputs} />
@@ -716,7 +678,7 @@ function App() {
             <h1>{__text(["Esteja preparado\npara as mudanças do clima.", "Decida com mais contexto.\nDo espaço à sua lavoura.", "Encontre caminhos\npara uma safra mais resiliente."][slide])}</h1>
             <p>{__text(["Chuvas imprevisíveis e secas prolongadas exigem um novo planejamento. Explore sinais ambientais para preparar o próximo ciclo.", "Explore como observações de clima, solo e vegetação da NASA podem apoiar as decisões da sua propriedade.", "Compare estratégias de rotação considerando água, solo e clima antes de planejar o próximo plantio."][slide])}</p>
             <div>
-              <button className="button yellow" onClick={() => go("demo")}>{__text("Explore a demo →")}</button>
+              <button className="button yellow" onClick={enterDemo}>{__text(persisted ? "Continuar na demo →" : "Explore a demo →")}</button>
             </div>
           </div>
           <div className="carousel-controls">
@@ -732,13 +694,13 @@ function App() {
           </div>
         </section>
         <ClimateStory/>
-        <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={() => go("demo")}/>
+        <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={enterDemo}/>
       </div>);
     }
     function AboutPage() {
         const members = ["Fernanda", "Bruna", "Pedro", "Caio", "Lucas", "Enzo"];
         return <div className="landing about-page">
-            <nav className="landing-nav"><LanguageSwitcher /><Logo /><div><button onClick={() => go("landing")}>{__text("Voltar ao início")}</button><button className="button yellow" onClick={() => go("demo")}>{__text("Explore a demo →")}</button></div></nav>
+            <nav className="landing-nav"><LanguageSwitcher /><Logo /><div><button onClick={() => go("landing")}>{__text("Voltar ao início")}</button><button className="button yellow" onClick={enterDemo}>{__text(persisted ? "Continuar na demo →" : "Explore a demo →")}</button></div></nav>
             <main className="about-content">
                 <header className="about-intro"><span className="about-eyebrow">AGRO NAUTAS · NATIVA</span><h1>{__text("Seis pessoas. Uma missão em comum.")}</h1><p>{__text("Criamos a NATIVA para aproximar a observação da Terra das decisões no campo. Somos a equipe AgroNautas, participante do NASA Space Apps Challenge.")}</p></header>
                 <section className="about-team" aria-label={__text("Nossa equipe")}>
@@ -896,9 +858,8 @@ function App() {
             </div>
             <small className="nav-section">{__text("Principal")}</small>
             <nav id="dashboard-nav">
-              {__text(navItems.map(([id, label, img], i) => (<React.Fragment key={id}>
-                  {__text(i === 2 && (<small className="nav-section planning">{__text("Planejamento")}</small>))}
-                  <button className={page === id ? "selected" : ""} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
+              {__text(navItems.map(([id, label, img]) => (<React.Fragment key={id}>
+                  <button className={page === id ? "selected" : ""} aria-current={page === id ? "page" : undefined} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
                     <img src={img} alt={__text("")}/>
                     <span className="nav-label">{__text(label)}</span>
                   </button>
@@ -909,7 +870,7 @@ function App() {
                 <img src={A.imgIconeDeNavegacao5} alt={__text("")}/><span className="nav-label">{__text("Configura\u00E7\u00F5es")}</span></button>
               <button aria-label={__text("Ajuda")} title={__text("Ajuda")} onClick={() => open("help")}>
                 <img src={A.imgIconeAjuda} alt={__text("")}/><span className="nav-label">{__text("Ajuda")}</span></button>
-              <button className="sidebar-home" aria-label={__text("Voltar ao início ↗")} title={__text("Voltar ao início ↗")} onClick={() => go("landing")}><span className="sidebar-home-icon" aria-hidden="true">↗</span><span className="nav-label">{__text("Voltar ao início ↗")}</span></button>
+              <button className="sidebar-home" aria-label={__text("Voltar ao início")} title={__text("Voltar ao início")} onClick={() => go("landing")}><span className="sidebar-home-icon" aria-hidden="true">←</span><span className="nav-label">{__text("Voltar ao início")}</span></button>
             </div>
           </aside>
           <header className="topbar">

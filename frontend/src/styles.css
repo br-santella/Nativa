@@ -3596,8 +3596,21 @@ footer > small:last-child {
 
 .sidebar-header { display: flex; align-items: center; gap: 4px; }
 .sidebar-header .brand { min-width: 0; flex: 1; }
-.sidebar-home-icon { display: none; }
-.sidebar-bottom > .sidebar-home { font-size: 10px; color: #708b8e; }
+/* Prominent "back to home" action at the bottom of the dashboard sidebar. */
+.sidebar-bottom > .sidebar-home {
+  justify-content: center;
+  margin-top: 16px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+.sidebar-bottom > .sidebar-home:hover,
+.sidebar-bottom > .sidebar-home:focus-visible {
+  background: var(--green);
+  color: var(--bg);
+}
 @media (min-width: 701px) {
   .sidebar-collapsed .sidebar { width: 72px; padding-inline: 12px; }
   .sidebar-collapsed .topbar,
@@ -3609,7 +3622,7 @@ footer > small:last-child {
   .sidebar-collapsed .nav-section.planning { border-top: 1px solid #28464b; }
   .sidebar-collapsed .sidebar nav button,
   .sidebar-collapsed .sidebar-bottom > button { justify-content: center; padding-inline: 0; }
-  .sidebar-collapsed .sidebar-home-icon { display: inline; font-size: 20px; }
+  .sidebar-collapsed .sidebar-home-icon { font-size: 18px; }
 }
 
 /* Let dashboard sections respond to the actual space beside the menu. */
@@ -4259,8 +4272,10 @@ small.error.full {
 .season-soil-score progress::-moz-progress-bar { background: #34c985; }
 
 .dashboard .sidebar nav .selected,
-.dashboard .sidebar-bottom .selected { background: #00573f; color: #c4f2db; }
-.dashboard .sidebar .selected::before { background: #34c985; }
+.dashboard .sidebar-bottom .selected { background: var(--agro-yellow, #ffbf22); color: #152217; }
+.dashboard .sidebar .selected::before { background: #9c6d0a; }
+.dashboard .sidebar nav .selected img,
+.dashboard .sidebar-bottom .selected img { filter: brightness(0); opacity: .8; }
 
 .overview-intro { margin: 0 0 18px; color: #9aadb0; font-size: 14px; line-height: 1.6; }
 @media (max-width: 700px) {

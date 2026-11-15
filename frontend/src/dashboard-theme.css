@@ -1,0 +1,18 @@
+/* Shared visual tokens for Overview and Rotation Strategies. */
+:root {
+  --agro-yellow: #ffbf22;
+  --agro-panel: #10271f;
+  --agro-deep: #0b211c;
+  --agro-line: #365046;
+  --agro-soft-line: #2d443a;
+  --agro-text: #e7ecdf;
+  --agro-muted: #a9bbaa;
+  --agro-faint: #94a99b;
+  --agro-up: #9ad3a4;
+  --agro-down: #ffb59a;
+  --agro-ribbon: #1a3a2e;
+  --agro-reference-ribbon: #20352f;
+  --agro-button: #1d3d31;
+  --agro-radius: 16px;
+  --agro-control-radius: 10px;
+}
