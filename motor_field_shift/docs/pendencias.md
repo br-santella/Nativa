@@ -132,7 +132,9 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Fertility cost only charged on grain second crops**: liming and extra P/K enter only when the 2nd crop is a grain (`V2 = None` for cover crops/fallow), so with fertility informed cover crops gain ~R$ 550/ha in the comparison, and the summer crop (soy vs. summer corn in `proxima_safra`) never carries it. Liming is an area-level need; decide (agronomist) whether it applies to every rotation.
   Files: `src/field_shift/app/estado_area.py`.
-  Status: pending
+  Done (15/11/2026), conservative option: liming is now charged to every candidate, including covers and fallow, with the same V2 (`V2_AREA` = 60%); P/K fertilizer stays on grain crops only (no dose model for covers). With the same liming on all candidates the ~R$ 550/ha advantage of covers is gone; absolute scores drop when fertility is informed, the relative order is what matters. The card says liming is an area-level need charged to covers too. The summer crop still does not carry it, which is neutral inside a block (soybean and summer corn share the same V2). Tests: `test_liming_formula_and_reference_prnt`, `test_corn_wheat_and_unsourced_fertilizer_costs`, `test_poor_and_acid_fertility`.
+  Depends on an agronomist: confirm that liming should be charged to every rotation (and not only to the crop that "needs" it), and the V2 used for covers.
+  Status: done
 
 ## Research
 

@@ -227,9 +227,14 @@ def test_corn_wheat_and_unsourced_fertilizer_costs():
     assert "sem fonte confirmada" in feijao["adubacao_pk"]["detalhe"] and "Calagem" == feijao["calagem"]["rotulo"]
     sorgo = {i["chave"]: i for i in EA.custos(_cand("Soja → sorgo"), estado)}
     assert abs(sorgo["adubacao_pk"]["custo"] - 0.6 * (40 * EA.PRECO_P2O5_R_KG + 30 * EA.PRECO_K2O_R_KG)) < 1e-6
-    # covers and fallow get neither liming nor P/K fertilizer
+    # covers and fallow carry the same liming as a grain crop (area-level need) but no P/K fertilizer (no dose model)
     for n in ("Soja → nabo forrageiro (cobertura)", "Soja → pousio", "Soja → aveia (cobertura/palha)"):
-        assert EA.custos(_cand(n), estado) == []
+        items = EA.custos(_cand(n), estado)
+        assert [i["chave"] for i in items] == ["calagem"]
+        assert items[0]["custo"] == pytest.approx(trigo["calagem"]["custo"])  # same V2 -> same liming as wheat
+        assert "necessidade da área" in items[0]["detalhe"] and "validar com agrônomo" in items[0]["detalhe"]
+    # without V%/CEC nothing is estimated for covers either
+    assert EA.custos(_cand("Soja → pousio"), {"problemas": [], "fert": EA.preparar_fertilidade({"p_mg_dm3": 3}, 50)}) == []
     # no V%/CEC -> no liming; rich soil -> saving; "condição a evitar" -> no P fertilizer
     so_p = EA.custos(_cand("Soja → trigo"), {"fert": EA.preparar_fertilidade({"p_mg_dm3": 30}, 50), "problemas": []})
     assert [i["chave"] for i in so_p] == ["adubacao_pk"] and so_p[0]["custo"] < 0
@@ -355,8 +360,14 @@ def test_poor_and_acid_fertility(base):
         assert x[i]["margem"]["total_r_ha"] < b[i]["margem"]["total_r_ha"]
     for i in ("soja__nabo_forrageiro", "soja__aveia_nabo", "soja__milheto_crotalaria"):
         assert x[i]["criterios"]["solo"] > b[i]["criterios"]["solo"]
-    assert x["soja__aveia"]["criterios"] == b["soja__aveia"]["criterios"] and x["soja__aveia"]["margem"]["total_r_ha"] == b["soja__aveia"]["margem"]["total_r_ha"]
-    assert x["soja__nabo_forrageiro"]["nota"] > b["soja__nabo_forrageiro"]["nota"]
+    # oat (no P/K model, no solo effect) pays only the area-level liming, the same amount as wheat; solo/pragas criteria do not move
+    ca, cb = x["soja__aveia"]["criterios"], b["soja__aveia"]["criterios"]
+    assert {k: v for k, v in ca.items() if k != "renda"} == {k: v for k, v in cb.items() if k != "renda"} and ca["renda"] < cb["renda"]
+    liming = {i: next(it["margem_r_ha"] for it in x[i]["margem"]["itens"] if it["cultura"] == "Calagem") for i in ("soja__aveia", "soja__trigo")}
+    assert liming["soja__aveia"] == pytest.approx(liming["soja__trigo"], abs=1.0)
+    assert (b["soja__aveia"]["margem"]["total_r_ha"] - x["soja__aveia"]["margem"]["total_r_ha"]) == pytest.approx(-liming["soja__aveia"], abs=1.0)
+    # every candidate now carries the liming, so absolute scores drop; the recycling bonus must still lift radish relative to oat
+    assert (x["soja__nabo_forrageiro"]["nota"] - x["soja__aveia"]["nota"]) > (b["soja__nabo_forrageiro"]["nota"] - b["soja__aveia"]["nota"])
     assert x["soja__trigo"]["nota"] < b["soja__trigo"]["nota"]
     assert "Problemas da área não informados: não considerados." in r["metodologia"]["ajustes_aplicados"]
     assert any("Fertilidade informada" in a for a in r["metodologia"]["ajustes_aplicados"])

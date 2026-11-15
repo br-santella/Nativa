@@ -221,6 +221,9 @@ CALAGEM_ANOS = 3  # lime cost is spread over this many years; only partial suppo
 # class "baixa" (V 51-70%), so we use ONE value inside that range. Soybean: 60% (Manual PR, via Embrapa Soja Doc. 417, 2019);
 # wheat: V2 = 60% in the CBPTT 2020 equation. Corn, beans, sorghum: only the class range is confirmed; 60 is our pick inside it.
 V2 = {"milho_safrinha": 60.0, "milho_braquiaria": 60.0, "trigo": 60.0, "feijao_safrinha": 60.0, "sorgo": 60.0}
+# Liming corrects the acidity of the AREA, not of one crop: covers and fallow are charged with it too (with the same V2), otherwise they
+# would look ~R$ 550/ha better than grain crops on an acid soil. Modelling premise, to be confirmed by an agronomist.
+V2_AREA = 60.0
 V2_FONTE_CURTA = "60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020)"
 V2_FONTE = ("V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: "
             "Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, "
@@ -330,15 +333,17 @@ def custos(c: dict, estado: dict | None) -> list[dict]:
     if not fert:
         return []
     out, seg = [], c["segunda"]
-    if seg in V2:
-        nc = _nc_t_ha(fert, V2[seg])
-        if nc:
-            anual = nc * CALCARIO_R_T / CALAGEM_ANOS
-            out.append(dict(chave="calagem", rotulo="Calagem", custo=anual,
-                            detalhe=f"NC = ({V2[seg]:g} − V% {fert['valores']['v_pct']:.0f})/100 × CTC {fert['valores']['ctc_cmolc_dm3']:g} / PRNT "
-                                    f"{PRNT:.0%} = {nc:.1f} t/ha × R$ {CALCARIO_R_T:g}/t, diluída em {CALAGEM_ANOS} anos; fórmula do Manual PR "
-                                    f"(SENAR-AR/PR PR.0404) com PRNT de referência da {PRNT_FONTE}; V2: {V2_FONTE_CURTA}; "
-                                    f"preço do calcário, teto de 6 t/ha e diluição em 3 anos: {FONTE_ESTIMATIVA}"))
+    v2 = V2.get(seg, V2_AREA)
+    nc = _nc_t_ha(fert, v2)
+    if nc:
+        anual = nc * CALCARIO_R_T / CALAGEM_ANOS
+        area_note = "" if seg in V2 else ("; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las "
+                                          "(premissa de modelagem, validar com agrônomo)")
+        out.append(dict(chave="calagem", rotulo="Calagem", custo=anual,
+                        detalhe=f"NC = ({v2:g} − V% {fert['valores']['v_pct']:.0f})/100 × CTC {fert['valores']['ctc_cmolc_dm3']:g} / PRNT "
+                                f"{PRNT:.0%} = {nc:.1f} t/ha × R$ {CALCARIO_R_T:g}/t, diluída em {CALAGEM_ANOS} anos; fórmula do Manual PR "
+                                f"(SENAR-AR/PR PR.0404) com PRNT de referência da {PRNT_FONTE}; V2: {V2_FONTE_CURTA}; "
+                                f"preço do calcário, teto de 6 t/ha e diluição em 3 anos: {FONTE_ESTIMATIVA}{area_note}"))
     dd = _dose_delta(seg, fert)
     if dd:
         dp, dk, parts, src = dd
@@ -423,7 +428,7 @@ def card(c: dict, estado: dict | None) -> dict:
             ev.append(f"Fertilidade: critério {e['criterio']} {e['delta']:+.2f} ({e['motivo']}).")
         for it in custos(c, estado):
             ev.append(f"Fertilidade: {it['rotulo']} {'+' if it['custo'] >= 0 else '−'}R$ {abs(it['custo']):.0f}/ha/ano ({it['detalhe']}).")
-        if c["segunda"] in V2 and _nc_t_ha(fert, V2[c["segunda"]]) is None:
+        if _nc_t_ha(fert, V2.get(c["segunda"], V2_AREA)) is None:
             lac.append("Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.")
         if fert["ausentes"]:
             lac.append("Fertilidade parcial: não informados " + ", ".join(fert["ausentes"]) + "; esses itens não entram na análise.")
