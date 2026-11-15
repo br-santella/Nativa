@@ -135,3 +135,18 @@ def test_language_resolution(client, headers, query, expected):
 def test_openapi_not_translated(client):
     """The OpenAPI schema stays in Portuguese whatever the requested language."""
     assert client.get("/openapi.json?lang=en").json() == client.get("/openapi.json").json()
+
+
+def test_internal_error_translated(client, monkeypatch):
+    """500 is produced outside the language middleware and must still follow the requested language."""
+    from field_shift.core import service
+
+    def boom(*a, **k):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(service, "options", boom)
+    r = client.get("/v1/opcoes?lang=en")
+    assert r.status_code == 500 and r.headers["content-language"] == "en"
+    assert r.json() == {"erro": "interno", "mensagem": "Internal server error."}
+    r = client.get("/v1/opcoes")
+    assert r.json() == {"erro": "interno", "mensagem": "Erro interno do servidor."}

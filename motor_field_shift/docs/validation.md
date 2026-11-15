@@ -14,7 +14,7 @@ There is no ground-truth label of the kind "rotation X was the right choice on f
 | 4 | Expert panel | Do agronomists rank the options like the engine? | Blind ranking by agronomists (Embrapa, IDR-PR, cooperatives) | Not started (depends on people) |
 | 5 | Satellite check | Do real fields behave as the catalog assumes (rotations practised, effect on the following soybean)? | MapBiomas, HLS NDVI | Done (section 5) |
 
-Component checks that already exist: NASA POWER against 7 INMET stations (Tmin correlation 0.94, POWER underestimates frost days by ~40%; `docs/motor.md`, `src/field_shift/clima/validacao.py`).
+Component checks that already exist: NASA POWER against 7 INMET stations (Tmin correlation 0.94, POWER underestimates frost days by ~40%; `docs/motor.md`, `src/field_shift/climate/station_validation.py`).
 
 ## 1. Sensitivity and invariants
 
@@ -111,7 +111,7 @@ ZARC (Zoneamento Agrícola de Risco Climático, MAPA/Embrapa) is the official so
 - **Source:** "Tábua de risco" for season 2025/2026, open CSV at [dados.agricultura.gov.br](https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico) (CC-BY). There is one row per crop × municipality × soil class × cycle group, and 36 ten-day periods (*decêndios*: days 1–10, 11–20, 21–end of each month). Each period holds the risk class 20, 30 or 40 (% chance of loss) or 0 (not indicated). Only Paraná rows are kept (105,992 of 1,026,973), in `data/raw/zarc/tabua_2025_2026_pr.parquet`.
 - **ZARC side:** rainfed rows only. For each soil class the lowest risk over cycle groups is taken, then the lowest over soil classes (`best`). This is the most permissive reading ("is there a ZARC-indicated option in this municipality?"). The share of soil classes in which the period is indicated is also kept.
 - **Engine side:** for each of the 399 Paraná municipalities (centroid → NASA POWER cell) and each engine sowing date (15/01, 01/02, 15/02, 01/03, 15/03):
-  - *eligibility*: is the candidate eliminated by the hard rules (`engine.checar_regras`)?
+  - *eligibility*: is the candidate eliminated by the hard rules (`engine.check_rules`)?
   - *loss probability*: 1 − Π(1 − pᵢ) over the candidate's climate risks (frost in flowering/grain filling for the sowing date, dry spell ≥ 15 days in Mar–Apr; section 2.2 is this original engine, section 2.4 the engine with the water deficit). This is the same quantity as the risk criterion (risk criterion = 1 − loss), and it is mapped to the ZARC classes (≤ 20 %, ≤ 30 %, ≤ 40 %, > 40 % = not indicated).
 - **Crop mapping:**
 
@@ -174,7 +174,7 @@ ZARC (Zoneamento Agrícola de Risco Climático, MAPA/Embrapa) is the official so
 
 ### 2.3 Consequences for the engine (tracked in `docs/pendencias.md`)
 
-1. **Use the ZARC table directly** (done as a warning, see 2.4). It is open, per municipality, per ten-day period and per crop. Mark (or optionally eliminate) the candidates whose sowing date is outside ZARC for the field's municipality, instead of the generic warning `AVISO_ZARC`. This closes the 01/03–15/03 corn gap and the 36 municipalities without zoning, and the card can cite the ordinance (`Portaria`).
+1. **Use the ZARC table directly** (done as a warning, see 2.4). It is open, per municipality, per ten-day period and per crop. Mark (or optionally eliminate) the candidates whose sowing date is outside ZARC for the field's municipality, instead of the generic warning `ZARC_WARNING`. This closes the 01/03–15/03 corn gap and the 36 municipalities without zoning, and the card can cite the ordinance (`Portaria`).
 2. **End the sorghum window at 10/03**, or derive it from ZARC per municipality.
 3. **Review the frost/dry-spell model of sorghum** (the corn/beans pessimism was fixed by the water deficit, see 2.4; sorghum is still open) (it has its own frost sensitivity, not corn's) and the engine's pessimism at intermediate dates (threshold and dry-spell window). Recalibrate against the ZARC classes.
 

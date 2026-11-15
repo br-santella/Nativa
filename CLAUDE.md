@@ -24,11 +24,11 @@ Ferramenta de apoio à decisão de rotação de culturas com dados da NASA, foca
 
 - Todo código novo é escrito em **inglês**: identificadores (variáveis, funções, classes, módulos), comentários, docstrings, mensagens de log/erro internas e nomes de testes.
 - Exceção: nomes de campos do contrato público da API já existentes (ex.: `rotacao_atual`, `analise_solo`, `proxima_safra`) e o conteúdo agronômico exibido ao usuário (catálogo, textos dos cards) continuam em português para não quebrar o frontend; mudar isso só com pedido explícito.
-- **Código existente em português também será migrado** para inglês (módulos, pacotes, identificadores, comentários, testes), conforme `motor_field_shift/docs/plan_english_migration.md`. Ao mexer num arquivo ainda em PT, não misturar idiomas: seguir o plano.
+- **Código existente já foi migrado** para inglês (módulos, pacotes, identificadores, comentários, testes), conforme `motor_field_shift/docs/plan_english_migration.md` (log de resultados lá). Se encontrar algo ainda em PT, migrar seguindo o plano, sem misturar idiomas.
 - A migração não pode quebrar nada: suíte completa (`uv run pytest`, `uv run ruff check .`) e testes golden da API passando a cada fase; a resposta pt-BR da API deve ficar idêntica.
 
 ## Idioma da API
 
 - A API responde em **pt-BR por padrão** e em **inglês** sob pedido: `?lang=pt-BR|en` > header `Accept-Language` > padrão pt-BR; responde com `Content-Language`.
-- Textos ao usuário (catálogo, cards, motivos, avisos, erros) ficam em catálogos de mensagens (`pt_BR.json` / `en.json`), nunca hardcoded no motor; o motor gera chaves + parâmetros e a tradução acontece na borda da resposta.
-- Todo texto novo ao usuário entra nos dois idiomas; teste garante que os catálogos têm as mesmas chaves.
+- O motor escreve os textos ao usuário em pt-BR; a API traduz a resposta para inglês na borda (`src/field_shift/i18n/`, middleware em `api/field_shift_api/main.py`) com o catálogo `src/field_shift/i18n/en.json`, cujas chaves são os templates pt-BR extraídos do código/dados por `scripts/i18n_extract.py`. Prefira montar cada frase numa f-string inteira (não concatenar pedaços), para ela virar um template.
+- Todo texto novo ao usuário entra nos dois idiomas: rodar `uv run python scripts/i18n_extract.py` e escrever o inglês no `en.json`; `tests/test_i18n.py` falha se faltar tradução ou se um texto do código não estiver no catálogo.

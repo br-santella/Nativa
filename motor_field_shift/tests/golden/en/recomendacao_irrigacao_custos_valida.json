@@ -46,7 +46,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -262,7 +262,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -469,7 +469,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and breaks better the pest cycle (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and betterbreaks the pest cycle  (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -643,7 +643,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -860,7 +860,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -1068,7 +1068,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and breaks better the pest cycle (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and betterbreaks the pest cycle  (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1218,7 +1218,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): breaks better the pest cycle (0.65 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): betterbreaks the pest cycle  (0.65 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1655,7 +1655,7 @@
        "nivel": "médio",
        "texto": "animal feed and cooperatives, with lower demand than corn"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.56 against 0.63; ~55 days of bare soil against 40) and breaks less the pest cycle (0.55 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.56 against 0.63; ~55 days of bare soil against 40) and lessbreaks the pest cycle  (0.55 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -2036,7 +2036,7 @@
        "nivel": "médio",
        "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): breaks less the pest cycle (0.30 against 0.60) and worsens soil health (0.46 against 0.63; ~75 days of bare soil against 40). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): lessbreaks the pest cycle  (0.30 against 0.60) and worsens soil health (0.46 against 0.63; ~75 days of bare soil against 40). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -2205,7 +2205,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.12 against 0.63; ~150 days of bare soil against 40) and breaks less the pest cycle (0.30 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.12 against 0.63; ~150 days of bare soil against 40) and lessbreaks the pest cycle  (0.30 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Many days of exposed soil: risk of erosion and weeds."
@@ -2363,7 +2363,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -2579,7 +2579,7 @@
       "nivel": "alto",
       "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -2786,7 +2786,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and breaks better the pest cycle (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and betterbreaks the pest cycle  (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -3534,7 +3534,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,262/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.86 against 0.63; ~30 days of bare soil against 40) and breaks better the pest cycle (0.65 against 0.60). Largest contributions to the score: Income (0.29) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,262/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.86 against 0.63; ~30 days of bare soil against 40) and betterbreaks the pest cycle  (0.65 against 0.60). Largest contributions to the score: Income (0.29) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3746,7 +3746,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,248/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.50 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.29) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,248/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.50 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.29) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3948,7 +3948,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 90/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and breaks better the pest cycle (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 90/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and betterbreaks the pest cycle  (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4121,7 +4121,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,262/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.86 against 0.63; ~30 days of bare soil against 40) and breaks better the pest cycle (0.65 against 0.60). Largest contributions to the score: Income (0.29) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,262/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.86 against 0.63; ~30 days of bare soil against 40) and betterbreaks the pest cycle  (0.65 against 0.60). Largest contributions to the score: Income (0.29) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4333,7 +4333,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,248/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.50 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.29) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 2,248/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.50 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.29) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4535,7 +4535,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 90/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and breaks better the pest cycle (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 90/ha against −R$ 1,986/ha in the 2nd season, improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and betterbreaks the pest cycle  (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4823,7 +4823,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 100/ha against −R$ 1,986/ha in the 2nd season and breaks better the pest cycle (0.65 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 100/ha against −R$ 1,986/ha in the 2nd season and betterbreaks the pest cycle  (0.65 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -5132,7 +5132,7 @@
        "nivel": "médio",
        "texto": "animal feed and cooperatives, with lower demand than corn"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 382/ha against −R$ 1,986/ha in the 2nd season, worsens soil health (0.56 against 0.63; ~55 days of bare soil against 40) and breaks less the pest cycle (0.55 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 382/ha against −R$ 1,986/ha in the 2nd season, worsens soil health (0.56 against 0.63; ~55 days of bare soil against 40) and lessbreaks the pest cycle  (0.55 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -5298,7 +5298,7 @@
        "nivel": "médio",
        "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 305/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.30 against 0.60) and worsens soil health (0.46 against 0.63; ~75 days of bare soil against 40). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 305/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.30 against 0.60) and worsens soil health (0.46 against 0.63; ~75 days of bare soil against 40). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -5461,7 +5461,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 200/ha against −R$ 1,986/ha in the 2nd season, worsens soil health (0.12 against 0.63; ~150 days of bare soil against 40) and breaks less the pest cycle (0.30 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds −R$ 200/ha against −R$ 1,986/ha in the 2nd season, worsens soil health (0.12 against 0.63; ~150 days of bare soil against 40) and lessbreaks the pest cycle  (0.30 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Many days of exposed soil: risk of erosion and weeds."
@@ -5824,7 +5824,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 411/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.25 against 0.60) and improves soil health (0.86 against 0.63; ~30 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -6041,7 +6041,7 @@
       "nivel": "alto",
       "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, breaks less the pest cycle (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): adds R$ 397/ha against −R$ 1,986/ha in the 2nd season, lessbreaks the pest cycle  (0.10 against 0.60) and worsens soil health (0.56 against 0.63; ~60 days of bare soil against 40). Largest contributions to the score: Income (0.20) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto)."
@@ -6249,7 +6249,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and breaks better the pest cycle (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): improves soil health (0.97 against 0.63; ~35 days of bare soil against 40) and betterbreaks the pest cycle  (0.70 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -6399,7 +6399,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): breaks better the pest cycle (0.65 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): betterbreaks the pest cycle  (0.65 against 0.60). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -6836,7 +6836,7 @@
       "nivel": "médio",
       "texto": "animal feed and cooperatives, with lower demand than corn"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.56 against 0.63; ~55 days of bare soil against 40) and breaks less the pest cycle (0.55 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.56 against 0.63; ~55 days of bare soil against 40) and lessbreaks the pest cycle  (0.55 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -7217,7 +7217,7 @@
       "nivel": "médio",
       "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): breaks less the pest cycle (0.30 against 0.60) and worsens soil health (0.46 against 0.63; ~75 days of bare soil against 40). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): lessbreaks the pest cycle  (0.30 against 0.60) and worsens soil health (0.46 against 0.63; ~75 days of bare soil against 40). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -7386,7 +7386,7 @@
       "nivel": "não se aplica",
       "texto": "no production in the 2nd window"
      },
-     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.12 against 0.63; ~150 days of bare soil against 40) and breaks less the pest cycle (0.30 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (Summer corn → oat (cover/straw)): worsens soil health (0.12 against 0.63; ~150 days of bare soil against 40) and lessbreaks the pest cycle  (0.30 against 0.60). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Many days of exposed soil: risk of erosion and weeds."

@@ -37,7 +37,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks better the pest cycle (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
+      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -236,7 +236,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks better the pest cycle (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -380,7 +380,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -557,7 +557,7 @@
        "nivel": "alto",
        "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks better the pest cycle (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
+      "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -757,7 +757,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks better the pest cycle (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1060,7 +1060,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1216,7 +1216,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 833/ha in the 2nd season (−R$ 125/ha against R$ 708/ha), meets better the water demand (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 833/ha in the 2nd season (−R$ 125/ha against R$ 708/ha), bettermeets the water demand  (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1371,7 +1371,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 733/ha in the 2nd season (−R$ 25/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 733/ha in the 2nd season (−R$ 25/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1513,7 +1513,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 908/ha in the 2nd season (−R$ 200/ha against R$ 708/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and breaks less the pest cycle (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 908/ha in the 2nd season (−R$ 200/ha against R$ 708/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Many days of exposed soil: risk of erosion and weeds."
@@ -1656,7 +1656,7 @@
        "nivel": "médio",
        "texto": "animal feed and cooperatives, with lower demand than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,952/ha in the 2nd season (−R$ 1,243/ha against R$ 708/ha), reduces the climate risk (some adverse event in 6% of the years against 14%) and breaks better the pest cycle (0.55 against 0.50). Largest contributions to the score: Climate risk (0.17) and Water (0.15).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,952/ha in the 2nd season (−R$ 1,243/ha against R$ 708/ha), reduces the climate risk (some adverse event in 6% of the years against 14%) and betterbreaks the pest cycle  (0.55 against 0.50). Largest contributions to the score: Climate risk (0.17) and Water (0.15).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1811,7 +1811,7 @@
        "nivel": "médio",
        "texto": "cooperatives and mills, with lower liquidity than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,807/ha in the 2nd season (−R$ 2,098/ha against R$ 708/ha), increases the climate risk (some adverse event in 41% of the years against 14%) and meets better the water demand (0.95 against 0.83). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,807/ha in the 2nd season (−R$ 2,098/ha against R$ 708/ha), increases the climate risk (some adverse event in 41% of the years against 14%) and bettermeets the water demand  (0.95 against 0.83). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Frost at wheat flowering in 41% of the years."
@@ -2001,7 +2001,7 @@
        "nivel": "médio",
        "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,864/ha in the 2nd season (−R$ 2,156/ha against R$ 708/ha), breaks less the pest cycle (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.15).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,864/ha in the 2nd season (−R$ 2,156/ha against R$ 708/ha), lessbreaks the pest cycle  (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.15).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -2160,7 +2160,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks better the pest cycle (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
+     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -2359,7 +2359,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks better the pest cycle (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -2503,7 +2503,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -3854,7 +3854,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,929/ha in the 2nd season (−R$ 2,220/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,929/ha in the 2nd season (−R$ 2,220/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4011,7 +4011,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,966/ha in the 2nd season (−R$ 2,258/ha against R$ 708/ha), meets better the water demand (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,966/ha in the 2nd season (−R$ 2,258/ha against R$ 708/ha), bettermeets the water demand  (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4166,7 +4166,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,866/ha in the 2nd season (−R$ 2,158/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,866/ha in the 2nd season (−R$ 2,158/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4422,7 +4422,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,929/ha in the 2nd season (−R$ 2,220/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,929/ha in the 2nd season (−R$ 2,220/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4581,7 +4581,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,966/ha in the 2nd season (−R$ 2,258/ha against R$ 708/ha), meets better the water demand (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,966/ha in the 2nd season (−R$ 2,258/ha against R$ 708/ha), bettermeets the water demand  (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4738,7 +4738,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,866/ha in the 2nd season (−R$ 2,158/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,866/ha in the 2nd season (−R$ 2,158/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -4885,7 +4885,7 @@
        "nivel": "médio",
        "texto": "cooperatives and mills, with lower liquidity than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 4,940/ha in the 2nd season (−R$ 4,231/ha against R$ 708/ha), increases the climate risk (some adverse event in 41% of the years against 14%) and meets better the water demand (0.95 against 0.83). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 4,940/ha in the 2nd season (−R$ 4,231/ha against R$ 708/ha), increases the climate risk (some adverse event in 41% of the years against 14%) and bettermeets the water demand  (0.95 against 0.83). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Frost at wheat flowering in 41% of the years."
@@ -5077,7 +5077,7 @@
        "nivel": "não se aplica",
        "texto": "no production in the 2nd window"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,041/ha in the 2nd season (−R$ 2,333/ha against R$ 708/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and breaks less the pest cycle (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,041/ha in the 2nd season (−R$ 2,333/ha against R$ 708/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Many days of exposed soil: risk of erosion and weeds."
@@ -5226,7 +5226,7 @@
       "nivel": "alto",
       "texto": "corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), breaks better the pest cycle (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
+     "por_que": "Compared with the current one (second-season corn): improves soil health (0.71 against 0.56; ~30 days of bare soil against 60), betterbreaks the pest cycle  (0.65 against 0.50) and increases the climate risk (some adverse event in 20% of the years against 14%). Largest contributions to the score: Income (0.26) and Water (0.14).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5426,7 +5426,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and breaks better the pest cycle (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 783/ha in the 2nd season (−R$ 75/ha against R$ 708/ha), improves soil health (0.82 against 0.56; ~35 days of bare soil against 60) and betterbreaks the pest cycle  (0.70 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5729,7 +5729,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 796/ha in the 2nd season (−R$ 88/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -5885,7 +5885,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 833/ha in the 2nd season (−R$ 125/ha against R$ 708/ha), meets better the water demand (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 833/ha in the 2nd season (−R$ 125/ha against R$ 708/ha), bettermeets the water demand  (1.00 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -6040,7 +6040,7 @@
       "nivel": "não se aplica",
       "texto": "no grain sale; seed available at dealers"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 733/ha in the 2nd season (−R$ 25/ha against R$ 708/ha), meets better the water demand (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 733/ha in the 2nd season (−R$ 25/ha against R$ 708/ha), bettermeets the water demand  (0.99 against 0.83) and reduces the climate risk (some adverse event in 0% of the years against 14%). Largest contributions to the score: Climate risk (0.18) and Water (0.17).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -6182,7 +6182,7 @@
       "nivel": "não se aplica",
       "texto": "no production in the 2nd window"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 908/ha in the 2nd season (−R$ 200/ha against R$ 708/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and breaks less the pest cycle (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 908/ha in the 2nd season (−R$ 200/ha against R$ 708/ha), worsens soil health (0.12 against 0.56; ~150 days of bare soil against 60) and lessbreaks the pest cycle  (0.30 against 0.50). Largest contributions to the score: Water (0.18) and Climate risk (0.18).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Many days of exposed soil: risk of erosion and weeds."
@@ -6325,7 +6325,7 @@
       "nivel": "médio",
       "texto": "animal feed and cooperatives, with lower demand than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,952/ha in the 2nd season (−R$ 1,243/ha against R$ 708/ha), reduces the climate risk (some adverse event in 6% of the years against 14%) and breaks better the pest cycle (0.55 against 0.50). Largest contributions to the score: Climate risk (0.17) and Water (0.15).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 1,952/ha in the 2nd season (−R$ 1,243/ha against R$ 708/ha), reduces the climate risk (some adverse event in 6% of the years against 14%) and betterbreaks the pest cycle  (0.55 against 0.50). Largest contributions to the score: Climate risk (0.17) and Water (0.15).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]
@@ -6480,7 +6480,7 @@
       "nivel": "médio",
       "texto": "cooperatives and mills, with lower liquidity than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,807/ha in the 2nd season (−R$ 2,098/ha against R$ 708/ha), increases the climate risk (some adverse event in 41% of the years against 14%) and meets better the water demand (0.95 against 0.83). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,807/ha in the 2nd season (−R$ 2,098/ha against R$ 708/ha), increases the climate risk (some adverse event in 41% of the years against 14%) and bettermeets the water demand  (0.95 against 0.83). Largest contributions to the score: Water (0.17) and Pest break (0.11).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Frost at wheat flowering in 41% of the years."
@@ -6670,7 +6670,7 @@
       "nivel": "médio",
       "texto": "grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,864/ha in the 2nd season (−R$ 2,156/ha against R$ 708/ha), breaks less the pest cycle (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.15).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,864/ha in the 2nd season (−R$ 2,156/ha against R$ 708/ha), lessbreaks the pest cycle  (0.30 against 0.50) and worsens soil health (0.46 against 0.56; ~75 days of bare soil against 60). Same climate risk (some adverse event in 9% of the years). Largest contributions to the score: Climate risk (0.16) and Water (0.15).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]

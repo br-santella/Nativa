@@ -23,8 +23,9 @@ uv run pytest                                                    # unit tests
 
 | Folder | Contents |
 | --- | --- |
-| `src/field_shift/motor/` | service layer: `diagnosticar()`, `recomendar()` |
+| `src/field_shift/core/` | service layer: `diagnose()`, `recommend()` |
 | `src/field_shift/app/` | hard rules, criteria, weighted score, cards (`engine.py`) + Streamlit app (`mvp.py`) |
-| `src/field_shift/{clima,regiao,solo,agua,pam,renda}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, FAO-56 water balance, IBGE PAM, prices/costs |
+| `src/field_shift/{climate,region,soil,water,pam,income}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, FAO-56 water balance, IBGE PAM, prices/costs |
 | `ingest/` | scripts that download and pre-compute the data (`--regiao oeste_pr|pr`); `scripts/download_pr/run_all.sh` runs the whole-of-Paraná ingestion |
+| `src/field_shift/i18n/` | English translation of the API responses (catalog `en.json`; pt-BR is the default) |
 | `api/` | FastAPI app, tests and real response examples |

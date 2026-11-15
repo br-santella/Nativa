@@ -32,7 +32,7 @@
        "nivel": "médio",
        "texto": "animal feed and cooperatives, with lower demand than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and breaks better the pest cycle (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and betterbreaks the pest cycle  (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Frost (≤ 3 °C) on second-season corn in 47% of the years with sowing on 01/03: review the sowing date/hybrid."
@@ -346,7 +346,7 @@
        "nivel": "médio",
        "texto": "animal feed and cooperatives, with lower demand than corn"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and breaks better the pest cycle (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and betterbreaks the pest cycle  (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Frost (≤ 3 °C) on second-season corn in 47% of the years with sowing on 01/03: review the sowing date/hybrid."
@@ -501,7 +501,7 @@
       "nivel": "médio",
       "texto": "animal feed and cooperatives, with lower demand than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and breaks better the pest cycle (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and betterbreaks the pest cycle  (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Frost (≤ 3 °C) on second-season corn in 47% of the years with sowing on 01/03: review the sowing date/hybrid."
@@ -1770,7 +1770,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,712/ha in the 2nd season (−R$ 1,951/ha against R$ 1,762/ha), reduces the climate risk (some adverse event in 0% of the years against 49%) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,712/ha in the 2nd season (−R$ 1,951/ha against R$ 1,762/ha), reduces the climate risk (some adverse event in 0% of the years against 49%) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -1925,7 +1925,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,851/ha in the 2nd season (−R$ 90/ha against R$ 1,762/ha) and breaks less the pest cycle (0.25 against 0.50). Same climate risk (some adverse event in 49% of the years). Largest contributions to the score: Water (0.16) and Income (0.14).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,851/ha in the 2nd season (−R$ 90/ha against R$ 1,762/ha) and lessbreaks the pest cycle  (0.25 against 0.50). Same climate risk (some adverse event in 49% of the years). Largest contributions to the score: Water (0.16) and Income (0.14).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto).",
@@ -2140,7 +2140,7 @@
        "nivel": "não se aplica",
        "texto": "no grain sale; seed available at dealers"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,712/ha in the 2nd season (−R$ 1,951/ha against R$ 1,762/ha), reduces the climate risk (some adverse event in 0% of the years against 49%) and breaks better the pest cycle (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 3,712/ha in the 2nd season (−R$ 1,951/ha against R$ 1,762/ha), reduces the climate risk (some adverse event in 0% of the years against 49%) and betterbreaks the pest cycle  (0.65 against 0.50). Largest contributions to the score: Climate risk (0.18) and Water (0.18).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -2297,7 +2297,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,851/ha in the 2nd season (−R$ 90/ha against R$ 1,762/ha) and breaks less the pest cycle (0.25 against 0.50). Same climate risk (some adverse event in 49% of the years). Largest contributions to the score: Water (0.16) and Income (0.14).",
+      "por_que": "Compared with the current one (second-season corn): gives up R$ 1,851/ha in the 2nd season (−R$ 90/ha against R$ 1,762/ha) and lessbreaks the pest cycle  (0.25 against 0.50). Same climate risk (some adverse event in 49% of the years). Largest contributions to the score: Water (0.16) and Income (0.14).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist.",
        "Corn on corn (summer corn + second-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt, besides fall armyworm and leaf diseases; the pest criterion loses 0.25 point (reference estimate, validate with an agronomist/Embrapa). Follow the leafhopper alerts (CigarrinhaWeb/ADAPAR; see /v1/contexto).",
@@ -2648,7 +2648,7 @@
       "nivel": "médio",
       "texto": "animal feed and cooperatives, with lower demand than corn"
      },
-     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and breaks better the pest cycle (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
+     "por_que": "Compared with the current one (second-season corn): gives up R$ 2,010/ha in the 2nd season (−R$ 249/ha against R$ 1,762/ha) and betterbreaks the pest cycle  (0.55 against 0.50). Same climate risk (some adverse event in 47% of the years). Largest contributions to the score: Water (0.17) and Income (0.12).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist.",
       "Frost (≤ 3 °C) on second-season corn in 47% of the years with sowing on 01/03: review the sowing date/hybrid."

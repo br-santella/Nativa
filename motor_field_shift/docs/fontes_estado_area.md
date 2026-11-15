@@ -1,6 +1,6 @@
 # Sources for the field state (area problems and fertility)
 
-Date: 15/11/2026. Scope: `src/field_shift/app/estado_area.py` (`problemas_area` and fertility in `analise_solo`).
+Date: 15/11/2026. Scope: `src/field_shift/app/field_state.py` (`problemas_area` and fertility in `analise_solo`).
 
 Honesty rules used here: a source is listed as **confirmed** only if its file was actually opened and the quoted passage was read in it
 (PDFs were downloaded and read with `pdftotext`; two tables whose colours do not survive text extraction were read from the rendered page
@@ -37,7 +37,7 @@ through three documents that reproduce them and name the Manual as their source;
   - Same section: the Manual defines V2 by tolerance class; the 3rd class, "baixa (V% entre 51 a 70% e pH entre 5,0 a 5,6)", lists
     "aveia, ... canola, ... feijão, ... milheto, milho, ... soja, sorgo, trigo, triticale ...". So corn, wheat, beans, sorghum and soybean share one
     class and a **range**, not a single V2 per crop.
-  - Used in: `_nc_t_ha`, `V2` (one value inside the range), `PRNT_FONTE`.
+  - Used in: `_nc_t_ha`, `V2` (one value inside the range), `PRNT_SOURCE`.
 - **Embrapa Soja, Documentos 417 (Foloni et al.), Londrina, September 2019**, "Caracterização de genótipos de soja submetidos a níveis de calagem
   e adubação de sistema com fósforo e potássio na região centro-sul do Paraná".
   URL: https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1114200/1/documento417.pdf
@@ -74,7 +74,7 @@ through three documents that reproduce them and name the Manual as their source;
   URL: https://cna-portal-2022new.dotgroup.com.br/storage/arquivos/pdf/insumos-cna-set25.pdf
   - "PREÇOS NACIONAIS, em R$/tonelada, 19/09/2025": SSP 2104,7; KCl 2898,8; MAP 5068,9; Ureia 3505,1. Source note: "Preços médios coletados: MT e PR". So it is
     an MT+PR average, **not** a regional price for Western Paraná, and it is 14 months old at the date of this file. The nutrient grades used to convert to R$/kg
-    (SSP 18% P2O5, KCl 58% K2O) are our assumption, not in the report. Used in `PRECO_P2O5_R_KG`, `PRECO_K2O_R_KG`.
+    (SSP 18% P2O5, KCl 58% K2O) are our assumption, not in the report. Used in `P2O5_PRICE_R_KG`, `K2O_PRICE_R_KG`.
 
 ### Area problems: qualitative levels
 

@@ -129,4 +129,26 @@ Rules:
 
 ## Results log
 
-(fill in during execution: baseline counts, commits, final counts)
+Executed 15/11/2026 on branch `refactor/english-code` (git worktree), from `fix/pendencias-motor` at 0306386.
+
+Decisions: D1 = (a) only texts translated, JSON keys stay Portuguese; D2 = (b) `data/ref` JSON keys in English.
+
+| Commit | Phase | What |
+|---|---|---|
+| 1b601b5 | 0 | golden snapshots of 27 requests + OpenAPI (recorded from the pre-migration code) |
+| 75ea1aa | 1–2 | modules, packages and identifiers renamed (token-level renamer, strings untouched); OpenAPI operationIds pinned; query aliases kept |
+| 9067dff | 2 | comments, docstrings, internal log/error messages in English (user texts and OpenAPI descriptions stay pt-BR) |
+| 25e322e | 2 | English keys in `data/ref/precos_custos.json`, `vazio_sanitario_pr.json`, price snapshot |
+| e8d8306 | 3–4 | bilingual API (`i18n` + middleware), English goldens, `tests/test_i18n.py` |
+| (next) | 5 | docs, English example, pending items |
+
+Deviation from the plan (Phase 3): instead of the engine emitting message keys + params, the engine keeps writing pt-BR and the
+API translates the JSON at the edge with a catalog whose keys are the pt-BR templates themselves (`src/field_shift/i18n/en.json`,
+extracted from the code/data by `scripts/i18n_extract.py`; `{0}`, `{1}`... where the code inserts values). Reason: it keeps the
+pt-BR response byte-identical by construction and avoided rewriting every text-building function of the engine in one go.
+Cost: strings built by concatenation need template matching/splitting, and a few fragments still come out in Portuguese
+(tracked in `pendencias.md`). Moving to keys + params remains possible later.
+
+Counts: before 307 unit + 23 integration tests; after 326 unit + 84 integration (27 pt-BR goldens unchanged, 27 English goldens,
+OpenAPI golden re-recorded once for the additive `lang` parameter). `ruff --select F`: 47 findings, all F401/F841 that predate
+this work in kind (no F821). API smoke test in both languages: OK.

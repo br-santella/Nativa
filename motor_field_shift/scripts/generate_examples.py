@@ -28,6 +28,7 @@ def rec(**kw):
 REQUESTS = {
     "recomendacao_talhao_72638": rec(area=FIELD),
     "recomendacao_talhao_72638_2a_chamada": rec(area=FIELD),
+    "recomendacao_talhao_72638_en": ("POST", "/v1/recomendacao?lang=en", rec(area=FIELD)[2]),  # same request, English texts
     "recomendacao_dados_proprios": rec(
         area=FIELD, ajustes={"produtividade": {"soja": 65, "milho": 110, "trigo": 50}},
         analise_solo={"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "ph": 5.4, "cad_mm_cm": 1.4},

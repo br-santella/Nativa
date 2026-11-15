@@ -55,5 +55,6 @@ EXTRA = {
 def all_requests() -> dict:
     reqs = dict(_example_requests())
     reqs.pop("recomendacao_talhao_72638_2a_chamada", None)  # same body as the first call
+    reqs.pop("recomendacao_talhao_72638_en", None)  # English example: covered by tests/golden/en
     reqs.update(EXTRA)
     return reqs

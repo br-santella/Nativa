@@ -118,7 +118,10 @@ async def _external_query_error(request: Request, exc: Exception) -> JSONRespons
 @app.exception_handler(Exception)
 async def _internal(request: Request, exc: Exception) -> JSONResponse:
     log.error("unexpected error in %s %s", request.method, request.url.path, exc_info=exc)
+    # this handler runs outside the language middleware (Starlette's server-error layer), so it translates itself
+    locale = i18n.resolve_locale(request.query_params.get("lang"), request.headers.get("accept-language"))
     return JSONResponse(
         status_code=500,
-        content={"erro": "interno", "mensagem": "Erro interno do servidor."},
+        content=i18n.translate({"erro": "interno", "mensagem": "Erro interno do servidor."}, locale),
+        headers={"Content-Language": locale, "Vary": "Accept-Language"},
     )

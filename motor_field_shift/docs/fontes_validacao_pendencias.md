@@ -18,7 +18,7 @@ Nothing here replaces an agronomist.
 
 | Value | Current | What the search found | Verdict |
 |---|---|---|---|
-| Days per summer-corn stage (`calendario.py`) | 110 / 80 / 60 / 40 / 15 days to harvest | Embrapa Milho e Sorgo: a normal-cycle hybrid flowers ~65 days after emergence; dry matter stops flowing to the grain 50–60 days after R1 ([Embrapa Circular 76](https://www.infoteca.cnptia.embrapa.br/bitstream/doc/490408/1/Circ76.pdf), plus extension material). Stage length depends on heat units, not fixed days. | **Consistent** (R1 → harvest ≈ 80 days). Still approximate by hybrid and year. Soybean stage days not checked. |
+| Days per summer-corn stage (`crop_calendar.py`) | 110 / 80 / 60 / 40 / 15 days to harvest | Embrapa Milho e Sorgo: a normal-cycle hybrid flowers ~65 days after emergence; dry matter stops flowing to the grain 50–60 days after R1 ([Embrapa Circular 76](https://www.infoteca.cnptia.embrapa.br/bitstream/doc/490408/1/Circ76.pdf), plus extension material). Stage length depends on heat units, not fixed days. | **Consistent** (R1 → harvest ≈ 80 days). Still approximate by hybrid and year. Soybean stage days not checked. |
 | Nabo forrageiro cost R$ 275/ha | estimate (range 200–350) | Seed ads: R$ 2.50–7.00/kg (R$ 7.00 in Assis Chateaubriand-PR); a supplier gives 10–12 kg/ha in a mix ([MF Rural](https://www.mfrural.com.br/busca/semente-nabo)). Seed alone is ~R$ 40–105/ha at 15 kg/ha. | **Probably high.** The seed part is well below what the estimate implies; the sowing operation is the unknown. Classified ads, several years old, no operation cost. Not changed: no source for the operation part. |
 | Aveia + nabo R$ 400/ha | estimate (350–450) | Black oat seed ads: R$ 1.80–3.50/kg; no pure-oat sowing rate found. | **Not confirmed**, same limitation. |
 | Limestone R$ 220/t (applied) | estimate | Quarry-gate ads in Paraná from R$ 80–90/t ([MF Rural](https://www.mfrural.com.br/busca/calcarios-calcario/estado/parana)); freight "up to R$ 100/t in the interior" in a 2011 state document ([AEN](https://arquivo2011.aen.pr.gov.br/sites/default/arquivos_restritos/files/documento/migrados/2809_calcario_e.doc)); spreading not found. | **Plausible** (R$ 80–90 + R$ 40–100 freight + spreading ≈ R$ 150–230/t) but no regional price series. Kept. |
@@ -28,7 +28,7 @@ Nothing here replaces an agronomist.
 
 ## Evidence that questions a current value (not changed)
 
-**Soybean harvest date 10/01 (`calendario.py`, used when the farmer gives no stage or expected date).** Deral harvest progress for Paraná as a whole:
+**Soybean harvest date 10/01 (`crop_calendar.py`, used when the farmer gives no stage or expected date).** Deral harvest progress for Paraná as a whole:
 
 | Date | 2025/26 | 2025 (same date) | 2024 |
 |---|---|---|---|

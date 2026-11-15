@@ -122,7 +122,7 @@ The frontend uses the demo data in `frontend/src/data.ts`. It does not call the 
 ```bash
 cd motor_field_shift
 uv run pytest                  # unit tests (fake service, no data needed)
-uv run pytest -m integracao    # integration tests (real service, requires the local data)
+uv run pytest -m integration    # integration tests (real service, requires the local data)
 
 cd ../frontend
 npm run build                  # type-check + production build
@@ -142,7 +142,7 @@ flowchart LR
 
     subgraph API["motor_field_shift (FastAPI, stateless)"]
         R["/v1 routes<br/>api/field_shift_api"]
-        S["Service layer<br/>motor/servico.py"]
+        S["Service layer<br/>core/service.py"]
         E["Engine<br/>app/engine.py<br/>rules · criteria · score · cards"]
         M["Data modules<br/>clima · solo · regiao · agua · pam · renda · contexto"]
         R --> S --> E --> M
@@ -230,6 +230,10 @@ Interactive documentation (Swagger, with pre-filled examples): **`http://localho
 | `GET` | `/v1/clima` | Climate block only, for a point |
 | `GET` `POST` | `/v1/contexto` | Current conditions (ENSO, SMAP soil moisture, MJO, pest outbreaks). Informational: does not change the score |
 
+Responses are in **Brazilian Portuguese by default** and in **English** with `?lang=en` or `Accept-Language: en`
+(`lang` wins over the header; the answer says which one in `Content-Language`). Only the texts change: keys, ids, enums and
+numbers are the same in both languages. See [`motor_field_shift/api/README.md`](motor_field_shift/api/README.md#response-language-lang).
+
 <details>
 <summary><b>▶ Example: minimal recommendation</b></summary>
 
@@ -313,11 +317,12 @@ Details: [`motor_field_shift/docs/datasets.md`](motor_field_shift/docs/datasets.
 ├── motor_field_shift/          backend: engine + FastAPI (Python, uv)
 │   ├── api/                    routes, Pydantic schemas, tests, real response examples
 │   ├── src/field_shift/
-│   │   ├── motor/              service layer: diagnosticar(), recomendar(), opcoes()
+│   │   ├── core/               service layer: diagnose(), recommend(), options()
 │   │   ├── app/                engine: hard rules, criteria, score, explanation cards
-│   │   ├── clima/ solo/ agua/  climate, soil, FAO-56 water balance
-│   │   ├── regiao/ pam/ renda/ region clipping, IBGE yields, income
-│   │   └── contexto/           ENSO, SMAP, MJO, pest alerts
+│   │   ├── climate/ soil/ water/  climate, soil, FAO-56 water balance
+│   │   ├── region/ pam/ income/   region clipping, IBGE yields, income
+│   │   ├── context/            ENSO, SMAP, MJO, pest alerts
+│   │   └── i18n/               English translation of the API responses (pt-BR is the default)
 │   ├── ingest/  scripts/       data download and pre-processing
 │   ├── data/                   local data (raw/ and processed/ are git-ignored)
 │   └── docs/                   engine logic, data architecture
@@ -341,7 +346,7 @@ gh pr create --base main
 
 > [!TIP]
 > - Changes to a contract in [`docs/contratos.md`](docs/contratos.md) update that file in the same PR.
-> - Unit tests use a fake service. Engine changes are validated with `uv run pytest -m integracao` and
+> - Unit tests use a fake service. Engine changes are validated with `uv run pytest -m integration` and
 >   the local data.
 > - Keys, credentials, `.env` and `.netrc` are not committed.
 
