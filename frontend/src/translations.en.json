@@ -781,5 +781,10 @@
   "Sua propriedade, suas preferências e a origem dos dados.": "Your property, your preferences and where the data comes from.",
   "Automática": "Automatic",
   "pH": "pH",
-  "Não sei informar": "I’m not sure"
+  "Não sei informar": "I’m not sure",
+  "Cultivo excluído.": "Crop deleted.",
+  "Desfazer exclusão": "Undo deletion",
+  "Excluir cultivo": "Delete crop",
+  "Nenhum cultivo registrado.": "No crops registered.",
+  "Ações": "Actions"
 }

@@ -46,6 +46,25 @@ function App() {
     const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(saved?.weights ?? profiles.soil), [applied, setApplied] = useState<number[]>(saved?.weights ?? profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
+    const [deletedCrops, setDeletedCrops] = useState<{ crop: Crop; nextId?: number }[]>([]);
+    function deleteCrop(id: number) {
+        const index = crops.findIndex(crop => crop.id === id);
+        if (index < 0) return;
+        setDeletedCrops(previous => [...previous, { crop: crops[index], nextId: crops[index + 1]?.id }]);
+        setCrops(previous => previous.filter(crop => crop.id !== id));
+    }
+    function undoDeleteCrop() {
+        const deleted = deletedCrops.at(-1);
+        if (!deleted) return;
+        setCrops(previous => {
+            if (previous.some(crop => crop.id === deleted.crop.id)) return previous;
+            const index = previous.findIndex(crop => crop.id === deleted.nextId);
+            const restored = [...previous];
+            restored.splice(index < 0 ? restored.length : index, 0, deleted.crop);
+            return restored;
+        });
+        setDeletedCrops(previous => previous.slice(0, -1));
+    }
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
     // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
     const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
@@ -60,6 +79,7 @@ function App() {
         setFarm({ ...initialFarm });
         setDraft({ ...initialFarm });
         setCrops(initialCrops);
+        setDeletedCrops([]);
         setSetupInputs(undefined);
         setWeights(profiles.soil);
         setApplied(profiles.soil);
@@ -473,6 +493,12 @@ function App() {
         <Timeline />
         <section className="panel">
           <h2>{__text("Cultivos registrados")}</h2>
+          <div className="crop-delete-feedback" role="status" aria-live="polite">
+            {deletedCrops.length > 0 && <>
+              <span>{__text("Cultivo excluído.")} {__text(deletedCrops.at(-1)!.crop.crop)} · {deletedCrops.at(-1)!.crop.season}</span>
+              <button type="button" onClick={undoDeleteCrop}>{__text("Desfazer exclusão")}</button>
+            </>}
+          </div>
           <p>{__text("Valores demonstrativos \u2022 produtividade informada em sacas de 60 kg por hectare")}</p>
           <div className="table-scroll">
             <table>
@@ -485,6 +511,7 @@ function App() {
                 "Área",
                 "Produtividade",
                 "Situação",
+                "Ações",
             ].map((t) => (<th key={t}>{__text(t)}</th>)))}
                 </tr>
               </thead>
@@ -505,7 +532,13 @@ function App() {
                     <td>
                       <span className="status">{__text(c.status)}</span>
                     </td>
+                    <td>
+                      <button type="button" className="crop-delete-button"
+                        aria-label={`${__text("Excluir cultivo")}: ${__text(c.crop)} ${c.season}`}
+                        title={__text("Excluir cultivo")} onClick={() => deleteCrop(c.id)}>×</button>
+                    </td>
                   </tr>)))}
+                {crops.length === 0 && <tr><td colSpan={7}>{__text("Nenhum cultivo registrado.")}</td></tr>}
               </tbody>
             </table>
           </div>
