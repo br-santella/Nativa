@@ -288,11 +288,11 @@ Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights. The tables below fix th
 
 | Candidate | Score | Income | Soil | Water | Pests | Risk |
 |---|---|---|---|---|---|---|
-| Corn + brachiaria | 0.799 | 0.926 | 0.711 | 0.844 | 0.650 | 0.779 |
-| Millet/crotalaria | 0.756 | 0.460 | 0.819 | 0.998 | 0.700 | 1.000 |
+| Corn + brachiaria | 0.806 | 0.951 | 0.711 | 0.844 | 0.650 | 0.779 |
 | Off-season corn (current) | 0.751 | 0.922 | 0.556 | 0.858 | 0.500 | 0.804 |
+| Millet/crotalaria | 0.740 | 0.407 | 0.819 | 0.998 | 0.700 | 1.000 |
+| Oat | 0.714 | 0.493 | 0.626 | 1.000 | 0.600 | 1.000 |
 | Oat + radish | 0.710 | 0.455 | 0.619 | 0.994 | 0.650 | 1.000 |
-| Oat | 0.699 | 0.440 | 0.626 | 1.000 | 0.600 | 1.000 |
 | Forage radish | 0.691 | 0.484 | 0.519 | 0.988 | 0.600 | 1.000 |
 | Sorghum | 0.622 | 0.390 | 0.565 | 0.878 | 0.550 | 0.882 |
 | Beans | 0.574 | 0.472 | 0.461 | 0.849 | 0.300 | 0.856 |
@@ -304,43 +304,43 @@ Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights. The tables below fix th
 
 | Candidate | Score |
 |---|---|
-| Millet/crotalaria | 0.756 |
-| Corn + brachiaria | 0.722 |
+| Millet/crotalaria | 0.741 |
+| Corn + brachiaria | 0.730 |
+| Oat | 0.714 |
 | Oat + radish | 0.710 |
-| Oat | 0.699 |
 | Forage radish | 0.691 |
 | Off-season corn (current) | 0.669 |
 | Fallow | 0.568 |
 | Sorghum | 0.523 |
 | Wheat | 0.519 |
 
-Millet/crotalaria leads by 0.034 (no technical tie at the default weights; with income weight 6 the two are 0.006 apart and the response flags `empate_tecnico`). It earns BRL 1,496/ha/yr less than corn + brachiaria, so its card carries the income warning and the block's `maior_renda` says the first is not the best-income option. The corn options sown on 15/03 are also outside ZARC 2025/2026 in Toledo, so their cards carry the ZARC warning (the score does not change).
+Millet/crotalaria leads by 0.011, so the response flags `empate_tecnico` at the default weights. It earns BRL 1,856/ha/yr less than corn + brachiaria, so its card carries the income warning and the block's `maior_renda` says the first is not the best-income option. The corn options sown on 15/03 are also outside ZARC 2025/2026 in Toledo, so their cards carry the ZARC warning (the score does not change).
 
 **Income calculation (S = BRL 1,110/ha, the same in all of Paraná; soybean BRL 120.14/bag)**
 
 | Candidate | Basis | Incremental used (BRL/ha) | At current price (BRL/ha) | Income = 0.5 + 0.5·tanh(incr./S) | Range, worst–best season (BRL/ha) |
 |---|---|---|---|---|---|
-| Corn + brachiaria | track record 8.7 bags | +1,406 (8.7 × 120.14 + 360 bonus) | +1,802 | 0.926 | +60 to +2,943 |
+| Corn + brachiaria | track record 8.7 bags | +1,646 (8.7 × 120.14 + 601 bonus) | +2,042 | 0.951 | +300 to +3,184 |
 | Off-season corn | track record 10.4 bags | +1,370 (10.4 × 120.14 + 120 bonus) | +1,762 | 0.922 | +12 to +2,907 |
-| Millet/crotalaria | cost only | −90 | −90 | 0.460 | — |
-| Wheat | track record −8.0 bags | −841 | −1,780 | 0.180 | −1,610 to +312 |
+| Millet/crotalaria | cost only | −210 (cost − 240 bonus) | −210 | 0.407 | — |
+| Wheat | track record −8.0 bags | −601 (with 360 bonus) | −1,540 | 0.253 | −1,370 to +553 |
 
-The track record is lower than the current-price estimate for corn (2021 was a failure: −0.9 bags) and higher for wheat. Income now separates the two corn options; with the old clipped formula both sat at 1.0. Score range (`nota_faixa`): corn + brachiaria 0.682–0.819, off-season corn 0.628–0.772. `estabilidade`: repeating each of the seasons 2021–2025, corn + brachiaria is first in 4 and millet/crotalaria in 1 (2021).
+The track record is lower than the current-price estimate for corn (2021 was a failure: −0.9 bags) and higher for wheat. Income now separates the two corn options; with the old clipped formula both sat at 1.0. Score range (`nota_faixa`): corn + brachiaria 0.712–0.820, off-season corn 0.628–0.772. `estabilidade`: repeating each of the seasons 2021–2025, corn + brachiaria is first in 4 and millet/crotalaria in 1 (2021).
 
 **Calculation for corn + brachiaria on 01/02**
 
 | Criterion | Weight | Value | Weight × value |
 |---|---|---|---|
-| Income | 5 | 0.926 | 4.63 |
+| Income | 5 | 0.951 | 4.76 |
 | Soil | 3 | 0.711 | 2.13 |
 | Water | 3 | 0.844 | 2.53 |
 | Pests | 3 | 0.650 | 1.95 |
 | Risk | 3 | 0.779 | 2.34 |
-| **Sum** | **17** | | **13.58** |
+| **Sum** | **17** | | **13.71** |
 
-Score = 13.58 / 17 = **0.799** (the criteria shown are rounded). Income weighed most (4.63 / 17 = 0.27 of the score).
+Score = 13.71 / 17 = **0.806** (the criteria shown are rounded). Income weighed most (4.76 / 17 = 0.28 of the score). Bonus on the following soybean: 5 bags/ha, Embrapa trials in Western PR (range 1–9; `docs/pesquisa_ganho_soja_seguinte.md`).
 
-**Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60) and breaks the pest cycle better (0.65 vs 0.50). Same climate risk (some adverse event in 22% of years). Biggest contributions to the score: Income (0.29) and Water (0.15)." For the current rotation: "This is the current rotation; it ranked 3rd among 10 valid options. The best alternative (off-season corn + brachiaria) scores 0.80." (The count is within the `agora` block: the 11 combinations with soybean in summer minus soybean in the second window.) Against the current rotation the second-season income gain is small (BRL 40/ha with the soybean bonus: −200 for the brachiaria + 240 of extra bonus), so soil and pests carry the difference.
+**Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60) and breaks the pest cycle better (0.65 vs 0.50). Same climate risk (some adverse event in 22% of years). Biggest contributions to the score: Income (0.29) and Water (0.15)." For the current rotation: "This is the current rotation; it ranked 2nd among 10 valid options. The best alternative (off-season corn + brachiaria) scores 0.81." (The count is within the `agora` block: the 11 combinations with soybean in summer minus soybean in the second window.) Against the current rotation the second-season income gain is small (BRL 276/ha with the soybean bonus: −200 for the brachiaria + 481 of extra bonus, 4 bags), so soil and pests carry the difference.
 
 **Corn sowing-date trade-off (off-season corn)**
 

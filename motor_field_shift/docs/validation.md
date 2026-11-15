@@ -87,7 +87,7 @@ Code: `src/field_shift/validation/sensitivity.py` (patches copies of the catalog
 
 1. Pest-cycle break attribute of corn + brachiaria, millet/crotalaria, oat + radish, oat and radish.
 2. Soil cover of corn + brachiaria, millet/crotalaria and oat + radish.
-3. Bonus on the following soybean of corn + brachiaria and millet/crotalaria (the literature survey in `pesquisa_ganho_soja_seguinte_PARCIAL.md`).
+3. Bonus on the following soybean of corn + brachiaria and millet/crotalaria (the literature survey in `pesquisa_ganho_soja_seguinte.md`).
 4. Establishment cost of millet/crotalaria.
 5. Sorghum price and cost (they reorder the middle of the ranking).
 
@@ -578,8 +578,28 @@ Same comparison as §3.4 (failure = yield ≥ 15 % below the municipal trend; en
 
 - **The calibration depends on the sowing date, and the PAM cannot say which date is right.** Frost probability triples between 01/02 and 15/02 in the south (Centro-Sul 25 % → 48 %). A first version of this section used only 15/02 and concluded that the engine was "too pessimistic in the south" (37–52 % predicted vs 17–26 % observed). That was the test's date, not the engine's: at the engine's default date (01/02) the south is close (Centro-Sul 26 % vs 23 %, Sudoeste 25 % vs 22 %, Centro Oriental 17 % vs 17 %; Sudeste 35 % vs 26 %), and off-season corn in the south is sown early because of frost.
 - **At 01/02 the north and west are under-predicted** (Norte Pioneiro 14 % vs 30 %, Oeste 12 % vs 23 %); at 15/02 they match. Both readings are consistent with farmers in the north and west sowing later than in the south, and with failures there that the climate flags do not see (leafhopper/corn stunt, e.g. 2022; §6.1).
-- **No recalibration.** Fitting the frost threshold or a regional correction to these failures would mostly fit the unknown sowing dates, and §6.1 showed that even in the Oeste no climate model beats the base rate on unseen seasons. The criterion keeps its "baixa" confidence label. What would settle it: sowing dates by municipality (Deral regional progress reports) or field records.
+- **No recalibration.** Fitting the frost threshold or a regional correction to these failures would mostly fit the unknown sowing dates, and §6.1 showed that even in the Oeste no climate model beats the base rate on unseen seasons. The criterion keeps its "baixa" confidence label. What would settle it: observed sowing dates by municipality or field records (the ZARC-window proxy below did not).
 - The flags separate failing seasons in the west and north (a flagged season fails 1.5–3× more often), but not in the south (frost flag: 27 % vs 26 % in Sudeste). There the risk works only as an average.
+
+**Sowing date per municipality (15/11/2026, `statewide.py risk_zarc`).** No observed series exists: the Deral weekly planting bulletins report six macroregions (not municipalities), only for recent seasons, and the archived PDFs now return 404. As a proxy, each municipality got a date from its ZARC 20 %-risk window for off-season corn (397 municipalities; window start is always 01–10/01, the end goes from January in the south to early March in the north), snapped to the nearest date with precomputed frost (15/01, 01/02, 15/02, 01/03, 15/03). Gap = predicted loss − observed failure:
+
+| Mesoregion | Observed | 01/02 everywhere | ZARC window end | ZARC window midpoint |
+|---|---|---|---|---|
+| **Paraná** | 25 % | −7.5 pp | **+0.4 pp** | −10.9 pp |
+| Oeste | 23 % | −10.7 | −2.4 | −12.4 |
+| Norte Pioneiro | 30 % | −15.8 | −9.2 | −17.5 |
+| Norte Central | 25 % | −10.1 | +7.7 | −8.4 |
+| Noroeste | 29 % | −9.3 | +9.0 | −6.4 |
+| Centro Ocidental | 21 % | −9.8 | +5.3 | −12.3 |
+| Centro Oriental | 17 % | −0.2 | −9.2 | −11.0 |
+| Centro-Sul | 23 % | +2.5 | −9.0 | −13.5 |
+| Sudeste | 26 % | +8.7 | −13.3 | −13.3 |
+| Sudoeste | 22 % | +2.8 | −3.2 | −10.2 |
+| Mean \|gap\| over mesoregions | | 7.8 pp | 7.6 pp | 11.7 pp |
+| Spearman, municipality loss vs failure frequency | | 0.11 | 0.13 | 0.19 |
+
+- **Not adopted.** Sowing at the end of the ZARC window gets the state mean right (25 % vs 25 %) but only moves the error between regions: the north and west improve, the south becomes under-predicted, and the mean regional error is the same (7.6 vs 7.8 pp). The midpoint is worse. Neither ranks municipalities better in any useful way (Spearman 0.11–0.19). The ZARC window is a rule for credit, not what farmers do, so this cannot replace observed dates.
+- The engine keeps the farmer's date (or the date derived from the summer stage), which is what matters for a single field.
 
 ### 7.4 What the full engine ranked first, before the fix
 
@@ -640,7 +660,29 @@ After the fix (rerun of the full engine, `statewide.py engine`):
 - Where the cover is still first, it is mostly because corn's recent realized margin is close to the cover's (Norte Central, Noroeste: the highest-income option there is often forage radish or another cover, so "first = highest income" is high while corn is rarely first). The remaining gaps are in Centro-Sul and Sudoeste (median BRL 246–681/ha given up), where the card now states the amount.
 - The soil and pest scores of the catalog still decide between options of similar income. They are estimates; the expert panel (§4) is what can validate them.
 
-### 7.6 How to reproduce
+### 7.6 Soybean bonus from field trials (15/11/2026)
+
+The catalog bonus on the following soybean (`bonus_sc`) was replaced by the values of Embrapa trials in Paraná, each with a range and a source shown on the card (`docs/pesquisa_ganho_soja_seguinte.md` §0): corn + brachiaria 3 → 5 bags/ha, wheat 1 → 3, oat 2 → 3, millet/crotalaria 3 → 2 (no trial of the mix in Western PR showed a gain), beans 0 → −1; off-season corn, sorghum, radish, oat + radish and summer corn kept their values, now with a source. The PAM has no preceding-crop field, so the bonus itself cannot be validated against observed yields; what can be checked is whether the ranking moves toward what was realized (§7.2: with the bonus, the cover beats off-season corn in 20 % of municipality-seasons and is the best option in 14 %).
+
+| Mesoregion | Municipalities | Corn first (before → now) | First = highest income (before → now) | Median income given up (before → now) |
+|---|---|---|---|---|
+| **Paraná** | 399 | **29 % → 46 %** | **57 % → 43 %** | BRL 55 → 195/ha |
+| Oeste | 50 | 76 % → 88 % | 68 % → 84 % | 0 → 0 |
+| Centro Oriental | 14 | 71 % → 93 % | 71 % → 79 % | 0 → 0 |
+| Centro Ocidental | 25 | 44 % → 76 % | 56 % → 68 % | 55 → 0 |
+| Sudeste | 21 | 43 % → 52 % | 81 % → 52 % | 55 → 0 |
+| Norte Pioneiro | 46 | 35 % → 63 % | 61 % → 63 % | 55 → 0 |
+| Centro-Sul | 29 | 34 % → 62 % | 31 % → 52 % | 681 → 75 |
+| Norte Central | 79 | 18 % → 32 % | 58 % → 30 % | 55 → 195 |
+| Sudoeste | 37 | 16 % → 59 % | 32 % → 54 % | 246 → 42 |
+| Metropolitana de Curitiba | 37 | 0 % → 3 % | 3 % → 3 % | 210 → 522 |
+| Noroeste | 61 | 0 % → 0 % | 93 % → 2 % | 55 → 195 |
+
+- **Better where corn vs cover was the question.** Corn is first in 46 % of the state (was 29 %), closer to the realized record (cover best in 14–20 %). In seven of ten mesoregions the first option is now more often the highest-income one, and the large gaps of Centro-Sul and Sudoeste (BRL 681 and 246/ha) shrink to BRL 75 and 42.
+- **Worse in the statewide "first = highest income" share (57 % → 43 %)**, driven by Noroeste and Norte Central. In Noroeste it is cover against cover: millet/crotalaria stays first on soil/pest scores while oat (bonus 2 → 3) is now the highest income, by ~BRL 195/ha (10 of 12 municipalities checked). In Norte Central corn + brachiaria is the highest income in 7 of 12 checked while millet/crotalaria stays first. The card states the amount in both cases (§7.5).
+- **Field 72638 (01/02):** corn + brachiaria 0.799 → 0.806, off-season corn 0.751 (now 2nd), millet/crotalaria 0.756 → 0.740, oat 0.699 → 0.714. At 15/03 millet/crotalaria and corn + brachiaria are in a technical tie (0.741 vs 0.730).
+
+### 7.7 How to reproduce
 
 ```bash
 uv run python scripts/validation/statewide.py            # all sections (~20 min; the first run also builds the statewide water balance, ~8 min per sowing date)
@@ -648,4 +690,4 @@ uv run python scripts/validation/statewide.py income     # one section: income |
 uv run pytest tests/test_validation_backtest.py tests/test_statewide.py
 ```
 
-Outputs (`data/processed/validation/`): `statewide_income.csv`, `statewide_covers.csv`, `statewide_risk.csv` (both sowing dates), `statewide_engine_top.csv`; `statewide_engine_criteria.parquet` (criteria of every option at every centroid, used for the offline simulation of §7.5). Code: `src/field_shift/validation/backtest.py` (`set_scope`, `mesoregions`, `corn_failures(sowing)`), `scripts/validation/statewide.py`, `src/field_shift/core/service.py` (`income_trade_off`), `src/field_shift/income/income.py` (`INCOME_SCALE`).
+Outputs (`data/processed/validation/`): `statewide_income.csv`, `statewide_covers.csv`, `statewide_risk.csv` (both sowing dates), `statewide_risk_zarc_dates.csv` (ZARC proxy dates), `statewide_engine_top.csv`; `statewide_engine_criteria.parquet` (criteria of every option at every centroid, used for the offline simulation of §7.5). Code: `src/field_shift/validation/backtest.py` (`set_scope`, `mesoregions`, `corn_failures(sowing)`), `scripts/validation/statewide.py`, `src/field_shift/core/service.py` (`income_trade_off`), `src/field_shift/income/income.py` (`INCOME_SCALE`).

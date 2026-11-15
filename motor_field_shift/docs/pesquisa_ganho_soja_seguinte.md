@@ -1,11 +1,37 @@
-# Gain on the following soybean by second-window crop: PARTIAL research
+# Gain on the following soybean by second-window crop (`bonus_sc`)
 
-> Status: **paused at the user's request** (14/11/2026). Only numbers from sources that were opened and read are included. Where there is no open source, it says "pending".
+> Status: **done for the MVP** (15/11/2026); the values in §0 are in the engine catalog (`SECOND`/`SUMMER` in `src/field_shift/app/engine.py`, fields `bonus_sc`, `bonus_sc_faixa`, `bonus_fonte`). Only numbers from sources that were opened and read are used. Started 14/11 (partial), finished 15/11 with the Palotina 2022/23 trial (Western PR).
 > Conversion used: 1 bag (sc) = 60 kg. Difference in kg/ha ÷ 60 = bags/ha.
 
 ## Important note on the comparison baseline
 
 In the Embrapa trials in Paraná, the baseline is almost always the **soybean/off-season corn (2nd season) succession**, not fallow. Only two of the papers read use fallow as the baseline (Yokoyama et al. 2022 and the abstract Ramos et al. 2025, both from the same trial in Londrina). In that trial, soybean after off-season corn yielded **the same or less** than soybean after fallow in 2 of 3 seasons. That is why the "baseline" column in the table below says what each number was measured against. If the engine keeps using fallow = 0, it is reasonable to treat off-season corn ≈ 0 and add the gains measured "vs off-season corn" directly.
+
+## 0. Values adopted in the engine (baseline = fallow, bags/ha)
+
+Off-season corn ≈ fallow (§2), so gains measured "vs off-season corn" were added to the corn value (+1). The range is what the trials showed, used for the worst/best case in `ganho_vs_atual.soja_seguinte_sc_faixa` and shown on the card.
+
+| Crop | Before | Now | Range | Main evidence |
+|---|---|---|---|---|
+| Off-season corn | 1 | **1** | −3 to +3.5 | Londrina 2016–2025 (≈ fallow on average), Palotina 2022/23 (+1.4, ns) |
+| Corn + brachiaria | 3 | **5** | +1 to +9 | Doc. 459 Cafelândia (+6.9 over corn, 3 seasons); Palotina (+0.9 over corn, ns) |
+| Wheat | 1 | **3** | 0 to +6.5 | Docs. 459/476, Garbelini 2022, Palotina (−0.6 to +5.5 over corn) |
+| Oat | 2 | **3** | +1 to +8 | Doc. 459 (+6.9 over corn, 1 trial); Palotina winter mix (+1.1) |
+| Millet + crotalaria | 3 | **2** | 0 to +5 | no trial of the mix in Western PR; Londrina millet+crotalaria and sole crotalaria: no effect (lowered) |
+| Grain sorghum | 1 | **1** | −2 to +2 | Palotina: soybean after sorghum = after corn |
+| Off-season beans | 0 | **−1** | −8 to +1.5 | cowpea proxy, Doc. 476 (nematodes, soil fungi) |
+| Forage radish | 2 | **2** | 0 to +4 | no isolated trial; Palotina winter mix +1.1 over corn |
+| Oat + radish | 2.5 | **2.5** | +1 to +6 | Palotina mix (+1.1) and Doc. 459 oat (+6.9) |
+| Fallow | 0 | 0 | — | baseline |
+| Summer corn (extra, in place of soybean) | 3 | **3** | 0 to +4.5 | Garbelini 2022 (system with radish, effects not separated) |
+
+**Palotina 2022/23** (Pivetta et al. 2026, Embrapa, very clayey eutroferric Red Latosol, Western PR, 1 season; soybean kg/ha): fallow 3,087; fallow/wheat 3,134; millet/wheat 3,233; sorghum 3,127; sole corn 3,169; corn + ruziziensis 3,221; corn + winter mix 3,234; sole ruziziensis 3,593; ruziziensis + crotalarias 3,758 (only the two brachiaria covers differ statistically from fallow). Source: PIVETTA, L. A. et al. Efeito da diversificação de culturas na produtividade da soja na região Oeste do Paraná. In: 40ª Reunião de Pesquisa de Soja, Londrina, 2026, p. 72–76. https://www.alice.cnptia.embrapa.br/alice/bitstream/doc/1188274/1/p-72-ETC-7-RPSoja-2026-2.pdf
+
+**Millet + crotalaria, Londrina** (Embrapa Soja, R.156): five treatments (sole C. spectabilis, sole C. ochroleuca, millet, millet + each crotalaria); "soybean yield was not significantly affected by the treatments" (low-yield year, mean 1.71 Mg/ha). https://www.alice.cnptia.embrapa.br/alice/bitstream/doc/1018473/1/R.156INSERCAODASCROTALARIASEDOMILHETOEMSISTEMASDE.PDF
+
+**7-year Londrina trial (not opened, snippet only):** Charnobay et al. 2025 (Applied Soil Ecology 209, 106040): ruzigrass 4,119 vs fallow 3,525 kg/ha/yr (+9.9 bags); Balbinot Junior et al. 2023 (IJPP 18): ruzigrass 4,354, wheat 4,304, corn with N 4,058, corn without N 3,942, fallow 3,843. Consistent with the values adopted (corn slightly above fallow, wheat and brachiaria clearly above), but not used as a number until the full text is read.
+
+**What this does not validate.** The PAM has no preceding-crop field, so the bonus cannot be checked against observed municipal yields; these are trial results (few sites, few seasons). The range on the card states that.
 
 ## 1. Table (open sources only)
 
@@ -17,8 +43,8 @@ In the Embrapa trials in Paraná, the baseline is almost always the **soybean/of
 | Wheat | off-season corn | −2.4 to +10.4 (trial averages: +0.7; +2.0; +5.5) | **+3** (currently: +1) | medium (3 trials in PR) | Doc. 459; Doc. 476; Garbelini et al. 2022 |
 | Wheat | fallow | +1.4 to +12.4 | (reference) | medium | Yokoyama et al. 2022; Ramos et al. 2025 |
 | Oat (black/white) | off-season corn | +3.6 to +12.8 (3-season average: +6.9); corn + black oat in the 3rd season: +5.6 average | **+4** (currently: +2) | low-medium (1 trial) | Doc. 459 (MP3 and MP6) |
-| Millet + crotalaria | — | **pending** (proxies below) | pending (keep +3 marked as "no source") | — | proxies: Yokoyama 2022 (crotalaria); Doc. 476 (grain millet) |
-| Off-season grain sorghum | — | **pending**, no data | pending | — | — |
+| Millet + crotalaria | fallow/corn | no effect (Londrina, R.156); millet/wheat +1.1 over corn (Palotina) | **+2** (was +3) | low | R.156; Palotina 2022/23; Yokoyama 2022 |
+| Off-season grain sorghum | off-season corn | −0.7 (ns) | **= corn (+1)** | low (1 season) | Palotina 2022/23 |
 | Off-season beans | off-season corn (proxy: cowpea) | −8.8 to +0.8 (cowpea) | **≤ 0**; −2 if the proxy is used | low (different species) | Doc. 476 (MP4 cowpea) |
 | Forage radish alone | — | **pending** | pending | — | only appears within the rotated system of Garbelini 2022 |
 | Oat + radish mix | — | **pending** | pending | — | same |
@@ -90,7 +116,7 @@ Doc. 459 cites Balbinot Junior et al. (2024): 7 years in Londrina, soybean after
 - Fundação ABC, IDR-Paraná/IAPAR, Coodetec, Fundação MT, Embrapa Agropecuária Oeste: not consulted.
 - Remote sensing (NDVI × yield) to measure the effect of the preceding crop, useful for validation with HLS.
 
-## 5. Preliminary recommendation for the API
+## 5. Recommendation for the API (done: `bonus_sc_faixa` and `bonus_fonte` per crop, shown on the card and in `ganho_vs_atual`)
 
 - Return `ganho_sc_ha: {min, central, max}`, `base_comparacao` ("pousio" or "milho_safrinha"), `confianca`, `fontes: [doi/url]` and `efeito` ("imediato" or "cumulativo").
 - Relevant changes already supported:

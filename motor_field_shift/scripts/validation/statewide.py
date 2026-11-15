@@ -1,7 +1,7 @@
 """Statewide validation: the Oeste checks repeated for all of Paraná, reported by IBGE mesoregion (docs/validation.md, section 7).
 
     uv run python scripts/validation/statewide.py            # all sections
-    uv run python scripts/validation/statewide.py income     # one section: income | covers | risk | engine
+    uv run python scripts/validation/statewide.py income     # one section: income | covers | risk | risk_zarc | engine
 
 1. income  — decision backtest of the income estimator (previous engine: trend yield × last-year price − cost; current engine:
              5-season track record), per mesoregion, with a season-block bootstrap of the gain for Paraná.
@@ -9,6 +9,9 @@
              (millet/crotalaria, cost only) per mesoregion, with and without the catalog bonus on the next soybean.
 3. risk    — off-season corn climate risk (frost + water deficit, the engine's criterion) vs PAM failures, per mesoregion, at
              the engine's default sowing (01/02) and at 15/02.
+3b. risk_zarc — the same risk check with a sowing date per municipality taken from the ZARC 20 %-risk window of off-season corn
+             (midpoint or end), as a proxy: no observed sowing series by municipality is published (Deral reports only six
+             macroregions, for recent seasons).
 4. engine  — what the full engine (all criteria, default weights) ranks first at each municipality centroid, per mesoregion.
 Writes CSVs to data/processed/validation/statewide_*.csv and prints the tables used in the doc.
 """
@@ -104,6 +107,50 @@ def risk_section() -> pd.DataFrame:
     return t
 
 
+# sowing dates with precomputed frost indicators (day of year); the ZARC ten-day periods are snapped to the nearest one
+FROST_DATES = {"15/01": 15, "01/02": 32, "15/02": 46, "01/03": 60, "15/03": 74}
+
+
+def _zarc_date(dekad: int) -> str:
+    doy = 1 + 10 * ((dekad - 1) % 3) + [0, 31, 59, 90][(dekad - 1) // 3]
+    return min(FROST_DATES, key=lambda k: abs(FROST_DATES[k] - doy))
+
+
+def zarc_sowing_dates() -> pd.DataFrame:
+    """Per municipality: proxy sowing dates of off-season corn from the ZARC 20 %-risk window (Jan–Apr, best soil)."""
+    from field_shift.validation import zarc as Z
+    z = Z.zarc_classes("Milho 2ª Safra")
+    g = z[z["decendio"].between(1, 12) & (z["best"] == 20)].groupby("geocodigo")["decendio"].agg(["min", "max"])
+    g.index = g.index.astype(str)
+    return g.assign(mid=[_zarc_date(int(np.ceil((a + b) / 2))) for a, b in zip(g["min"], g["max"])],
+                    end=[_zarc_date(b) for b in g["max"]])
+
+
+def risk_zarc_section() -> pd.DataFrame:
+    from field_shift.crop_calendar import DEFAULT_SOWING
+    g = zarc_sowing_dates()
+    fail = {s: B.corn_failures(s).dropna(subset=["deficit"]) for s in sorted(set(g["mid"]) | set(g["end"]) | {DEFAULT_SOWING})}
+    rules = {"default": lambda c: DEFAULT_SOWING, "zarc_mid": lambda c: g.at[c, "mid"], "zarc_end": lambda c: g.at[c, "end"]}
+    rows = []
+    for name, rule in rules.items():
+        d = pd.concat([f[f["cod_ibge"].isin([c for c in f["cod_ibge"].unique() if c in g.index and rule(c) == s])]
+                       for s, f in fail.items()])
+        d = _with_meso(d)
+        for meso, x in [("Paraná", d), *d.groupby("meso")]:
+            m = x.groupby("cod_ibge").agg(pf=("frost", "mean"), pdef=("deficit", "mean"), obs=("failure", "mean"))
+            loss = 1 - (1 - m["pf"]) * (1 - m["pdef"])
+            rows.append(dict(rule=name, mesorregiao=meso, n=len(x), obs_failure=x["failure"].mean(), engine_loss=loss.mean(),
+                             gap=loss.mean() - x["failure"].mean(),
+                             spearman_municipal=loss.corr(m["obs"], method="spearman") if len(m) > 4 else np.nan))
+    t = pd.DataFrame(rows)
+    t.to_csv(OUT / "statewide_risk_zarc_dates.csv", index=False)
+    print("\n## 3b. Off-season corn risk vs PAM failures with ZARC proxy sowing dates (gap = predicted − observed)\n")
+    print(t.pivot(index="mesorregiao", columns="rule", values="gap").to_markdown(floatfmt=".3f"))
+    print(t[t["mesorregiao"] != "Paraná"].groupby("rule")["gap"].apply(lambda v: v.abs().mean()).to_markdown(floatfmt=".3f"))
+    print(t[t["mesorregiao"] == "Paraná"].set_index("rule")[["engine_loss", "obs_failure", "spearman_municipal"]].to_markdown(floatfmt=".3f"))
+    return t
+
+
 def engine_section() -> pd.DataFrame:
     from field_shift.core import service as svc
     from field_shift.validation import zarc as Z
@@ -140,6 +187,7 @@ def engine_section() -> pd.DataFrame:
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     B.set_scope("pr")
-    sections = sys.argv[1:] or ["income", "covers", "risk", "engine"]
+    sections = sys.argv[1:] or ["income", "covers", "risk", "risk_zarc", "engine"]
     for s in sections:
-        {"income": income_section, "covers": covers_section, "risk": risk_section, "engine": engine_section}[s]()
+        {"income": income_section, "covers": covers_section, "risk": risk_section, "risk_zarc": risk_zarc_section,
+         "engine": engine_section}[s]()

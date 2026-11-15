@@ -135,18 +135,18 @@ O tamanho (±0,15) é escolha de modelagem; a direção tem fonte lida. Sem font
 
 ## Exemplo: talhão 72638, milho + braquiária
 
-No talhão 72638 (Toledo, 104 ha), com semeadura em 01/02 e pesos padrão, a soja → milho safrinha + braquiária fica em 1º lugar com nota 0,799.
+No talhão 72638 (Toledo, 104 ha), com semeadura em 01/02 e pesos padrão, a soja → milho safrinha + braquiária fica em 1º lugar com nota 0,806.
 
 **Renda** (S = R$ 1.110/ha, a mesma no Paraná todo; soja a R$ 120,14/sc):
 
 | Item | Valor |
 | --- | --- |
 | Margem realizada do milho + braquiária, últimas 5 safras (já desconta a braquiária) | média 8,7 sc de soja/ha × R$ 120,14 = R$ 1.045/ha |
-| Bônus na soja seguinte | 3 sc × R$ 120,14 = R$ 360/ha |
-| **Incremental** | **R$ 1.406/ha** |
-| A preço atual seria | 1.641 (milho) − 200 (braquiária) + 360 = R$ 1.802/ha |
+| Bônus na soja seguinte (ensaios Embrapa no Oeste do PR, faixa 1 a 9 sc) | 5 sc × R$ 120,14 = R$ 601/ha |
+| **Incremental** | **R$ 1.646/ha** |
+| A preço atual seria | 1.641 (milho) − 200 (braquiária) + 601 = R$ 2.042/ha |
 
-Renda = 0,5 + 0,5 × tanh(1.406 ÷ 1.110) = **0,926**.
+Renda = 0,5 + 0,5 × tanh(1.646 ÷ 1.110) = **0,951**.
 
 Na estimativa a preço atual, o milho de Toledo daria 117 sc/ha × R$ 53,89 − R$ 4.678 = R$ 1.641/ha. O histórico realizado é mais baixo porque inclui 2021, quando a safra quebrou.
 
@@ -154,16 +154,16 @@ Na estimativa a preço atual, o milho de Toledo daria 117 sc/ha × R$ 53,89 − 
 
 | Critério | Peso | Valor | Peso × valor |
 | --- | --- | --- | --- |
-| Renda | 5 | 0,926 | 4,63 |
+| Renda | 5 | 0,951 | 4,76 |
 | Saúde do solo | 3 | 0,711 | 2,13 |
 | Água | 3 | 0,844 | 2,53 |
 | Quebra de pragas | 3 | 0,650 | 1,95 |
 | Risco climático | 3 | 0,779 | 2,34 |
-| **Soma** | **17** | | **13,58** |
+| **Soma** | **17** | | **13,71** |
 
-Nota = 13,58 ÷ 17 = **0,799**.
+Nota = 13,71 ÷ 17 = **0,806**.
 
-O milheto/crotalária fica em 2º (0,756): renda menor (0,460, só custo de R$ 90/ha), mas melhor em solo (0,82), água (1,00), pragas (0,70) e sem risco climático. O milho safrinha sozinho (a rotação atual) cai para 3º, com 0,751: renda quase igual (0,922), mas solo pior (0,56) e quebra de pragas menor (0,50). Em 15/03 a geada sobe para 76 % dos anos e o milheto/crotalária passa à frente (0,756 contra 0,722 do milho + braquiária), com aviso de milho fora do ZARC e aviso de que a cobertura rende R$ 1.496/ha/ano a menos.
+O milho safrinha sozinho (a rotação atual) fica em 2º, com 0,751: renda quase igual (0,922, bônus de 1 sc), mas solo pior (0,56) e quebra de pragas menor (0,50). O milheto/crotalária fica em 3º (0,740): renda menor (0,407; incremental de −R$ 210/ha, o custo de implantação menos o bônus de 2 sc), mas melhor em solo (0,82), água (1,00), pragas (0,70) e sem risco climático. Em 15/03 a geada sobe para 76 % dos anos e o milheto/crotalária passa à frente (0,741 contra 0,730 do milho + braquiária, empate técnico), com aviso de milho fora do ZARC e aviso de que a cobertura rende R$ 1.856/ha/ano a menos.
 
 **Incerteza do milho + braquiária:**
 - Renda entre R$ 60 e R$ 2.943/ha na pior e na melhor das últimas 5 safras, o que dá nota entre 0,679 e 0,817.

@@ -43,5 +43,5 @@ Recommendation (needs a decision, it moves the default ranking): ask the farmer 
 
 ## Not researched here
 
-- **Catalog bonuses and penalties** (`bonus_sc`, criteria deltas, ±0.15 of `problemas_area`): these are modelling choices. The way to replace them is the literature survey already started in `pesquisa_ganho_soja_seguinte_PARCIAL.md`, which is still paused.
+- **Catalog bonuses and penalties** (`bonus_sc`, criteria deltas, ±0.15 of `problemas_area`): these are modelling choices. The way to replace them is the literature survey already started in `pesquisa_ganho_soja_seguinte.md`, which is still paused.
 - **Sorghum cost** (R$ 2,807/ha, CONAB Rio Verde-GO): no Paraná sheet exists; nothing new found.

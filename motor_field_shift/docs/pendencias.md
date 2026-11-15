@@ -37,7 +37,8 @@ This file is the living list of open items for the project (crop-rotation engine
   Status: pending
 
 - **Catalog bonuses and penalties**: the per-crop adjustments are estimates; validate with an agronomist/Embrapa.
-  Not researched (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): they are modelling choices; replacing them is the literature survey in `pesquisa_ganho_soja_seguinte_PARCIAL.md`, still paused.
+  Update 15/11/2026: the soybean bonus (`bonus_sc`) now comes from Embrapa trials in Paraná, with range and source per crop (`bonus_sc_faixa`, `bonus_fonte`, shown on the card); see [`pesquisa_ganho_soja_seguinte.md`](pesquisa_ganho_soja_seguinte.md) §0. Corn + brachiaria 3 → 5, wheat 1 → 3, oat 2 → 3, millet/crotalaria 3 → 2, beans 0 → −1. Still estimates: radish, oat + radish (no isolated trial), and the PAM cannot validate any bonus (no preceding-crop field).
+  Not researched (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): they are modelling choices; replacing them is the literature survey in `pesquisa_ganho_soja_seguinte.md`, still paused.
   Status: pending
 
 ## Code in English + bilingual API
@@ -120,11 +121,11 @@ This file is the living list of open items for the project (crop-rotation engine
   Files: `src/field_shift/app/engine.py`.
   Status: done for fallow (`docs/validation.md` §6.4): `dias_descobertos` 150 → 90 (off-season corn 60 + the ~31 days measured from space). The covers were not measured (too rare in the sample) and stay catalog estimates; the API lists `solo` in `incerteza.criterios_estimados`.
 
-- **Soybean bonus not detectable by NDVI**: after field + season fixed effects, the following soybean has the same NDVI peak (−0.007) and integral (−1.5) after off-season corn as after fallow (916 field-years). The bonus stays a literature estimate; confirm it with trials (paused survey) or per-field yield data.
+- **Soybean bonus not detectable by NDVI**: after field + season fixed effects, the following soybean has the same NDVI peak (−0.007) and integral (−1.5) after off-season corn as after fallow (916 field-years). The bonus stays a literature estimate (survey finished 15/11/2026, [`pesquisa_ganho_soja_seguinte.md`](pesquisa_ganho_soja_seguinte.md)); per-field yield data would confirm it. No public per-field yield exists in Paraná (IBGE/CONAB/Deral are municipal or regional); it needs a partner (cooperative yield maps, e.g. Copacol/Coopavel/C.Vale) or the farmer's own records, which the API already accepts (`ajustes.produtividade`).
   Files: `src/field_shift/app/engine.py`.
   Status: pending (depends on literature/field data)
 
-- **Card: income trade-off of cover crops**: in the Oeste history millet/crotalaria gives up ~12 soybean bags/ha/yr of realized income against off-season corn (bonus in the catalog: 3 bags/ha); when it ranks first, the card must state the trade-off in bags/ha.
+- ~~**Card: income trade-off of cover crops**~~ (done in PR #21: `maior_renda` block and card warning): in the Oeste history millet/crotalaria gives up ~12 soybean bags/ha/yr of realized income against off-season corn (bonus in the catalog: 3 bags/ha); when it ranks first, the card must state the trade-off in bags/ha.
   Files: `src/field_shift/app/engine.py`.
   Status: pending
 
@@ -172,7 +173,7 @@ This file is the living list of open items for the project (crop-rotation engine
   Status: done (15/11/2026)
 
 - **Integrate the literature research numbers**: include the gain on the following soybean (range + source) in the documentation and in the engine, once the table is validated.
-  Files: `docs/motor.md`, `docs/pesquisa_ganho_soja_seguinte_PARCIAL.md`.
+  Files: `docs/motor.md`, `docs/pesquisa_ganho_soja_seguinte.md`.
   Status: pending
 
 ## Paraná-wide coverage
@@ -189,7 +190,8 @@ This file is the living list of open items for the project (crop-rotation engine
   Status: done (open points above)
 
 - **Corn climate risk in the south looked too pessimistic: test artifact, not recalibrated**: with sowing fixed at 15/02 the engine predicted 37–52 % loss in Centro-Sul, Sudeste, Sudoeste and Centro Oriental against 17–26 % observed. At the engine's default date (01/02) the south is close (Centro-Sul 26 % vs 23 %, Sudoeste 25 % vs 22 %, Centro Oriental 17 % vs 17 %, Sudeste 35 % vs 26 %), while the north and west are under-predicted (Norte Pioneiro 14 % vs 30 %) (`validation.md` §7.3). The calibration depends on the sowing date, which the PAM does not record, so fitting a regional frost correction would fit the unknown dates.
-  To resume: sowing dates by municipality (Deral regional progress reports) or field records; then repeat §7.3 with the real dates and the out-of-sample protocol of §6.
+  Tried 15/11/2026: Deral publishes planting progress only for six macroregions and recent seasons (archived bulletins now 404), so no municipal series exists. A proxy date from the ZARC 20 %-risk window (`statewide.py risk_zarc`, `validation.md` §7.3) gets the state mean right at the window end (25 % vs 25 %) but the mean regional error stays the same (7.6 vs 7.8 pp); not adopted.
+  To resume: observed sowing dates by municipality (cooperative records, a Deral request by nucleus) or field records; then repeat §7.3 with the out-of-sample protocol of §6.
   Status: pending (data)
 
 - **Ingest scripts of the `*_pr` data are not in the repo**: the engine now reads `data/raw/mapbiomas_pr`, `nasadem_pr`, `soilgrids_pr`, `regiao/{pr,municipios_pr}.geojson`, `clima_pr/` (raw), `processed/clima_pr/`, `processed/relevo_pr/` and `ibge/pam_pr.parquet` (399 municipalities), but `ingest/` only has the `*_oeste_pr` scripts. Confirm who generated the data, version the scripts, and document the commands.
@@ -259,6 +261,6 @@ This file is the living list of open items for the project (crop-rotation engine
 
 ## Research
 
-- **Resume the literature research on the gain on the following soybean**: the survey is paused and the partial results are in [`pesquisa_ganho_soja_seguinte_PARCIAL.md`](pesquisa_ganho_soja_seguinte_PARCIAL.md), with a table of open sources and the "still to research" section. Resume from there (Embrapa Soja, IDR-PR, Fundação ABC) for off-season corn, corn+brachiaria, wheat, oat, millet/crotalaria, sorghum, beans, radish, oat+radish and summer corn, plus corn after corn, beans/white mold, brachiaria/nematodes and NDVI × yield.
-  Files: `docs/pesquisa_ganho_soja_seguinte_PARCIAL.md`.
+- **Resume the literature research on the gain on the following soybean**: the survey is paused and the partial results are in [`pesquisa_ganho_soja_seguinte.md`](pesquisa_ganho_soja_seguinte.md), with a table of open sources and the "still to research" section. Resume from there (Embrapa Soja, IDR-PR, Fundação ABC) for off-season corn, corn+brachiaria, wheat, oat, millet/crotalaria, sorghum, beans, radish, oat+radish and summer corn, plus corn after corn, beans/white mold, brachiaria/nematodes and NDVI × yield.
+  Files: `docs/pesquisa_ganho_soja_seguinte.md`.
   Status: pending
