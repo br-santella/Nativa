@@ -3724,3 +3724,11 @@ footer > small:last-child {
 @media (prefers-reduced-motion: reduce) {
   .dashboard .sidebar, .dashboard .topbar, .dashboard .main-content { transition: none; }
 }
+
+/* Keep navigation controls consistent in expanded and compact modes. */
+.dashboard .sidebar nav button,
+.dashboard .sidebar-bottom > button,
+.dashboard .sidebar-toggle,
+.dashboard .sidebar-close {
+  border-radius: 4px;
+}
