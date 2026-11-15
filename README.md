@@ -129,7 +129,7 @@ npm run dev
 ```
 
 Production build: `npm run build && npm run preview`. The built `index.html` must be served over HTTP, not
-opened through `file://`
+opened through `file://`.
 
 The "Compare os cenários" section of the Rotation page calls the API at `VITE_API_URL` (default
 `http://localhost:8000`, set at build time). The other screens use the demo data in `frontend/src/data.ts`.
@@ -142,10 +142,10 @@ Details: [`frontend/README.md`](frontend/README.md#data-and-backend).
 
 ```bash
 cd motor_field_shift
-uv run pytest                  # unit tests (fake service, no data needed)
+uv run pytest                  # unit tests (the API tests use a fake service; the engine tests read the local data)
 uv run pytest -m integration    # integration tests (real service, requires the local data)
 
-cd ./frontend
+cd ../frontend
 npm run build                  # type-check + production build
 ```
 
@@ -165,7 +165,7 @@ flowchart LR
         R["/v1 routes<br/>api/field_shift_api"]
         S["Service layer<br/>core/service.py"]
         E["Engine<br/>app/engine.py<br/>rules · criteria · score · cards"]
-        M["Data modules<br/>clima · solo · regiao · agua · pam · renda · contexto"]
+        M["Data modules<br/>climate · soil · region · water · pam · income · context"]
         R --> S --> E --> M
     end
 
@@ -174,14 +174,12 @@ flowchart LR
     end
 
     subgraph Live["Live sources"]
-        P["NASA POWER API"]
         SG["SoilGrids REST"]
         CX["NOAA ENSO · NASA SMAP · MJO · pests"]
     end
 
     UI -. "JSON over HTTP" .-> R
     M --> D
-    M -.-> P
     M -.-> SG
     R -. "/v1/contexto" .-> CX
 ```
@@ -190,7 +188,7 @@ flowchart LR
 | --- | --- |
 | **API** | Stateless FastAPI service. No authentication and no user database: every request carries all the data needed for the calculation |
 | **Engine** | Hard rules, five scoring criteria, a weighted score, and explanation cards built from the computed values. No language model is used |
-| **Data** | Pre-computed regional files read from disk. NASA POWER and SoilGrids are queried live when a local file does not cover an area inside the region |
+| **Data** | Pre-computed Paraná files read from disk. SoilGrids is queried live only when the local rasters have no value for the area (e.g. urban pixels). Climate comes only from the pre-computed table: an area without it returns 422 |
 | **Context** | `/v1/contexto` queries current-condition sources at request time and caches the results in `data/cache_contexto/` |
 | **Deployment** | The frontend is a static build on Vercel. The API runs as a Docker container on an Azure VM, behind Caddy (HTTPS), and syncs its data from a private Hugging Face dataset on start |
 
@@ -224,8 +222,9 @@ is 0, the engine uses equal weights.
 <details>
 <summary><b>Hard rules</b></summary>
 
-- **Soybean in the second window** is always eliminated. Soybean sowing is allowed from 01/09 to 31/12,
-  the legal soybean-free period runs from 02/06 to 31/08, and soybean after soybean is not allowed.
+- **Soybean in the second window** is always eliminated: it falls outside the legal soybean sowing window and
+  inside the soybean-free period of the municipality's ADAPAR region (Portaria SDA/MAPA 1.579/2026; Western
+  Paraná is Região 2: sowing 01/09–31/12, soybean-free period 02/06–31/08), and soybean after soybean is not allowed.
 - A second crop that follows the chosen sowing date must be sown **after the summer harvest**
   (reference harvest dates: soybean ~10/01, summer corn ~05/02).
 - **Sowing windows:** off-season beans 15/01–28/02, sorghum 15/01–15/03 (reference values based on ZARC
@@ -296,7 +295,7 @@ curl -s -X POST localhost:8000/v1/recomendacao \
 | 422 | `{"erro": "fora_da_regiao"}` | Area outside Paraná |
 | 422 | validation error | Malformed request body |
 | 400 | `{"erro": "entrada_invalida"}` | Invalid adjustment, or restrictions eliminated every rotation |
-| 504 | `{"erro": "timeout_externo"}` | Raised on `ErroConsultaExterna`. Failures of the NASA POWER and SoilGrids clients are handled inside those clients and do not raise it |
+| 504 | `{"erro": "timeout_externo"}` | Raised on `ExternalQueryError`. Failures of the NASA POWER and SoilGrids clients are handled inside those clients and do not raise it |
 | 500 | `{"erro": "interno"}` | Unexpected error |
 
 Every engine error includes a human-readable `mensagem`.

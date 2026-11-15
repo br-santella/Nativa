@@ -51,7 +51,7 @@ Changes are kept in session memory. Reloading the page restores the example. Sig
 
 Only the "Compare os cenários" section of `/#rotation` (`src/EngineScenarios.tsx`) talks to the engine API (`motor_field_shift`, contract in `motor_field_shift/api/README.md`). Every other screen still uses the demo data in `src/data.ts`.
 
-The API address is `VITE_API_URL` (default `http://localhost:8000`), baked in at build time; it is the URL the browser uses (see `docker-compose.yml`).
+The API address is `VITE_API_URL` (default `http://localhost:8000`), baked in at build time; it is the URL the browser uses (production value: `motor_field_shift/deploy/README.md`).
 
 Flow (`src/api.ts`): `GET /health`, then, if the status is `ok`, `POST /v1/recomendacao` with:
 
@@ -67,7 +67,7 @@ Every call sends `?lang=pt-BR|en` following the app language switcher, so the en
 
 The screen shows the current rotation and the two best alternatives of the `agora` block (same summer crop), the best option of the `proxima_safra` block (another summer crop), the 2nd-window sowing date the engine used, and the engine `avisos`.
 
-Not sent yet: the soil fields of My Property (the engine's `analise_solo` needs clay + sand, AWC or a fertility field, which the form does not collect), `problemas_area`, `restricoes` and `ajustes`. Endpoints not used yet: `/v1/opcoes`, `/v1/contexto`, `/v1/plano`, `/v1/culturas/fichas`.
+Not sent yet: the soil fields of My Property (the engine's `analise_solo` needs clay + sand, AWC or a fertility field, which the form does not collect), `problemas_area`, `restricoes` and `ajustes`. Endpoints not used yet: `/v1/opcoes`, `/v1/diagnostico`, `/v1/clima`, `/v1/contexto`.
 
 Sign-up, the contact form and the soil report upload are still demo-only (no account, message or upload).
 

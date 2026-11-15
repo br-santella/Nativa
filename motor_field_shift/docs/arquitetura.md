@@ -10,12 +10,12 @@ Pre-compute only what is expensive to compute. Anything that is just reading a p
 
 | Dataset | Strategy | Why |
 |---|---|---|
-| Climate (NASA POWER indicators) | Pre-computed, in a table per grid cell (~0.5° × 0.625°) and per municipality | Each indicator processes 35 years of daily data (1991–2025): live it would take seconds; pre-computed it is a millisecond lookup. All of Brazil is ~3–4 thousand cells and a few tens of MB |
+| Climate (NASA POWER indicators) | Pre-computed, in a table per grid cell (~0.5° × 0.625°) and per municipality | Each indicator processes 34 seasons of daily data (1991–2024): live it would take seconds; pre-computed it is a millisecond lookup. All of Brazil is ~3–4 thousand cells and a few tens of MB |
 | MapBiomas | On demand, by windowed COG reads | Reads only the polygon's bounding box (~1 s). Currently via source.coop (the official bucket returns 403); in a production app, mirror it in our own bucket |
 | NASADEM (elevation/slope) | On demand, via COG; slope computed on the clip | Windowed reads are cheap and the slope calculation only runs on the clip |
-| SoilGrids | On demand, via the API | Light external query, no need to store it |
-| SMAP (current moisture) | Daily job per region; the app only reads the latest | The data changes once a day and is the same for every user in the region |
-| NDVI / HLS (detected rotation, bare soil) | Asynchronous task (1–3 min) + cache per field | Too slow for a request; the cache avoids repeating it |
+| SoilGrids | Local rasters for Paraná (`data/raw/soilgrids_pr/`); the REST API only as a fallback for pixels without value (e.g. urban areas, ~15 s) | The REST API is too slow for every request |
+| SMAP (current moisture) | Read at request time in `/v1/contexto` (only the field pixel, range requests), cached 24 h per pixel; informational only | The data changes once a day; a daily job per region would be the production version |
+| NDVI / HLS (detected rotation, bare soil) | Pre-computed only for demo field 72638 (`ingest/field_timelapse.py`); in production, an asynchronous task (1–3 min) + cache per field | Too slow for a request; the cache avoids repeating it |
 | Legal rules / ZARC | Local table | Small, static data |
 | FTW (field boundaries) | Outside the flow for now: the polygon comes from the client (drawn on the map / CAR) | FTW is only used for the demo tile (field 72638) |
 
@@ -40,7 +40,7 @@ Core: `diagnostico(poligono) → {clima, solo, relevo, historico, rotacao_detect
 
 ```
 src/field_shift/
-  core/service.py   API service layer: options, diagnose, recommend (+ plan), warm_up
+  core/service.py   API service layer: options, diagnose, recommend, warm_up
   app/engine.py     rotation catalog, hard rules, criteria, ranking and card texts
   app/field_state.py  farmer-reported area problems and soil fertility
   app/mvp.py        Streamlit teaching version
@@ -78,7 +78,7 @@ Production only needs the climate indicators table (a few MB) plus the clipped r
 
 ## 6. Hackathon vs. production app
 
-- **Until Sunday (15/11/2026):** Streamlit + local files (parquet/GeoTIFF), no infrastructure, but with modules behind the interfaces above, so that swapping local files for a bucket/database later does not touch the engine.
+- **Hackathon (delivered 15/11/2026):** FastAPI in Docker on an Azure VM (data synced from a private Hugging Face dataset) + React frontend on Vercel, reading local files (parquet/GeoTIFF), with modules behind the interfaces above, so that swapping local files for a bucket/database later does not touch the engine. The Streamlit app (`app/mvp.py`) remains as a teaching version.
 - **Production app:** FastAPI + PostGIS (or parquet/DuckDB) + COG bucket + a queue for NDVI. To expand to another region: run the climate pipeline on that grid and add the state's legal rules; MapBiomas and NASADEM already cover Brazil.
 - **Out of scope for now:** livestock/cattle and FTW expansion.
 - **Pitch argument:** it scales to Brazil because the heavy work is pre-computed and the rest is on-demand reads.

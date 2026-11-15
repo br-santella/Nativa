@@ -166,5 +166,5 @@ Nota = 13,58 ÷ 17 = **0,799**.
 O milheto/crotalária fica em 2º (0,756): renda menor (0,460, só custo de R$ 90/ha), mas melhor em solo (0,82), água (1,00), pragas (0,70) e sem risco climático. O milho safrinha sozinho (a rotação atual) cai para 3º, com 0,751: renda quase igual (0,922), mas solo pior (0,56) e quebra de pragas menor (0,50). Em 15/03 a geada sobe para 76 % dos anos e o milheto/crotalária passa à frente (0,756 contra 0,722 do milho + braquiária), com aviso de milho fora do ZARC e aviso de que a cobertura rende R$ 1.496/ha/ano a menos.
 
 **Incerteza do milho + braquiária:**
-- Renda entre R$ 60 e R$ 2.943/ha na pior e na melhor das últimas 5 safras, o que dá nota entre 0,679 e 0,817.
+- Renda entre R$ 60 e R$ 2.943/ha na pior e na melhor das últimas 5 safras, o que dá nota entre 0,682 e 0,819.
 - Repetindo cada uma das safras 2021–2025, ele fica em 1º em 4; em 2021, o milheto/crotalária passaria à frente.
