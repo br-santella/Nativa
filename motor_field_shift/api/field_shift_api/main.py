@@ -72,6 +72,11 @@ async def _entrada_invalida(request: Request, exc: Exception) -> JSONResponse:
     return JSONResponse(status_code=400, content={"erro": "entrada_invalida", "mensagem": str(exc)})
 
 
+@app.exception_handler(servico.ErroConsultaExterna)
+async def _erro_consulta_externa(request: Request, exc: Exception) -> JSONResponse:
+    return JSONResponse(status_code=504, content={"erro": "timeout_externo", "mensagem": str(exc)})
+
+
 @app.exception_handler(Exception)
 async def _interno(request: Request, exc: Exception) -> JSONResponse:
     log.error("erro inesperado em %s %s", request.method, request.url.path, exc_info=exc)

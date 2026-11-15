@@ -1,7 +1,7 @@
 """Camada de serviço do motor Field Shift (sem FastAPI): aceita qualquer polígono do Oeste do PR.
 
 Funções públicas: opcoes(), diagnosticar(area, semeadura), recomendar(area, ...), aquecer().
-Exceções: ForaDaRegiao, EntradaInvalida. Todas as saídas são JSON-serializáveis (NaN -> None).
+Exceções: ForaDaRegiao, EntradaInvalida, ErroConsultaExterna. Todas as saídas são JSON-serializáveis (NaN -> None).
 
 `area` (exatamente uma forma):
   {"geometry": <GeoJSON Polygon/MultiPolygon ou Feature>}  EPSG:4326, ordem [lon, lat]
@@ -15,10 +15,12 @@ import math
 from datetime import date
 from functools import lru_cache
 from pathlib import Path
+from urllib.error import URLError
 
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+import requests
 from shapely.geometry import Point, box, shape
 from shapely.geometry.base import BaseGeometry
 
@@ -46,12 +48,21 @@ class EntradaInvalida(Exception):
     """Entrada inválida: geometria, semeadura, rotação, pesos, ajustes, área > 5000 ha etc."""
 
 
-# Rotação = par (cultura de verão, cultura da 2ª janela). id estável "<verao>__<segunda>" (ex.: soja__milho_safrinha) -> nome do catálogo.
-# Os slugs antigos da API (só soja no verão: milho_safrinha, trigo...) seguem aceitos em E.LEGADO (milho_safrinha = soja__milho_safrinha).
-ROTACOES: dict[str, str] = dict(E.NOME_DE)
-_SLUG_DE = dict(E.ID_DE)
-CULTURAS_VERAO = tuple(E.VERAO)
-CULTURAS_SEGUNDA = tuple(E.SEGUNDA)
+class ErroConsultaExterna(Exception):
+    """Timeout ou falha de ligação ao consultar APIs externas (NASA POWER / SoilGrids)."""
+
+
+# slug -> nome do catálogo do engine
+ROTACOES: dict[str, str] = {
+    "milho_safrinha": "Soja → milho safrinha",
+    "milho_braquiaria": "Soja → milho safrinha + braquiária",
+    "trigo": "Soja → trigo",
+    "aveia": "Soja → aveia (cobertura/palha)",
+    "milheto_crotalaria": "Soja → milheto/crotalária (cobertura)",
+    "pousio": "Soja → pousio",
+    "soja_safrinha": "Soja → soja safrinha",
+}
+_SLUG_DE = {v: k for k, v in ROTACOES.items()}
 
 _DESCRICAO = {  # por cultura da 2ª janela
     "milho_safrinha": "Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR.",
@@ -286,7 +297,23 @@ def _rotacao_detectada(tid: str | None) -> dict:
                 dias_solo_descoberto=E.dias_solo_por_ano(nd), picos_por_ano_agricola=picos)
 
 
-def _contexto(area: dict, semeadura: str, analise_solo: dict | None = None) -> dict:
+def _carregar_cache_nasa() -> dict | None:
+    """Lê data/nasa_normalizado.json do disco se existir (suporta dict com metadados ou lista de registos)."""
+    caminho = E.ROOT / "data/nasa_normalizado.json"
+    if not caminho.exists():
+        return None
+    try:
+        conteudo = json.loads(caminho.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    if isinstance(conteudo, dict) and conteudo:
+        return conteudo
+    if isinstance(conteudo, list) and conteudo:
+        return {"dados": conteudo, "total_registros": len(conteudo)}
+    return None
+
+
+def _contexto(area: dict, semeadura: str) -> dict:
     """Calcula tudo que diagnosticar/recomendar precisam; devolve dict com `rk` (clima enriquecido) e `diag` (saída)."""
     semeadura = _validar_semeadura(semeadura)
     a = _resolver_area(area)
@@ -296,10 +323,33 @@ def _contexto(area: dict, semeadura: str, analise_solo: dict | None = None) -> d
         rel = relevo(poly)
     except ValueError as e:
         raise EntradaInvalida(f"Sem dados de relevo para a área: {e}") from e
-    rk, origem = E.obter_clima(a["lat"], a["lon"], semeadura)
+
+    cache_nasa = _carregar_cache_nasa()
+    try:
+        rk, origem = E.obter_clima(a["lat"], a["lon"], semeadura)
+    except (TimeoutError, URLError, ConnectionError, requests.RequestException) as e:
+        raise ErroConsultaExterna(
+            f"Timeout ou falha de ligação ao consultar dados climáticos da NASA: {e}"
+        ) from e
+
     if rk.get("modo") != "regiao":
         raise ForaDaRegiao("Centroide sem indicadores climáticos pré-calculados (fora do Oeste do PR).")
-    rk = E.enriquecer(rk, dict(poly=poly), analise_solo)
+
+    try:
+        rk = E.enriquecer(rk, dict(poly=poly))
+    except (TimeoutError, URLError, ConnectionError, requests.RequestException) as e:
+        raise ErroConsultaExterna(
+            f"Timeout ou falha de ligação ao consultar dados externos de solo/clima: {e}"
+        ) from e
+
+    usou_cache_disco = cache_nasa is not None or "cache" in str(origem).lower()
+    if cache_nasa is not None:
+        dt_consulta = cache_nasa.get("data_consulta") or cache_nasa.get("consultado_em")
+        detalhe = f" (consultado em {dt_consulta})" if dt_consulta else ""
+        avisos.append(f"Cache local NASA utilizado: data/nasa_normalizado.json{detalhe}.")
+    elif "cache" in str(origem).lower():
+        avisos.append(f"Cache local NASA utilizado: {origem}.")
+
     if a["origem"] == "ponto":
         avisos.append(f"Ponto convertido em quadrado de ~{PONTO_AREA_HA:.0f} ha centrado nele; relevo, histórico e solo "
                       "valem para esse quadrado, não para a lavoura real.")
@@ -331,7 +381,8 @@ def _contexto(area: dict, semeadura: str, analise_solo: dict | None = None) -> d
     d = rk["diagnostico"]
     cel = rk["celula"]
     clima = dict(
-        fonte=rk["fonte"], celula=dict(id=cel["ponto_id"], lat=cel["lat"], lon=cel["lon"], elev=cel["elev"]),
+        fonte=rk["fonte"], cache_utilizado=usou_cache_disco,
+        celula=dict(id=cel["ponto_id"], lat=cel["lat"], lon=cel["lon"], elev=cel["elev"]),
         semeadura_safrinha=semeadura,
         riscos=dict(geada_safrinha=round(rk["geada_safrinha"], 3), geada_trigo=round(rk["geada_trigo"], 3),
                     veranico_safrinha=round(rk["veranico_safrinha"], 3), n_anos=rk["n_anos"], periodo=rk["periodo"]),
@@ -360,8 +411,8 @@ def diagnosticar(area: dict, semeadura_safrinha: str = "01/02", analise_solo: di
     """Diagnóstico da área (relevo, solo 0–30 cm + CAD, histórico MapBiomas, clima da célula, PAM do município).
     `analise_solo` (opcional, ver `recomendar`) substitui o SoilGrids no bloco solo.
 
-    Lança EntradaInvalida (geometria/semeadura/área/análise de solo inválidas) ou ForaDaRegiao."""
-    return _contexto(area, semeadura_safrinha, _normalizar_analise_solo(analise_solo))["diag"]
+    Lança EntradaInvalida (geometria/semeadura/área > 5000 ha), ForaDaRegiao ou ErroConsultaExterna."""
+    return _contexto(area, semeadura_safrinha)["diag"]
 
 
 # Arredondamento só na serialização (o cálculo e a ordem do ranking usam precisão total).
@@ -893,4 +944,4 @@ def aquecer() -> None:
     _talhoes_demo()
     indicadores_para(-24.9555, -53.4552)  # Cascavel: carrega o lookup climático
     pam_produtividade("4104808")
-    recomendar({"talhao_id": E.TALHAO_ID}, rotacao_atual="soja__milho_safrinha", incluir_diagnostico=False)
+    recomendar({"talhao_id": E.TALHAO_ID}, incluir_diagnostico=False)
