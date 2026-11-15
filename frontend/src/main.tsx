@@ -110,7 +110,7 @@ function App() {
         timer.current = setTimeout(() => {
             setApplied([...weights]);
             setBusy(false);
-            toast("Comparação demonstrativa atualizada.");
+            toast("Comparação atualizada.");
         }, 600);
     }
     const navItems: [
