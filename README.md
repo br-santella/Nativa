@@ -126,7 +126,7 @@ cd motor_field_shift
 uv run pytest                  # unit tests (fake service, no data needed)
 uv run pytest -m integration    # integration tests (real service, requires the local data)
 
-cd ../frontend
+cd ./frontend
 npm run build                  # type-check + production build
 ```
 
