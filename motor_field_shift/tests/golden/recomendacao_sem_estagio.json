@@ -18,7 +18,7 @@
        "Milho 2ª safra: 117 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 101 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ 1.641/ha (CV do rendimento 27%; ano ruim, p20 da mesma janela de 10 anos = 88 sc/ha → R$ 50/ha).",
        "Braquiária em consórcio: sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
+       "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
        "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
        "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 01/02), a água no solo atendeu em média 84% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
        "Geada no florescimento/enchimento do milho semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km.",
@@ -46,14 +46,14 @@
      "contribuicoes": {
       "agua": 0.149,
       "pragas": 0.115,
-      "renda": 0.269,
+      "renda": 0.272,
       "risco": 0.137,
       "solo": 0.125
      },
      "criterios": {
       "agua": 0.844,
       "pragas": 0.65,
-      "renda": 0.914,
+      "renda": 0.926,
       "risco": 0.779,
       "solo": 0.711
      },
@@ -132,14 +132,14 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.681,
+       0.682,
        0.819
       ],
       "nota_por_safra": {
-       "2021": 0.681,
-       "2022": 0.801,
-       "2023": 0.797,
-       "2024": 0.776,
+       "2021": 0.682,
+       "2022": 0.805,
+       "2023": 0.8,
+       "2024": 0.78,
        "2025": 0.819
       },
       "renda": {
@@ -161,10 +161,11 @@
       }
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": 1403.0,
       "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 1802.0,
       "incremental_r_ha": 1406.0,
       "itens": [
@@ -196,7 +197,7 @@
       "linha_custo": "coe",
       "total_r_ha": 2994.0
      },
-     "nota": 0.795,
+     "nota": 0.799,
      "posicao": 1,
      "rotacao": "Soja → milho safrinha + braquiária",
      "segunda": {
@@ -253,7 +254,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
+       "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
        "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 01/02), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -279,14 +280,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.136,
+      "renda": 0.135,
       "risco": 0.176,
       "solo": 0.144
      },
      "criterios": {
       "agua": 0.998,
       "pragas": 0.7,
-      "renda": 0.463,
+      "renda": 0.46,
       "risco": 1.0,
       "solo": 0.819
      },
@@ -330,8 +331,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.757,
-       0.757
+       0.756,
+       0.756
       ],
       "nota_por_safra": null,
       "renda": {
@@ -345,10 +346,11 @@
       "risco_climatico": null
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1496.0,
       "ano_ruim_r_ha": 1103.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -90.0,
       "incremental_r_ha": -90.0,
       "itens": [
@@ -372,7 +374,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1103.0
      },
-     "nota": 0.757,
+     "nota": 0.756,
      "posicao": 2,
      "rotacao": "Soja → milheto/crotalária (cobertura)",
      "segunda": {
@@ -417,7 +419,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
        "Bônus na soja seguinte: 2.5 sc/ha × R$ 120.14/sc = R$ 300/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
+       "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
        "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -443,14 +445,14 @@
      "contribuicoes": {
       "agua": 0.175,
       "pragas": 0.115,
-      "renda": 0.135,
+      "renda": 0.134,
       "risco": 0.176,
       "solo": 0.109
      },
      "criterios": {
       "agua": 0.994,
       "pragas": 0.65,
-      "renda": 0.458,
+      "renda": 0.455,
       "risco": 1.0,
       "solo": 0.619
      },
@@ -508,10 +510,11 @@
       "risco_climatico": null
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1506.0,
       "ano_ruim_r_ha": 1093.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 300.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -100.0,
       "incremental_r_ha": -100.0,
       "itens": [
@@ -618,6 +621,13 @@
     ],
     "texto": "Repetindo a renda realizada de cada uma das últimas 5 safras (2021–2025), com os demais critérios fixos, a 1ª colocada seria: soja__milho_braquiaria em 4; soja__milheto_crotalaria em 1."
    },
+   "maior_renda": {
+    "id": "soja__milho_braquiaria",
+    "incremental_r_ha": 1406.0,
+    "primeira_abaixo_r_ha": 0.0,
+    "primeira_e_maior_renda": true,
+    "rotacao": "Soja → milho safrinha + braquiária"
+   },
    "ranking": [
     {
      "atual": false,
@@ -635,7 +645,7 @@
        "Milho 2ª safra: 117 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 101 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ 1.641/ha (CV do rendimento 27%; ano ruim, p20 da mesma janela de 10 anos = 88 sc/ha → R$ 50/ha).",
        "Braquiária em consórcio: sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
+       "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
        "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
        "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 01/02), a água no solo atendeu em média 84% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
        "Geada no florescimento/enchimento do milho semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km.",
@@ -663,14 +673,14 @@
      "contribuicoes": {
       "agua": 0.149,
       "pragas": 0.115,
-      "renda": 0.269,
+      "renda": 0.272,
       "risco": 0.137,
       "solo": 0.125
      },
      "criterios": {
       "agua": 0.844,
       "pragas": 0.65,
-      "renda": 0.914,
+      "renda": 0.926,
       "risco": 0.779,
       "solo": 0.711
      },
@@ -749,14 +759,14 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.681,
+       0.682,
        0.819
       ],
       "nota_por_safra": {
-       "2021": 0.681,
-       "2022": 0.801,
-       "2023": 0.797,
-       "2024": 0.776,
+       "2021": 0.682,
+       "2022": 0.805,
+       "2023": 0.8,
+       "2024": 0.78,
        "2025": 0.819
       },
       "renda": {
@@ -779,10 +789,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": 1403.0,
       "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 1802.0,
       "incremental_r_ha": 1406.0,
       "itens": [
@@ -814,7 +825,7 @@
       "linha_custo": "coe",
       "total_r_ha": 2994.0
      },
-     "nota": 0.795,
+     "nota": 0.799,
      "posicao": 1,
      "recuperacao_solo": null,
      "rotacao": "Soja → milho safrinha + braquiária",
@@ -872,7 +883,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
+       "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
        "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 01/02), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -898,14 +909,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.124,
-      "renda": 0.136,
+      "renda": 0.135,
       "risco": 0.176,
       "solo": 0.144
      },
      "criterios": {
       "agua": 0.998,
       "pragas": 0.7,
-      "renda": 0.463,
+      "renda": 0.46,
       "risco": 1.0,
       "solo": 0.819
      },
@@ -949,8 +960,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.757,
-       0.757
+       0.756,
+       0.756
       ],
       "nota_por_safra": null,
       "renda": {
@@ -965,10 +976,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1496.0,
       "ano_ruim_r_ha": 1103.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -90.0,
       "incremental_r_ha": -90.0,
       "itens": [
@@ -992,7 +1004,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1103.0
      },
-     "nota": 0.757,
+     "nota": 0.756,
      "posicao": 2,
      "recuperacao_solo": null,
      "rotacao": "Soja → milheto/crotalária (cobertura)",
@@ -1036,7 +1048,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Milho 2ª safra: 117 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 101 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ 1.641/ha (CV do rendimento 27%; ano ruim, p20 da mesma janela de 10 anos = 88 sc/ha → R$ 50/ha).",
        "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 2.954/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.370/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.762/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.362/ha/ano.",
+       "Total da rotação: R$ 2.954/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.370/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.762/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.362/ha/ano.",
        "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
        "Água: na fase crítica (floração/enchimento do milho, semeadura em 01/02), a água no solo atendeu em média 86% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
        "Geada no florescimento/enchimento do milho semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km.",
@@ -1064,14 +1076,14 @@
      "contribuicoes": {
       "agua": 0.151,
       "pragas": 0.088,
-      "renda": 0.267,
+      "renda": 0.271,
       "risco": 0.142,
       "solo": 0.098
      },
      "criterios": {
       "agua": 0.858,
       "pragas": 0.5,
-      "renda": 0.909,
+      "renda": 0.922,
       "risco": 0.804,
       "solo": 0.556
      },
@@ -1124,9 +1136,9 @@
       ],
       "nota_por_safra": {
        "2021": 0.628,
-       "2022": 0.754,
-       "2023": 0.748,
-       "2024": 0.727,
+       "2022": 0.757,
+       "2023": 0.752,
+       "2024": 0.731,
        "2025": 0.772
       },
       "renda": {
@@ -1149,10 +1161,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 36.0,
       "ano_ruim_r_ha": 1362.0,
       "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 120.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": 1762.0,
       "incremental_r_ha": 1370.0,
       "itens": [
@@ -1176,7 +1189,7 @@
       "linha_custo": "coe",
       "total_r_ha": 2954.0
      },
-     "nota": 0.747,
+     "nota": 0.751,
      "posicao": 3,
      "recuperacao_solo": null,
      "rotacao": "Soja → milho safrinha",
@@ -1233,7 +1246,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
        "Bônus na soja seguinte: 2.5 sc/ha × R$ 120.14/sc = R$ 300/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
+       "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
        "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -1259,14 +1272,14 @@
      "contribuicoes": {
       "agua": 0.175,
       "pragas": 0.115,
-      "renda": 0.135,
+      "renda": 0.134,
       "risco": 0.176,
       "solo": 0.109
      },
      "criterios": {
       "agua": 0.994,
       "pragas": 0.65,
-      "renda": 0.458,
+      "renda": 0.455,
       "risco": 1.0,
       "solo": 0.619
      },
@@ -1326,10 +1339,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1506.0,
       "ano_ruim_r_ha": 1093.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 300.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -100.0,
       "incremental_r_ha": -100.0,
       "itens": [
@@ -1410,7 +1424,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
        "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 1.058/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -135/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.058/ha/ano.",
+       "Total da rotação: R$ 1.058/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -135/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.058/ha/ano.",
        "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -1436,14 +1450,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.131,
+      "renda": 0.129,
       "risco": 0.176,
       "solo": 0.11
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.444,
+      "renda": 0.44,
       "risco": 1.0,
       "solo": 0.626
      },
@@ -1487,8 +1501,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.7,
-       0.7
+       0.699,
+       0.699
       ],
       "nota_por_safra": null,
       "renda": {
@@ -1503,10 +1517,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1541.0,
       "ano_ruim_r_ha": 1058.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 240.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -135.0,
       "incremental_r_ha": -135.0,
       "itens": [
@@ -1530,7 +1545,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1058.0
      },
-     "nota": 0.7,
+     "nota": 0.699,
      "posicao": 5,
      "recuperacao_solo": null,
      "rotacao": "Soja → aveia (cobertura/palha)",
@@ -1586,7 +1601,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
        "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 1.158/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -35/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.158/ha/ano.",
+       "Total da rotação: R$ 1.158/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -35/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.158/ha/ano.",
        "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 47 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -1612,14 +1627,14 @@
      "contribuicoes": {
       "agua": 0.174,
       "pragas": 0.106,
-      "renda": 0.143,
+      "renda": 0.142,
       "risco": 0.176,
       "solo": 0.092
      },
      "criterios": {
       "agua": 0.988,
       "pragas": 0.6,
-      "renda": 0.485,
+      "renda": 0.484,
       "risco": 1.0,
       "solo": 0.519
      },
@@ -1679,10 +1694,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1441.0,
       "ano_ruim_r_ha": 1158.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 240.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -35.0,
       "incremental_r_ha": -35.0,
       "itens": [
@@ -1749,7 +1765,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Sorgo: 60 sc/ha (tendência da PAM Oeste do PR (média, o município não tem PAM recente) 2023–2025 projetada para a próxima safra; média 61 sc/ha) × R$ 40.42/sc (estimativa — validar: 75% do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)) − custo R$ 2.807/ha (estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)) = R$ -369/ha (CV do rendimento 19%; ano ruim, p20 da mesma janela de 10 anos = 57 sc/ha → R$ -486/ha).",
        "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 944/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -249/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 827/ha/ano.",
+       "Total da rotação: R$ 944/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -249/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 827/ha/ano.",
        "Água: na fase crítica (emborrachamento/enchimento do sorgo, semeadura em 01/02), a água no solo atendeu em média 88% da demanda; em 6 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
        "Geada no florescimento/enchimento do sorgo semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); sorgo 2ª safra em 01/02: indicado, risco 20% (100% das classes de solo; Port.132_de_12-05-2025).",
@@ -1775,14 +1791,14 @@
      "contribuicoes": {
       "agua": 0.155,
       "pragas": 0.097,
-      "renda": 0.117,
+      "renda": 0.115,
       "risco": 0.156,
       "solo": 0.1
      },
      "criterios": {
       "agua": 0.878,
       "pragas": 0.55,
-      "renda": 0.397,
+      "renda": 0.39,
       "risco": 0.882,
       "solo": 0.565
      },
@@ -1826,7 +1842,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.611,
+       0.608,
        null
       ],
       "nota_por_safra": null,
@@ -1849,10 +1865,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1655.0,
       "ano_ruim_r_ha": 827.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 120.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -249.0,
       "incremental_r_ha": -249.0,
       "itens": [
@@ -1876,7 +1893,7 @@
       "linha_custo": "coe",
       "total_r_ha": 944.0
      },
-     "nota": 0.624,
+     "nota": 0.622,
      "posicao": 7,
      "recuperacao_solo": null,
      "rotacao": "Soja → sorgo",
@@ -1930,7 +1947,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Feijão 2ª safra: 25 sc/ha (tendência da PAM Toledo 2013–2021 projetada para a próxima safra; média 25 sc/ha) × R$ 174.30/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.453/ha (CONAB Francisco Beltrão-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ -63/ha (CV do rendimento 34%; ano ruim, p20 da mesma janela de 10 anos = 15 sc/ha → R$ -1.780/ha).",
        "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 1.129/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -63/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -588/ha/ano.",
+       "Total da rotação: R$ 1.129/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -63/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -588/ha/ano.",
        "Água: na fase crítica (floração/formação de vagens do feijão, semeadura em 01/02), a água no solo atendeu em média 85% da demanda; em 5 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
        "Geada no florescimento/enchimento do feijão safrinha semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
        "Déficit hídrico na fase crítica (floração/formação de vagens do feijão, semeadura em 01/02): água no solo abaixo de 55% da demanda em 1 de 34 anos (3%); balanço hídrico diário NASA POWER + solo, CAD 56 mm.",
@@ -1964,7 +1981,7 @@
      "criterios": {
       "agua": 0.849,
       "pragas": 0.3,
-      "renda": 0.474,
+      "renda": 0.472,
       "risco": 0.856,
       "solo": 0.461
      },
@@ -2008,7 +2025,7 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.449,
+       0.447,
        null
       ],
       "nota_por_safra": null,
@@ -2032,10 +2049,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1469.0,
       "ano_ruim_r_ha": -588.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 0.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -63.0,
       "incremental_r_ha": -63.0,
       "itens": [
@@ -2059,7 +2077,7 @@
       "linha_custo": "coe",
       "total_r_ha": 1129.0
      },
-     "nota": 0.575,
+     "nota": 0.574,
      "posicao": 8,
      "recuperacao_solo": null,
      "rotacao": "Soja → feijão safrinha",
@@ -2113,7 +2131,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
        "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ 992/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -200/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 992/ha/ano.",
+       "Total da rotação: R$ 992/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -200/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 992/ha/ano.",
        "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -2139,14 +2157,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.123,
+      "renda": 0.121,
       "risco": 0.176,
       "solo": 0.041
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.417,
+      "renda": 0.411,
       "risco": 1.0,
       "solo": 0.233
      },
@@ -2190,8 +2208,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.57,
-       0.57
+       0.568,
+       0.568
       ],
       "nota_por_safra": null,
       "renda": {
@@ -2206,10 +2224,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 1606.0,
       "ano_ruim_r_ha": 992.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 0.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -200.0,
       "incremental_r_ha": -200.0,
       "itens": [
@@ -2233,7 +2252,7 @@
       "linha_custo": "coe",
       "total_r_ha": 992.0
      },
-     "nota": 0.57,
+     "nota": 0.568,
      "posicao": 9,
      "recuperacao_solo": null,
      "rotacao": "Soja → pousio",
@@ -2279,7 +2298,7 @@
        "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
        "Trigo: 36 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 40 sc/ha) × R$ 68.44/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.334/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)) = R$ -1.900/ha (CV do rendimento 36%; ano ruim, p20 da mesma janela de 10 anos = 27 sc/ha → R$ -2.508/ha).",
        "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -588/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -841/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -1.780/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.196/ha/ano.",
+       "Total da rotação: R$ -588/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -841/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -1.780/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -1.196/ha/ano.",
        "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
        "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 95% da demanda; em 1 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
        "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
@@ -2307,14 +2326,14 @@
      "contribuicoes": {
       "agua": 0.167,
       "pragas": 0.106,
-      "renda": 0.058,
+      "renda": 0.053,
       "risco": 0.104,
       "solo": 0.089
      },
      "criterios": {
       "agua": 0.949,
       "pragas": 0.6,
-      "renda": 0.196,
+      "renda": 0.18,
       "risco": 0.588,
       "solo": 0.504
      },
@@ -2393,15 +2412,15 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.485,
-       0.651
+       0.481,
+       0.653
       ],
       "nota_por_safra": {
-       "2021": 0.569,
-       "2022": 0.509,
-       "2023": 0.485,
-       "2024": 0.488,
-       "2025": 0.651
+       "2021": 0.566,
+       "2022": 0.505,
+       "2023": 0.481,
+       "2024": 0.484,
+       "2025": 0.653
       },
       "renda": {
        "faixa_r_ha": [
@@ -2422,10 +2441,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 2247.0,
       "ano_ruim_r_ha": -1196.0,
       "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 120.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1780.0,
       "incremental_r_ha": -841.0,
       "itens": [
@@ -2449,7 +2469,7 @@
       "linha_custo": "coe",
       "total_r_ha": -588.0
      },
-     "nota": 0.524,
+     "nota": 0.519,
      "posicao": 10,
      "recuperacao_solo": null,
      "rotacao": "Soja → trigo",
@@ -2510,7 +2530,7 @@
       "Milho 2ª safra: 117 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 101 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ 1.641/ha (CV do rendimento 27%; ano ruim, p20 da mesma janela de 10 anos = 88 sc/ha → R$ 50/ha).",
       "Braquiária em consórcio: sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
       "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
+      "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
       "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 01/02), a água no solo atendeu em média 84% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
       "Geada no florescimento/enchimento do milho semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km.",
@@ -2538,14 +2558,14 @@
     "contribuicoes": {
      "agua": 0.149,
      "pragas": 0.115,
-     "renda": 0.269,
+     "renda": 0.272,
      "risco": 0.137,
      "solo": 0.125
     },
     "criterios": {
      "agua": 0.844,
      "pragas": 0.65,
-     "renda": 0.914,
+     "renda": 0.926,
      "risco": 0.779,
      "solo": 0.711
     },
@@ -2624,14 +2644,14 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.681,
+      0.682,
       0.819
      ],
      "nota_por_safra": {
-      "2021": 0.681,
-      "2022": 0.801,
-      "2023": 0.797,
-      "2024": 0.776,
+      "2021": 0.682,
+      "2022": 0.805,
+      "2023": 0.8,
+      "2024": 0.78,
       "2025": 0.819
      },
      "renda": {
@@ -2653,10 +2673,11 @@
      }
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 0.0,
      "ano_ruim_r_ha": 1403.0,
      "base_renda": "historico",
      "bonus_proxima_soja_r_ha": 360.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": 1802.0,
      "incremental_r_ha": 1406.0,
      "itens": [
@@ -2688,7 +2709,7 @@
      "linha_custo": "coe",
      "total_r_ha": 2994.0
     },
-    "nota": 0.795,
+    "nota": 0.799,
     "posicao": 1,
     "rotacao": "Soja → milho safrinha + braquiária",
     "segunda": {
@@ -2745,7 +2766,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
       "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
+      "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
       "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 01/02), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
       "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -2771,14 +2792,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.124,
-     "renda": 0.136,
+     "renda": 0.135,
      "risco": 0.176,
      "solo": 0.144
     },
     "criterios": {
      "agua": 0.998,
      "pragas": 0.7,
-     "renda": 0.463,
+     "renda": 0.46,
      "risco": 1.0,
      "solo": 0.819
     },
@@ -2822,8 +2843,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.757,
-      0.757
+      0.756,
+      0.756
      ],
      "nota_por_safra": null,
      "renda": {
@@ -2837,10 +2858,11 @@
      "risco_climatico": null
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1496.0,
      "ano_ruim_r_ha": 1103.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 360.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -90.0,
      "incremental_r_ha": -90.0,
      "itens": [
@@ -2864,7 +2886,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1103.0
     },
-    "nota": 0.757,
+    "nota": 0.756,
     "posicao": 2,
     "rotacao": "Soja → milheto/crotalária (cobertura)",
     "segunda": {
@@ -2909,7 +2931,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
       "Bônus na soja seguinte: 2.5 sc/ha × R$ 120.14/sc = R$ 300/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
+      "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
       "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
       "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -2935,14 +2957,14 @@
     "contribuicoes": {
      "agua": 0.175,
      "pragas": 0.115,
-     "renda": 0.135,
+     "renda": 0.134,
      "risco": 0.176,
      "solo": 0.109
     },
     "criterios": {
      "agua": 0.994,
      "pragas": 0.65,
-     "renda": 0.458,
+     "renda": 0.455,
      "risco": 1.0,
      "solo": 0.619
     },
@@ -3000,10 +3022,11 @@
      "risco_climatico": null
     },
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1506.0,
      "ano_ruim_r_ha": 1093.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 300.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -100.0,
      "incremental_r_ha": -100.0,
      "itens": [
@@ -3083,7 +3106,7 @@
      "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
      "Milho 2ª safra: 117 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 101 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ 1.641/ha (CV do rendimento 27%; ano ruim, p20 da mesma janela de 10 anos = 88 sc/ha → R$ 50/ha).",
      "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-     "Total da rotação: R$ 2.954/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.370/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.762/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.362/ha/ano.",
+     "Total da rotação: R$ 2.954/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.370/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.762/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.362/ha/ano.",
      "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
      "Água: na fase crítica (floração/enchimento do milho, semeadura em 01/02), a água no solo atendeu em média 86% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
      "Geada no florescimento/enchimento do milho semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km.",
@@ -3111,14 +3134,14 @@
    "contribuicoes": {
     "agua": 0.151,
     "pragas": 0.088,
-    "renda": 0.267,
+    "renda": 0.271,
     "risco": 0.142,
     "solo": 0.098
    },
    "criterios": {
     "agua": 0.858,
     "pragas": 0.5,
-    "renda": 0.909,
+    "renda": 0.922,
     "risco": 0.804,
     "solo": 0.556
    },
@@ -3172,9 +3195,9 @@
     ],
     "nota_por_safra": {
      "2021": 0.628,
-     "2022": 0.754,
-     "2023": 0.748,
-     "2024": 0.727,
+     "2022": 0.757,
+     "2023": 0.752,
+     "2024": 0.731,
      "2025": 0.772
     },
     "renda": {
@@ -3197,10 +3220,11 @@
    },
    "irrigacao": null,
    "margem": {
+    "abaixo_da_maior_renda_r_ha": 36.0,
     "ano_ruim_r_ha": 1362.0,
     "base_renda": "historico",
     "bonus_proxima_soja_r_ha": 120.0,
-    "escala_S_r_ha": 1192.0,
+    "escala_S_r_ha": 1110.0,
     "incremental_preco_atual_r_ha": 1762.0,
     "incremental_r_ha": 1370.0,
     "itens": [
@@ -3225,7 +3249,7 @@
     "total_r_ha": 2954.0
    },
    "motivos": [],
-   "nota": 0.747,
+   "nota": 0.751,
    "posicao": 3,
    "recuperacao_solo": null,
    "rotacao": "Soja → milho safrinha",
@@ -4277,7 +4301,7 @@
    "criterios": {
     "agua": "Média nos 34 anos (1991–2024) de ΣETa/ΣETc na fase crítica da 2ª cultura, por balanço hídrico diário (NASA POWER + CAD do solo do polígono, SoilGrids); depende da data de semeadura. Pousio = 1,0.",
     "pragas": "Potencial de quebra de ciclo de pragas e doenças por rotação; valor de catálogo (0–1), estimativa a validar.",
-    "renda": "Margem incremental da 2ª safra (rendimento PAM do município × preço SEAB/DERAL − custo CONAB; cobertura/pousio = −custo estimado; mais o bônus de palhada/N na soja seguinte), na escala S = max(margem da soja do município, R$ 1.000/ha): renda = clip(0,5 + incremental / (2·S), 0, 1). Incremental +S = 1,0; zero = 0,5; −S = 0.",
+    "renda": "Margem incremental da 2ª safra (rendimento PAM do município × preço SEAB/DERAL − custo CONAB; cobertura/pousio = −custo estimado; mais o bônus de palhada/N na soja seguinte; milho safrinha, milho + braquiária e trigo pela média realizada das últimas 5 safras no município, quando há histórico), na escala S = R$ 1.110/ha, a mesma no Paraná todo (margem mediana da soja no Oeste do PR): renda = 0,5 + 0,5·tanh(incremental / S). Incremental zero = 0,5; +S ≈ 0,88; −S ≈ 0,12.",
     "risco": "Π(1 − p) dos riscos climáticos da 2ª cultura em 1991–2024: geada na fase crítica (célula NASA POWER ~50 km) e déficit hídrico na fase crítica (anos com ETa/ETc < 0,55 no balanço diário com o solo da área; sem solo, veranico ≥ 15 dias em mar–abr); sem risco considerado = 1,0.",
     "solo": "Média de cobertura de palha, fixação de N e (1 − dias de solo descoberto/180); valores de catálogo (estimativas de referência, validar com agrônomo/Embrapa)."
    },
@@ -4305,7 +4329,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
        "Bônus na soja seguinte: 5.5 sc/ha × R$ 120.14/sc = R$ 661/ha (3 sc/ha do milho verão no lugar da soja + 2.5 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -758/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.951/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -758/ha/ano.",
+       "Total da rotação: R$ -758/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.951/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -758/ha/ano.",
        "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -4332,14 +4356,14 @@
      "contribuicoes": {
       "agua": 0.175,
       "pragas": 0.115,
-      "renda": 0.011,
+      "renda": 0.008,
       "risco": 0.176,
       "solo": 0.109
      },
      "criterios": {
       "agua": 0.994,
       "pragas": 0.65,
-      "renda": 0.037,
+      "renda": 0.029,
       "risco": 1.0,
       "solo": 0.619
      },
@@ -4382,8 +4406,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.586,
-       0.586
+       0.584,
+       0.584
       ],
       "nota_por_safra": null,
       "renda": {
@@ -4397,10 +4421,11 @@
       "risco_climatico": null
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 65.0,
       "ano_ruim_r_ha": -758.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 661.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1951.0,
       "incremental_r_ha": -1951.0,
       "itens": [
@@ -4424,7 +4449,7 @@
       "linha_custo": "coe",
       "total_r_ha": -758.0
      },
-     "nota": 0.586,
+     "nota": 0.584,
      "posicao": 1,
      "rotacao": "Milho verão → aveia + nabo forrageiro (cobertura)",
      "segunda": {
@@ -4484,7 +4509,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
        "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -794/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.986/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -794/ha/ano.",
+       "Total da rotação: R$ -794/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.986/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -794/ha/ano.",
        "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -4511,14 +4536,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.01,
+      "renda": 0.008,
       "risco": 0.176,
       "solo": 0.11
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.035,
+      "renda": 0.027,
       "risco": 1.0,
       "solo": 0.626
      },
@@ -4561,8 +4586,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.579,
-       0.579
+       0.577,
+       0.577
       ],
       "nota_por_safra": null,
       "renda": {
@@ -4576,10 +4601,11 @@
       "risco_climatico": null
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 100.0,
       "ano_ruim_r_ha": -794.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1986.0,
       "incremental_r_ha": -1986.0,
       "itens": [
@@ -4603,7 +4629,7 @@
       "linha_custo": "coe",
       "total_r_ha": -794.0
      },
-     "nota": 0.579,
+     "nota": 0.577,
      "posicao": 2,
      "rotacao": "Milho verão → aveia (cobertura/palha)",
      "segunda": {
@@ -4661,7 +4687,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
        "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -694/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.886/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -694/ha/ano.",
+       "Total da rotação: R$ -694/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.886/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -694/ha/ano.",
        "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 47 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -4688,14 +4714,14 @@
      "contribuicoes": {
       "agua": 0.174,
       "pragas": 0.106,
-      "renda": 0.012,
+      "renda": 0.01,
       "risco": 0.176,
       "solo": 0.092
      },
      "criterios": {
       "agua": 0.988,
       "pragas": 0.6,
-      "renda": 0.041,
+      "renda": 0.032,
       "risco": 1.0,
       "solo": 0.519
      },
@@ -4738,8 +4764,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.56,
-       0.56
+       0.558,
+       0.558
       ],
       "nota_por_safra": null,
       "renda": {
@@ -4753,10 +4779,11 @@
       "risco_climatico": null
      },
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": -694.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1886.0,
       "incremental_r_ha": -1886.0,
       "itens": [
@@ -4780,7 +4807,7 @@
       "linha_custo": "coe",
       "total_r_ha": -694.0
      },
-     "nota": 0.56,
+     "nota": 0.558,
      "posicao": 3,
      "rotacao": "Milho verão → nabo forrageiro (cobertura)",
      "segunda": {
@@ -4935,6 +4962,13 @@
     ],
     "texto": "Repetindo a renda realizada de cada uma das últimas 5 safras (2021–2025), com os demais critérios fixos, a 1ª colocada seria: milho_verao__aveia_nabo em 5."
    },
+   "maior_renda": {
+    "id": "milho_verao__nabo_forrageiro",
+    "incremental_r_ha": -1886.0,
+    "primeira_abaixo_r_ha": 65.0,
+    "primeira_e_maior_renda": true,
+    "rotacao": "Milho verão → nabo forrageiro (cobertura)"
+   },
    "ranking": [
     {
      "atual": false,
@@ -4955,7 +4989,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
        "Bônus na soja seguinte: 5.5 sc/ha × R$ 120.14/sc = R$ 661/ha (3 sc/ha do milho verão no lugar da soja + 2.5 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -758/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.951/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -758/ha/ano.",
+       "Total da rotação: R$ -758/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.951/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -758/ha/ano.",
        "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -4982,14 +5016,14 @@
      "contribuicoes": {
       "agua": 0.175,
       "pragas": 0.115,
-      "renda": 0.011,
+      "renda": 0.008,
       "risco": 0.176,
       "solo": 0.109
      },
      "criterios": {
       "agua": 0.994,
       "pragas": 0.65,
-      "renda": 0.037,
+      "renda": 0.029,
       "risco": 1.0,
       "solo": 0.619
      },
@@ -5033,8 +5067,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.586,
-       0.586
+       0.584,
+       0.584
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5049,10 +5083,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 65.0,
       "ano_ruim_r_ha": -758.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 661.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1951.0,
       "incremental_r_ha": -1951.0,
       "itens": [
@@ -5076,7 +5111,7 @@
       "linha_custo": "coe",
       "total_r_ha": -758.0
      },
-     "nota": 0.586,
+     "nota": 0.584,
      "posicao": 1,
      "recuperacao_solo": null,
      "rotacao": "Milho verão → aveia + nabo forrageiro (cobertura)",
@@ -5137,7 +5172,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
        "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -794/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.986/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -794/ha/ano.",
+       "Total da rotação: R$ -794/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.986/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -794/ha/ano.",
        "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -5164,14 +5199,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.106,
-      "renda": 0.01,
+      "renda": 0.008,
       "risco": 0.176,
       "solo": 0.11
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.6,
-      "renda": 0.035,
+      "renda": 0.027,
       "risco": 1.0,
       "solo": 0.626
      },
@@ -5215,8 +5250,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.579,
-       0.579
+       0.577,
+       0.577
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5231,10 +5266,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 100.0,
       "ano_ruim_r_ha": -794.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1986.0,
       "incremental_r_ha": -1986.0,
       "itens": [
@@ -5258,7 +5294,7 @@
       "linha_custo": "coe",
       "total_r_ha": -794.0
      },
-     "nota": 0.579,
+     "nota": 0.577,
      "posicao": 2,
      "recuperacao_solo": null,
      "rotacao": "Milho verão → aveia (cobertura/palha)",
@@ -5317,7 +5353,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
        "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -694/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.886/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -694/ha/ano.",
+       "Total da rotação: R$ -694/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.886/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -694/ha/ano.",
        "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 47 mm).",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -5344,14 +5380,14 @@
      "contribuicoes": {
       "agua": 0.174,
       "pragas": 0.106,
-      "renda": 0.012,
+      "renda": 0.01,
       "risco": 0.176,
       "solo": 0.092
      },
      "criterios": {
       "agua": 0.988,
       "pragas": 0.6,
-      "renda": 0.041,
+      "renda": 0.032,
       "risco": 1.0,
       "solo": 0.519
      },
@@ -5395,8 +5431,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.56,
-       0.56
+       0.558,
+       0.558
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5411,10 +5447,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 0.0,
       "ano_ruim_r_ha": -694.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 601.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -1886.0,
       "incremental_r_ha": -1886.0,
       "itens": [
@@ -5438,7 +5475,7 @@
       "linha_custo": "coe",
       "total_r_ha": -694.0
      },
-     "nota": 0.56,
+     "nota": 0.558,
      "posicao": 3,
      "recuperacao_solo": null,
      "rotacao": "Milho verão → nabo forrageiro (cobertura)",
@@ -5486,7 +5523,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Trigo: 36 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 40 sc/ha) × R$ 68.44/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.334/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)) = R$ -1.900/ha (CV do rendimento 36%; ano ruim, p20 da mesma janela de 10 anos = 27 sc/ha → R$ -2.508/ha).",
        "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -2.439/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -2.692/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -3.631/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.047/ha/ano.",
+       "Total da rotação: R$ -2.439/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -2.692/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -3.631/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -3.047/ha/ano.",
        "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
        "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 95% da demanda; em 1 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
        "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
@@ -5515,14 +5552,14 @@
      "contribuicoes": {
       "agua": 0.167,
       "pragas": 0.106,
-      "renda": 0.003,
+      "renda": 0.002,
       "risco": 0.104,
       "solo": 0.089
      },
      "criterios": {
       "agua": 0.949,
       "pragas": 0.6,
-      "renda": 0.011,
+      "renda": 0.008,
       "risco": 0.588,
       "solo": 0.504
      },
@@ -5602,14 +5639,14 @@
       ],
       "nota_faixa": [
        0.467,
-       0.487
+       0.483
       ],
       "nota_por_safra": {
-       "2021": 0.473,
+       "2021": 0.471,
        "2022": 0.468,
        "2023": 0.467,
        "2024": 0.467,
-       "2025": 0.487
+       "2025": 0.483
       },
       "renda": {
        "faixa_r_ha": [
@@ -5630,10 +5667,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 806.0,
       "ano_ruim_r_ha": -3047.0,
       "base_renda": "historico",
       "bonus_proxima_soja_r_ha": 481.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -3631.0,
       "incremental_r_ha": -2692.0,
       "itens": [
@@ -5657,7 +5695,7 @@
       "linha_custo": "coe",
       "total_r_ha": -2439.0
      },
-     "nota": 0.469,
+     "nota": 0.468,
      "posicao": 4,
      "recuperacao_solo": null,
      "rotacao": "Milho verão → trigo",
@@ -5715,7 +5753,7 @@
        "Milho verão (1ª safra): 130 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 142 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 8.043/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), custo variável (≈COE); fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (130 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -1.019/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 130 sc/ha → R$ -1.019/ha).",
        "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
        "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (3 sc/ha do milho verão no lugar da soja + 0 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-       "Total da rotação: R$ -859/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.051/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -859/ha/ano.",
+       "Total da rotação: R$ -859/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.051/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -859/ha/ano.",
        "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
        "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
        "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -5742,14 +5780,14 @@
      "contribuicoes": {
       "agua": 0.176,
       "pragas": 0.053,
-      "renda": 0.009,
+      "renda": 0.007,
       "risco": 0.176,
       "solo": 0.041
      },
      "criterios": {
       "agua": 1.0,
       "pragas": 0.3,
-      "renda": 0.031,
+      "renda": 0.024,
       "risco": 1.0,
       "solo": 0.233
      },
@@ -5793,8 +5831,8 @@
        "pragas"
       ],
       "nota_faixa": [
-       0.456,
-       0.456
+       0.454,
+       0.454
       ],
       "nota_por_safra": null,
       "renda": {
@@ -5809,10 +5847,11 @@
      },
      "irrigacao": null,
      "margem": {
+      "abaixo_da_maior_renda_r_ha": 165.0,
       "ano_ruim_r_ha": -859.0,
       "base_renda": "preco_atual",
       "bonus_proxima_soja_r_ha": 360.0,
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "incremental_preco_atual_r_ha": -2051.0,
       "incremental_r_ha": -2051.0,
       "itens": [
@@ -5836,7 +5875,7 @@
       "linha_custo": "coe",
       "total_r_ha": -859.0
      },
-     "nota": 0.456,
+     "nota": 0.454,
      "posicao": 5,
      "recuperacao_solo": null,
      "rotacao": "Milho verão → pousio",
@@ -5886,7 +5925,7 @@
       "Milho 2ª safra: 117 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 101 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ 1.641/ha (CV do rendimento 27%; ano ruim, p20 da mesma janela de 10 anos = 88 sc/ha → R$ 50/ha).",
       "Braquiária em consórcio: sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
       "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
+      "Total da rotação: R$ 2.994/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.406/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.802/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.403/ha/ano.",
       "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
       "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 01/02), a água no solo atendeu em média 84% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
       "Geada no florescimento/enchimento do milho semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km.",
@@ -5914,14 +5953,14 @@
     "contribuicoes": {
      "agua": 0.149,
      "pragas": 0.115,
-     "renda": 0.269,
+     "renda": 0.272,
      "risco": 0.137,
      "solo": 0.125
     },
     "criterios": {
      "agua": 0.844,
      "pragas": 0.65,
-     "renda": 0.914,
+     "renda": 0.926,
      "risco": 0.779,
      "solo": 0.711
     },
@@ -6000,14 +6039,14 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.681,
+      0.682,
       0.819
      ],
      "nota_por_safra": {
-      "2021": 0.681,
-      "2022": 0.801,
-      "2023": 0.797,
-      "2024": 0.776,
+      "2021": 0.682,
+      "2022": 0.805,
+      "2023": 0.8,
+      "2024": 0.78,
       "2025": 0.819
      },
      "renda": {
@@ -6030,10 +6069,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 0.0,
      "ano_ruim_r_ha": 1403.0,
      "base_renda": "historico",
      "bonus_proxima_soja_r_ha": 360.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": 1802.0,
      "incremental_r_ha": 1406.0,
      "itens": [
@@ -6065,7 +6105,7 @@
      "linha_custo": "coe",
      "total_r_ha": 2994.0
     },
-    "nota": 0.795,
+    "nota": 0.799,
     "posicao": 1,
     "recuperacao_solo": null,
     "rotacao": "Soja → milho safrinha + braquiária",
@@ -6123,7 +6163,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
       "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
+      "Total da rotação: R$ 1.103/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -90/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.103/ha/ano.",
       "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 01/02), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
       "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -6149,14 +6189,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.124,
-     "renda": 0.136,
+     "renda": 0.135,
      "risco": 0.176,
      "solo": 0.144
     },
     "criterios": {
      "agua": 0.998,
      "pragas": 0.7,
-     "renda": 0.463,
+     "renda": 0.46,
      "risco": 1.0,
      "solo": 0.819
     },
@@ -6200,8 +6240,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.757,
-      0.757
+      0.756,
+      0.756
      ],
      "nota_por_safra": null,
      "renda": {
@@ -6216,10 +6256,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1496.0,
      "ano_ruim_r_ha": 1103.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 360.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -90.0,
      "incremental_r_ha": -90.0,
      "itens": [
@@ -6243,7 +6284,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1103.0
     },
-    "nota": 0.757,
+    "nota": 0.756,
     "posicao": 2,
     "recuperacao_solo": null,
     "rotacao": "Soja → milheto/crotalária (cobertura)",
@@ -6287,7 +6328,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Milho 2ª safra: 117 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 101 sc/ha) × R$ 53.89/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.678/ha (CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ 1.641/ha (CV do rendimento 27%; ano ruim, p20 da mesma janela de 10 anos = 88 sc/ha → R$ 50/ha).",
       "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 2.954/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.370/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.762/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.362/ha/ano.",
+      "Total da rotação: R$ 2.954/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 1.370/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.762/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.362/ha/ano.",
       "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
       "Água: na fase crítica (floração/enchimento do milho, semeadura em 01/02), a água no solo atendeu em média 86% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
       "Geada no florescimento/enchimento do milho semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km.",
@@ -6315,14 +6356,14 @@
     "contribuicoes": {
      "agua": 0.151,
      "pragas": 0.088,
-     "renda": 0.267,
+     "renda": 0.271,
      "risco": 0.142,
      "solo": 0.098
     },
     "criterios": {
      "agua": 0.858,
      "pragas": 0.5,
-     "renda": 0.909,
+     "renda": 0.922,
      "risco": 0.804,
      "solo": 0.556
     },
@@ -6375,9 +6416,9 @@
      ],
      "nota_por_safra": {
       "2021": 0.628,
-      "2022": 0.754,
-      "2023": 0.748,
-      "2024": 0.727,
+      "2022": 0.757,
+      "2023": 0.752,
+      "2024": 0.731,
       "2025": 0.772
      },
      "renda": {
@@ -6400,10 +6441,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 36.0,
      "ano_ruim_r_ha": 1362.0,
      "base_renda": "historico",
      "bonus_proxima_soja_r_ha": 120.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": 1762.0,
      "incremental_r_ha": 1370.0,
      "itens": [
@@ -6427,7 +6469,7 @@
      "linha_custo": "coe",
      "total_r_ha": 2954.0
     },
-    "nota": 0.747,
+    "nota": 0.751,
     "posicao": 3,
     "recuperacao_solo": null,
     "rotacao": "Soja → milho safrinha",
@@ -6484,7 +6526,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
       "Bônus na soja seguinte: 2.5 sc/ha × R$ 120.14/sc = R$ 300/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
+      "Total da rotação: R$ 1.093/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -100/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.093/ha/ano.",
       "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
       "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -6510,14 +6552,14 @@
     "contribuicoes": {
      "agua": 0.175,
      "pragas": 0.115,
-     "renda": 0.135,
+     "renda": 0.134,
      "risco": 0.176,
      "solo": 0.109
     },
     "criterios": {
      "agua": 0.994,
      "pragas": 0.65,
-     "renda": 0.458,
+     "renda": 0.455,
      "risco": 1.0,
      "solo": 0.619
     },
@@ -6577,10 +6619,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1506.0,
      "ano_ruim_r_ha": 1093.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 300.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -100.0,
      "incremental_r_ha": -100.0,
      "itens": [
@@ -6661,7 +6704,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
       "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 1.058/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -135/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.058/ha/ano.",
+      "Total da rotação: R$ 1.058/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -135/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.058/ha/ano.",
       "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
       "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
@@ -6687,14 +6730,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.106,
-     "renda": 0.131,
+     "renda": 0.129,
      "risco": 0.176,
      "solo": 0.11
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.6,
-     "renda": 0.444,
+     "renda": 0.44,
      "risco": 1.0,
      "solo": 0.626
     },
@@ -6738,8 +6781,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.7,
-      0.7
+      0.699,
+      0.699
      ],
      "nota_por_safra": null,
      "renda": {
@@ -6754,10 +6797,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1541.0,
      "ano_ruim_r_ha": 1058.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 240.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -135.0,
      "incremental_r_ha": -135.0,
      "itens": [
@@ -6781,7 +6825,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1058.0
     },
-    "nota": 0.7,
+    "nota": 0.699,
     "posicao": 5,
     "recuperacao_solo": null,
     "rotacao": "Soja → aveia (cobertura/palha)",
@@ -6837,7 +6881,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
       "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 1.158/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -35/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 1.158/ha/ano.",
+      "Total da rotação: R$ 1.158/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -35/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 1.158/ha/ano.",
       "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 47 mm).",
       "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -6863,14 +6907,14 @@
     "contribuicoes": {
      "agua": 0.174,
      "pragas": 0.106,
-     "renda": 0.143,
+     "renda": 0.142,
      "risco": 0.176,
      "solo": 0.092
     },
     "criterios": {
      "agua": 0.988,
      "pragas": 0.6,
-     "renda": 0.485,
+     "renda": 0.484,
      "risco": 1.0,
      "solo": 0.519
     },
@@ -6930,10 +6974,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1441.0,
      "ano_ruim_r_ha": 1158.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 240.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -35.0,
      "incremental_r_ha": -35.0,
      "itens": [
@@ -7000,7 +7045,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Sorgo: 60 sc/ha (tendência da PAM Oeste do PR (média, o município não tem PAM recente) 2023–2025 projetada para a próxima safra; média 61 sc/ha) × R$ 40.42/sc (estimativa — validar: 75% do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)) − custo R$ 2.807/ha (estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)) = R$ -369/ha (CV do rendimento 19%; ano ruim, p20 da mesma janela de 10 anos = 57 sc/ha → R$ -486/ha).",
       "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 944/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -249/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 827/ha/ano.",
+      "Total da rotação: R$ 944/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -249/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 827/ha/ano.",
       "Água: na fase crítica (emborrachamento/enchimento do sorgo, semeadura em 01/02), a água no solo atendeu em média 88% da demanda; em 6 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
       "Geada no florescimento/enchimento do sorgo semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); sorgo 2ª safra em 01/02: indicado, risco 20% (100% das classes de solo; Port.132_de_12-05-2025).",
@@ -7026,14 +7071,14 @@
     "contribuicoes": {
      "agua": 0.155,
      "pragas": 0.097,
-     "renda": 0.117,
+     "renda": 0.115,
      "risco": 0.156,
      "solo": 0.1
     },
     "criterios": {
      "agua": 0.878,
      "pragas": 0.55,
-     "renda": 0.397,
+     "renda": 0.39,
      "risco": 0.882,
      "solo": 0.565
     },
@@ -7077,7 +7122,7 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.611,
+      0.608,
       null
      ],
      "nota_por_safra": null,
@@ -7100,10 +7145,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1655.0,
      "ano_ruim_r_ha": 827.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 120.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -249.0,
      "incremental_r_ha": -249.0,
      "itens": [
@@ -7127,7 +7173,7 @@
      "linha_custo": "coe",
      "total_r_ha": 944.0
     },
-    "nota": 0.624,
+    "nota": 0.622,
     "posicao": 7,
     "recuperacao_solo": null,
     "rotacao": "Soja → sorgo",
@@ -7181,7 +7227,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Feijão 2ª safra: 25 sc/ha (tendência da PAM Toledo 2013–2021 projetada para a próxima safra; média 25 sc/ha) × R$ 174.30/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.453/ha (CONAB Francisco Beltrão-PR, 2ª safra 2026 (est. mar/2026), custo variável (≈COE)) = R$ -63/ha (CV do rendimento 34%; ano ruim, p20 da mesma janela de 10 anos = 15 sc/ha → R$ -1.780/ha).",
       "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 1.129/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -63/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -588/ha/ano.",
+      "Total da rotação: R$ 1.129/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -63/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -588/ha/ano.",
       "Água: na fase crítica (floração/formação de vagens do feijão, semeadura em 01/02), a água no solo atendeu em média 85% da demanda; em 5 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
       "Geada no florescimento/enchimento do feijão safrinha semeado em 01/02: 4 de 34 anos (12%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
       "Déficit hídrico na fase crítica (floração/formação de vagens do feijão, semeadura em 01/02): água no solo abaixo de 55% da demanda em 1 de 34 anos (3%); balanço hídrico diário NASA POWER + solo, CAD 56 mm.",
@@ -7215,7 +7261,7 @@
     "criterios": {
      "agua": 0.849,
      "pragas": 0.3,
-     "renda": 0.474,
+     "renda": 0.472,
      "risco": 0.856,
      "solo": 0.461
     },
@@ -7259,7 +7305,7 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.449,
+      0.447,
       null
      ],
      "nota_por_safra": null,
@@ -7283,10 +7329,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1469.0,
      "ano_ruim_r_ha": -588.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 0.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -63.0,
      "incremental_r_ha": -63.0,
      "itens": [
@@ -7310,7 +7357,7 @@
      "linha_custo": "coe",
      "total_r_ha": 1129.0
     },
-    "nota": 0.575,
+    "nota": 0.574,
     "posicao": 8,
     "recuperacao_solo": null,
     "rotacao": "Soja → feijão safrinha",
@@ -7364,7 +7411,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
       "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ 992/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -200/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 992/ha/ano.",
+      "Total da rotação: R$ 992/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -200/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 992/ha/ano.",
       "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
       "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
       "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
@@ -7390,14 +7437,14 @@
     "contribuicoes": {
      "agua": 0.176,
      "pragas": 0.053,
-     "renda": 0.123,
+     "renda": 0.121,
      "risco": 0.176,
      "solo": 0.041
     },
     "criterios": {
      "agua": 1.0,
      "pragas": 0.3,
-     "renda": 0.417,
+     "renda": 0.411,
      "risco": 1.0,
      "solo": 0.233
     },
@@ -7441,8 +7488,8 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.57,
-      0.57
+      0.568,
+      0.568
      ],
      "nota_por_safra": null,
      "renda": {
@@ -7457,10 +7504,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 1606.0,
      "ano_ruim_r_ha": 992.0,
      "base_renda": "preco_atual",
      "bonus_proxima_soja_r_ha": 0.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -200.0,
      "incremental_r_ha": -200.0,
      "itens": [
@@ -7484,7 +7532,7 @@
      "linha_custo": "coe",
      "total_r_ha": 992.0
     },
-    "nota": 0.57,
+    "nota": 0.568,
     "posicao": 9,
     "recuperacao_solo": null,
     "rotacao": "Soja → pousio",
@@ -7530,7 +7578,7 @@
       "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
       "Trigo: 36 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 40 sc/ha) × R$ 68.44/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.334/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), custo variável (≈COE)) = R$ -1.900/ha (CV do rendimento 36%; ano ruim, p20 da mesma janela de 10 anos = 27 sc/ha → R$ -2.508/ha).",
       "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-      "Total da rotação: R$ -588/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -841/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -1.780/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.196/ha/ano.",
+      "Total da rotação: R$ -588/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -841/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -1.780/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -1.196/ha/ano.",
       "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
       "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 95% da demanda; em 1 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
       "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
@@ -7558,14 +7606,14 @@
     "contribuicoes": {
      "agua": 0.167,
      "pragas": 0.106,
-     "renda": 0.058,
+     "renda": 0.053,
      "risco": 0.104,
      "solo": 0.089
     },
     "criterios": {
      "agua": 0.949,
      "pragas": 0.6,
-     "renda": 0.196,
+     "renda": 0.18,
      "risco": 0.588,
      "solo": 0.504
     },
@@ -7644,15 +7692,15 @@
       "pragas"
      ],
      "nota_faixa": [
-      0.485,
-      0.651
+      0.481,
+      0.653
      ],
      "nota_por_safra": {
-      "2021": 0.569,
-      "2022": 0.509,
-      "2023": 0.485,
-      "2024": 0.488,
-      "2025": 0.651
+      "2021": 0.566,
+      "2022": 0.505,
+      "2023": 0.481,
+      "2024": 0.484,
+      "2025": 0.653
      },
      "renda": {
       "faixa_r_ha": [
@@ -7673,10 +7721,11 @@
     },
     "irrigacao": null,
     "margem": {
+     "abaixo_da_maior_renda_r_ha": 2247.0,
      "ano_ruim_r_ha": -1196.0,
      "base_renda": "historico",
      "bonus_proxima_soja_r_ha": 120.0,
-     "escala_S_r_ha": 1192.0,
+     "escala_S_r_ha": 1110.0,
      "incremental_preco_atual_r_ha": -1780.0,
      "incremental_r_ha": -841.0,
      "itens": [
@@ -7700,7 +7749,7 @@
      "linha_custo": "coe",
      "total_r_ha": -588.0
     },
-    "nota": 0.524,
+    "nota": 0.519,
     "posicao": 10,
     "recuperacao_solo": null,
     "rotacao": "Soja → trigo",

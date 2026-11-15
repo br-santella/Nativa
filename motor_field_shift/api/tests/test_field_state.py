@@ -19,7 +19,7 @@ from field_shift_api import schemas
 AREA = {"talhao_id": "72638"}
 RA = {"rotacao_atual": "soja__milho_safrinha"}
 POOR = dict(p_mg_dm3=2, k_cmolc_dm3=0.10, ca_cmolc_dm3=1.0, mg_cmolc_dm3=0.4, al_cmolc_dm3=1.5, v_pct=30, ctc_cmolc_dm3=9)
-EXPECTED = {"milho_braquiaria": 0.795, "milho_safrinha": 0.747, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.57, "trigo": 0.524}
+EXPECTED = {"milho_braquiaria": 0.799, "milho_safrinha": 0.751, "milheto_crotalaria": 0.756, "aveia": 0.699, "pousio": 0.568, "trigo": 0.519}
 X = EA.LEVEL_MAGNITUDE
 
 

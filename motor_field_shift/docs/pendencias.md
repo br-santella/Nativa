@@ -178,19 +178,19 @@ This file is the living list of open items for the project (crop-rotation engine
 ## Paraná-wide coverage
 
 - **Statewide validation of the income decision and the climate risk**: sections 3 and 6 of `validation.md` covered only the 50 Oeste municipalities.
-  Files: `src/field_shift/validation/backtest.py` (`set_scope`, `mesoregions`), `scripts/validation/statewide.py`, `docs/validation.md` §7.
-  Done (15/11/2026, branch `feat/statewide-validation`): same code, no parameter refitted. The 5-season track record beats the previous income estimator in every mesoregion (Paraná +1.54 bags/ha/yr, 90 % season bootstrap +0.72 to +2.50, 12/16 seasons). The cover crop loses to off-season corn on realized income in every mesoregion (Paraná −8.69 bags/ha/yr, wins 17 % of municipality-years). The corn risk criterion is calibrated in the north and west (24–32 % predicted vs 21–30 % observed) but too pessimistic in Centro-Sul, Sudeste, Sudoeste and Centro Oriental (37–52 % vs 17–26 %).
-  Status: done (findings below)
+  Files: `src/field_shift/validation/backtest.py` (`set_scope`, `mesoregions`, `corn_failures(sowing)`), `scripts/validation/statewide.py`, `docs/validation.md` §7.
+  Done (15/11/2026, branch `feat/statewide-validation`): same code, no parameter refitted. The 5-season track record beats the previous income estimator in every mesoregion (Paraná +1.54 bags/ha/yr, 90 % season bootstrap +0.72 to +2.50, 12/16 seasons). The cover crop loses to off-season corn on realized income in every mesoregion (Paraná −8.69 bags/ha/yr, wins 17 % of municipality-years).
+  Status: done
 
-- **Outside the Oeste the full engine ranks the cover crop first against the income evidence**: with default weights, millet/crotalaria is first in 86 % of the 399 municipality centroids (42 % in the Oeste, a near tie there), while on realized income it loses 8.7 bags/ha/yr on average (`validation.md` §7.2, §7.4). Causes: smaller off-season corn margin and larger income scale S outside the Oeste, risk over-penalty in the south, and fixed catalog soil/pest scores. A smaller S alone does not flip it.
-  Files: `src/field_shift/app/engine.py` (weights, `income_score`), `src/field_shift/income/income.py` (S), catalog.
-  Done so far: the outside-Oeste warning (`service.WARNINGS_OUTSIDE_OESTE`) now says the cover lost on realized income in every mesoregion and that corn risk tends to be overestimated in the south, and tells the farmer to compare the margins on the cards.
-  Options still open: (a) per-card text with the income given up by picking the cover; (b) regional weights or a fixed S, with a backtest; (c) wait for the expert panel to settle soil vs income. Needs a product decision.
-  Status: pending (decision)
+- **Outside the Oeste the full engine ranked the cover crop first against the income evidence**: millet/crotalaria was first in 86 % of the 399 centroids (42 % in the Oeste) while it loses to corn on realized income everywhere (`validation.md` §7.4). Cause: the cover gains ~+0.08 on water, risk, soil and pests everywhere, and the income scale S (the municipality's soybean margin, up to 3× the Oeste's in Centro-Sul) shrank corn's income lead.
+  Files: `src/field_shift/income/income.py` (`INCOME_SCALE`), `src/field_shift/core/service.py` (`income_trade_off`, `WARNINGS_OUTSIDE_OESTE`).
+  Done (15/11/2026, team choice among 4 simulated options, `validation.md` §7.5): S = BRL 1,110/ha in all of Paraná (median Oeste soybean margin); each block gets `maior_renda` and each item `margem.abaixo_da_maior_renda_r_ha`; an option ranked above the highest-income one by > BRL 100/ha gets a card warning with the amount. Corn first 14 % → 29 % of Paraná (Oeste 58 % → 76 %); first = highest income 45 % → 57 %; median income given up BRL 147 → 55/ha. Field 72638 keeps its order (0.795 → 0.799).
+  Still open: the cover remains first in 71 % of Paraná, decided by catalog soil/pest scores between options of similar income; Centro-Sul and Sudoeste still give up BRL 246–681/ha (stated on the card). The expert panel is what can settle soil/pests vs income.
+  Status: done (open points above)
 
-- **Corn frost/deficit risk over-penalizes the south of Paraná**: predicted loss 37–52 % against 17–26 % observed failures in Centro-Sul, Sudeste, Sudoeste and Centro Oriental; the flag barely separates failing seasons there (`validation.md` §7.3). Recalibrate the frost threshold or the POWER frost correction by region, with the out-of-sample protocol of §6 (it must beat the base rate on unseen seasons).
-  Files: `src/field_shift/app/engine.py` (`risk_probability`), `src/field_shift/climate/`.
-  Status: pending
+- **Corn climate risk in the south looked too pessimistic: test artifact, not recalibrated**: with sowing fixed at 15/02 the engine predicted 37–52 % loss in Centro-Sul, Sudeste, Sudoeste and Centro Oriental against 17–26 % observed. At the engine's default date (01/02) the south is close (Centro-Sul 26 % vs 23 %, Sudoeste 25 % vs 22 %, Centro Oriental 17 % vs 17 %, Sudeste 35 % vs 26 %), while the north and west are under-predicted (Norte Pioneiro 14 % vs 30 %) (`validation.md` §7.3). The calibration depends on the sowing date, which the PAM does not record, so fitting a regional frost correction would fit the unknown dates.
+  To resume: sowing dates by municipality (Deral regional progress reports) or field records; then repeat §7.3 with the real dates and the out-of-sample protocol of §6.
+  Status: pending (data)
 
 - **Ingest scripts of the `*_pr` data are not in the repo**: the engine now reads `data/raw/mapbiomas_pr`, `nasadem_pr`, `soilgrids_pr`, `regiao/{pr,municipios_pr}.geojson`, `clima_pr/` (raw), `processed/clima_pr/`, `processed/relevo_pr/` and `ibge/pam_pr.parquet` (399 municipalities), but `ingest/` only has the `*_oeste_pr` scripts. Confirm who generated the data, version the scripts, and document the commands.
   Files: `ingest/`, `api/README.md`.

@@ -949,17 +949,17 @@
           "nome": "Milho safrinha + braquiária"
         },
         "rotacao": "Soja → milho safrinha + braquiária",
-        "nota": 0.764,
+        "nota": 0.769,
         "atual": false,
         "criterios": {
-          "renda": 0.795,
+          "renda": 0.81,
           "solo": 0.867,
           "agua": 0.842,
           "pragas": 0.41,
           "risco": 0.886
         },
         "contribuicoes": {
-          "renda": 0.234,
+          "renda": 0.238,
           "solo": 0.153,
           "agua": 0.149,
           "pragas": 0.072,
@@ -970,7 +970,7 @@
           "incremental_r_ha": 806.0,
           "incremental_preco_atual_r_ha": 1202.0,
           "base_renda": "historico",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -1015,10 +1015,11 @@
           ],
           "ano_ruim_r_ha": 803.0,
           "bonus_proxima_soja_r_ha": 360.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 0.0
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,23) e Risco climático (0,16).",
+          "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,24) e Risco climático (0,16).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~30 dias.",
             "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
@@ -1027,7 +1028,7 @@
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
             "Adubação P/K acima/abaixo da referência: custo extra R$ 409/ha (P baixo (+20 kg P2O5/ha), K baixo (+35 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 409/ha.",
             "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 803/ha/ano.",
+            "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 803/ha/ano.",
             "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
             "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 84% da demanda; em 8 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
             "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
@@ -1081,15 +1082,15 @@
             "origem": "historico"
           },
           "nota_faixa": [
-            0.615,
-            0.819
+            0.611,
+            0.82
           ],
           "nota_por_safra": {
-            "2021": 0.615,
-            "2022": 0.777,
-            "2023": 0.767,
-            "2024": 0.727,
-            "2025": 0.819
+            "2021": 0.611,
+            "2022": 0.782,
+            "2023": 0.771,
+            "2024": 0.731,
+            "2025": 0.82
           },
           "risco_climatico": {
             "probabilidade": 0.114,
@@ -1225,17 +1226,17 @@
           "nome": "Milheto/crotalária (cobertura)"
         },
         "rotacao": "Soja → milheto/crotalária (cobertura)",
-        "nota": 0.728,
+        "nota": 0.726,
         "atual": false,
         "criterios": {
-          "renda": 0.385,
+          "renda": 0.376,
           "solo": 0.921,
           "agua": 0.999,
           "pragas": 0.565,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.113,
+          "renda": 0.111,
           "solo": 0.162,
           "agua": 0.176,
           "pragas": 0.1,
@@ -1246,7 +1247,7 @@
           "incremental_r_ha": -280.0,
           "incremental_preco_atual_r_ha": -280.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -1275,7 +1276,8 @@
           ],
           "ano_ruim_r_ha": 912.0,
           "bonus_proxima_soja_r_ha": 360.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1086.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.050/ha na 2ª safra (−R$ 280/ha contra R$ 770/ha), melhora a saúde do solo (0,92 contra 0,49; ~35 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,56 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -1285,7 +1287,7 @@
             "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 912/ha/ano.",
+            "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 912/ha/ano.",
             "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -1336,8 +1338,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.728,
-            0.728
+            0.726,
+            0.726
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -1420,17 +1422,17 @@
           "nome": "Milho safrinha"
         },
         "rotacao": "Soja → milho safrinha",
-        "nota": 0.672,
+        "nota": 0.677,
         "atual": true,
         "criterios": {
-          "renda": 0.784,
+          "renda": 0.8,
           "solo": 0.485,
           "agua": 0.857,
           "pragas": 0.274,
           "risco": 0.886
         },
         "contribuicoes": {
-          "renda": 0.231,
+          "renda": 0.235,
           "solo": 0.086,
           "agua": 0.151,
           "pragas": 0.048,
@@ -1441,7 +1443,7 @@
           "incremental_r_ha": 770.0,
           "incremental_preco_atual_r_ha": 1162.0,
           "base_renda": "historico",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -1478,10 +1480,11 @@
           ],
           "ano_ruim_r_ha": 763.0,
           "bonus_proxima_soja_r_ha": 120.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 36.0
         },
         "card": {
-          "por_que": "É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária) tem nota 0,76. Maiores contribuições para a nota: Renda (0,23) e Risco climático (0,16).",
+          "por_que": "É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária) tem nota 0,77. Maiores contribuições para a nota: Renda (0,24) e Risco climático (0,16).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~60 dias.",
             "NDVI observado (NASA HLS): ~120 dias/ano com NDVI<0.35.",
@@ -1490,7 +1493,7 @@
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
             "Adubação P/K acima/abaixo da referência: custo extra R$ 409/ha (P baixo (+20 kg P2O5/ha), K baixo (+35 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 409/ha.",
             "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 2.354/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 770/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.162/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 763/ha/ano.",
+            "Total da rotação: R$ 2.354/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 770/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.162/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 763/ha/ano.",
             "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
             "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 86% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
             "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
@@ -1539,15 +1542,15 @@
             "origem": "historico"
           },
           "nota_faixa": [
-            0.522,
-            0.73
+            0.517,
+            0.731
           ],
           "nota_por_safra": {
-            "2021": 0.522,
-            "2022": 0.686,
-            "2023": 0.674,
-            "2024": 0.635,
-            "2025": 0.73
+            "2021": 0.517,
+            "2022": 0.691,
+            "2023": 0.679,
+            "2024": 0.638,
+            "2025": 0.731
           },
           "risco_climatico": {
             "probabilidade": 0.114,
@@ -1652,17 +1655,17 @@
           "nome": "Nabo forrageiro (cobertura)"
         },
         "rotacao": "Soja → nabo forrageiro (cobertura)",
-        "nota": 0.652,
+        "nota": 0.65,
         "atual": false,
         "criterios": {
-          "renda": 0.407,
+          "renda": 0.4,
           "solo": 0.742,
           "agua": 0.993,
           "pragas": 0.283,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.12,
+          "renda": 0.118,
           "solo": 0.131,
           "agua": 0.175,
           "pragas": 0.05,
@@ -1673,7 +1676,7 @@
           "incremental_r_ha": -225.0,
           "incremental_preco_atual_r_ha": -225.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -1702,7 +1705,8 @@
           ],
           "ano_ruim_r_ha": 967.0,
           "bonus_proxima_soja_r_ha": 240.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1031.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 996/ha na 2ª safra (−R$ 225/ha contra R$ 770/ha), melhora a saúde do solo (0,74 contra 0,49; ~35 dias de solo descoberto contra 60) e atende melhor a demanda de água (0,99 contra 0,86). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -1712,7 +1716,7 @@
             "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 967/ha/ano.",
+            "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 967/ha/ano.",
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 54 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -1762,8 +1766,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.652,
-            0.652
+            0.65,
+            0.65
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -1846,17 +1850,17 @@
           "nome": "Aveia + nabo forrageiro (cobertura)"
         },
         "rotacao": "Soja → aveia + nabo forrageiro (cobertura)",
-        "nota": 0.646,
+        "nota": 0.643,
         "atual": false,
         "criterios": {
-          "renda": 0.381,
+          "renda": 0.372,
           "solo": 0.619,
           "agua": 0.996,
           "pragas": 0.41,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.112,
+          "renda": 0.109,
           "solo": 0.109,
           "agua": 0.176,
           "pragas": 0.072,
@@ -1867,7 +1871,7 @@
           "incremental_r_ha": -290.0,
           "incremental_preco_atual_r_ha": -290.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -1896,7 +1900,8 @@
           ],
           "ano_ruim_r_ha": 902.0,
           "bonus_proxima_soja_r_ha": 300.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1096.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.060/ha na 2ª safra (−R$ 290/ha contra R$ 770/ha), atende melhor a demanda de água (1,00 contra 0,86) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -1906,7 +1911,7 @@
             "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 2.5 sc/ha × R$ 120.14/sc = R$ 300/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 902/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -290/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 902/ha/ano.",
+            "Total da rotação: R$ 902/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -290/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 902/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 60 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -1956,8 +1961,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.646,
-            0.646
+            0.643,
+            0.643
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -2051,17 +2056,17 @@
           "nome": "Aveia (cobertura/palha)"
         },
         "rotacao": "Soja → aveia (cobertura/palha)",
-        "nota": 0.636,
+        "nota": 0.633,
         "atual": false,
         "criterios": {
-          "renda": 0.367,
+          "renda": 0.357,
           "solo": 0.626,
           "agua": 1.0,
           "pragas": 0.364,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.108,
+          "renda": 0.105,
           "solo": 0.11,
           "agua": 0.176,
           "pragas": 0.064,
@@ -2072,7 +2077,7 @@
           "incremental_r_ha": -325.0,
           "incremental_preco_atual_r_ha": -325.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -2101,7 +2106,8 @@
           ],
           "ano_ruim_r_ha": 867.0,
           "bonus_proxima_soja_r_ha": 240.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1131.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.096/ha na 2ª safra (−R$ 325/ha contra R$ 770/ha), atende melhor a demanda de água (1,00 contra 0,86) e melhora a saúde do solo (0,63 contra 0,49; ~40 dias de solo descoberto contra 60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
@@ -2111,7 +2117,7 @@
             "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 867/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -325/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 867/ha/ano.",
+            "Total da rotação: R$ 867/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -325/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 867/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -2158,8 +2164,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.636,
-            0.636
+            0.633,
+            0.633
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -2253,17 +2259,17 @@
           "nome": "Sorgo"
         },
         "rotacao": "Soja → sorgo",
-        "nota": 0.539,
+        "nota": 0.535,
         "atual": false,
         "criterios": {
-          "renda": 0.245,
+          "renda": 0.23,
           "solo": 0.495,
           "agua": 0.892,
           "pragas": 0.319,
           "risco": 0.941
         },
         "contribuicoes": {
-          "renda": 0.072,
+          "renda": 0.068,
           "solo": 0.087,
           "agua": 0.157,
           "pragas": 0.056,
@@ -2274,7 +2280,7 @@
           "incremental_r_ha": -669.0,
           "incremental_preco_atual_r_ha": -669.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -2311,7 +2317,8 @@
           ],
           "ano_ruim_r_ha": 406.0,
           "bonus_proxima_soja_r_ha": 120.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1475.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.440/ha na 2ª safra (−R$ 669/ha contra R$ 770/ha), reduz o risco climático (algum evento adverso em 6% dos anos contra 11%) e quebra melhor o ciclo de pragas (0,32 contra 0,27). Maiores contribuições para a nota: Risco climático (0,17) e Água (0,16).",
@@ -2322,7 +2329,7 @@
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
             "Adubação P/K acima/abaixo da referência: custo extra R$ 230/ha (P baixo (+12 kg P2O5/ha), K baixo (+18 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 230/ha.",
             "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 523/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -669/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 406/ha/ano.",
+            "Total da rotação: R$ 523/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -669/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 406/ha/ano.",
             "Água: na fase crítica (emborrachamento/enchimento do sorgo, semeadura em 15/01), a água no solo atendeu em média 89% da demanda; em 5 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
             "Geada no florescimento/enchimento do sorgo semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -2369,7 +2376,7 @@
             "origem": "ano_ruim_p20"
           },
           "nota_faixa": [
-            0.529,
+            0.524,
             null
           ],
           "nota_por_safra": null,
@@ -2471,17 +2478,17 @@
           "nome": "Pousio"
         },
         "rotacao": "Soja → pousio",
-        "nota": 0.514,
+        "nota": 0.511,
         "atual": false,
         "criterios": {
-          "renda": 0.342,
+          "renda": 0.331,
           "solo": 0.233,
           "agua": 1.0,
           "pragas": 0.11,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.101,
+          "renda": 0.097,
           "solo": 0.041,
           "agua": 0.176,
           "pragas": 0.019,
@@ -2492,7 +2499,7 @@
           "incremental_r_ha": -391.0,
           "incremental_preco_atual_r_ha": -391.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -2521,7 +2528,8 @@
           ],
           "ano_ruim_r_ha": 802.0,
           "bonus_proxima_soja_r_ha": 0.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1197.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.161/ha na 2ª safra (−R$ 391/ha contra R$ 770/ha), piora a saúde do solo (0,23 contra 0,49; ~90 dias de solo descoberto contra 60) e quebra menos o ciclo de pragas (0,11 contra 0,27). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
@@ -2531,7 +2539,7 @@
             "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 802/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -391/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 802/ha/ano.",
+            "Total da rotação: R$ 802/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -391/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 802/ha/ano.",
             "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -2575,8 +2583,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.514,
-            0.514
+            0.511,
+            0.511
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -2659,17 +2667,17 @@
           "nome": "Feijão safrinha"
         },
         "rotacao": "Soja → feijão safrinha",
-        "nota": 0.47,
+        "nota": 0.465,
         "atual": false,
         "criterios": {
-          "renda": 0.256,
+          "renda": 0.241,
           "solo": 0.392,
           "agua": 0.889,
           "pragas": 0.041,
           "risco": 0.913
         },
         "contribuicoes": {
-          "renda": 0.075,
+          "renda": 0.071,
           "solo": 0.069,
           "agua": 0.157,
           "pragas": 0.007,
@@ -2680,7 +2688,7 @@
           "incremental_r_ha": -637.0,
           "incremental_preco_atual_r_ha": -637.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -2717,7 +2725,8 @@
           ],
           "ano_ruim_r_ha": -1162.0,
           "bonus_proxima_soja_r_ha": 0.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1443.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.407/ha na 2ª safra (−R$ 637/ha contra R$ 770/ha), quebra menos o ciclo de pragas (0,04 contra 0,27) e piora a saúde do solo (0,39 contra 0,49; ~75 dias de solo descoberto contra 60). Risco climático igual (algum evento adverso em 9% dos anos). Maiores contribuições para a nota: Risco climático (0,16) e Água (0,16).",
@@ -2728,7 +2737,7 @@
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
             "Adubação P/K acima/abaixo da referência: custo extra R$ 384/ha (P baixo (+20 kg P2O5/ha), K baixo (+30 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 384/ha.",
             "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 555/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -637/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.162/ha/ano.",
+            "Total da rotação: R$ 555/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -637/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -1.162/ha/ano.",
             "Água: na fase crítica (floração/formação de vagens do feijão, semeadura em 15/01), a água no solo atendeu em média 89% da demanda; em 2 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
             "Geada no florescimento/enchimento do feijão safrinha semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
             "Déficit hídrico na fase crítica (floração/formação de vagens do feijão, semeadura em 15/01): água no solo abaixo de 55% da demanda em 1 de 34 anos (3%); balanço hídrico diário NASA POWER + solo, CAD 65 mm.",
@@ -2778,7 +2787,7 @@
             "origem": "ano_ruim_p20"
           },
           "nota_faixa": [
-            0.4,
+            0.399,
             null
           ],
           "nota_por_safra": null,
@@ -2881,17 +2890,17 @@
           "nome": "Trigo"
         },
         "rotacao": "Soja → trigo",
-        "nota": 0.444,
+        "nota": 0.44,
         "atual": false,
         "criterios": {
-          "renda": 0.098,
+          "renda": 0.084,
           "solo": 0.434,
           "agua": 0.968,
           "pragas": 0.364,
           "risco": 0.588
         },
         "contribuicoes": {
-          "renda": 0.029,
+          "renda": 0.025,
           "solo": 0.077,
           "agua": 0.171,
           "pragas": 0.064,
@@ -2902,7 +2911,7 @@
           "incremental_r_ha": -1324.0,
           "incremental_preco_atual_r_ha": -2263.0,
           "base_renda": "historico",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -2939,7 +2948,8 @@
           ],
           "ano_ruim_r_ha": -1679.0,
           "bonus_proxima_soja_r_ha": 120.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 2130.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.094/ha na 2ª safra (−R$ 1.324/ha contra R$ 770/ha), aumenta o risco climático (algum evento adverso em 41% dos anos contra 11%) e atende melhor a demanda de água (0,97 contra 0,86). Maiores contribuições para a nota: Água (0,17) e Risco climático (0,10).",
@@ -2950,7 +2960,7 @@
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
             "Adubação P/K acima/abaixo da referência: custo extra R$ 292/ha (P baixo (+25 kg P2O5/ha), K baixo (+0 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: CBPTT 2020 (Tab. 7 e 8, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 292/ha.",
             "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -1.071/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -1.324/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -2.263/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.679/ha/ano.",
+            "Total da rotação: R$ -1.071/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -1.324/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -2.263/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -1.679/ha/ano.",
             "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
             "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 97% da demanda; em 1 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
             "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
@@ -3001,15 +3011,15 @@
             "origem": "historico"
           },
           "nota_faixa": [
-            0.424,
-            0.542
+            0.422,
+            0.54
           ],
           "nota_por_safra": {
-            "2021": 0.472,
-            "2022": 0.437,
-            "2023": 0.424,
-            "2024": 0.425,
-            "2025": 0.542
+            "2021": 0.467,
+            "2022": 0.433,
+            "2023": 0.422,
+            "2024": 0.423,
+            "2025": 0.54
           },
           "risco_climatico": {
             "probabilidade": 0.412,
@@ -3146,17 +3156,17 @@
           "nome": "Milho safrinha + braquiária"
         },
         "rotacao": "Soja → milho safrinha + braquiária",
-        "nota": 0.764,
+        "nota": 0.769,
         "atual": false,
         "criterios": {
-          "renda": 0.795,
+          "renda": 0.81,
           "solo": 0.867,
           "agua": 0.842,
           "pragas": 0.41,
           "risco": 0.886
         },
         "contribuicoes": {
-          "renda": 0.234,
+          "renda": 0.238,
           "solo": 0.153,
           "agua": 0.149,
           "pragas": 0.072,
@@ -3165,7 +3175,7 @@
         "margem": {
           "total_r_ha": 2395.0,
           "incremental_r_ha": 806.0,
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -3212,10 +3222,11 @@
           "bonus_proxima_soja_r_ha": 360.0,
           "linha_custo": "coe",
           "base_renda": "historico",
-          "incremental_preco_atual_r_ha": 1202.0
+          "incremental_preco_atual_r_ha": 1202.0,
+          "abaixo_da_maior_renda_r_ha": 0.0
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,23) e Risco climático (0,16).",
+          "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,24) e Risco climático (0,16).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~30 dias.",
             "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
@@ -3224,7 +3235,7 @@
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
             "Adubação P/K acima/abaixo da referência: custo extra R$ 409/ha (P baixo (+20 kg P2O5/ha), K baixo (+35 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 409/ha.",
             "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 803/ha/ano.",
+            "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 803/ha/ano.",
             "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
             "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 84% da demanda; em 8 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
             "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
@@ -3341,15 +3352,15 @@
             "origem": "historico"
           },
           "nota_faixa": [
-            0.615,
-            0.819
+            0.611,
+            0.82
           ],
           "nota_por_safra": {
-            "2021": 0.615,
-            "2022": 0.777,
-            "2023": 0.767,
-            "2024": 0.727,
-            "2025": 0.819
+            "2021": 0.611,
+            "2022": 0.782,
+            "2023": 0.771,
+            "2024": 0.731,
+            "2025": 0.82
           },
           "risco_climatico": {
             "probabilidade": 0.114,
@@ -3421,17 +3432,17 @@
           "nome": "Milheto/crotalária (cobertura)"
         },
         "rotacao": "Soja → milheto/crotalária (cobertura)",
-        "nota": 0.728,
+        "nota": 0.726,
         "atual": false,
         "criterios": {
-          "renda": 0.385,
+          "renda": 0.376,
           "solo": 0.921,
           "agua": 0.999,
           "pragas": 0.565,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.113,
+          "renda": 0.111,
           "solo": 0.162,
           "agua": 0.176,
           "pragas": 0.1,
@@ -3440,7 +3451,7 @@
         "margem": {
           "total_r_ha": 912.0,
           "incremental_r_ha": -280.0,
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -3471,7 +3482,8 @@
           "bonus_proxima_soja_r_ha": 360.0,
           "linha_custo": "coe",
           "base_renda": "preco_atual",
-          "incremental_preco_atual_r_ha": -280.0
+          "incremental_preco_atual_r_ha": -280.0,
+          "abaixo_da_maior_renda_r_ha": 1086.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.050/ha na 2ª safra (−R$ 280/ha contra R$ 770/ha), melhora a saúde do solo (0,92 contra 0,49; ~35 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,56 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -3481,7 +3493,7 @@
             "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 912/ha/ano.",
+            "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 912/ha/ano.",
             "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -3549,8 +3561,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.728,
-            0.728
+            0.726,
+            0.726
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -3614,17 +3626,17 @@
           "nome": "Nabo forrageiro (cobertura)"
         },
         "rotacao": "Soja → nabo forrageiro (cobertura)",
-        "nota": 0.652,
+        "nota": 0.65,
         "atual": false,
         "criterios": {
-          "renda": 0.407,
+          "renda": 0.4,
           "solo": 0.742,
           "agua": 0.993,
           "pragas": 0.283,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.12,
+          "renda": 0.118,
           "solo": 0.131,
           "agua": 0.175,
           "pragas": 0.05,
@@ -3633,7 +3645,7 @@
         "margem": {
           "total_r_ha": 967.0,
           "incremental_r_ha": -225.0,
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Soja",
@@ -3664,7 +3676,8 @@
           "bonus_proxima_soja_r_ha": 240.0,
           "linha_custo": "coe",
           "base_renda": "preco_atual",
-          "incremental_preco_atual_r_ha": -225.0
+          "incremental_preco_atual_r_ha": -225.0,
+          "abaixo_da_maior_renda_r_ha": 1031.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 996/ha na 2ª safra (−R$ 225/ha contra R$ 770/ha), melhora a saúde do solo (0,74 contra 0,49; ~35 dias de solo descoberto contra 60) e atende melhor a demanda de água (0,99 contra 0,86). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -3674,7 +3687,7 @@
             "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 967/ha/ano.",
+            "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 967/ha/ano.",
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 54 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -3741,8 +3754,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.652,
-            0.652
+            0.65,
+            0.65
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -3826,16 +3839,23 @@
       "primeiro": [
         {
           "id": "soja__milho_braquiaria",
-          "safras": 3
+          "safras": 4
         },
         {
           "id": "soja__milheto_crotalaria",
-          "safras": 2
+          "safras": 1
         }
       ],
-      "texto": "Repetindo a renda realizada de cada uma das últimas 5 safras (2021–2025), com os demais critérios fixos, a 1ª colocada seria: soja__milho_braquiaria em 3; soja__milheto_crotalaria em 2."
+      "texto": "Repetindo a renda realizada de cada uma das últimas 5 safras (2021–2025), com os demais critérios fixos, a 1ª colocada seria: soja__milho_braquiaria em 4; soja__milheto_crotalaria em 1."
     },
-    "empate_tecnico": null
+    "empate_tecnico": null,
+    "maior_renda": {
+      "id": "soja__milho_braquiaria",
+      "rotacao": "Soja → milho safrinha + braquiária",
+      "incremental_r_ha": 806.0,
+      "primeira_abaixo_r_ha": 0.0,
+      "primeira_e_maior_renda": true
+    }
   },
   "proxima_safra": {
     "ranking": [
@@ -3852,17 +3872,17 @@
           "nome": "Aveia + nabo forrageiro (cobertura)"
         },
         "rotacao": "Milho verão → aveia + nabo forrageiro (cobertura)",
-        "nota": 0.584,
+        "nota": 0.582,
         "atual": false,
         "criterios": {
-          "renda": 0.027,
+          "renda": 0.021,
           "solo": 0.619,
           "agua": 0.996,
           "pragas": 0.65,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.008,
+          "renda": 0.006,
           "solo": 0.109,
           "agua": 0.176,
           "pragas": 0.115,
@@ -3873,7 +3893,7 @@
           "incremental_r_ha": -2141.0,
           "incremental_preco_atual_r_ha": -2141.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -3902,7 +3922,8 @@
           ],
           "ano_ruim_r_ha": -949.0,
           "bonus_proxima_soja_r_ha": 661.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 65.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.912/ha na 2ª safra (−R$ 2.141/ha contra R$ 770/ha), quebra melhor o ciclo de pragas (0,65 contra 0,27) e atende melhor a demanda de água (1,00 contra 0,86). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -3912,7 +3933,7 @@
             "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 5.5 sc/ha × R$ 120.14/sc = R$ 661/ha (3 sc/ha do milho verão no lugar da soja + 2.5 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -949/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.141/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -949/ha/ano.",
+            "Total da rotação: R$ -949/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.141/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -949/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 60 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problemas da área informados (mofo-branco, nematoide, compactação): sem efeito com fonte confirmada nesta rotação (neutro).",
@@ -3967,8 +3988,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.584,
-            0.584
+            0.582,
+            0.582
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -4062,17 +4083,17 @@
           "nome": "Aveia (cobertura/palha)"
         },
         "rotacao": "Milho verão → aveia (cobertura/palha)",
-        "nota": 0.577,
+        "nota": 0.575,
         "atual": false,
         "criterios": {
-          "renda": 0.025,
+          "renda": 0.019,
           "solo": 0.626,
           "agua": 1.0,
           "pragas": 0.6,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.007,
+          "renda": 0.006,
           "solo": 0.11,
           "agua": 0.176,
           "pragas": 0.106,
@@ -4083,7 +4104,7 @@
           "incremental_r_ha": -2176.0,
           "incremental_preco_atual_r_ha": -2176.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -4112,7 +4133,8 @@
           ],
           "ano_ruim_r_ha": -984.0,
           "bonus_proxima_soja_r_ha": 601.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 100.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.947/ha na 2ª safra (−R$ 2.176/ha contra R$ 770/ha), quebra melhor o ciclo de pragas (0,60 contra 0,27) e atende melhor a demanda de água (1,00 contra 0,86). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
@@ -4122,7 +4144,7 @@
             "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -984/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.176/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -984/ha/ano.",
+            "Total da rotação: R$ -984/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.176/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -984/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problemas da área informados (mofo-branco, nematoide, compactação): sem efeito com fonte confirmada nesta rotação (neutro).",
@@ -4174,8 +4196,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.577,
-            0.577
+            0.575,
+            0.575
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -4269,17 +4291,17 @@
           "nome": "Nabo forrageiro (cobertura)"
         },
         "rotacao": "Milho verão → nabo forrageiro (cobertura)",
-        "nota": 0.574,
+        "nota": 0.572,
         "atual": false,
         "criterios": {
-          "renda": 0.03,
+          "renda": 0.023,
           "solo": 0.742,
           "agua": 0.993,
           "pragas": 0.467,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.009,
+          "renda": 0.007,
           "solo": 0.131,
           "agua": 0.175,
           "pragas": 0.082,
@@ -4290,7 +4312,7 @@
           "incremental_r_ha": -2076.0,
           "incremental_preco_atual_r_ha": -2076.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -4319,7 +4341,8 @@
           ],
           "ano_ruim_r_ha": -884.0,
           "bonus_proxima_soja_r_ha": 601.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 0.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.847/ha na 2ª safra (−R$ 2.076/ha contra R$ 770/ha), melhora a saúde do solo (0,74 contra 0,49; ~35 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,47 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -4329,7 +4352,7 @@
             "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -884/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.076/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -884/ha/ano.",
+            "Total da rotação: R$ -884/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.076/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -884/ha/ano.",
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 54 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (nabo forrageiro é hospedeiro: sofreu ataque severo em vaso e estimula a germinação dos escleródios; fonte: Ferro & Lobo Jr. 2010 (CONPEEX); Meyer & Bueno 2022 (Embrapa Soja, cap. 18)).",
@@ -4383,8 +4406,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.574,
-            0.574
+            0.572,
+            0.572
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -4467,10 +4490,10 @@
           "nome": "Trigo"
         },
         "rotacao": "Milho verão → trigo",
-        "nota": 0.459,
+        "nota": 0.458,
         "atual": false,
         "criterios": {
-          "renda": 0.005,
+          "renda": 0.003,
           "solo": 0.434,
           "agua": 0.968,
           "pragas": 0.6,
@@ -4488,7 +4511,7 @@
           "incremental_r_ha": -3175.0,
           "incremental_preco_atual_r_ha": -4114.0,
           "base_renda": "historico",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -4525,7 +4548,8 @@
           ],
           "ano_ruim_r_ha": -3530.0,
           "bonus_proxima_soja_r_ha": 481.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 1099.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.945/ha na 2ª safra (−R$ 3.175/ha contra R$ 770/ha), quebra melhor o ciclo de pragas (0,60 contra 0,27) e aumenta o risco climático (algum evento adverso em 41% dos anos contra 11%). Maiores contribuições para a nota: Água (0,17) e Quebra de pragas (0,11).",
@@ -4536,7 +4560,7 @@
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
             "Adubação P/K acima/abaixo da referência: custo extra R$ 292/ha (P baixo (+25 kg P2O5/ha), K baixo (+0 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: CBPTT 2020 (Tab. 7 e 8, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 292/ha.",
             "Bônus na soja seguinte: 4 sc/ha × R$ 120.14/sc = R$ 481/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -2.922/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -3.175/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -4.114/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.530/ha/ano.",
+            "Total da rotação: R$ -2.922/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -3.175/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -4.114/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -3.530/ha/ano.",
             "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
             "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 97% da demanda; em 1 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
             "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
@@ -4590,15 +4614,15 @@
             "origem": "historico"
           },
           "nota_faixa": [
-            0.458,
-            0.467
+            0.457,
+            0.465
           ],
           "nota_por_safra": {
-            "2021": 0.46,
+            "2021": 0.459,
             "2022": 0.458,
-            "2023": 0.458,
-            "2024": 0.458,
-            "2025": 0.467
+            "2023": 0.457,
+            "2024": 0.457,
+            "2025": 0.465
           },
           "risco_climatico": {
             "probabilidade": 0.412,
@@ -4733,17 +4757,17 @@
           "nome": "Pousio"
         },
         "rotacao": "Milho verão → pousio",
-        "nota": 0.454,
+        "nota": 0.452,
         "atual": false,
         "criterios": {
-          "renda": 0.023,
+          "renda": 0.017,
           "solo": 0.233,
           "agua": 1.0,
           "pragas": 0.3,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.007,
+          "renda": 0.005,
           "solo": 0.041,
           "agua": 0.176,
           "pragas": 0.053,
@@ -4754,7 +4778,7 @@
           "incremental_r_ha": -2242.0,
           "incremental_preco_atual_r_ha": -2242.0,
           "base_renda": "preco_atual",
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -4783,7 +4807,8 @@
           ],
           "ano_ruim_r_ha": -1050.0,
           "bonus_proxima_soja_r_ha": 360.0,
-          "linha_custo": "coe"
+          "linha_custo": "coe",
+          "abaixo_da_maior_renda_r_ha": 166.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.012/ha na 2ª safra (−R$ 2.242/ha contra R$ 770/ha), piora a saúde do solo (0,23 contra 0,49; ~90 dias de solo descoberto contra 60) e atende melhor a demanda de água (1,00 contra 0,86). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
@@ -4793,7 +4818,7 @@
             "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (3 sc/ha do milho verão no lugar da soja + 0 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -1.050/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.242/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.050/ha/ano.",
+            "Total da rotação: R$ -1.050/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.242/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -1.050/ha/ano.",
             "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problemas da área informados (mofo-branco, nematoide, compactação): sem efeito com fonte confirmada nesta rotação (neutro).",
@@ -4842,8 +4867,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.454,
-            0.454
+            0.452,
+            0.452
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -4927,17 +4952,17 @@
           "nome": "Aveia + nabo forrageiro (cobertura)"
         },
         "rotacao": "Milho verão → aveia + nabo forrageiro (cobertura)",
-        "nota": 0.584,
+        "nota": 0.582,
         "atual": false,
         "criterios": {
-          "renda": 0.027,
+          "renda": 0.021,
           "solo": 0.619,
           "agua": 0.996,
           "pragas": 0.65,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.008,
+          "renda": 0.006,
           "solo": 0.109,
           "agua": 0.176,
           "pragas": 0.115,
@@ -4946,7 +4971,7 @@
         "margem": {
           "total_r_ha": -949.0,
           "incremental_r_ha": -2141.0,
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -4977,7 +5002,8 @@
           "bonus_proxima_soja_r_ha": 661.0,
           "linha_custo": "coe",
           "base_renda": "preco_atual",
-          "incremental_preco_atual_r_ha": -2141.0
+          "incremental_preco_atual_r_ha": -2141.0,
+          "abaixo_da_maior_renda_r_ha": 65.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.912/ha na 2ª safra (−R$ 2.141/ha contra R$ 770/ha), quebra melhor o ciclo de pragas (0,65 contra 0,27) e atende melhor a demanda de água (1,00 contra 0,86). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -4987,7 +5013,7 @@
             "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 5.5 sc/ha × R$ 120.14/sc = R$ 661/ha (3 sc/ha do milho verão no lugar da soja + 2.5 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -949/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.141/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -949/ha/ano.",
+            "Total da rotação: R$ -949/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.141/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -949/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 60 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problemas da área informados (mofo-branco, nematoide, compactação): sem efeito com fonte confirmada nesta rotação (neutro).",
@@ -5070,8 +5096,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.584,
-            0.584
+            0.582,
+            0.582
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -5135,17 +5161,17 @@
           "nome": "Aveia (cobertura/palha)"
         },
         "rotacao": "Milho verão → aveia (cobertura/palha)",
-        "nota": 0.577,
+        "nota": 0.575,
         "atual": false,
         "criterios": {
-          "renda": 0.025,
+          "renda": 0.019,
           "solo": 0.626,
           "agua": 1.0,
           "pragas": 0.6,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.007,
+          "renda": 0.006,
           "solo": 0.11,
           "agua": 0.176,
           "pragas": 0.106,
@@ -5154,7 +5180,7 @@
         "margem": {
           "total_r_ha": -984.0,
           "incremental_r_ha": -2176.0,
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -5185,7 +5211,8 @@
           "bonus_proxima_soja_r_ha": 601.0,
           "linha_custo": "coe",
           "base_renda": "preco_atual",
-          "incremental_preco_atual_r_ha": -2176.0
+          "incremental_preco_atual_r_ha": -2176.0,
+          "abaixo_da_maior_renda_r_ha": 100.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.947/ha na 2ª safra (−R$ 2.176/ha contra R$ 770/ha), quebra melhor o ciclo de pragas (0,60 contra 0,27) e atende melhor a demanda de água (1,00 contra 0,86). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
@@ -5195,7 +5222,7 @@
             "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -984/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.176/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -984/ha/ano.",
+            "Total da rotação: R$ -984/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.176/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -984/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problemas da área informados (mofo-branco, nematoide, compactação): sem efeito com fonte confirmada nesta rotação (neutro).",
@@ -5275,8 +5302,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.577,
-            0.577
+            0.575,
+            0.575
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -5340,17 +5367,17 @@
           "nome": "Nabo forrageiro (cobertura)"
         },
         "rotacao": "Milho verão → nabo forrageiro (cobertura)",
-        "nota": 0.574,
+        "nota": 0.572,
         "atual": false,
         "criterios": {
-          "renda": 0.03,
+          "renda": 0.023,
           "solo": 0.742,
           "agua": 0.993,
           "pragas": 0.467,
           "risco": 1.0
         },
         "contribuicoes": {
-          "renda": 0.009,
+          "renda": 0.007,
           "solo": 0.131,
           "agua": 0.175,
           "pragas": 0.082,
@@ -5359,7 +5386,7 @@
         "margem": {
           "total_r_ha": -884.0,
           "incremental_r_ha": -2076.0,
-          "escala_S_r_ha": 1192.0,
+          "escala_S_r_ha": 1110.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
@@ -5390,7 +5417,8 @@
           "bonus_proxima_soja_r_ha": 601.0,
           "linha_custo": "coe",
           "base_renda": "preco_atual",
-          "incremental_preco_atual_r_ha": -2076.0
+          "incremental_preco_atual_r_ha": -2076.0,
+          "abaixo_da_maior_renda_r_ha": 0.0
         },
         "card": {
           "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.847/ha na 2ª safra (−R$ 2.076/ha contra R$ 770/ha), melhora a saúde do solo (0,74 contra 0,49; ~35 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,47 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -5400,7 +5428,7 @@
             "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
             "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 120.14/sc = R$ 601/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -884/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.076/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -884/ha/ano.",
+            "Total da rotação: R$ -884/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.076/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -884/ha/ano.",
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 54 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (nabo forrageiro é hospedeiro: sofreu ataque severo em vaso e estimula a germinação dos escleródios; fonte: Ferro & Lobo Jr. 2010 (CONPEEX); Meyer & Bueno 2022 (Embrapa Soja, cap. 18)).",
@@ -5471,8 +5499,8 @@
             "origem": "custo_fixo"
           },
           "nota_faixa": [
-            0.574,
-            0.574
+            0.572,
+            0.572
           ],
           "nota_por_safra": null,
           "risco_climatico": null,
@@ -5649,6 +5677,13 @@
       "diferenca": 0.01,
       "limiar": 0.02,
       "texto": "Empate técnico: Milho verão → aveia + nabo forrageiro (cobertura), Milho verão → aveia (cobertura/palha) e Milho verão → nabo forrageiro (cobertura) estão a menos de 0,02 ponto da melhor nota (diferença 0,010). Variações pequenas nas estimativas (preços, quebra de ciclo de pragas, cobertura, bônus na soja) trocam a ordem entre elas; escolha pelo que pesa mais na sua realidade (renda, máquinas, mercado, histórico da área)."
+    },
+    "maior_renda": {
+      "id": "milho_verao__nabo_forrageiro",
+      "rotacao": "Milho verão → nabo forrageiro (cobertura)",
+      "incremental_r_ha": -2076.0,
+      "primeira_abaixo_r_ha": 65.0,
+      "primeira_e_maior_renda": true
     }
   },
   "ranking": [
@@ -5665,17 +5700,17 @@
         "nome": "Milho safrinha + braquiária"
       },
       "rotacao": "Soja → milho safrinha + braquiária",
-      "nota": 0.764,
+      "nota": 0.769,
       "atual": false,
       "criterios": {
-        "renda": 0.795,
+        "renda": 0.81,
         "solo": 0.867,
         "agua": 0.842,
         "pragas": 0.41,
         "risco": 0.886
       },
       "contribuicoes": {
-        "renda": 0.234,
+        "renda": 0.238,
         "solo": 0.153,
         "agua": 0.149,
         "pragas": 0.072,
@@ -5686,7 +5721,7 @@
         "incremental_r_ha": 806.0,
         "incremental_preco_atual_r_ha": 1202.0,
         "base_renda": "historico",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -5731,10 +5766,11 @@
         ],
         "ano_ruim_r_ha": 803.0,
         "bonus_proxima_soja_r_ha": 360.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 0.0
       },
       "card": {
-        "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,23) e Risco climático (0,16).",
+        "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,24) e Risco climático (0,16).",
         "evidencias": [
           "Dias de solo descoberto/ano (catálogo): ~30 dias.",
           "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
@@ -5743,7 +5779,7 @@
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
           "Adubação P/K acima/abaixo da referência: custo extra R$ 409/ha (P baixo (+20 kg P2O5/ha), K baixo (+35 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 409/ha.",
           "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 803/ha/ano.",
+          "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 803/ha/ano.",
           "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
           "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 84% da demanda; em 8 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
           "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
@@ -5797,15 +5833,15 @@
           "origem": "historico"
         },
         "nota_faixa": [
-          0.615,
-          0.819
+          0.611,
+          0.82
         ],
         "nota_por_safra": {
-          "2021": 0.615,
-          "2022": 0.777,
-          "2023": 0.767,
-          "2024": 0.727,
-          "2025": 0.819
+          "2021": 0.611,
+          "2022": 0.782,
+          "2023": 0.771,
+          "2024": 0.731,
+          "2025": 0.82
         },
         "risco_climatico": {
           "probabilidade": 0.114,
@@ -5941,17 +5977,17 @@
         "nome": "Milheto/crotalária (cobertura)"
       },
       "rotacao": "Soja → milheto/crotalária (cobertura)",
-      "nota": 0.728,
+      "nota": 0.726,
       "atual": false,
       "criterios": {
-        "renda": 0.385,
+        "renda": 0.376,
         "solo": 0.921,
         "agua": 0.999,
         "pragas": 0.565,
         "risco": 1.0
       },
       "contribuicoes": {
-        "renda": 0.113,
+        "renda": 0.111,
         "solo": 0.162,
         "agua": 0.176,
         "pragas": 0.1,
@@ -5962,7 +5998,7 @@
         "incremental_r_ha": -280.0,
         "incremental_preco_atual_r_ha": -280.0,
         "base_renda": "preco_atual",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -5991,7 +6027,8 @@
         ],
         "ano_ruim_r_ha": 912.0,
         "bonus_proxima_soja_r_ha": 360.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 1086.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.050/ha na 2ª safra (−R$ 280/ha contra R$ 770/ha), melhora a saúde do solo (0,92 contra 0,49; ~35 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,56 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -6001,7 +6038,7 @@
           "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
           "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 912/ha/ano.",
+          "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 912/ha/ano.",
           "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -6052,8 +6089,8 @@
           "origem": "custo_fixo"
         },
         "nota_faixa": [
-          0.728,
-          0.728
+          0.726,
+          0.726
         ],
         "nota_por_safra": null,
         "risco_climatico": null,
@@ -6136,17 +6173,17 @@
         "nome": "Milho safrinha"
       },
       "rotacao": "Soja → milho safrinha",
-      "nota": 0.672,
+      "nota": 0.677,
       "atual": true,
       "criterios": {
-        "renda": 0.784,
+        "renda": 0.8,
         "solo": 0.485,
         "agua": 0.857,
         "pragas": 0.274,
         "risco": 0.886
       },
       "contribuicoes": {
-        "renda": 0.231,
+        "renda": 0.235,
         "solo": 0.086,
         "agua": 0.151,
         "pragas": 0.048,
@@ -6157,7 +6194,7 @@
         "incremental_r_ha": 770.0,
         "incremental_preco_atual_r_ha": 1162.0,
         "base_renda": "historico",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -6194,10 +6231,11 @@
         ],
         "ano_ruim_r_ha": 763.0,
         "bonus_proxima_soja_r_ha": 120.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 36.0
       },
       "card": {
-        "por_que": "É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária) tem nota 0,76. Maiores contribuições para a nota: Renda (0,23) e Risco climático (0,16).",
+        "por_que": "É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária) tem nota 0,77. Maiores contribuições para a nota: Renda (0,24) e Risco climático (0,16).",
         "evidencias": [
           "Dias de solo descoberto/ano (catálogo): ~60 dias.",
           "NDVI observado (NASA HLS): ~120 dias/ano com NDVI<0.35.",
@@ -6206,7 +6244,7 @@
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
           "Adubação P/K acima/abaixo da referência: custo extra R$ 409/ha (P baixo (+20 kg P2O5/ha), K baixo (+35 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 409/ha.",
           "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 2.354/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 770/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.162/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 763/ha/ano.",
+          "Total da rotação: R$ 2.354/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 770/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.162/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 763/ha/ano.",
           "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
           "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 86% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
           "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
@@ -6255,15 +6293,15 @@
           "origem": "historico"
         },
         "nota_faixa": [
-          0.522,
-          0.73
+          0.517,
+          0.731
         ],
         "nota_por_safra": {
-          "2021": 0.522,
-          "2022": 0.686,
-          "2023": 0.674,
-          "2024": 0.635,
-          "2025": 0.73
+          "2021": 0.517,
+          "2022": 0.691,
+          "2023": 0.679,
+          "2024": 0.638,
+          "2025": 0.731
         },
         "risco_climatico": {
           "probabilidade": 0.114,
@@ -6368,17 +6406,17 @@
         "nome": "Nabo forrageiro (cobertura)"
       },
       "rotacao": "Soja → nabo forrageiro (cobertura)",
-      "nota": 0.652,
+      "nota": 0.65,
       "atual": false,
       "criterios": {
-        "renda": 0.407,
+        "renda": 0.4,
         "solo": 0.742,
         "agua": 0.993,
         "pragas": 0.283,
         "risco": 1.0
       },
       "contribuicoes": {
-        "renda": 0.12,
+        "renda": 0.118,
         "solo": 0.131,
         "agua": 0.175,
         "pragas": 0.05,
@@ -6389,7 +6427,7 @@
         "incremental_r_ha": -225.0,
         "incremental_preco_atual_r_ha": -225.0,
         "base_renda": "preco_atual",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -6418,7 +6456,8 @@
         ],
         "ano_ruim_r_ha": 967.0,
         "bonus_proxima_soja_r_ha": 240.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 1031.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 996/ha na 2ª safra (−R$ 225/ha contra R$ 770/ha), melhora a saúde do solo (0,74 contra 0,49; ~35 dias de solo descoberto contra 60) e atende melhor a demanda de água (0,99 contra 0,86). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -6428,7 +6467,7 @@
           "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
           "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 967/ha/ano.",
+          "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 967/ha/ano.",
           "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 54 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -6478,8 +6517,8 @@
           "origem": "custo_fixo"
         },
         "nota_faixa": [
-          0.652,
-          0.652
+          0.65,
+          0.65
         ],
         "nota_por_safra": null,
         "risco_climatico": null,
@@ -6562,17 +6601,17 @@
         "nome": "Aveia + nabo forrageiro (cobertura)"
       },
       "rotacao": "Soja → aveia + nabo forrageiro (cobertura)",
-      "nota": 0.646,
+      "nota": 0.643,
       "atual": false,
       "criterios": {
-        "renda": 0.381,
+        "renda": 0.372,
         "solo": 0.619,
         "agua": 0.996,
         "pragas": 0.41,
         "risco": 1.0
       },
       "contribuicoes": {
-        "renda": 0.112,
+        "renda": 0.109,
         "solo": 0.109,
         "agua": 0.176,
         "pragas": 0.072,
@@ -6583,7 +6622,7 @@
         "incremental_r_ha": -290.0,
         "incremental_preco_atual_r_ha": -290.0,
         "base_renda": "preco_atual",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -6612,7 +6651,8 @@
         ],
         "ano_ruim_r_ha": 902.0,
         "bonus_proxima_soja_r_ha": 300.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 1096.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.060/ha na 2ª safra (−R$ 290/ha contra R$ 770/ha), atende melhor a demanda de água (1,00 contra 0,86) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -6622,7 +6662,7 @@
           "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
           "Bônus na soja seguinte: 2.5 sc/ha × R$ 120.14/sc = R$ 300/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 902/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -290/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 902/ha/ano.",
+          "Total da rotação: R$ 902/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -290/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 902/ha/ano.",
           "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 60 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -6672,8 +6712,8 @@
           "origem": "custo_fixo"
         },
         "nota_faixa": [
-          0.646,
-          0.646
+          0.643,
+          0.643
         ],
         "nota_por_safra": null,
         "risco_climatico": null,
@@ -6767,17 +6807,17 @@
         "nome": "Aveia (cobertura/palha)"
       },
       "rotacao": "Soja → aveia (cobertura/palha)",
-      "nota": 0.636,
+      "nota": 0.633,
       "atual": false,
       "criterios": {
-        "renda": 0.367,
+        "renda": 0.357,
         "solo": 0.626,
         "agua": 1.0,
         "pragas": 0.364,
         "risco": 1.0
       },
       "contribuicoes": {
-        "renda": 0.108,
+        "renda": 0.105,
         "solo": 0.11,
         "agua": 0.176,
         "pragas": 0.064,
@@ -6788,7 +6828,7 @@
         "incremental_r_ha": -325.0,
         "incremental_preco_atual_r_ha": -325.0,
         "base_renda": "preco_atual",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -6817,7 +6857,8 @@
         ],
         "ano_ruim_r_ha": 867.0,
         "bonus_proxima_soja_r_ha": 240.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 1131.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.096/ha na 2ª safra (−R$ 325/ha contra R$ 770/ha), atende melhor a demanda de água (1,00 contra 0,86) e melhora a saúde do solo (0,63 contra 0,49; ~40 dias de solo descoberto contra 60). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
@@ -6827,7 +6868,7 @@
           "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
           "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 867/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -325/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 867/ha/ano.",
+          "Total da rotação: R$ 867/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -325/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 867/ha/ano.",
           "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -6874,8 +6915,8 @@
           "origem": "custo_fixo"
         },
         "nota_faixa": [
-          0.636,
-          0.636
+          0.633,
+          0.633
         ],
         "nota_por_safra": null,
         "risco_climatico": null,
@@ -6969,17 +7010,17 @@
         "nome": "Sorgo"
       },
       "rotacao": "Soja → sorgo",
-      "nota": 0.539,
+      "nota": 0.535,
       "atual": false,
       "criterios": {
-        "renda": 0.245,
+        "renda": 0.23,
         "solo": 0.495,
         "agua": 0.892,
         "pragas": 0.319,
         "risco": 0.941
       },
       "contribuicoes": {
-        "renda": 0.072,
+        "renda": 0.068,
         "solo": 0.087,
         "agua": 0.157,
         "pragas": 0.056,
@@ -6990,7 +7031,7 @@
         "incremental_r_ha": -669.0,
         "incremental_preco_atual_r_ha": -669.0,
         "base_renda": "preco_atual",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -7027,7 +7068,8 @@
         ],
         "ano_ruim_r_ha": 406.0,
         "bonus_proxima_soja_r_ha": 120.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 1475.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.440/ha na 2ª safra (−R$ 669/ha contra R$ 770/ha), reduz o risco climático (algum evento adverso em 6% dos anos contra 11%) e quebra melhor o ciclo de pragas (0,32 contra 0,27). Maiores contribuições para a nota: Risco climático (0,17) e Água (0,16).",
@@ -7038,7 +7080,7 @@
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
           "Adubação P/K acima/abaixo da referência: custo extra R$ 230/ha (P baixo (+12 kg P2O5/ha), K baixo (+18 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 230/ha.",
           "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 523/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -669/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 406/ha/ano.",
+          "Total da rotação: R$ 523/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -669/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 406/ha/ano.",
           "Água: na fase crítica (emborrachamento/enchimento do sorgo, semeadura em 15/01), a água no solo atendeu em média 89% da demanda; em 5 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
           "Geada no florescimento/enchimento do sorgo semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -7085,7 +7127,7 @@
           "origem": "ano_ruim_p20"
         },
         "nota_faixa": [
-          0.529,
+          0.524,
           null
         ],
         "nota_por_safra": null,
@@ -7187,17 +7229,17 @@
         "nome": "Pousio"
       },
       "rotacao": "Soja → pousio",
-      "nota": 0.514,
+      "nota": 0.511,
       "atual": false,
       "criterios": {
-        "renda": 0.342,
+        "renda": 0.331,
         "solo": 0.233,
         "agua": 1.0,
         "pragas": 0.11,
         "risco": 1.0
       },
       "contribuicoes": {
-        "renda": 0.101,
+        "renda": 0.097,
         "solo": 0.041,
         "agua": 0.176,
         "pragas": 0.019,
@@ -7208,7 +7250,7 @@
         "incremental_r_ha": -391.0,
         "incremental_preco_atual_r_ha": -391.0,
         "base_renda": "preco_atual",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -7237,7 +7279,8 @@
         ],
         "ano_ruim_r_ha": 802.0,
         "bonus_proxima_soja_r_ha": 0.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 1197.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.161/ha na 2ª safra (−R$ 391/ha contra R$ 770/ha), piora a saúde do solo (0,23 contra 0,49; ~90 dias de solo descoberto contra 60) e quebra menos o ciclo de pragas (0,11 contra 0,27). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
@@ -7247,7 +7290,7 @@
           "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
           "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 802/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -391/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 802/ha/ano.",
+          "Total da rotação: R$ 802/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -391/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 802/ha/ano.",
           "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -7291,8 +7334,8 @@
           "origem": "custo_fixo"
         },
         "nota_faixa": [
-          0.514,
-          0.514
+          0.511,
+          0.511
         ],
         "nota_por_safra": null,
         "risco_climatico": null,
@@ -7375,17 +7418,17 @@
         "nome": "Feijão safrinha"
       },
       "rotacao": "Soja → feijão safrinha",
-      "nota": 0.47,
+      "nota": 0.465,
       "atual": false,
       "criterios": {
-        "renda": 0.256,
+        "renda": 0.241,
         "solo": 0.392,
         "agua": 0.889,
         "pragas": 0.041,
         "risco": 0.913
       },
       "contribuicoes": {
-        "renda": 0.075,
+        "renda": 0.071,
         "solo": 0.069,
         "agua": 0.157,
         "pragas": 0.007,
@@ -7396,7 +7439,7 @@
         "incremental_r_ha": -637.0,
         "incremental_preco_atual_r_ha": -637.0,
         "base_renda": "preco_atual",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -7433,7 +7476,8 @@
         ],
         "ano_ruim_r_ha": -1162.0,
         "bonus_proxima_soja_r_ha": 0.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 1443.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.407/ha na 2ª safra (−R$ 637/ha contra R$ 770/ha), quebra menos o ciclo de pragas (0,04 contra 0,27) e piora a saúde do solo (0,39 contra 0,49; ~75 dias de solo descoberto contra 60). Risco climático igual (algum evento adverso em 9% dos anos). Maiores contribuições para a nota: Risco climático (0,16) e Água (0,16).",
@@ -7444,7 +7488,7 @@
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
           "Adubação P/K acima/abaixo da referência: custo extra R$ 384/ha (P baixo (+20 kg P2O5/ha), K baixo (+30 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: doses no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 384/ha.",
           "Bônus na soja seguinte: 0 sc/ha × R$ 120.14/sc = R$ 0/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 555/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -637/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.162/ha/ano.",
+          "Total da rotação: R$ 555/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -637/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -1.162/ha/ano.",
           "Água: na fase crítica (floração/formação de vagens do feijão, semeadura em 15/01), a água no solo atendeu em média 89% da demanda; em 2 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
           "Geada no florescimento/enchimento do feijão safrinha semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
           "Déficit hídrico na fase crítica (floração/formação de vagens do feijão, semeadura em 15/01): água no solo abaixo de 55% da demanda em 1 de 34 anos (3%); balanço hídrico diário NASA POWER + solo, CAD 65 mm.",
@@ -7494,7 +7538,7 @@
           "origem": "ano_ruim_p20"
         },
         "nota_faixa": [
-          0.4,
+          0.399,
           null
         ],
         "nota_por_safra": null,
@@ -7597,17 +7641,17 @@
         "nome": "Trigo"
       },
       "rotacao": "Soja → trigo",
-      "nota": 0.444,
+      "nota": 0.44,
       "atual": false,
       "criterios": {
-        "renda": 0.098,
+        "renda": 0.084,
         "solo": 0.434,
         "agua": 0.968,
         "pragas": 0.364,
         "risco": 0.588
       },
       "contribuicoes": {
-        "renda": 0.029,
+        "renda": 0.025,
         "solo": 0.077,
         "agua": 0.171,
         "pragas": 0.064,
@@ -7618,7 +7662,7 @@
         "incremental_r_ha": -1324.0,
         "incremental_preco_atual_r_ha": -2263.0,
         "base_renda": "historico",
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -7655,7 +7699,8 @@
         ],
         "ano_ruim_r_ha": -1679.0,
         "bonus_proxima_soja_r_ha": 120.0,
-        "linha_custo": "coe"
+        "linha_custo": "coe",
+        "abaixo_da_maior_renda_r_ha": 2130.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.094/ha na 2ª safra (−R$ 1.324/ha contra R$ 770/ha), aumenta o risco climático (algum evento adverso em 41% dos anos contra 11%) e atende melhor a demanda de água (0,97 contra 0,86). Maiores contribuições para a nota: Água (0,17) e Risco climático (0,10).",
@@ -7666,7 +7711,7 @@
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
           "Adubação P/K acima/abaixo da referência: custo extra R$ 292/ha (P baixo (+25 kg P2O5/ha), K baixo (+0 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: CBPTT 2020 (Tab. 7 e 8, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 292/ha.",
           "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ -1.071/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -1.324/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -2.263/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.679/ha/ano.",
+          "Total da rotação: R$ -1.071/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ -1.324/ha, com a 2ª safra pela média realizada das últimas safras no município (-8,0 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ -2.263/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ -1.679/ha/ano.",
           "Histórico de renda do trigo no município (margem realizada, sc de soja/ha): 2021: -4, 2022: -10, 2023: -14, 2024: -14, 2025: +2; média -8,0; margem negativa em 4 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
           "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 97% da demanda; em 1 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
           "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
@@ -7717,15 +7762,15 @@
           "origem": "historico"
         },
         "nota_faixa": [
-          0.424,
-          0.542
+          0.422,
+          0.54
         ],
         "nota_por_safra": {
-          "2021": 0.472,
-          "2022": 0.437,
-          "2023": 0.424,
-          "2024": 0.425,
-          "2025": 0.542
+          "2021": 0.467,
+          "2022": 0.433,
+          "2023": 0.422,
+          "2024": 0.423,
+          "2025": 0.54
         },
         "risco_climatico": {
           "probabilidade": 0.412,
@@ -7861,17 +7906,17 @@
       "nome": "Milho safrinha"
     },
     "rotacao": "Soja → milho safrinha",
-    "nota": 0.672,
+    "nota": 0.677,
     "atual": true,
     "criterios": {
-      "renda": 0.784,
+      "renda": 0.8,
       "solo": 0.485,
       "agua": 0.857,
       "pragas": 0.274,
       "risco": 0.886
     },
     "contribuicoes": {
-      "renda": 0.231,
+      "renda": 0.235,
       "solo": 0.086,
       "agua": 0.151,
       "pragas": 0.048,
@@ -7882,7 +7927,7 @@
       "incremental_r_ha": 770.0,
       "incremental_preco_atual_r_ha": 1162.0,
       "base_renda": "historico",
-      "escala_S_r_ha": 1192.0,
+      "escala_S_r_ha": 1110.0,
       "itens": [
         {
           "cultura": "Soja",
@@ -7919,10 +7964,11 @@
       ],
       "ano_ruim_r_ha": 763.0,
       "bonus_proxima_soja_r_ha": 120.0,
-      "linha_custo": "coe"
+      "linha_custo": "coe",
+      "abaixo_da_maior_renda_r_ha": 36.0
     },
     "card": {
-      "por_que": "É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária) tem nota 0,76. Maiores contribuições para a nota: Renda (0,23) e Risco climático (0,16).",
+      "por_que": "É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária) tem nota 0,77. Maiores contribuições para a nota: Renda (0,24) e Risco climático (0,16).",
       "evidencias": [
         "Dias de solo descoberto/ano (catálogo): ~60 dias.",
         "NDVI observado (NASA HLS): ~120 dias/ano com NDVI<0.35.",
@@ -7931,7 +7977,7 @@
         "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
         "Adubação P/K acima/abaixo da referência: custo extra R$ 409/ha (P baixo (+20 kg P2O5/ha), K baixo (+35 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 409/ha.",
         "Bônus na soja seguinte: 1 sc/ha × R$ 120.14/sc = R$ 120/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-        "Total da rotação: R$ 2.354/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 770/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.162/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 763/ha/ano.",
+        "Total da rotação: R$ 2.354/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 770/ha, com a 2ª safra pela média realizada das últimas safras no município (10,4 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.162/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 763/ha/ano.",
         "Histórico de renda do milho safrinha no município (margem realizada, sc de soja/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; média 10,4; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
         "Água: na fase crítica (floração/enchimento do milho, semeadura em 15/01), a água no solo atendeu em média 86% da demanda; em 7 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
         "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
@@ -7980,15 +8026,15 @@
         "origem": "historico"
       },
       "nota_faixa": [
-        0.522,
-        0.73
+        0.517,
+        0.731
       ],
       "nota_por_safra": {
-        "2021": 0.522,
-        "2022": 0.686,
-        "2023": 0.674,
-        "2024": 0.635,
-        "2025": 0.73
+        "2021": 0.517,
+        "2022": 0.691,
+        "2023": 0.679,
+        "2024": 0.638,
+        "2025": 0.731
       },
       "risco_climatico": {
         "probabilidade": 0.114,
@@ -8097,17 +8143,17 @@
         "nome": "Milho safrinha + braquiária"
       },
       "rotacao": "Soja → milho safrinha + braquiária",
-      "nota": 0.764,
+      "nota": 0.769,
       "atual": false,
       "criterios": {
-        "renda": 0.795,
+        "renda": 0.81,
         "solo": 0.867,
         "agua": 0.842,
         "pragas": 0.41,
         "risco": 0.886
       },
       "contribuicoes": {
-        "renda": 0.234,
+        "renda": 0.238,
         "solo": 0.153,
         "agua": 0.149,
         "pragas": 0.072,
@@ -8116,7 +8162,7 @@
       "margem": {
         "total_r_ha": 2395.0,
         "incremental_r_ha": 806.0,
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -8163,10 +8209,11 @@
         "bonus_proxima_soja_r_ha": 360.0,
         "linha_custo": "coe",
         "base_renda": "historico",
-        "incremental_preco_atual_r_ha": 1202.0
+        "incremental_preco_atual_r_ha": 1202.0,
+        "abaixo_da_maior_renda_r_ha": 0.0
       },
       "card": {
-        "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,23) e Risco climático (0,16).",
+        "por_que": "Em relação à atual (milho safrinha): melhora a saúde do solo (0,87 contra 0,49; ~30 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,41 contra 0,27). Risco climático igual (algum evento adverso em 11% dos anos). Maiores contribuições para a nota: Renda (0,24) e Risco climático (0,16).",
         "evidencias": [
           "Dias de solo descoberto/ano (catálogo): ~30 dias.",
           "Soja: 50 sc/ha (tendência da PAM Toledo 2016–2025 projetada para a próxima safra; média 53 sc/ha) × R$ 120.14/sc (SEAB/DERAL-PR, média PR nov/25 a out/26) − custo R$ 4.824/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), custo variável (≈COE)) = R$ 1.192/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 50 sc/ha → R$ 1.192/ha).",
@@ -8175,7 +8222,7 @@
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa) = −R$ 191/ha.",
           "Adubação P/K acima/abaixo da referência: custo extra R$ 409/ha (P baixo (+20 kg P2O5/ha), K baixo (+35 kg K2O/ha) em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); doses: Manual PR 2017 (Tab. 2 e 3, expectativa < 8 t/ha, ponto médio da faixa); preços: CNA/Cepea Campo Futuro (média MT e PR) em 19/09/2025: SSP R$ 2.104,7/t e KCl R$ 2.898,8/t; teores 18% P2O5 e 58% K2O assumidos) = −R$ 409/ha.",
           "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 803/ha/ano.",
+          "Total da rotação: R$ 2.395/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ 806/ha, com a 2ª safra pela média realizada das últimas safras no município (8,7 sc de soja/ha × R$ 120.14/sc; a preço atual seria R$ 1.202/ha), na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 803/ha/ano.",
           "Histórico de renda do milho safrinha + braquiária no município (margem realizada, sc de soja/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; média 8,7; margem negativa em 1 de 5. Fonte: IBGE PAM (rendimento do município; preço realizado do PR = valor/produção) e custo variável CONAB Londrina-PR de cada safra; em sacas de soja/ha (÷ preço realizado da soja no PR no mesmo ano); sem o bônus na soja seguinte. A média entra na nota de renda no lugar da margem a preço atual (acertou mais nas safras passadas).",
           "Água: na fase crítica (floração/enchimento do milho consorciado, semeadura em 15/01), a água no solo atendeu em média 84% da demanda; em 8 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 87 mm).",
           "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
@@ -8292,15 +8339,15 @@
           "origem": "historico"
         },
         "nota_faixa": [
-          0.615,
-          0.819
+          0.611,
+          0.82
         ],
         "nota_por_safra": {
-          "2021": 0.615,
-          "2022": 0.777,
-          "2023": 0.767,
-          "2024": 0.727,
-          "2025": 0.819
+          "2021": 0.611,
+          "2022": 0.782,
+          "2023": 0.771,
+          "2024": 0.731,
+          "2025": 0.82
         },
         "risco_climatico": {
           "probabilidade": 0.114,
@@ -8372,17 +8419,17 @@
         "nome": "Milheto/crotalária (cobertura)"
       },
       "rotacao": "Soja → milheto/crotalária (cobertura)",
-      "nota": 0.728,
+      "nota": 0.726,
       "atual": false,
       "criterios": {
-        "renda": 0.385,
+        "renda": 0.376,
         "solo": 0.921,
         "agua": 0.999,
         "pragas": 0.565,
         "risco": 1.0
       },
       "contribuicoes": {
-        "renda": 0.113,
+        "renda": 0.111,
         "solo": 0.162,
         "agua": 0.176,
         "pragas": 0.1,
@@ -8391,7 +8438,7 @@
       "margem": {
         "total_r_ha": 912.0,
         "incremental_r_ha": -280.0,
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -8422,7 +8469,8 @@
         "bonus_proxima_soja_r_ha": 360.0,
         "linha_custo": "coe",
         "base_renda": "preco_atual",
-        "incremental_preco_atual_r_ha": -280.0
+        "incremental_preco_atual_r_ha": -280.0,
+        "abaixo_da_maior_renda_r_ha": 1086.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.050/ha na 2ª safra (−R$ 280/ha contra R$ 770/ha), melhora a saúde do solo (0,92 contra 0,49; ~35 dias de solo descoberto contra 60) e quebra melhor o ciclo de pragas (0,56 contra 0,27). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -8432,7 +8480,7 @@
           "Milheto/crotalária (cobertura): sem venda, custo de implantação R$ 450/ha (estimativa de referência, validar) = R$ -450/ha.",
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
           "Bônus na soja seguinte: 3 sc/ha × R$ 120.14/sc = R$ 360/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 912/ha/ano.",
+          "Total da rotação: R$ 912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -280/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 912/ha/ano.",
           "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 65 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -8500,8 +8548,8 @@
           "origem": "custo_fixo"
         },
         "nota_faixa": [
-          0.728,
-          0.728
+          0.726,
+          0.726
         ],
         "nota_por_safra": null,
         "risco_climatico": null,
@@ -8565,17 +8613,17 @@
         "nome": "Nabo forrageiro (cobertura)"
       },
       "rotacao": "Soja → nabo forrageiro (cobertura)",
-      "nota": 0.652,
+      "nota": 0.65,
       "atual": false,
       "criterios": {
-        "renda": 0.407,
+        "renda": 0.4,
         "solo": 0.742,
         "agua": 0.993,
         "pragas": 0.283,
         "risco": 1.0
       },
       "contribuicoes": {
-        "renda": 0.12,
+        "renda": 0.118,
         "solo": 0.131,
         "agua": 0.175,
         "pragas": 0.05,
@@ -8584,7 +8632,7 @@
       "margem": {
         "total_r_ha": 967.0,
         "incremental_r_ha": -225.0,
-        "escala_S_r_ha": 1192.0,
+        "escala_S_r_ha": 1110.0,
         "itens": [
           {
             "cultura": "Soja",
@@ -8615,7 +8663,8 @@
         "bonus_proxima_soja_r_ha": 240.0,
         "linha_custo": "coe",
         "base_renda": "preco_atual",
-        "incremental_preco_atual_r_ha": -225.0
+        "incremental_preco_atual_r_ha": -225.0,
+        "abaixo_da_maior_renda_r_ha": 1031.0
       },
       "card": {
         "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 996/ha na 2ª safra (−R$ 225/ha contra R$ 770/ha), melhora a saúde do solo (0,74 contra 0,49; ~35 dias de solo descoberto contra 60) e atende melhor a demanda de água (0,99 contra 0,86). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
@@ -8625,7 +8674,7 @@
           "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
           "Calagem: custo extra R$ 191/ha (NC = (60 − V% 38)/100 × CTC 9 / PRNT 77% = 2.6 t/ha × R$ 220/t, diluída em 3 anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da CBPTT 2020 (Trigo e Triticale), f = 1,3 para calcário moído de PRNT desconhecido; V2: 60% (faixa 51–70% do Manual PR; soja 60% e trigo 60% em Embrapa Soja Doc. 417 e CBPTT 2020); preço do calcário, teto de 6 t/ha e diluição em 3 anos: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa; calagem é necessidade da área e também é cobrada em cobertura/pousio, para não favorecê-las (premissa de modelagem, validar com agrônomo)) = −R$ 191/ha.",
           "Bônus na soja seguinte: 2 sc/ha × R$ 120.14/sc = R$ 240/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.192/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ 967/ha/ano.",
+          "Total da rotação: R$ 967/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -225/ha, na escala S = R$ 1.110/ha (a mesma no Paraná todo: margem mediana da soja no Oeste do PR); em ano ruim (rendimento p20): R$ 967/ha/ano.",
           "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 54 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Problema da área (mofo-branco): penaliza, critério pragas -0.15 (a soja é hospedeira do mofo-branco (recomenda-se rotação com espécies não hospedeiras); fonte: Brandão et al. 2008 (IAC Doc. 85); Godoy 2017 (Embrapa Soja, CTC)).",
@@ -8692,8 +8741,8 @@
           "origem": "custo_fixo"
         },
         "nota_faixa": [
-          0.652,
-          0.652
+          0.65,
+          0.65
         ],
         "nota_por_safra": null,
         "risco_climatico": null,
@@ -8869,7 +8918,7 @@
   "metodologia": {
     "formula": "Nota = Σ peso_i × critério_i / Σ peso_i",
     "criterios": {
-      "renda": "Margem incremental da 2ª safra (rendimento PAM do município × preço SEAB/DERAL − custo CONAB; cobertura/pousio = −custo estimado; mais o bônus de palhada/N na soja seguinte), na escala S = max(margem da soja do município, R$ 1.000/ha): renda = clip(0,5 + incremental / (2·S), 0, 1). Incremental +S = 1,0; zero = 0,5; −S = 0.",
+      "renda": "Margem incremental da 2ª safra (rendimento PAM do município × preço SEAB/DERAL − custo CONAB; cobertura/pousio = −custo estimado; mais o bônus de palhada/N na soja seguinte; milho safrinha, milho + braquiária e trigo pela média realizada das últimas 5 safras no município, quando há histórico), na escala S = R$ 1.110/ha, a mesma no Paraná todo (margem mediana da soja no Oeste do PR): renda = 0,5 + 0,5·tanh(incremental / S). Incremental zero = 0,5; +S ≈ 0,88; −S ≈ 0,12.",
       "solo": "Média de cobertura de palha, fixação de N e (1 − dias de solo descoberto/180); valores de catálogo (estimativas de referência, validar com agrônomo/Embrapa).",
       "agua": "Média nos 34 anos (1991–2024) de ΣETa/ΣETc na fase crítica da 2ª cultura, por balanço hídrico diário (NASA POWER + CAD do solo do polígono, SoilGrids); depende da data de semeadura. Pousio = 1,0.",
       "pragas": "Potencial de quebra de ciclo de pragas e doenças por rotação; valor de catálogo (0–1), estimativa a validar.",

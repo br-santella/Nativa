@@ -91,11 +91,11 @@ def prices(crop: str) -> pd.Series:
 
 
 @lru_cache(maxsize=1)
-def climate_flags() -> pd.DataFrame:
-    """Per municipality and PAM year: frost in the critical phase of off-season corn sown 15/02 and dry spell ≥ 15 days in
-    Mar–Apr (NASA POWER at the municipality centroid). Agricultural year Y → off-season corn harvested in Y + 1."""
+def climate_flags(sowing: str = "15/02") -> pd.DataFrame:
+    """Per municipality and PAM year: frost (Tmin ≤ 3 °C) in the critical phase of off-season corn sown on `sowing` and dry spell
+    ≥ 15 days in Mar–Apr (NASA POWER at the municipality centroid). Agricultural year Y → off-season corn harvested in Y + 1."""
     a = pd.read_parquet(ROOT / "data/processed/clima_pr/indicadores_anuais.parquet", columns=["ponto_id", "ano", "indicador", "valor"])
-    ind = {"geada_safrinha_semeadura_1502_le3": "frost", "veranico_safrinha_ge15": "dry_spell"}
+    ind = {f"geada_safrinha_semeadura_{sowing.replace('/', '')}_le3": "frost", "veranico_safrinha_ge15": "dry_spell"}
     a = a[a["ponto_id"].str.startswith("mun_") & a["indicador"].isin(ind)]
     a = a.pivot_table(index=["ponto_id", "ano"], columns="indicador", values="valor").rename(columns=ind).reset_index()
     a["cod_ibge"] = a["ponto_id"].str[4:]
@@ -114,6 +114,8 @@ def deficit_flags(sowing: str = "15/02") -> pd.DataFrame:
     from field_shift.water.balance import DEFICIT_THRESHOLD, YEARS, critical_phase_water
     from field_shift.validation import zarc as Z
     f = DEFICIT_FILE if _SCOPE == "oeste" else DEFICIT_FILE_PR
+    if sowing != "15/02":  # the default keeps the original cache names
+        f = f.with_name(f"{f.stem}_{sowing.replace('/', '')}{f.suffix}")
     if f.exists():
         d = pd.read_parquet(f)
     else:
@@ -168,8 +170,9 @@ def yield_metrics(df: pd.DataFrame) -> dict:
 # B) climate risk vs realized failures
 
 
-def corn_failures() -> pd.DataFrame:
-    """Off-season corn: yield deviation from the municipal linear trend (fitted on 2003–2025) and crop-failure flag."""
+def corn_failures(sowing: str = "15/02") -> pd.DataFrame:
+    """Off-season corn: yield deviation from the municipal linear trend (fitted on 2003–2025) and crop-failure flag, with the
+    frost and water-deficit flags of off-season corn sown on `sowing`."""
     y = yields("milho_2safra")
     rows = []
     for cod in y.columns:
@@ -181,8 +184,8 @@ def corn_failures() -> pd.DataFrame:
             rows.append(dict(cod_ibge=cod, ano_pam=int(year), dev=(v - t) / t))
     d = pd.DataFrame(rows)
     d["failure"] = d["dev"] <= FAIL_DEV
-    d = d.merge(climate_flags(), on=["cod_ibge", "ano_pam"], how="inner")
-    return d.merge(deficit_flags()[["cod_ibge", "ano_pam", "ratio", "deficit"]], on=["cod_ibge", "ano_pam"], how="left")
+    d = d.merge(climate_flags(sowing), on=["cod_ibge", "ano_pam"], how="inner")
+    return d.merge(deficit_flags(sowing)[["cod_ibge", "ano_pam", "ratio", "deficit"]], on=["cod_ibge", "ano_pam"], how="left")
 
 
 def risk_vs_failures() -> dict:

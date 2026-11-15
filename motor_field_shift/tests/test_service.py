@@ -12,7 +12,7 @@ def recommend(area, **kw):
     return _recommend(area, **kw)
 
 # Scores of the 6 old rotations (summer soybean), by old slug (`id_legado`): they do not change with the larger catalog (absolute scale).
-EXPECTED = {"milho_braquiaria": 0.795, "milho_safrinha": 0.747, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.57, "trigo": 0.524}
+EXPECTED = {"milho_braquiaria": 0.799, "milho_safrinha": 0.751, "milheto_crotalaria": 0.756, "aveia": 0.699, "pousio": 0.568, "trigo": 0.519}
 
 
 def _old(r):
@@ -36,7 +36,7 @@ def test_field_72638():
     m = _rk(r)
     assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 1370 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1406
     assert m["milho_safrinha"]["margem"]["incremental_preco_atual_r_ha"] == 1762 and m["milho_safrinha"]["margem"]["base_renda"] == "historico"
-    assert m["trigo"]["margem"]["escala_S_r_ha"] == 1192
+    assert m["trigo"]["margem"]["escala_S_r_ha"] == 1110
     # income never saturates: the two corn options are separated and no one sits at 0 or 1
     assert 0.9 < m["milho_safrinha"]["criterios"]["renda"] < m["milho_braquiaria"]["criterios"]["renda"] < 1.0
     assert 0.0 < m["trigo"]["criterios"]["renda"] < 0.5
@@ -122,8 +122,8 @@ def test_own_yield():
     assert soy["rendimento_sc_ha"] == 70 and corn["rendimento_sc_ha"] == 120
     assert "informado pelo produtor" in soy["fonte"] and "informado pelo produtor" in corn["fonte"]
     assert any("informado pelo produtor" in e for e in _rk(r)["milho_safrinha"]["card"]["evidencias"])
-    # a given soybean yield changes the S scale; the bad year scales proportionally (p20/PAM mean)
-    assert m["escala_S_r_ha"] > mb["escala_S_r_ha"] and m["total_r_ha"] > mb["total_r_ha"]
+    # the S scale is fixed statewide (a given soybean yield no longer changes it); the bad year scales proportionally (p20/PAM mean)
+    assert m["escala_S_r_ha"] == mb["escala_S_r_ha"] == 1110.0 and m["total_r_ha"] > mb["total_r_ha"]
     assert any("p20/média da PAM" in e for e in _rk(r)["milho_safrinha"]["card"]["evidencias"])
     assert any("Produtividade informada" in a for a in r["metodologia"]["ajustes_aplicados"])
     # alias milho_2safra equivale a milho
@@ -195,7 +195,8 @@ def test_constraints_machines():
     assert rr["milho_safrinha"]["margem"]["total_r_ha"] == rb["milho_safrinha"]["margem"]["total_r_ha"] - 250
     assert rr["milho_verao__aveia"]["margem"]["total_r_ha"] == rb["milho_verao__aveia"]["margem"]["total_r_ha"] - 250  # summer-corn harvest
     assert rr["milho_braquiaria"]["margem"]["total_r_ha"] == rb["milho_braquiaria"]["margem"]["total_r_ha"] - 330
-    assert rr["trigo"]["margem"] == rb["trigo"]["margem"] and not any("terceirizar" in a for a in rr["trigo"]["card"]["avisos"])
+    gap = "abaixo_da_maior_renda_r_ha"  # relative to the best option, which the machines change
+    assert {k: v for k, v in rr["trigo"]["margem"].items() if k != gap} == {k: v for k, v in rb["trigo"]["margem"].items() if k != gap} and not any("terceirizar" in a for a in rr["trigo"]["card"]["avisos"])
     # machine true / omitted = owned
     r_ok, _ = _t(recommend, T, constraints={"maquinas": {"plataforma_milho": True}}, include_diagnosis=False)
     assert _old(r_ok) == EXPECTED
