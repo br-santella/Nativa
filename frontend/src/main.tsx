@@ -359,6 +359,9 @@ function App() {
     }
     function Overview() {
         return (<>
+        <div className="page-heading">
+          <h1>{__text("Minha Propriedade")}</h1>
+        </div>
         <Demo />
         <div className="overview-map">
           <Map />
