@@ -3,7 +3,7 @@ const BASE = (import.meta.env.VITE_API_URL ?? "http://localhost:8000").replace(/
 
 export type Pesos = { renda: number; solo: number; agua: number; pragas: number; risco: number };
 
-export type Area = { talhao_id: string } | { lat: number; lon: number };
+export type Area = { talhao_id: string } | { lat: number; lon: number } | { geometry: { type: string; coordinates: unknown[] } };
 
 export type Card = {
   por_que: string;
@@ -61,10 +61,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const health = () => request<Health>("/health");
 
-export const recomendacao = (area: Area, rotacaoAtual: string, pesos?: Pesos) =>
+export const recomendacao = (area: Area, rotacaoAtual: string, pesos?: Pesos, inputs?: Record<string, unknown>) =>
   request<Recomendacao>("/v1/recomendacao", {
     method: "POST",
-    body: JSON.stringify({ area, rotacao_atual: rotacaoAtual, pesos, incluir_diagnostico: false }),
+    body: JSON.stringify({ ...inputs, area, rotacao_atual: rotacaoAtual, pesos, incluir_diagnostico: false }),
   });
 
 /** Sliders do NATIVA (0–100: água, solo, rentabilidade, resiliência) -> pesos do motor (0–10). Ver docs/entradas.md. */

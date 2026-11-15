@@ -1,3 +1,6 @@
+import setupOptions from "./setup-options.json";
+const optionsRotationName = (id: string) => setupOptions.combinacoes.find(x => x.id === id)?.nome ?? id;
+import type { SetupInputs } from "./PropertyWizard";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { ApiError, health, pesosDosSliders, recomendacao } from "./api";
@@ -142,7 +145,8 @@ function Card({ item, cor, melhor, rotulo }: { item: ItemRanking; cor: string; m
 }
 
 /** Seção "Compare os cenários" com dados reais do motor: rotação atual + 2 melhores alternativas. */
-export default function EngineScenarios({ weights, latitude, longitude, crops, onSources }: {
+export default function EngineScenarios({ weights, latitude, longitude, crops, onSources, setupInputs }: {
+  setupInputs?: SetupInputs;
   weights: number[];
   latitude: string;
   longitude: string;
@@ -164,7 +168,7 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
       .then((h) => {
         if (!ativo) return null;
         setApi(h);
-        return h.status === "ok" ? recomendacao(area, rotacao.id, pesosDosSliders(weights)) : null;
+        return h.status === "ok" ? recomendacao(setupInputs?.area ?? area, setupInputs?.rotacao_atual ?? rotacao.id, { ...pesosDosSliders(weights), pragas: setupInputs?.pesos.pragas ?? 3 }, setupInputs) : null;
       })
       .then((r) => ativo && setRes(r))
       .catch((e: unknown) => {
@@ -176,7 +180,7 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
     return () => {
       ativo = false;
     };
-  }, [weights, latitude, longitude, rotacao.id]);
+  }, [weights, latitude, longitude, rotacao.id, setupInputs]);
 
   const degradada = api != null && api.status !== "ok";
   const statusApi =
@@ -189,15 +193,15 @@ export default function EngineScenarios({ weights, latitude, longitude, crops, o
           : t("conectada");
   const contexto = (
     <small>
-      {rotulo} • {t("rotação atual:")} {rotacao.rotulo}{" "}
-      {t(rotacao.doHistorico ? "(do histórico de cultivo)" : "(padrão: histórico sem uma safra completa)")} • API:{" "}
+      {setupInputs ? (emIngles() ? "Your selected area" : "Sua área selecionada") : rotulo} • {t("rotação atual:")} {setupInputs ? t(optionsRotationName(setupInputs.rotacao_atual)) : rotacao.rotulo}{" "}
+      {setupInputs ? (emIngles() ? "(provided by you)" : "(informada por você)") : t(rotacao.doHistorico ? "(do histórico de cultivo)" : "(padrão: histórico sem uma safra completa)")} • API:{" "}
       {statusApi}
       {carregando && res ? ` • ${t("recalculando…")}` : ""}
     </small>
   );
 
   const atual = res?.atual;
-  const itens = res ? [...(atual ? [atual] : []), ...res.alternativas.slice(0, atual ? 2 : 3)] : [];
+  const itens = res ? [...(atual ? [atual] : []), ...res.alternativas.slice(0, setupInputs?.n_alternativas ?? (atual ? 2 : 3))] : [];
 
   if (erro || !res || itens.length === 0) {
     let mensagem: ReactNode = <p>{t("Calculando…")}</p>;

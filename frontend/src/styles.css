@@ -2054,6 +2054,19 @@ footer > small:last-child {
   padding: 120px 12% 80px;
   position: relative;
 }
+.signup-header {
+  position: absolute;
+  top: 40px;
+  left: 12%;
+  right: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+}
+.signup-header > .back-link {
+  position: static;
+}
 .signup-form > small,
 .onboard-grid > section > small {
   font-size: 11px;
@@ -3288,6 +3301,12 @@ footer > small:last-child {
   }
   .signup-form {
     padding: 70px 24px 60px;
+  }
+  .signup-header {
+    top: 16px;
+    left: 24px;
+    right: 24px;
+    gap: 16px;
   }
   .back-link {
     top: 24px;

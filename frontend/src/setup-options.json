@@ -1,0 +1,350 @@
+{
+  "talhoes_demo": [
+    {
+      "id": "72638",
+      "area_ha": 103.87,
+      "lat": -24.81473,
+      "lon": -53.55361
+    },
+    {
+      "id": "40654",
+      "area_ha": 177.01,
+      "lat": -24.74886,
+      "lon": -53.43628
+    },
+    {
+      "id": "76250",
+      "area_ha": 152.21,
+      "lat": -24.82724,
+      "lon": -53.34544
+    },
+    {
+      "id": "72240",
+      "area_ha": 150.75,
+      "lat": -24.77353,
+      "lon": -53.40623
+    },
+    {
+      "id": "116542",
+      "area_ha": 18.19,
+      "lat": -25.03338,
+      "lon": -53.29224
+    },
+    {
+      "id": "157700",
+      "area_ha": 10.53,
+      "lat": -25.28308,
+      "lon": -53.354
+    },
+    {
+      "id": "142056",
+      "area_ha": 8.88,
+      "lat": -25.30558,
+      "lon": -53.64734
+    },
+    {
+      "id": "36552",
+      "area_ha": 15.13,
+      "lat": -24.68781,
+      "lon": -53.72114
+    },
+    {
+      "id": "140590",
+      "area_ha": 14.54,
+      "lat": -25.24939,
+      "lon": -53.57575
+    },
+    {
+      "id": "143175",
+      "area_ha": 5.55,
+      "lat": -25.15123,
+      "lon": -53.4454
+    },
+    {
+      "id": "116671",
+      "area_ha": 49.6,
+      "lat": -25.03844,
+      "lon": -53.28868
+    },
+    {
+      "id": "120426",
+      "area_ha": 34.09,
+      "lat": -24.96122,
+      "lon": -53.03864
+    },
+    {
+      "id": "120195",
+      "area_ha": 28.89,
+      "lat": -24.95698,
+      "lon": -53.04889
+    },
+    {
+      "id": "43520",
+      "area_ha": 28.75,
+      "lat": -24.65968,
+      "lon": -53.27612
+    },
+    {
+      "id": "43411",
+      "area_ha": 25.25,
+      "lat": -24.65603,
+      "lon": -53.28393
+    },
+    {
+      "id": "108724",
+      "area_ha": 71.33,
+      "lat": -24.97345,
+      "lon": -53.53584
+    },
+    {
+      "id": "1127",
+      "area_ha": 70.47,
+      "lat": -24.4339,
+      "lon": -53.82065
+    }
+  ],
+  "combinacoes": [
+    {
+      "id": "soja__milho_safrinha",
+      "nome": "Soja → milho safrinha",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__milho_braquiaria",
+      "nome": "Soja → milho safrinha + braquiária",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__trigo",
+      "nome": "Soja → trigo",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__aveia",
+      "nome": "Soja → aveia (cobertura/palha)",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__milheto_crotalaria",
+      "nome": "Soja → milheto/crotalária (cobertura)",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__pousio",
+      "nome": "Soja → pousio",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__soja_safrinha",
+      "nome": "Soja → soja safrinha",
+      "verao": "soja",
+      "valida": false
+    },
+    {
+      "id": "soja__sorgo",
+      "nome": "Soja → sorgo",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__feijao_safrinha",
+      "nome": "Soja → feijão safrinha",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__nabo_forrageiro",
+      "nome": "Soja → nabo forrageiro (cobertura)",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "soja__aveia_nabo",
+      "nome": "Soja → aveia + nabo forrageiro (cobertura)",
+      "verao": "soja",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__milho_safrinha",
+      "nome": "Milho verão → milho safrinha",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__milho_braquiaria",
+      "nome": "Milho verão → milho safrinha + braquiária",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__trigo",
+      "nome": "Milho verão → trigo",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__aveia",
+      "nome": "Milho verão → aveia (cobertura/palha)",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__milheto_crotalaria",
+      "nome": "Milho verão → milheto/crotalária (cobertura)",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__pousio",
+      "nome": "Milho verão → pousio",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__soja_safrinha",
+      "nome": "Milho verão → soja safrinha",
+      "verao": "milho_verao",
+      "valida": false
+    },
+    {
+      "id": "milho_verao__sorgo",
+      "nome": "Milho verão → sorgo",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__feijao_safrinha",
+      "nome": "Milho verão → feijão safrinha",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__nabo_forrageiro",
+      "nome": "Milho verão → nabo forrageiro (cobertura)",
+      "verao": "milho_verao",
+      "valida": true
+    },
+    {
+      "id": "milho_verao__aveia_nabo",
+      "nome": "Milho verão → aveia + nabo forrageiro (cobertura)",
+      "verao": "milho_verao",
+      "valida": true
+    }
+  ],
+  "culturas_verao": [
+    {
+      "id": "soja",
+      "nome": "Soja",
+      "estagios": [
+        {
+          "id": "vegetativo",
+          "nome": "Vegetativo (antes do florescimento)",
+          "dias_ate_colheita": 90
+        },
+        {
+          "id": "floracao",
+          "nome": "Floração (R1–R2)",
+          "dias_ate_colheita": 65
+        },
+        {
+          "id": "formacao_vagens",
+          "nome": "Formação de vagens (R3–R4)",
+          "dias_ate_colheita": 48
+        },
+        {
+          "id": "enchimento_graos",
+          "nome": "Enchimento de grãos (R5–R6)",
+          "dias_ate_colheita": 32
+        },
+        {
+          "id": "maturacao",
+          "nome": "Maturação (R7–R8)",
+          "dias_ate_colheita": 10
+        },
+        {
+          "id": "colhida",
+          "nome": "Já colhida",
+          "dias_ate_colheita": 0
+        }
+      ]
+    },
+    {
+      "id": "milho_verao",
+      "nome": "Milho verão",
+      "estagios": [
+        {
+          "id": "vegetativo",
+          "nome": "Vegetativo (antes do pendoamento)",
+          "dias_ate_colheita": 110
+        },
+        {
+          "id": "pendoamento",
+          "nome": "Pendoamento e espigamento (VT–R1)",
+          "dias_ate_colheita": 80
+        },
+        {
+          "id": "grao_leitoso",
+          "nome": "Grão leitoso (R2–R3)",
+          "dias_ate_colheita": 60
+        },
+        {
+          "id": "grao_farinaceo",
+          "nome": "Grão pastoso a farináceo (R4–R5)",
+          "dias_ate_colheita": 40
+        },
+        {
+          "id": "maturacao",
+          "nome": "Maturação fisiológica (R6)",
+          "dias_ate_colheita": 15
+        },
+        {
+          "id": "colhida",
+          "nome": "Já colhido",
+          "dias_ate_colheita": 0
+        }
+      ]
+    }
+  ],
+  "criterios": [
+    {
+      "id": "renda",
+      "nome": "Renda"
+    },
+    {
+      "id": "solo",
+      "nome": "Saúde do solo"
+    },
+    {
+      "id": "agua",
+      "nome": "Água"
+    },
+    {
+      "id": "pragas",
+      "nome": "Quebra de pragas"
+    },
+    {
+      "id": "risco",
+      "nome": "Risco climático"
+    }
+  ],
+  "pesos_padrao": {
+    "renda": 5,
+    "solo": 3,
+    "agua": 3,
+    "pragas": 3,
+    "risco": 3
+  },
+  "semeaduras": [
+    "15/01",
+    "01/02",
+    "15/02",
+    "01/03",
+    "15/03"
+  ]
+}

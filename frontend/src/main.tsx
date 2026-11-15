@@ -7,6 +7,8 @@ import { months, initialFarm, initialCrops, series, profiles, info, } from "./da
 import type { Farm, Crop } from "./data";
 import "./styles.css";
 import EngineScenarios from "./EngineScenarios";
+import PropertyWizard from "./PropertyWizard";
+import type { SetupInputs } from "./PropertyWizard";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
 const A = assets.overview, L = assets["13:16"];
@@ -55,6 +57,7 @@ function App() {
     const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState({
         temperature: "Graus Celsius (°C)",
     });
+    const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>();
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const reduced = useReducedMotion();
     useEffect(() => {
@@ -780,7 +783,7 @@ function App() {
             {__text(busy ? "Comparando…" : "Comparar Estratégias")}
           </button>
         </div>
-        <EngineScenarios weights={applied} latitude={farm.latitude} longitude={farm.longitude} crops={crops} onSources={() => open("sources")} />
+        <EngineScenarios setupInputs={setupInputs} weights={applied} latitude={farm.latitude} longitude={farm.longitude} crops={crops} onSources={() => open("sources")} />
         <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
       </>);
     }
@@ -931,34 +934,15 @@ function App() {
         </div>;
     }
     function PropertySetup() {
-        return (<div className="signup">
-        <section className="signup-photo">
-          <img src="/assets/hero-br-parana-v1.webp" alt={__text("Campos de cultivo")}/>
-          <Logo />
-          <div>
-            <h1>{__text("Sua terra merece")}<br />{__text("um novo olhar.")}</h1>
-            <p>{__text("Uma visão mais ampla começa com o seu contexto.")}</p>
-          </div>
-        </section>
-        <section className="signup-form">
-          <div className="signup-language"><LanguageSwitcher /></div>
-          <button className="back-link" onClick={() => go("landing")}>{__text("Voltar ao início")}</button>
-          <small>{__text("SUA PROPRIEDADE")}</small>
-          <h1>{__text("Comece pela sua")}<br />{__text("propriedade.")}</h1>
-          <p>{__text("Informe os dados da sua propriedade para explorar a demo.")}</p>
-          <form onSubmit={(e) => {
-                e.preventDefault();
-                setFarm({ ...draft });
-                go("overview");
-            }}>
-            <Field label={__text("Nome da propriedade")} name="name"/>
-            <Field label={__text("Cidade / UF")} name="city"/>
-            <Field label={__text("Área (ha)")} name="area" type="number" min={0.01} step="any"/>
-            <button className="button yellow" type="submit">{__text("Explore a demo →")}</button>
-            <small>{__text("Os dados ficam apenas nesta sessão.")}</small>
-          </form>
-        </section>
-      </div>);
+        return <PropertyWizard initial={draft} brand={<Logo />} onHome={() => go("landing")} onComplete={(nextFarm, inputs) => {
+            setFarm(nextFarm);
+            setDraft(nextFarm);
+            setSetupInputs(inputs);
+            const nextWeights = [inputs.pesos.agua * 10, inputs.pesos.solo * 10, inputs.pesos.renda * 10, inputs.pesos.risco * 10];
+            setWeights(nextWeights);
+            setApplied(nextWeights);
+            go("overview");
+        }} />;
     }
     function AddCrop() {
         const [value, setValue] = useState({
