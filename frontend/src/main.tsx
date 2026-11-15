@@ -137,6 +137,10 @@ function App() {
             window.scrollTo(0, 0);
         }
     }
+    // Once the property is set up, the demo entry points skip the signup and open the dashboard.
+    function enterDemo() {
+        go(persisted ? "overview" : "demo");
+    }
     function toast(s: string) {
         setNotice(s);
     }
@@ -741,7 +745,7 @@ function App() {
             <h1>{__text(["Esteja preparado\npara as mudanças do clima.", "Decida com mais contexto.\nDo espaço à sua lavoura.", "Encontre caminhos\npara uma safra mais resiliente."][slide])}</h1>
             <p>{__text(["Chuvas imprevisíveis e secas prolongadas exigem um novo planejamento. Explore sinais ambientais para preparar o próximo ciclo.", "Explore como observações de clima, solo e vegetação da NASA podem apoiar as decisões da sua propriedade.", "Compare estratégias de rotação considerando água, solo e clima antes de planejar o próximo plantio."][slide])}</p>
             <div>
-              <button className="button yellow" onClick={() => go("demo")}>{__text("Explore a demo →")}</button>
+              <button className="button yellow" onClick={enterDemo}>{__text(persisted ? "Continuar na demo →" : "Explore a demo →")}</button>
             </div>
           </div>
           <div className="carousel-controls">
@@ -757,13 +761,13 @@ function App() {
           </div>
         </section>
         <ClimateStory/>
-        <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={() => go("demo")}/>
+        <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={enterDemo}/>
       </div>);
     }
     function AboutPage() {
         const members = ["Fernanda", "Bruna", "Pedro", "Caio", "Lucas", "Enzo"];
         return <div className="landing about-page">
-            <nav className="landing-nav"><LanguageSwitcher /><Logo /><div><button onClick={() => go("landing")}>{__text("Voltar ao início")}</button><button className="button yellow" onClick={() => go("demo")}>{__text("Explore a demo →")}</button></div></nav>
+            <nav className="landing-nav"><LanguageSwitcher /><Logo /><div><button onClick={() => go("landing")}>{__text("Voltar ao início")}</button><button className="button yellow" onClick={enterDemo}>{__text(persisted ? "Continuar na demo →" : "Explore a demo →")}</button></div></nav>
             <main className="about-content">
                 <header className="about-intro"><span className="about-eyebrow">AGRO NAUTAS · NATIVA</span><h1>{__text("Seis pessoas. Uma missão em comum.")}</h1><p>{__text("Criamos a NATIVA para aproximar a observação da Terra das decisões no campo. Somos a equipe AgroNautas, participante do NASA Space Apps Challenge.")}</p></header>
                 <section className="about-team" aria-label={__text("Nossa equipe")}>
@@ -936,7 +940,7 @@ function App() {
                 <img src={A.imgIconeDeNavegacao5} alt={__text("")}/><span className="nav-label">{__text("Configura\u00E7\u00F5es")}</span></button>
               <button aria-label={__text("Ajuda")} title={__text("Ajuda")} onClick={() => open("help")}>
                 <img src={A.imgIconeAjuda} alt={__text("")}/><span className="nav-label">{__text("Ajuda")}</span></button>
-              <button className="sidebar-home" aria-label={__text("Voltar ao início ↗")} title={__text("Voltar ao início ↗")} onClick={() => go("landing")}><span className="sidebar-home-icon" aria-hidden="true">↗</span><span className="nav-label">{__text("Voltar ao início ↗")}</span></button>
+              <button className="sidebar-home" aria-label={__text("Voltar ao início")} title={__text("Voltar ao início")} onClick={() => go("landing")}><span className="sidebar-home-icon" aria-hidden="true">←</span><span className="nav-label">{__text("Voltar ao início")}</span></button>
             </div>
           </aside>
           <header className="topbar">
