@@ -3080,6 +3080,59 @@
     ]
    }
   },
+  "/v1/culturas/fichas": {
+   "get": {
+    "operationId": "fichas_culturas_v1_culturas_fichas_get",
+    "parameters": [
+     {
+      "description": "Idioma dos textos da resposta: `pt-BR` (padrão) ou `en`. Tem precedência sobre o header `Accept-Language`; valor desconhecido = pt-BR. Só os textos mudam: chaves, ids e números são os mesmos.",
+      "in": "query",
+      "name": "lang",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "Idioma dos textos da resposta: `pt-BR` (padrão) ou `en`. Tem precedência sobre o header `Accept-Language`; valor desconhecido = pt-BR. Só os textos mudam: chaves, ids e números são os mesmos.",
+       "title": "Lang"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Fichas Culturas V1 Culturas Fichas Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Fichas agronômicas das culturas (catalog/crops.yaml): faixas com unidade e fonte, e o mapa id do motor -> ficha",
+    "tags": [
+     "metadados"
+    ]
+   }
+  },
   "/v1/diagnostico": {
    "post": {
     "operationId": "diagnostico_v1_diagnostico_post",

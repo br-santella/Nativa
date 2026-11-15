@@ -227,6 +227,7 @@ Interactive documentation (Swagger, with pre-filled examples): **`http://localho
 | `GET` | `/health` | Service status and whether the data loaded (`ok` / `degradado`) |
 | `GET` | `/v1/opcoes` | Crops, the 22 combinations, sowing dates, criteria, default weights, income references, demo fields |
 | `GET` | `/v1/talhoes/demo` | Demo fields |
+| `GET` | `/v1/culturas/fichas` | Crop sheets (`catalog/crops.yaml`) with sources |
 | `POST` | `/v1/diagnostico` | Full diagnosis of an area |
 | `POST` | `/v1/recomendacao` | Ranked rotations, optionally with the diagnosis |
 | `GET` | `/v1/clima` | Climate block only, for a point |
@@ -364,7 +365,7 @@ gh pr create --base main
 | **Income** from municipal averages and reference prices | Farm margins differ; yields, prices and costs can be overridden in the request |
 | **MapBiomas** history covers 2019–2024 | Earlier land use is not considered |
 | Agronomic coefficients marked as estimates | Flagged as `estimativa` in the response |
-| **Catalog:** the engine uses its internal crop list | `catalog/crops.yaml` is not read by the engine. Valid ids are the ones returned by `/v1/opcoes` |
+| **Catalog:** the engine uses its internal crop list | `catalog/crops.yaml` does not feed the score; it is used only for the pH check on the card and the sheets at `/v1/culturas/fichas`. Valid ids are the ones returned by `/v1/opcoes` |
 
 ---
 

@@ -1042,6 +1042,8 @@
             "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
             "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); milho 2ª safra + braquiária em 15/01: indicado, risco 20% (100% das classes de solo; Port.407_de_28-08-2025).",
             "Mercado no Oeste do PR: alto; milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -1060,7 +1062,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -1273,6 +1276,7 @@
             "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -1292,7 +1296,9 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "pH do solo informado, mas milheto/crotalária (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -1461,6 +1467,8 @@
             "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
             "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); milho 2ª safra em 15/01: indicado, risco 20% (100% das classes de solo; Port.393_de_26-08-2025).",
             "Mercado no Oeste do PR: alto; cooperativas e agroindústria de aves e suínos do Oeste do PR (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -1476,7 +1484,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -1655,6 +1664,8 @@
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 77 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -1673,7 +1684,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -1838,6 +1850,8 @@
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -1856,7 +1870,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -2021,6 +2036,7 @@
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 70 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -2038,7 +2054,9 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "pH do solo informado, mas nabo forrageiro (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -2202,6 +2220,7 @@
             "Irrigado: lâmina média 31 mm/ano, custo R$ 141/ha (R$ 4.50/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
             "Geada no florescimento/enchimento do sorgo semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); sorgo 2ª safra em 15/01: indicado, risco 20% (100% das classes de solo; Port.132_de_12-05-2025).",
             "Mercado no Oeste do PR: médio; ração animal e cooperativas, com demanda menor que a do milho (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -2218,7 +2237,9 @@
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
             "Doses de P2O5/K2O de sorgo: no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa).",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "pH do solo informado, mas sorgo não tem ficha com faixa de pH no catálogo: não comparado.",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -2404,6 +2425,7 @@
             "Geada no florescimento/enchimento do feijão safrinha semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
             "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); feijão 2ª safra em 15/01: indicado, risco 20% (100% das classes de solo; Port.250_de_30-05-2025).",
             "Mercado no Oeste do PR: médio; cerealistas e cooperativas, com preço volátil e menos compradores que milho e soja (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -2420,7 +2442,9 @@
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
             "Doses de P2O5/K2O de feijao safrinha: no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa).",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "pH do solo informado, mas feijão safrinha não tem ficha com faixa de pH no catálogo: não comparado.",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -2595,6 +2619,7 @@
             "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
             "Mercado no Oeste do PR: não se aplica; sem produção na 2ª janela (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -2610,7 +2635,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -2796,6 +2822,8 @@
             "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
             "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); milho 2ª safra + braquiária em 15/01: indicado, risco 20% (100% das classes de solo; Port.407_de_28-08-2025).",
             "Mercado no Oeste do PR: alto; milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -2814,7 +2842,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -3026,6 +3055,7 @@
             "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -3045,7 +3075,9 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "pH do solo informado, mas milheto/crotalária (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -3198,6 +3230,8 @@
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 77 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -3216,7 +3250,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -3429,6 +3464,8 @@
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 77 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -3448,7 +3485,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -3616,6 +3654,8 @@
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -3635,7 +3675,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -3803,6 +3844,7 @@
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 70 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -3821,7 +3863,9 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "pH do solo informado, mas nabo forrageiro (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -3988,6 +4032,8 @@
             "Irrigado: lâmina média 9 mm/ano, custo R$ 39/ha (R$ 4.50/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
             "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Trigo na ficha do catálogo (6,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=2114; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); trigo em 01/05: indicado, risco 20% (100% das classes de solo; Port.440_de_29-10-2025).",
             "Mercado no Oeste do PR: médio; cooperativas e moinhos, com liquidez menor que a do milho (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -4006,7 +4052,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -4219,6 +4266,7 @@
             "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
             "Mercado no Oeste do PR: não se aplica; sem produção na 2ª janela (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -4236,7 +4284,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -4393,6 +4442,8 @@
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 77 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -4412,7 +4463,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -4577,6 +4629,8 @@
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -4596,7 +4650,8 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -4761,6 +4816,7 @@
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 70 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+            "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
             "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: milho 1ª safra em 01/10: indicado, risco 20% (100% das classes de solo; Port.187_de_27-05-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
           ],
@@ -4779,7 +4835,9 @@
             "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
             "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
             "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+            "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+            "pH do solo informado, mas nabo forrageiro (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+            "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
           ],
           "riscos": [
             "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -5075,6 +5133,8 @@
           "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
           "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+          "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); milho 2ª safra + braquiária em 15/01: indicado, risco 20% (100% das classes de solo; Port.407_de_28-08-2025).",
           "Mercado no Oeste do PR: alto; milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -5093,7 +5153,8 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -5306,6 +5367,7 @@
           "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
           "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -5325,7 +5387,9 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "pH do solo informado, mas milheto/crotalária (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -5494,6 +5558,8 @@
           "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
           "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+          "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); milho 2ª safra em 15/01: indicado, risco 20% (100% das classes de solo; Port.393_de_26-08-2025).",
           "Mercado no Oeste do PR: alto; cooperativas e agroindústria de aves e suínos do Oeste do PR (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -5509,7 +5575,8 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -5688,6 +5755,8 @@
           "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 77 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+          "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
           "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -5706,7 +5775,8 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -5871,6 +5941,8 @@
           "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+          "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
           "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -5889,7 +5961,8 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -6054,6 +6127,7 @@
           "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 70 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
           "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -6071,7 +6145,9 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "pH do solo informado, mas nabo forrageiro (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -6235,6 +6311,7 @@
           "Irrigado: lâmina média 31 mm/ano, custo R$ 141/ha (R$ 4.50/mm/ha, lâmina máx. 6 mm/dia; o ganho de produtividade da irrigação não é modelado, o rendimento esperado não muda).",
           "Geada no florescimento/enchimento do sorgo semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); sorgo 2ª safra em 15/01: indicado, risco 20% (100% das classes de solo; Port.132_de_12-05-2025).",
           "Mercado no Oeste do PR: médio; ração animal e cooperativas, com demanda menor que a do milho (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -6251,7 +6328,9 @@
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
           "Doses de P2O5/K2O de sorgo: no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa).",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "pH do solo informado, mas sorgo não tem ficha com faixa de pH no catálogo: não comparado.",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -6437,6 +6516,7 @@
           "Geada no florescimento/enchimento do feijão safrinha semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
           "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); feijão 2ª safra em 15/01: indicado, risco 20% (100% das classes de solo; Port.250_de_30-05-2025).",
           "Mercado no Oeste do PR: médio; cerealistas e cooperativas, com preço volátil e menos compradores que milho e soja (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -6453,7 +6533,9 @@
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
           "Doses de P2O5/K2O de feijao safrinha: no confirmed source (estimativa, sem fonte confirmada; validar com agrônomo/Embrapa).",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "pH do solo informado, mas feijão safrinha não tem ficha com faixa de pH no catálogo: não comparado.",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -6628,6 +6710,7 @@
           "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
           "Mercado no Oeste do PR: não se aplica; sem produção na 2ª janela (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -6643,7 +6726,8 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -6811,6 +6895,8 @@
         "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
         "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
         "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+        "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+        "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
         "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); milho 2ª safra em 15/01: indicado, risco 20% (100% das classes de solo; Port.393_de_26-08-2025).",
         "Mercado no Oeste do PR: alto; cooperativas e agroindústria de aves e suínos do Oeste do PR (estimativa a validar com cooperativas/revendas locais)."
       ],
@@ -6826,7 +6912,8 @@
         "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
         "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
         "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-        "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+        "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+        "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
       ],
       "riscos": [
         "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -7039,6 +7126,8 @@
           "Geada no florescimento/enchimento do milho semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km.",
           "Déficit hídrico não conta no risco: a candidata é irrigada (a geada continua).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+          "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Milho para grãos na ficha do catálogo (5,0–7,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); milho 2ª safra + braquiária em 15/01: indicado, risco 20% (100% das classes de solo; Port.407_de_28-08-2025).",
           "Mercado no Oeste do PR: alto; milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -7057,7 +7146,8 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -7269,6 +7359,7 @@
           "Água: na fase crítica (estabelecimento do milheto/crotalária (30 primeiros dias), semeadura em 15/01), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 84 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025). A cobertura da 2ª janela não tem zoneamento ZARC.",
           "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -7288,7 +7379,9 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "pH do solo informado, mas milheto/crotalária (cobertura) não tem ficha com faixa de pH no catálogo: não comparado.",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -7441,6 +7534,8 @@
           "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + análise de solo do produtor, CAD 77 mm).",
           "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
           "Matéria orgânica: C orgânico 20,3 g/dm³ (MO ~3,5%), classe muito alto (Manual de Adubação e Calagem do Paraná (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Quadro 4; MO = C × 1,72).",
+          "pH do solo 5,4 (análise do produtor) abaixo da faixa de referência de Soja na ficha do catálogo (5,5–6,0, pH em água; fonte: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informativo, não muda a nota.",
+          "pH do solo 5,4 (análise do produtor) dentro da faixa de referência de Aveia-branca na ficha do catálogo (5,0–6,0, pH; fonte: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; a fonte não especifica o método de medição e o laudo é pH em água); informativo, não muda a nota.",
           "ZARC 2025/2026 (MAPA, tábua de risco, sequeiro), Toledo: soja em 15/10: indicado, risco 20% (100% das classes de solo; Port.375_de_26-06-2025); aveia em 01/05: indicado, risco 20% (100% das classes de solo; Port.416_de_15-10-2025).",
           "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
         ],
@@ -7459,7 +7554,8 @@
           "Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.",
           "C orgânico lido em g/dm³ (unidade do laudo) a partir de g/kg ou MO %, sem correção de densidade (premissa).",
           "Fertilidade parcial: não informados p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; esses itens não entram na análise.",
-          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco)."
+          "Fertilidade: classes e fórmula de calagem confirmadas no Manual PR; V2 de 60% (faixa 51–70% do Manual PR para milho, trigo, feijão, sorgo e soja: SENAR-AR/PR PR.0404; soja 60% e trigo 60%: Embrapa Soja Doc. 417 e CBPTT 2020; a Embrapa Soja cita também 70% para a soja nas 'Tecnologias de Produção' de 2013, então o valor exato para milho, feijão e sorgo é escolha nossa dentro da faixa). Preço do calcário, teto de dose e diluição da calagem: estimativa, sem fonte confirmada; validar com agrônomo/Embrapa. Efeitos no critério solo: direção com fonte, tamanho (±0.15, metade para acidez de severidade 1) é escolha de modelagem nossa. Calagem e adubação da cultura de verão não entram (iguais em todas as rotações do bloco).",
+          "Faixas de pH das fichas do catálogo (Embrapa/FAO Ecocrop) são faixas ótimas gerais, não recomendação de calagem; a calagem segue a saturação por bases do Manual PR."
         ],
         "riscos": [
           "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.",
@@ -7707,7 +7803,8 @@
       "Máquinas que o produtor não tem (semeadora_consorcio): a rotação não é eliminada, ganha aviso e custo extra de terceirização (estimativas, validar).",
       "Irrigação disponível (R$ 4.5/mm/ha, lâmina máx. 6 mm/dia): irriga milho, milho+braquiária, trigo, sorgo e feijão quando a depleção passa de p (0,55; feijão 0,45); água sobe, o déficit hídrico não conta no risco e a margem desconta lâmina × custo. O ganho de produtividade da irrigação não é modelado; cobertura e pousio não são irrigados.",
       "Problemas da área não informados: não considerados.",
-      "Matéria orgânica informada pelo produtor: classe de C orgânico do Manual PR (Quadro 4), classe muito alto; matéria orgânica baixa favorece braquiária e milheto e penaliza o pousio no critério solo (fonte lida, tamanho ±0.15, escolha de modelagem). Sem P, K, V%, Al e CTC: calagem e adubação não entram."
+      "Matéria orgânica informada pelo produtor: classe de C orgânico do Manual PR (Quadro 4), classe muito alto; matéria orgânica baixa favorece braquiária e milheto e penaliza o pousio no critério solo (fonte lida, tamanho ±0.15, escolha de modelagem). Sem P, K, V%, Al e CTC: calagem e adubação não entram.",
+      "pH informado pelo produtor comparado com a faixa de pH de cada cultura nas fichas do catálogo (catalog/crops.yaml, Embrapa/FAO Ecocrop): só aparece no card, não muda a nota."
     ]
   }
 }

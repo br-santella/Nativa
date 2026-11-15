@@ -25,6 +25,7 @@ from shapely.geometry import Point, box, shape
 from shapely.geometry.base import BaseGeometry
 
 from field_shift import crop_calendar as cal
+from field_shift import crop_sheets
 from field_shift.app import engine as E
 from field_shift.app import field_state as EA
 from field_shift.i18n import Join, Msg
@@ -901,6 +902,7 @@ def _timeline_and_context(area, inp: dict, sowing_second, summer_stage, expected
     probs_n, fert_n = inp["probs_n"], inp["fert_n"]
     if probs_n or fert_n:  # only exists if the farmer gave it; without it the engine runs exactly as before
         rk["estado_area"] = dict(problemas=probs_n or [], fert=fert_n)
+    rk["ph_produtor"] = (inp["solo_n"] or {}).get("ph")  # farmer's pH vs. the catalog sheets (card only, never the score)
     rk["restr"] = restr_n
     rk["irrig"] = irr_n if irr_n and irr_n["disponivel"] else None
     if cron:
@@ -1053,6 +1055,9 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
         eliminadas=now["eliminadas"] + next_["eliminadas"], avisos=warnings,
         metodologia=dict(formula="Nota = Σ peso_i × critério_i / Σ peso_i", criterios=_CRITERION_METHOD, versao=VERSION))
     applied = _applied_adjustments(aj_n, soil_phys, restr_n, irr_n) + EA.applied_adjustments(rk.get("estado_area"), solo_n is not None)
+    if rk.get("ph_produtor") is not None:
+        applied.append("pH informado pelo produtor comparado com a faixa de pH de cada cultura nas fichas do catálogo "
+                       "(catalog/crops.yaml, Embrapa/FAO Ecocrop): só aparece no card, não muda a nota.")
     if applied:
         out["metodologia"]["ajustes_aplicados"] = applied
     if include_diagnosis:
@@ -1105,11 +1110,12 @@ def options() -> dict:
     sources += [dict(item=f"custo {k}", fonte=v["source"], estimativa=v.get("estimate", False), url=v.get("url"))
                for k, v in ref["costs"].items()]
     return _clean(dict(
-        culturas_verao=[dict(id=k, nome=v["nome"], tipo="grão", descricao_curta=v["descricao"],
+        culturas_verao=[dict(id=k, nome=v["nome"], tipo="grão", descricao_curta=v["descricao"], ficha=crop_sheets.sheet_id(k),
                              estagios=[dict(id=e, nome=d["nome"], dias_ate_colheita=d["dias"]) for e, d in cal.STAGES[k].items()],
                              colheita_catalogo=v["colheita"]) for k, v in E.SUMMER.items()],
         estagios_fonte=cal.STAGES_SOURCE, dias_preparo_2a=cal.PREP_DAYS_2ND,
-        culturas_segunda=[dict(id=k, nome=_capitalize(v["nome"]), tipo=v["tipo"], descricao_curta=_DESCRIPTION[k]) for k, v in E.SECOND.items()],
+        culturas_segunda=[dict(id=k, nome=_capitalize(v["nome"]), tipo=v["tipo"], descricao_curta=_DESCRIPTION[k],
+                               ficha=crop_sheets.sheet_id(k)) for k, v in E.SECOND.items()],
         combinacoes=_combinations(),
         rotacoes=[dict(id=i, **({"id_legado": _legacy(i)} if _legacy(i) else {}), nome=n,
                        descricao_curta=_DESCRIPTION[E.CATALOG[n]["segunda"]] if E.CATALOG[n]["verao"] == "soja"

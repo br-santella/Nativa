@@ -338,66 +338,77 @@
   "culturas_segunda": [
    {
     "descricao_curta": "Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR.",
+    "ficha": "milho",
     "id": "milho_safrinha",
     "nome": "Milho safrinha",
     "tipo": "grão"
    },
    {
     "descricao_curta": "Milho safrinha consorciado com braquiária: grãos mais palhada para o plantio direto.",
+    "ficha": "milho",
     "id": "milho_braquiaria",
     "nome": "Milho safrinha + braquiária",
     "tipo": "grão"
    },
    {
     "descricao_curta": "Trigo de inverno após a soja; sensível a geada no florescimento.",
+    "ficha": "trigo",
     "id": "trigo",
     "nome": "Trigo",
     "tipo": "grão"
    },
    {
     "descricao_curta": "Aveia para cobertura/palha (e eventual grão) no inverno.",
+    "ficha": "aveia_branca",
     "id": "aveia",
     "nome": "Aveia (cobertura/palha)",
     "tipo": "cobertura"
    },
    {
     "descricao_curta": "Cobertura de milheto e crotalária: palhada e fixação de nitrogênio, sem venda de grão.",
+    "ficha": null,
     "id": "milheto_crotalaria",
     "nome": "Milheto/crotalária (cobertura)",
     "tipo": "cobertura"
    },
    {
     "descricao_curta": "Sem cultura na segunda janela; solo exposto e sem renda adicional.",
+    "ficha": null,
     "id": "pousio",
     "nome": "Pousio",
     "tipo": "pousio"
    },
    {
     "descricao_curta": "Soja sobre soja no mesmo ano agrícola; proibida pela regulação (sempre eliminada).",
+    "ficha": "soja",
     "id": "soja_safrinha",
     "nome": "Soja safrinha",
     "tipo": "grão"
    },
    {
     "descricao_curta": "Sorgo granífero na segunda safra: tolerante à seca, sem cigarrinha do milho; usa o maquinário e o canal de venda de grãos.",
+    "ficha": null,
     "id": "sorgo",
     "nome": "Sorgo",
     "tipo": "grão"
    },
    {
     "descricao_curta": "Feijão de 2ª safra: ciclo curto e boa renda em ano bom, mas sensível a geada e a déficit hídrico e hospedeiro do mofo-branco.",
+    "ficha": null,
     "id": "feijao_safrinha",
     "nome": "Feijão safrinha",
     "tipo": "grão"
    },
    {
     "descricao_curta": "Cobertura de nabo forrageiro: ciclagem de nutrientes e supressão de daninhas, palha de decomposição rápida; sem venda de grão.",
+    "ficha": null,
     "id": "nabo_forrageiro",
     "nome": "Nabo forrageiro (cobertura)",
     "tipo": "cobertura"
    },
    {
     "descricao_curta": "Mix de cobertura aveia + nabo forrageiro: palha duradoura e ciclagem de nutrientes, sem venda de grão.",
+    "ficha": "aveia_branca",
     "id": "aveia_nabo",
     "nome": "Aveia + nabo forrageiro (cobertura)",
     "tipo": "cobertura"
@@ -439,6 +450,7 @@
       "nome": "Já colhida"
      }
     ],
+    "ficha": "soja",
     "id": "soja",
     "nome": "Soja",
     "tipo": "grão"
@@ -478,6 +490,7 @@
       "nome": "Já colhido"
      }
     ],
+    "ficha": "milho",
     "id": "milho_verao",
     "nome": "Milho verão",
     "tipo": "grão"
