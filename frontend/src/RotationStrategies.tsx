@@ -215,7 +215,7 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
       ? say(`A sua rotação de hoje (${current.rotacao}) foi eliminada pelas regras do motor, então as opções não têm com o que ser comparadas.`, `Your current rotation (${current.rotacao}) was ruled out by the engine rules, so the options have nothing to be compared with.`)
       : <>{say("Comparadas com a sua rotação de hoje:", "Compared with your rotation today:")} <strong>{current.rotacao}</strong> · {say("nota", "score")} <strong>{score(current.nota)}</strong>{current.posicao != null && evaluated > 0 ? say(` (${current.posicao}ª entre ${evaluated} avaliadas)`, ` (#${current.posicao} of ${evaluated} evaluated)`) : ""}</>}</p>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
-     <div className={"rs-cards" + (options.length <= 2 ? " is-few" : "")} style={{ "--rs-cols": options.length <= 4 ? options.length : Math.ceil(options.length / 2) } as CSSProperties}>
+     <div className="rs-cards" style={{ "--rs-cols": options.length <= 4 ? options.length : Math.ceil(options.length / 2) } as CSSProperties}>
       {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
        compared={target?.id === item.id} onCompare={() => compareWith(item.id)}/>)}
@@ -299,7 +299,13 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
     <h3>{title}</h3>
     {item.eliminada ? <p className="rs-warning">{say("Eliminada pelas regras: ", "Ruled out: ")}{(item.motivos ?? []).join(" ")}</p> : <>
      <div className="rs-card-score"><strong>{score(item.nota)}</strong><span>/ 100</span><small>{isCurrent && item.posicao != null && evaluated > 0 ? say(`${item.posicao}ª entre ${evaluated} avaliadas`, `#${item.posicao} of ${evaluated} evaluated`) : say("nota para as suas prioridades", "score for your priorities")}</small></div>
-     <p className="rs-card-sequence">{item.rotacao}</p>
+     {item.verao && item.segunda
+      ? <div className="rs-card-sequence" data-rotation={item.rotacao} aria-label={item.rotacao}>
+         <span className="is-summer"><small>{say("Verão", "Summer")}</small><strong>{item.verao.nome}</strong></span>
+         <span className="rs-card-sequence-arrow" aria-hidden="true">→</span>
+         <span className="is-second"><small>{say("2ª safra", "2nd season")}</small><strong>{secondName}</strong></span>
+        </div>
+      : <p className="rs-card-sequence is-plain" data-rotation={item.rotacao}>{item.rotacao}</p>}
      {!compact && calendar && <Calendar months={calendar} summer={item.verao!.nome} second={secondName} en={en}/>}
      <dl className="rs-traits">
       {CRITERIA.map(c => {
