@@ -2,7 +2,7 @@
 
 Date: 15/11/2026
 
-This file is the living list of open items for the project (crop-rotation engine, Western Paraná). Each item has a status.
+This file is the living list of open items for the project (crop-rotation engine, all of Paraná; pilot in Western Paraná). Each item has a status.
 
 ## Open decisions
 
@@ -46,7 +46,7 @@ This file is the living list of open items for the project (crop-rotation engine
   following [`plan_english_migration.md`](plan_english_migration.md) (results log there). Code in English; JSON keys and ids stay
   Portuguese (D1 = a); `data/ref` JSON keys in English (D2 = b); `?lang=en` / `Accept-Language: en` switch the texts; pt-BR
   responses byte-identical (golden tests).
-  Status: done (branch not merged/pushed yet)
+  Status: done (merged into `main`)
 - **English texts to review by a person**: the 631 entries of `src/field_shift/i18n/en.json` were translated by us. Worth a
   check by an agronomist who writes English: crop/stage names (second-season corn, pearl millet/sunn hemp, forage radish,
   milk/dough grain stages), "bags/ha" for "sc/ha" (60 kg bags), ECCE for PRNT, LR (liming requirement) for NC, AWC for CAD,
@@ -75,17 +75,18 @@ This file is the living list of open items for the project (crop-rotation engine
   Found during the English-migration smoke test; it predates the migration (same line at 0306386). Fix: same guard as the
   own-yield branch ("sem ano ruim (PAM sem série)").
   Files: `src/field_shift/app/engine.py`.
-  Status: open
+  Done: `engine.fmt_margin` guards both branches; `talhao_id: "999"` now returns 200 (checked 15/11/2026).
+  Status: done
 
 - **Unrealistic summer-corn cost**: the CONAB cost for first-season corn in Paraná only exists for Ponta Grossa and was computed for 12 t/ha, while Toledo produces about 7.6 t/ha. The result is a margin of roughly −BRL 4,600/ha in the `proxima_safra` block. Proposed fix: scale the variable cost to the local yield (cost/t × municipal yield).
   Files: `src/field_shift/income/income.py`, `src/field_shift/income/update.py`, `data/ref/precos_custos.json`.
-  Done (15/11/2026): the CONAB sheet is split into yield-driven lines (fertilizer 3,249.90 + external transport 606.00 + storage 610.58 + CESSR 164.52 = R$ 4,631/ha) and fixed lines (seed, pesticides, machinery, labour, administration, technical assistance, interest). The yield-driven part is multiplied by local yield / reference yield (200 sc/ha); the block is stored as `escala_produtividade` in `precos_custos.json` (extracted by `atualizar.yield_scaling`). Toledo (141.5 sc/ha, factor 0.71): variable cost R$ 9,656 → R$ 8,302, summer-corn margin −R$ 2,030 → −R$ 676/ha. A bad year keeps the scaled cost (inputs are already spent); a farmer-typed cost is never scaled; the cost source text says the adjustment was applied. Tests: `tests/test_income_scale.py`.
+  Done (15/11/2026): the CONAB sheet is split into yield-driven lines (fertilizer 3,249.90 + external transport 606.00 + storage 610.58 + CESSR 164.52 = R$ 4,631/ha) and fixed lines (seed, pesticides, machinery, labour, administration, technical assistance, interest). The yield-driven part is multiplied by local yield / reference yield (200 sc/ha); the block is stored as `escala_produtividade` in `precos_custos.json` (extracted by `income.update.yield_scaling`). Toledo (141.5 sc/ha, factor 0.71): variable cost R$ 9,656 → R$ 8,302, summer-corn margin −R$ 2,030 → −R$ 676/ha. A bad year keeps the scaled cost (inputs are already spent); a farmer-typed cost is never scaled; the cost source text says the adjustment was applied. Tests: `tests/test_income_scale.py`.
   Depends on an agronomist: which lines really move with yield (premise: fertilizer follows the yield target; seed and pesticides do not) and whether municipal PAM yield (~142 sc/ha) is comparable to a high-technology 12 t/ha package. The margin is still negative at the 12-month average price (R$ 53.89/sc): the summer-corn rotation is not profitable at this yield and price, which is a result, not a bug.
   Status: done
 
 - ~~**Soybean "bad year" higher than the average**~~ — fixed: mean, CV, trend and p20 all use the same 10-year window (`YIELD_WINDOW_YEARS` in `pam/productivity.py`); regression test `test_p20_never_above_mean`.
   Files: `src/field_shift/pam/productivity.py`.
-  Status: pending
+  Status: done
 
 - **Running API out of date**: the uvicorn on port 8000 started at 19:41 on 14/11, without `--reload`, and serves the old code. It needs a restart. The response changes shape and `rotacao_atual` becomes required. Docs and examples already describe the new shape; the running process was not restarted by the docs task.
   Files: `api/field_shift_api/`.
@@ -94,7 +95,7 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Technical tie at the top of the ranking**: the sensitivity analysis (`docs/validation.md`, section 1) shows corn + brachiaria and millet/crotalaria 0.005–0.009 points apart on field 72638; ±20 % on 10 of 62 parameters (prices, pest break, cover, bonus) swaps them. Decide how to show it: e.g. flag a `empate_tecnico` when the top-2 differ by < ~0.02 and say so in the card text.
   Files: `src/field_shift/core/service.py`, `src/field_shift/app/engine.py`.
-  Status: done. `agora`/`proxima_safra` carry `empate_tecnico` {ids, diferenca, limiar 0.02, texto} when options are less than 0.02 below the best score, and the card of each tied option gets the warning (`service.technical_tie`). After the §6 changes (`docs/validation.md`) field 72638 has no tie at the default date (corn + brachiaria 0.795 vs millet/crotalaria 0.757) nor at 15/03 (0.757 vs 0.719); with income weight 6 at 15/03 they are 0.012 apart (`tests/test_service.py::test_empate_tecnico`). Each block now also carries `estabilidade` (first place repeating each of the last 5 seasons) and each item `incerteza`.
+  Status: done. `agora`/`proxima_safra` carry `empate_tecnico` {ids, diferenca, limiar 0.02, texto} when options are less than 0.02 below the best score, and the card of each tied option gets the warning (`service.technical_tie`). After the §6 and §7.5 changes (`docs/validation.md`) field 72638 has no tie at the default date (corn + brachiaria 0.799 vs millet/crotalaria 0.756) nor at 15/03 (millet/crotalaria 0.756 vs corn + brachiaria 0.722); with income weight 6 at 15/03 they are 0.006 apart (`tests/test_service.py::test_empate_tecnico`). Each block now also carries `estabilidade` (first place repeating each of the last 5 seasons) and each item `incerteza`.
 
 - **Validate the most sensitive catalog estimates**: priority list from the sensitivity analysis (`docs/validation.md` §1.2): pest-cycle break of corn + brachiaria, millet/crotalaria, oat + radish, oat and radish; soil cover and bonus of the top-2; millet/crotalaria cost; sorghum price and cost. Also confirm that the water criterion of off-season corn rising with later sowing (0.83 at 15/01 → 0.97 at 15/03) is realistic for Western Paraná.
   Files: `src/field_shift/app/engine.py`, `data/ref/precos_custos.json`.
@@ -126,7 +127,8 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Card: income trade-off of cover crops**: in the Oeste history millet/crotalaria gives up ~12 soybean bags/ha/yr of realized income against off-season corn (bonus in the catalog: 3 bags/ha); when it ranks first, the card must state the trade-off in bags/ha.
   Files: `src/field_shift/app/engine.py`.
-  Status: pending
+  Done (15/11/2026, `validation.md` §7.5): each block has `maior_renda` and each item `margem.abaixo_da_maior_renda_r_ha`; an option ranked above the highest-income one by > BRL 100/ha gets a card warning with the amount (in BRL/ha/yr, not bags/ha).
+  Status: done
 
 - **Income criterion saturates for corn**: with the trend yield, the incremental margin of off-season corn and corn + brachiaria on field 72638 (R$ 1,762–1,802/ha) exceeds the scale S (soybean margin, R$ 1,192/ha), so both get income 1.0 and income no longer separates them (the soybean trend is lower than its mean after the 2018/19 and 2021/22 droughts, which shrinks S). Review the scale (e.g. S = max(soybean margin, best incremental margin) or a fixed reference) and re-run the sensitivity analysis (§1).
   Files: `src/field_shift/income/income.py`, `src/field_shift/app/engine.py`.
@@ -135,6 +137,31 @@ This file is the living list of open items for the project (crop-rotation engine
 - **Failures the climate indicators miss**: PAM off-season corn failures in 2005, 2008, 2011 and 2024 (30–54 % of the Oeste municipalities) have little or no frost and no water deficit in the indicators (`docs/validation.md` §3.4). Candidates: heat in flowering, excess rain at harvest, pest/disease years (leafhopper/corn stunt). The loss probability is calibrated on average (24 % vs 23 % observed) but does not rank municipalities (Spearman ≈ 0).
   Files: `src/field_shift/climate/indicators.py`, `src/field_shift/app/engine.py`.
   Status: assessed, no engine change (`docs/validation.md` §6.1). Heat at flowering, rain at harvest and establishment temperature were tested with leave-one-season-out and past-only validation: in-sample BSS +0.13 but out of sample −0.09 / −0.32 (overfitting with ~23 seasons); the engine flags have BSS ≈ 0 out of sample and failures do not differ between Oeste municipalities beyond chance (p = 0.66). The API now reports the risk confidence (`incerteza.risco_climatico.confianca`). Reopen only with field-level yield data or a pest (leafhopper) series.
+
+- **Stale `__all__` after the English migration** (found in the docs review, 15/11/2026): the `__init__.py` of `core`, `income`, `pam`,
+  `region`, `soil` and `water` still list the old Portuguese names (`CULTURAS_VENDA`, `ErroConsultaExterna`, `agua_fase_critica`, `solo`...),
+  so `from field_shift.<package> import *` raises `AttributeError`.
+  Files: `src/field_shift/{core,income,pam,region,soil,water}/__init__.py`.
+  Done (15/11/2026): `__all__` lists the English names; `tests/test_package_exports.py` checks every package (ruff F822 does not
+  look at `__init__.py` outside preview mode, so a test guards it instead).
+  Status: done
+
+- **Unit tests that need the local data**: without `data/raw` and `data/processed`, 75 tests of the default `uv run pytest` fail
+  (`test_service.py`, `test_rotations.py`, `test_statewide.py`, `test_crop_calendar.py`...); with the data all 362 pass. Mark them
+  `integration` (or skip when the data is missing) so the default run works on a fresh clone.
+  Files: `tests/`.
+  Done (15/11/2026): the 61 test functions that read the data carry `@needs_data` (`tests/local_data.py`), skipped when the data is
+  missing (fresh clone: 288 passed, 80 skipped, 0 failed) and run as usual with it (368 passed). They stay in the default run, so
+  whoever has the data keeps the coverage.
+  Status: done
+
+- **Live NASA POWER fallback is dead code in the API**: `engine.get_climate` fetches POWER live when the pre-computed table has no cell,
+  but `service._context` then raises `OutOfRegion` (422) for any mode other than `regiao`, so the fetch is wasted. The docs now describe
+  the real behaviour (SoilGrids is the only live fallback).
+  Files: `src/field_shift/core/service.py`.
+  Done (15/11/2026): `service._context` checks the pre-computed table first and returns 422 without any network call; the live
+  reduced mode stays in `engine.get_climate` for the Streamlit app. Test: `test_no_precomputed_climate_is_422_without_live_power`.
+  Status: done
 
 ## Data/infra
 
@@ -201,7 +228,7 @@ This file is the living list of open items for the project (crop-rotation engine
   Files: `data/ref/precos_custos.json`, `src/field_shift/income/`, `src/field_shift/core/service.py` (`WARNINGS_OUTSIDE_OESTE`).
   Assessed (15/11/2026), NOT implemented: SEAB/DERAL does publish a weekly price by regional nucleus (`prp.xls`), but only for the current week (no series), and the file has no municipality list. A snapshot of the week of 13/11/2026 is saved in `data/ref/precos_nucleos_snapshot_2026-11-13.json` only to measure the spread. Across 19 nuclei the standard deviation is 2.3% for soybean (R$ 131.82 Londrina to R$ 143.50 Guarapuava), 3.5% for corn (R$ 49.18 Irati to R$ 57.46 Pato Branco) and 3.7% for wheat (R$ 73.78 União da Vitória to R$ 87.20 Ponta Grossa); beans vary 14% but only 8 nuclei have a quote. Cascavel and Toledo (the Oeste) sit within 1.3% of the state average (soybean R$ 134.93 and R$ 134.80 against R$ 136.60). So the regional price effect is small next to the cost and yield effects, and a one-week snapshot would add noise.
   Why it stops here: applying it needs an official municipality → SEAB nucleus mapping (not found; guessing by distance to the seat city would invent a boundary) and a series longer than one week. On the cost side CONAB only publishes a few Paraná sheets (Londrina, Ponta Grossa, Francisco Beltrão; Cascavel stops in 2021), so "closest sheet" is a coarse proxy.
-  To resume: get the nucleus → municipalities list from SEAB/DERAL, save the weekly `prp.xls` for 12 months (or use the monthly series by nucleus if it exists), and apply the ratio nucleus / state to the 12-month state average in `renda/`.
+  To resume: get the nucleus → municipalities list from SEAB/DERAL, save the weekly `prp.xls` for 12 months (or use the monthly series by nucleus if it exists), and apply the ratio nucleus / state to the 12-month state average in `income/`.
   Status: pending (assessed; low expected effect, ±2–4%)
 
 - **ADAPAR calendar by region**: the soybean-free period (02/06–31/08) and sowing window (01/09–31/12) were researched for the Oeste. Elsewhere in Paraná they are kept and the response warns that the calendar may differ; check the current ADAPAR ordinance by region and the ZARC per municipality and make the rules region-dependent.
@@ -236,14 +263,14 @@ This file is the living list of open items for the project (crop-rotation engine
   Sourced (15/11/2026, see [`fontes_estado_area.md`](fontes_estado_area.md); the Manual PR itself could not be opened, its tables are confirmed through SENAR-AR/PR booklets and a UEPG thesis that reproduce them): P classes by clay band (< 250, 250–400, > 400 g/kg, with "condição a evitar"), K (5 classes), V% and Al classes; clay comes from the farmer's `argila_pct`, without it the most demanding band is used and the card says so; liming formula NC = (V2 − V1) × CEC / PRNT (cmolc/dm3, as the code already did); V2 = 60% (Manual PR class 51–70% for corn, wheat, beans, sorghum and soybean; soybean 60% and wheat 60% confirmed); reference PRNT 76.9% (CBPTT 2020, f = 1.3); corn P2O5/K2O doses by class (Manual PR 2017, expected yield < 8 t/ha, midpoints); wheat P2O5/K2O doses (CBPTT 2020, by soil value, midpoints); fertilizer prices (CNA/Cepea Campo Futuro, MT + PR average, 19/09/2025: SSP and KCl; grades 18% and 58% assumed). Acid-sensitivity factors are now equal for the five crops because the Manual groups them in one class.
   Still an estimate (no confirmed source, marked in the code and in the card): P2O5/K2O doses for beans and sorghum; agricultural limestone price (R$ 220/t; no public regional price found); the 6 t/ha cap per application; the 3-year dilution of liming (only a re-analysis interval was found); V2 for corn, beans and sorghum as a single number (only the 51–70% range is confirmed); the assumption that the CONAB cost embeds the "medium" class dose; the size (±0.15) of the effects on `solo`.
 
-  Update 15/11/2026: the unsourced acidity penalty, recycling bonus and crotalaria bonus were replaced by `FERTILITY_EFFECTS` (direction with a read source: Manual PR, Resende et al. 2021, Betta et al. 2008, Viola et al. 2013, Bertin et al. 2005; see `fontes_estado_area.md`); organic matter now enters `solo` by the Manual PR carbon classes; the `solo`/`pragas` adjustments no longer saturate (`estado_area.soft_add`); the card and `recuperacao_solo` show the recovery cost (full liming, extra P/K, income given up). Still open: organic-matter gain per season in Western Paraná (only a 9-year trial in Goiás), P/K effect of oat + radish and millet/crotalaria, and the g/kg → g/dm³ reading without density.
+  Update 15/11/2026: the unsourced acidity penalty, recycling bonus and crotalaria bonus were replaced by `FERTILITY_EFFECTS` (direction with a read source: Manual PR, Resende et al. 2021, Betta et al. 2008, Viola et al. 2013, Bertin et al. 2005; see `fontes_estado_area.md`); organic matter now enters `solo` by the Manual PR carbon classes; the `solo`/`pragas` adjustments no longer saturate (`field_state.soft_add`); the card and `recuperacao_solo` show the recovery cost (full liming, extra P/K, income given up). Still open: organic-matter gain per season in Western Paraná (only a 9-year trial in Goiás), P/K effect of oat + radish and millet/crotalaria, and the g/kg → g/dm³ reading without density.
   Depends on an agronomist: the expected-yield premise (< 8 t/ha for off-season corn in Western Paraná); whether to take V2 = 60% or 70% (Embrapa cites both for soybean); the "correct only when V < 50%" trigger (documented for soybean only, not applied); a regional lime and fertilizer price from a local cooperative/dealer; the Manual PR tables for soybean, beans and sorghum (open the book to replace the estimates and the CBPTT wheat tables); the 2026 fertilizer prices (the quote is from September 2025).
   Source check (15/11/2026, [`fontes_validacao_pendencias.md`](fontes_validacao_pendencias.md)): no 2026 Campo Futuro quote found and the 2026 signals are inconsistent, so the prices stay at September 2025; the R$ 220/t limestone is plausible (quarry R$ 80–90/t + freight + spreading) but has no regional series; the bean and sorghum P/K doses were not found (only trial papers).
   Status: done
 
 - **Stale worked examples after the 10-year yield window**: the worked examples still quote the old scores and margins (0,814 / 0,757, S = R$ 1.083, incremental 1.033, renda 0,977, totals 2.116 / 2.076). Recompute them from the current `api/exemplos/` output.
   Files: `docs/motor.md` (~lines 245–295), `README.md` (root, lines 58–59), `api/README.md` (~line 466).
-  Done (15/11/2026): `api/exemplos/*.json` regenerated from the real API with `scripts/generate_examples.py`; the tables of `docs/motor.md` section 8, the root README table and the `api/README.md` response excerpt were rebuilt from that output (field 72638, S = BRL 1,503; corn + brachiaria 0.764 first, current off-season corn 0.709 in 4th). Also fixed the `erro_fora_da_regiao` example: it pointed at Curitiba, which is now inside the covered area and returned 200; it now uses São Paulo (422), and `recomendacao_ponto_curitiba` shows the Região 1 calendar.
+  Done (15/11/2026): `api/exemplos/*.json` regenerated from the real API with `scripts/generate_examples.py`; the tables of `docs/motor.md` section 8, the root README table and the `api/README.md` response excerpt were rebuilt from that output (field 72638, S = BRL 1,503; corn + brachiaria 0.764 first, current off-season corn 0.709 in 4th). Those numbers were later superseded by `validation.md` §6 and §7.5; today, at 01/02: S = BRL 1,110, corn + brachiaria 0.799 first, current off-season corn 0.751 in 3rd. Also fixed the `erro_fora_da_regiao` example: it pointed at Curitiba, which is now inside the covered area and returned 200; it now uses São Paulo (422), and `recomendacao_ponto_curitiba` shows the Região 1 calendar.
   Status: done
 
 - **Summer corn cost reference does not match local yield**: `milho_1safra` uses the CONAB Ponta Grossa cost (R$ 9.656/ha, reference 12 t/ha ≈ 200 sc/ha) against the PAM municipal yield (~140 sc/ha in Toledo); break-even is ~179 sc/ha, so every `milho_verao__*` candidate shows a large negative margin. Options: scale the variable cost by local/reference yield, or add an explicit card warning.
@@ -256,6 +283,15 @@ This file is the living list of open items for the project (crop-rotation engine
   Done (15/11/2026), conservative option: liming is now charged to every candidate, including covers and fallow, with the same V2 (`V2_AREA` = 60%); P/K fertilizer stays on grain crops only (no dose model for covers). With the same liming on all candidates the ~R$ 550/ha advantage of covers is gone; absolute scores drop when fertility is informed, the relative order is what matters. The card says liming is an area-level need charged to covers too. The summer crop still does not carry it, which is neutral inside a block (soybean and summer corn share the same V2). Tests: `test_liming_formula_and_reference_prnt`, `test_corn_wheat_and_unsourced_fertilizer_costs`, `test_poor_and_acid_fertility`.
   Depends on an agronomist: confirm that liming should be charged to every rotation (and not only to the crop that "needs" it), and the V2 used for covers.
   Status: done
+
+- **Crop sheets (`catalog/crops.yaml`) in the engine**: the catalog was not read by the engine.
+  Done (15/11/2026): `field_shift.crop_sheets` reads it, informative only (never the score). (1) With `analise_solo.ph`, each card
+  compares the pH with the range of its crops' sheets (below/within/above, with source) and lists crops without a sheet in `lacunas`.
+  (2) `GET /v1/culturas/fichas` serves the sheets and the engine -> sheet map; `/v1/opcoes` crops carry `ficha`. Tests: `tests/test_crop_sheets.py`.
+  Open: sheets missing for millet/crotalaria, sorghum, beans, forage radish and brachiaria (5 of the 11 second-window options);
+  barley and annual ryegrass have sheets but are not engine options; the Ecocrop pH ranges (corn, wheat, oat) do not state the
+  measurement method and wheat's 6.0–7.0 is above usual Paraná practice (agronomist to confirm or replace with Manual PR/Embrapa);
+  `/v1/diagnostico` does not show the pH comparison yet (only the recommendation cards).
 
 ## Research
 

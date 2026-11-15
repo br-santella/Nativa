@@ -98,14 +98,12 @@ def point_indicators(df: pd.DataFrame, lat: float, elev: float) -> dict[str, dic
     df = df.loc["1991-01-01":"2025-12-31"]
     et0 = et0_fao56(df, lat, elev)
     p = df["PRECTOTCORR"]
-    tmin, tmax, tm = df["T2M_MIN"], df["T2M_MAX"], df["T2M"]
-    gwr = df["GWETROOT"]
+    tmin, tmax = df["T2M_MIN"], df["T2M_MAX"]
     out: dict[str, dict[int, float]] = {}
 
     def put(nome, y, val):
         out.setdefault(nome, {})[y] = val
 
-    drought = p < 1
     for y in YEARS:
         # second-season frost by sowing date
         for tag, (m, d) in SOWINGS_2ND.items():

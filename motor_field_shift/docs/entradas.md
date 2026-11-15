@@ -6,9 +6,9 @@ What the user provides, what the app fills in by itself, and what is worth provi
 
 The farmer types almost nothing. The app pulls the public data and the farmer only confirms or adjusts it. Every input has a pre-filled reference value, with source and period, and the user can replace it with their own ("Use my values"). The more of their own data, the more accurate the result.
 
-## 1. Required input: the area
+## 1. Required inputs: the area and the current rotation
 
-Only `area` is required. Three forms (exactly one):
+`area` and `rotacao_atual` are required (without `rotacao_atual` the API returns 422). The area has three forms (exactly one):
 
 | Form | Field | Note |
 |---|---|---|
@@ -22,9 +22,10 @@ Constraints: inside Paraná (399 municipalities, IBGE 41) and at most 5000 ha. O
 
 | Input | API field | Default | Effect on the result |
 |---|---|---|---|
-| Off-season sowing date (15/01, 01/02, 15/02, 01/03, 15/03) | `semeadura_safrinha` | 01/02 | Changes the frost risk (from 6% to 76% on field 72638) and the water at flowering |
+| Stage of the summer crop or expected harvest | `estagio_verao` / `colheita_prevista` (+ `data_referencia`) | None: catalog harvest assumption, with a warning | Estimated harvest, from which the second-window sowing is derived (`docs/motor.md` §2.1) |
+| Off-season sowing date (15/01, 01/02, 15/02, 01/03, 15/03) | `semeadura_safrinha` | Derived from the estimated harvest; 01/02 without stage or harvest | Changes the frost risk (from 6% to 76% on field 72638) and the water at flowering. If sent, it wins but cannot be before the harvest |
 | Priorities (income, soil, water, pests, risk; 0 to 10) | `pesos` | income 5, others 3 | Weight the 5 criteria in the final score |
-| Current rotation | `rotacao_atual` | Detected by NDVI when available (currently only on field 72638); otherwise off-season corn, with a warning | Comparison baseline. Options: the catalog slugs (`GET /v1/opcoes`) |
+| Current rotation | `rotacao_atual` | **Required** (no default) | Defines the `agora`/`proxima_safra` blocks and is the comparison baseline. Id `"<verao>__<segunda>"` or a legacy slug (`GET /v1/opcoes`); `/v1/diagnostico` still reports the rotation detected by MapBiomas/NDVI, which the frontend can pre-fill |
 | Number of alternatives | `n_alternativas` | 3 (the NATIVA screen uses 2) | How many alternatives are returned (1 to 6) |
 
 Mapping of the NATIVA screen sliders (0–100%) to `pesos` (0–10):
@@ -47,8 +48,8 @@ Mapping of the NATIVA screen sliders (0–100%) to `pesos` (0–10):
 | Crop history | MapBiomas | 2019–2024 | `diagnostico.historico` |
 | Municipality and expected yield (trend) | IBGE PAM | Last 10 years | `diagnostico.area.municipio`, `diagnostico.produtividade` |
 | Price | SEAB/DERAL-PR | 12-month average | `ranking[].margem.itens[].preco` |
-| Cost | CONAB COE (Londrina/Ponta Grossa) | Latest season | `ranking[].margem.itens[].custo` |
-| Legal rules (soybean-free period, soybean after soybean) | ADAPAR (free period 02/06–31/08) and Ordinance SDA/MAPA 1.124/2024 | In force (check before the pitch) | `eliminadas[]`, `avisos` |
+| Cost | CONAB COE (Londrina/Ponta Grossa/Francisco Beltrão) | Latest season | `ranking[].margem.itens[].custo` |
+| Legal rules (soybean-free period, soybean after soybean) | ADAPAR regions of Portaria SDA/MAPA 1.579/2026 (Oeste = Região 2: free period 02/06–31/08) and Ordinance SDA/MAPA 1.124/2024 | Crop 2026/2027; refresh every April | `eliminadas[]`, `avisos` |
 
 ## 4. If the user has the data, it is worth providing
 
@@ -56,16 +57,16 @@ Ordered by impact.
 
 | Own data | Replaces | Why it helps | API field | Status |
 |---|---|---|---|---|
-| Production cost per crop (BRL/ha) | CONAB for Londrina | It is what varies most between farms | `ajustes.custos` (`soja`, `milho`/`milho_2safra`, `trigo`, `aveia`, `milheto_crotalaria`, `braquiaria_consorcio`, `pousio`) | Accepted |
-| Locked-in or expected price (contract, barter, cooperative quote), BRL/bag | DERAL 12-month average | Reflects what the farmer will actually receive | `ajustes.precos` (`soja`, `milho`, `trigo`) | Accepted |
+| Production cost per crop (BRL/ha) | CONAB for Londrina | It is what varies most between farms | `ajustes.custos` (`soja`, `milho`/`milho_2safra`, `milho_verao`/`milho_1safra`, `trigo`, `feijao`/`feijao_2safra`, `sorgo`, `aveia`, `milheto_crotalaria`, `braquiaria_consorcio`, `pousio`, `nabo_forrageiro`, `aveia_nabo`) | Accepted |
+| Locked-in or expected price (contract, barter, cooperative quote), BRL/bag | DERAL 12-month average | Reflects what the farmer will actually receive | `ajustes.precos` (`soja`, `milho`, `trigo`, `feijao`, `sorgo`) | Accepted |
 | Cost line | `coe` (default) | Chooses what goes into the cost | `ajustes.linha_custo` (`coe`, `cot`, `ct`) | Accepted |
-| Own yield (bags/ha per crop) | Municipal average (e.g. 70 bags/ha vs. 49 from IBGE) | The municipal average hides the farm | `ajustes.produtividade` (`soja`, `milho`/`milho_2safra`, `trigo`; bags/ha > 0). The bad year scales proportionally; the soybean value also changes the income scale S | Accepted |
+| Own yield (bags/ha per crop) | Municipal average (e.g. 70 bags/ha vs. 49 from IBGE) | The municipal average hides the farm | `ajustes.produtividade` (`soja`, `milho`/`milho_2safra`, `milho_verao`, `trigo`, `feijao`, `sorgo`; bags/ha > 0). The bad year scales proportionally; the income scale S is fixed and does not change | Accepted |
 | Current rotation and real history of recent years | MapBiomas (only sees the summer crop) and NDVI (only exists for the demo) | Accurate current rotation and history | `rotacao_atual` (accepted); detailed history to be implemented | Partial |
-| Sowing date the farmer actually uses | Default 01/02 | Correct frost risk and water | `semeadura_safrinha` | Accepted |
+| Sowing date the farmer actually uses | Derived from the harvest (01/02 without stage) | Correct frost risk and water | `semeadura_safrinha` | Accepted |
 | Soil analysis (clay, organic matter, pH, available water capacity) | SoilGrids and pedotransfer | Available water capacity is the largest uncertainty in the water criterion | `analise_solo` (top level): `argila_pct`, `areia_pct`, `materia_organica_pct` or `carbono_organico_g_kg`, `ph`, `cad_mm_cm` (optional), `profundidade_cm` (optional, default 20). Requires clay+sand or `cad_mm_cm`. Also valid in `POST /v1/diagnostico` | Accepted |
 | Exact field polygon | Point (~100 ha square) | Climate, soil and terrain of the right field | `area.geometry` | Accepted |
 | Restrictions: crops the farmer does not want or cannot plant/sell; machinery (corn header, intercrop seeder); local buyer | All candidates allowed | Only what the farmer can execute appears | `restricoes` (top level): `culturas_excluidas` (ids `<verao>__<segunda>` or legacy slugs = soybean in summer), `maquinas{plataforma_milho, semeadora_consorcio}`, `sem_comprador` (`milho`, `trigo`, `sorgo`, `feijao`, `aveia_grao`). To evaluate only some rotations, use `rotacoes` (list of `{verao, segunda}`; see `docs/motor.md`). Excluded or no buyer eliminates; machine `false` only adds a warning and an outsourcing cost. Market viability (high/medium/low/not applicable) appears in `card.mercado` | Accepted |
-| Irrigation | Engine assumes rainfed | Changes the water criterion | `irrigacao` (top level): `disponivel`, `custo_r_mm_ha` (default 4.0), `lamina_max_mm_dia` (default 6). Irrigates corn, corn+brachiaria and wheat; the water-deficit risk stops counting; the margin subtracts depth × cost. Does not model a yield gain | Accepted |
+| Irrigation | Engine assumes rainfed | Changes the water criterion | `irrigacao` (top level): `disponivel`, `custo_r_mm_ha` (default 4.0), `lamina_max_mm_dia` (default 6). Irrigates corn, corn+brachiaria, wheat, sorghum and beans; the water-deficit risk stops counting; the margin subtracts depth × cost. Does not model a yield gain | Accepted |
 
 ## 5. How to show it on screen (suggestion for the frontend)
 
@@ -81,10 +82,10 @@ Corn 2nd      103 bags/ha (IBGE)  BRL 54/bag (DERAL)  BRL 4,678/ha (CONAB)
 
 ## 6. Request examples (`POST /v1/recomendacao`)
 
-Minimal (area only):
+Minimal (area and current rotation):
 
 ```json
-{ "area": { "talhao_id": "72638" } }
+{ "area": { "talhao_id": "72638" }, "rotacao_atual": "soja__milho_safrinha" }
 ```
 
 Complete (valid in the current schema):
@@ -99,7 +100,7 @@ Complete (valid in the current schema):
   },
   "semeadura_safrinha": "15/02",
   "pesos": { "renda": 8, "solo": 3, "agua": 3, "pragas": 5, "risco": 4 },
-  "rotacao_atual": "milho_safrinha",
+  "rotacao_atual": "soja__milho_safrinha",
   "ajustes": {
     "precos": { "soja": 125.0, "milho": 58.0, "trigo": 82.0 },
     "custos": { "soja": 4500.0, "milho_2safra": 4300.0 },

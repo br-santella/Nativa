@@ -1,4 +1,5 @@
 """Service-layer tests (run: uv run python tests/test_service.py  or  uv run pytest tests/test_service.py)."""
+from local_data import needs_data
 import json
 import time
 
@@ -26,6 +27,7 @@ def _t(f, *a, **k):
     return r, time.perf_counter() - t0
 
 
+@needs_data
 def test_field_72638():
     r, dt = _t(recommend, {"talhao_id": "72638"})
     assert _old(r) == EXPECTED
@@ -48,6 +50,7 @@ def test_field_72638():
     print("72638", round(dt, 2), "s", [(x["id"], round(x["nota"], 2)) for x in r["ranking"]])
 
 
+@needs_data
 def test_polygon_cascavel():
     # ~100 ha of cropland ~15 km east of Cascavel (checked in MapBiomas through the diagnosis)
     lon, lat, h = -53.30, -24.90, 0.0045
@@ -60,6 +63,7 @@ def test_polygon_cascavel():
     return r
 
 
+@needs_data
 def test_point_guaira():
     r, dt = _t(recommend, {"lat": -24.20, "lon": -54.20}, n_alternatives=2, include_diagnosis=False)
     assert len(r["alternativas"]) == 2 and "diagnostico" not in r
@@ -67,6 +71,7 @@ def test_point_guaira():
     print("Guaíra point", round(dt, 2), d["area"]["area_ha"], d["area"]["municipio"], [(h["ano"], h["nome_classe"]) for h in d["historico"][-3:]], d["avisos"])
 
 
+@needs_data
 def test_errors():
     for a, exc in [({"lat": -23.55, "lon": -46.63}, OutOfRegion), ({"talhao_id": "x"}, InvalidInput), ({}, InvalidInput),
                    ({"geometry": {"type": "Polygon", "coordinates": [[[-53, -24], [-52, -25], [-53, -25], [-52, -24], [-53, -24]]]}}, InvalidInput),
@@ -86,6 +91,7 @@ def test_errors():
             raise AssertionError(kw)
 
 
+@needs_data
 def test_options_and_current_eliminated():
     o, _ = _t(options)
     assert o["regiao"]["n_municipios"] == 399 and o["talhoes_demo"][0]["id"] == "72638"
@@ -103,6 +109,7 @@ def _rk(r):
     return {x.get("id_legado", x["id"]): x for x in r["agora"]["ranking"] + r["proxima_safra"]["ranking"]}
 
 
+@needs_data
 def test_regression_without_new_inputs():
     """Without the new inputs, the ranking is identical to the previous one and the input/methodology get no new keys."""
     r, _ = _t(recommend, T)
@@ -114,6 +121,7 @@ def test_regression_without_new_inputs():
     assert not any("terceirizar" in a for x in r["ranking"] for a in x["card"]["avisos"])
 
 
+@needs_data
 def test_own_yield():
     r, _ = _t(recommend, T, adjustments={"produtividade": {"soja": 70, "milho": 120, "trigo": 50}})
     base, _ = _t(recommend, T)
@@ -131,6 +139,7 @@ def test_own_yield():
     assert {x["id"]: x["nota"] for x in r2["ranking"]} == {x["id"]: x["nota"] for x in r["ranking"]}
 
 
+@needs_data
 def test_soil_analysis():
     base, _ = _t(recommend, T, include_diagnosis=False)
     r, _ = _t(recommend, T, soil_analysis=TYPICAL_SOIL)
@@ -163,6 +172,7 @@ def test_invalid_soil_analysis():
             raise AssertionError(a)
 
 
+@needs_data
 def test_constraints_excluded_and_no_buyer():
     r, _ = _t(recommend, T, constraints={"culturas_excluidas": ["trigo"], "sem_comprador": ["milho", "aveia_grao"]}, include_diagnosis=False)
     el = {e["id"]: e["motivos"] for e in r["eliminadas"]}
@@ -184,6 +194,7 @@ def test_constraints_excluded_and_no_buyer():
         raise AssertionError("todas eliminadas")
 
 
+@needs_data
 def test_constraints_machines():
     base, _ = _t(recommend, T, include_diagnosis=False)
     r, _ = _t(recommend, T, constraints={"maquinas": {"plataforma_milho": False, "semeadora_consorcio": False}}, include_diagnosis=False)
@@ -202,6 +213,7 @@ def test_constraints_machines():
     assert _old(r_ok) == EXPECTED
 
 
+@needs_data
 def test_mercado_no_card():
     r, _ = _t(recommend, T, include_diagnosis=False)
     m = {k: v["card"]["mercado"] for k, v in _rk(r).items()}
@@ -209,6 +221,7 @@ def test_mercado_no_card():
     assert any(e.startswith("Mercado no Oeste do PR: alto") for e in _rk(r)["milho_safrinha"]["card"]["evidencias"])
 
 
+@needs_data
 def test_irrigation():
     base, _ = _t(recommend, T, include_diagnosis=False)
     r, _ = _t(recommend, T, irrigation={"disponivel": True}, include_diagnosis=False)
@@ -249,13 +262,21 @@ if __name__ == "__main__":
     t0 = time.perf_counter()
     test_field_72638()
     print("frio total", round(time.perf_counter() - t0, 2))
-    test_polygon_cascavel(); test_point_guaira(); test_errors(); test_options_and_current_eliminated()
+    test_polygon_cascavel()
+    test_point_guaira()
+    test_errors()
+    test_options_and_current_eliminated()
     from field_shift.core import warm_up
-    t0 = time.perf_counter(); warm_up(); print("aquecer (ja quente)", round(time.perf_counter() - t0, 2))
-    t0 = time.perf_counter(); recommend({"lat": -24.5, "lon": -53.9}); print("quente, ponto novo", round(time.perf_counter() - t0, 2))
+    t0 = time.perf_counter()
+    warm_up()
+    print("aquecer (ja quente)", round(time.perf_counter() - t0, 2))
+    t0 = time.perf_counter()
+    recommend({"lat": -24.5, "lon": -53.9})
+    print("quente, ponto novo", round(time.perf_counter() - t0, 2))
     print("TUDO OK")
 
 
+@needs_data
 def test_technical_tie():
     # 15/03 with income weight 6: millet/crotalaria and corn + brachiaria are less than 0.02 apart on field 72638
     r = recommend({"talhao_id": "72638"}, sowing_second="15/03", pesos={"renda": 6}, include_diagnosis=False)
@@ -266,3 +287,21 @@ def test_technical_tie():
     assert not any(a.startswith("Empate técnico") for x in r["agora"]["ranking"] if x["id"] not in e["ids"] for a in x["card"]["avisos"])
     # default weights at 15/01: corn + brachiaria clearly ahead
     assert recommend({"talhao_id": "72638"}, sowing_second="15/01", include_diagnosis=False)["agora"]["empate_tecnico"] is None
+
+
+@needs_data
+def test_no_precomputed_climate_is_422_without_live_power(monkeypatch):
+    """A centroid without a pre-computed climate cell is out of region without fetching NASA POWER live."""
+    import pytest
+
+    from field_shift.app import engine
+    from field_shift.core import service
+
+    def no_live_fetch(*a, **k):
+        raise AssertionError("NASA POWER must not be fetched live by the API")
+
+    monkeypatch.setattr(service, "indicators_for", lambda lat, lon: None)
+    monkeypatch.setattr(engine, "indicators_for", lambda lat, lon: None)
+    monkeypatch.setattr(engine, "fetch_power", no_live_fetch)
+    with pytest.raises(OutOfRegion, match="indicadores climáticos"):
+        _recommend({"lat": -24.95, "lon": -53.45}, current_rotation="soja__milho_safrinha")

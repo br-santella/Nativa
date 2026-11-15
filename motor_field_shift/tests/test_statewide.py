@@ -1,4 +1,5 @@
 """Statewide behaviour (all of Paraná, not only the Oeste pilot). Run: uv run pytest tests/test_statewide.py"""
+from local_data import needs_data
 import pandas as pd
 
 from field_shift.app import engine as E
@@ -18,6 +19,7 @@ def test_mesoregion_table_covers_paraná_and_matches_the_oeste_pilot():
     assert I.region_label("Norte Central Paranaense") == "Norte Central do PR" and I.region_label(None) == "Paraná"
 
 
+@needs_data
 def test_yield_fallback_uses_the_municipality_mesoregion():
     y = I.yields(CURITIBA)  # no off-season corn PAM in Curitiba
     assert y["_regiao"] == "Metropolitana de Curitiba" and y["soja"]["regiao"] == "Metropolitana de Curitiba"
@@ -30,6 +32,7 @@ def test_yield_fallback_uses_the_municipality_mesoregion():
     assert I.yields(None)["soja"]["regiao"] == "Paraná"
 
 
+@needs_data
 def test_card_texts_outside_the_oeste():
     r = recommend(LONDRINA, current_rotation="soja__milho_safrinha", include_diagnosis=False)
     corn = next(x for x in r["agora"]["ranking"] if x["id"] == "soja__milho_safrinha")
@@ -42,6 +45,7 @@ def test_card_texts_outside_the_oeste():
     assert not any(a.startswith("Área fora do Oeste") for a in t["avisos"])
 
 
+@needs_data
 def test_north_of_paraná_field_runs_end_to_end():
     # regression: a crop with a short PAM series (no p20 bad year) used to crash the card with a None format
     r = recommend(CORNELIO, current_rotation="soja__milho_safrinha")
@@ -59,6 +63,7 @@ def test_margin_line_without_bad_year():
     assert any("série da PAM curta demais" in x for x in lines)
 
 
+@needs_data
 def test_income_scale_is_the_same_statewide():
     t = recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False)
     lo = recommend(LONDRINA, current_rotation="soja__milho_safrinha", include_diagnosis=False)
@@ -66,6 +71,7 @@ def test_income_scale_is_the_same_statewide():
     assert scales == {I.INCOME_SCALE}
 
 
+@needs_data
 def test_income_trade_off_block_and_card_warning():
     t = recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False)["agora"]
     mr = t["maior_renda"]

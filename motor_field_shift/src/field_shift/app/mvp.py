@@ -9,7 +9,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).parent))
 import engine as E  # noqa: E402
 from field_shift.income import load_reference, cost_source, price_source  # noqa: E402
-from field_shift.income.income import COST_LINE_NAME, LABEL  # noqa: E402
+from field_shift.income.income import LABEL  # noqa: E402
 
 st.set_page_config(page_title="Field Shift — MVP", layout="wide")
 st.title("Field Shift — apoio à decisão de rotação de culturas")
@@ -35,7 +35,8 @@ def source(text): st.caption(f"**Por quê / fonte:** {text}")
 st.header("1. Local")
 t = _field()
 c1, c2 = st.columns([1, 2])
-c1.metric("Talhão", t["id"]); c1.metric("Área", f"{t['area_ha']:.1f} ha")
+c1.metric("Talhão", t["id"])
+c1.metric("Área", f"{t['area_ha']:.1f} ha")
 c1.write(f"Centróide: **{t['lat']:.5f}, {t['lon']:.5f}** (Toledo/PR, Oeste do PR)")
 if t["declividade"] is not None:
     c1.write(f"Declividade média: **{t['declividade']:.1f}%** (p90 {t['declividade_p90']:.1f}%) · classe Embrapa: **{t['classe_embrapa']}** "
@@ -121,8 +122,10 @@ if rk["solo"]:
     s = rk["solo"]
     st.subheader("Solo (SoilGrids/ISRIC, média no talhão)")
     cs1, cs2, cs3, cs4, cs5 = st.columns(5)
-    cs1.metric("Argila 0–30 cm", f"{s['p30']['clay']:.0f}%"); cs2.metric("Areia 0–30 cm", f"{s['p30']['sand']:.0f}%")
-    cs3.metric("C orgânico 0–30 cm", f"{s['p30']['soc']:.1f} g/kg"); cs4.metric("pH 0–30 cm", f"{s['p30']['phh2o']:.1f}")
+    cs1.metric("Argila 0–30 cm", f"{s['p30']['clay']:.0f}%")
+    cs2.metric("Areia 0–30 cm", f"{s['p30']['sand']:.0f}%")
+    cs3.metric("C orgânico 0–30 cm", f"{s['p30']['soc']:.1f} g/kg")
+    cs4.metric("pH 0–30 cm", f"{s['p30']['phh2o']:.1f}")
     cs5.metric("CAD (0–60 cm)", f"{s['cad_mm_0_60']:.0f} mm", help=f"{s['cad_mm_cm']['0-30']:.2f} mm/cm em 0–30 cm")
     st.caption(f"Textura: {s['classe_textura']}. CAD (água disponível) por pedotransferência de Saxton & Rawls (2006), "
                "que pode errar em latossolos tropicais; o SoilGrids não traz umidade a 33/1500 kPa. Alimenta o balanço hídrico do critério Água.")
@@ -211,7 +214,8 @@ def card(col, title, line, is_current):
         st.metric("Nota", f"{line['nota']:.2f}")
         d = E.build_card(line, is_current, rk, ndvi_days, res["margens"][line["candidata"]],
                          E.why_compared(res, line["candidata"], current))
-        st.markdown("**Por que foi sugerida**"); st.write(d["por_que"])
+        st.markdown("**Por que foi sugerida**")
+        st.write(d["por_que"])
         for title2, key in [("Evidência", "evidencia"), ("Benefícios", "beneficios"),
                                ("Lacunas de informação", "lacunas"), ("Riscos para revisar com agrônomo", "revisar")]:
             st.markdown(f"**{title2}**")
@@ -222,7 +226,8 @@ st.subheader("Rotação atual e as 3 melhores alternativas")
 cs = st.columns(4)
 if current in res["eliminadas"]:
     with cs[0].container(border=True):
-        st.subheader("Rotação atual"); st.markdown(f"**{current}**")
+        st.subheader("Rotação atual")
+        st.markdown(f"**{current}**")
         st.error("Eliminada pelas regras duras: " + " ".join(res["eliminadas"][current]))
 else:
     card(cs[0], "Rotação atual", tab[tab.candidata == current].iloc[0], True)

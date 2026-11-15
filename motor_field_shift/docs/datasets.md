@@ -4,7 +4,7 @@ De-duplicated consolidation of every dataset cited in the challenge, in the refe
 
 **Status legend** (checked on 2026-11-14): "Downloaded" = there are files in `data/`; "Download tested" = downloaded successfully, but not in `data/` yet; "Login OK / catalog OK" = access confirmed, no download; "Not tested" = nothing checked.
 
-**Pilot**: soybean → off-season corn in Western Paraná (sugarcane under evaluation).
+**Pilot**: soybean → off-season corn in Western Paraná; the engine now covers all of Paraná. Statuses of the datasets in use were updated on 2026-11-15.
 
 ## (a) NASA datasets cited in the challenge
 
@@ -12,7 +12,7 @@ De-duplicated consolidation of every dataset cited in the challenge, in the refe
 |---|---|---|---|---|---|---|---|
 | NASA POWER | "ag" archive (agroclimatology), daily, since 1981 | ~50 km; daily | Point historical climate, dry spells, frost, water balance | POWER API (HTTP, JSON/CSV) | No | API returned 200 without login | [POWER API](https://power.larc.nasa.gov/docs/services/api/) · [Portal](https://power.larc.nasa.gov/) |
 | SMAP L3 (surface) | SPL3SMP_E, L3 Enhanced, V006 | 9 km; daily, since 2015 | Current moisture: "can I plant today?" | earthaccess, AppEEARS, NSIDC | Earthdata | AppEEARS catalog OK (SPL3SMP_E.006); download not tested | [NSIDC SPL3SMP_E](https://nsidc.org/data/SPL3SMP_E) · [AppEEARS](https://appeears.earthdatacloud.nasa.gov/) |
-| SMAP L4 (root zone) | SPL4SMGP, V8 (008); model that assimilates SMAP | 9 km; 3 h, since 2015 | Moisture at root depth | earthaccess, AppEEARS, NSIDC | Earthdata | Download tested (NSIDC); AppEEARS catalog OK (SPL4SMGP.008) | [NSIDC SPL4SMGP](https://nsidc.org/data/spl4smgp) · [AppEEARS](https://appeears.earthdatacloud.nasa.gov/) |
+| SMAP L4 (root zone) | SPL4SMGP, V8 (008); model that assimilates SMAP | 9 km; 3 h, since 2015 | Moisture at root depth | earthaccess, AppEEARS, NSIDC | Earthdata | In use: `/v1/contexto` reads the field pixel at request time (`src/field_shift/context/smap.py`, earthaccess) | [NSIDC SPL4SMGP](https://nsidc.org/data/spl4smgp) · [AppEEARS](https://appeears.earthdatacloud.nasa.gov/) |
 | ECOSTRESS | ECO_L2T_LSTE V002 (temperature); L3 JET (ET) and L4 ESI | 70 m; irregular (ISS) | Crop heat and water stress | LP DAAC, AppEEARS | Earthdata | Download tested (ECO_L2T_LSTE v002); AppEEARS catalog OK | [ECOSTRESS documentation](https://ecostress.jpl.nasa.gov/data/atbds-summary-table) · [LP DAAC](https://lpdaac.usgs.gov/products/eco_l2t_lstev002/) |
 | GPM IMERG | GPM_3IMERGDF V07, Final, daily | 0.1° (~10 km); daily, since 2000 | Historical rain and heavy rain (erosion) | GES DISC, earthaccess, AWS | Earthdata | Download tested (GES DISC) | [GES DISC GPM_3IMERGDF](https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDF_07/summary) · [AWS Open Data](https://registry.opendata.aws/nasa-gpm3imergdf/) |
 | Landsat 8/9 | Collection 2 Level-2 Surface Reflectance | 30 m; 8 days | Historical NDVI per field, exposed soil | USGS EarthExplorer, Planetary Computer, GEE | USGS (EarthExplorer) / no (PC) | Not tested (HLS covers the dense series) | [USGS Collection 2 L2](https://www.usgs.gov/landsat-missions/landsat-collection-2-level-2-science-products) · [EarthExplorer](https://earthexplorer.usgs.gov/) |
@@ -20,7 +20,7 @@ De-duplicated consolidation of every dataset cited in the challenge, in the refe
 | VIIRS (vegetation) | VIIRS vegetation indices (product to be defined; only cited in the challenge text/resources) | 375–1000 m; daily/16 days | Alternative/continuity of MODIS | Earthdata Search, AppEEARS | Earthdata | Not tested | [LP DAAC VNP13A1](https://lpdaac.usgs.gov/products/vnp13a1v002/) · [Earthdata Search](https://search.earthdata.nasa.gov/) |
 | MODIS (evapotranspiration) | MOD16A2GF v061, gap-filled ET | 500 m; 8 days, since 2000 | Actual vegetation water use | AppEEARS, LP DAAC, GEE | Earthdata | AppEEARS catalog OK (MOD16A2GF.061); download not tested | [LP DAAC MOD16A2GF](https://lpdaac.usgs.gov/products/mod16a2gfv061/) · [Earth Engine](https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD16A2GF) |
 | GRACE / GRACE-FO | JPL Mascon RL06.3Mv04 (total water) | ~300 km; monthly, since 2002 | Long-term water trend of the region | GEE (JPL Mascon), PO.DAAC (CSR Land) | Earthdata (PO.DAAC) | Not tested | [Earth Engine Mascon](https://developers.google.com/earth-engine/datasets/catalog/NASA_GRACE_MASS_GRIDS_V04_MASCON) · [PO.DAAC CSR Land](https://podaac.jpl.nasa.gov/dataset/TELLUS_GRFO_L3_CSR_RL06.3_LND_v04) |
-| SRTM / NASADEM | NASADEM_HGT v001 (preferred) or SRTMGL1 v003 | 30 m; static | Slope, erosion, frost-prone lowlands | LP DAAC, earthaccess | Earthdata | Not tested | [LP DAAC NASADEM](https://lpdaac.usgs.gov/products/nasadem_hgtv001/) · [LP DAAC SRTMGL1](https://lpdaac.usgs.gov/products/srtmgl1v003/) |
+| SRTM / NASADEM | NASADEM_HGT v001 (preferred) or SRTMGL1 v003 | 30 m; static | Slope, erosion, frost-prone lowlands | LP DAAC, earthaccess, Planetary Computer | Earthdata (PC: no) | Downloaded via Planetary Computer: `data/raw/nasadem_pr/elev.tif`, slope in `data/processed/relevo_pr/` | [LP DAAC NASADEM](https://lpdaac.usgs.gov/products/nasadem_hgtv001/) · [LP DAAC SRTMGL1](https://lpdaac.usgs.gov/products/srtmgl1v003/) |
 | GEDI | L4A V3, aboveground biomass per footprint | 25 m footprints; sampled | Biomass of nearby forest; of little use for annual crops | ORNL DAAC | Earthdata | Not tested | [ORNL DAAC GEDI L4A](https://daac.ornl.gov/GEDI/guides/GEDI_L4A_AGB_Density_V3.html) · [Dataset](https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=2056) |
 
 ## (b) Other useful NASA datasets
@@ -47,16 +47,17 @@ De-duplicated consolidation of every dataset cited in the challenge, in the refe
 
 | Dataset | Product/version | Resolution / revisit | Use in Field Shift | How to access | Login | Status | Links |
 |---|---|---|---|---|---|---|---|
-| MapBiomas | Collection 10, annual land use and cover (sugarcane, soybean, corn); 1985+ | 30 m; annual | Crop history per field, current rotation | COG mirror on Source Cooperative (the official bucket returns 403 to anonymous access); brasil.mapbiomas.org | No | Downloaded: `data/raw/mapbiomas/` (2019–2024); legend and join in `data/processed/ftw/` | [MapBiomas Brasil](https://brasil.mapbiomas.org/) · [Source Cooperative](https://source.coop/) |
+| MapBiomas | Collection 10, annual land use and cover (sugarcane, soybean, corn); 1985+ | 30 m; annual | Crop history per field, current rotation | COG mirror on Source Cooperative (the official bucket returns 403 to anonymous access); brasil.mapbiomas.org | No | Downloaded: `data/raw/mapbiomas_pr/` (2019–2024); legend and join in `data/processed/ftw/` | [MapBiomas Brasil](https://brasil.mapbiomas.org/) · [Source Cooperative](https://source.coop/) |
 | Fields of The World (FTW) | Field boundaries (2- and 3-class models, own checkpoints) | Field (from Sentinel-2) | Field polygons for the pilot | FTW model + Sentinel-2 | No | Downloaded/processed: `data/processed/ftw/` (`fields_*.gpkg/parquet`, `pred_*.tif`, `*.ckpt`) | [FTW](https://fieldsofthe.world/) · [Repository](https://github.com/fieldsoftheworld/ftw-baselines) |
-| IBGE PAM | Municipal Agricultural Production (area, production, yield) | Municipality; annual | Regional average yield per crop | SIDRA API (sidra.ibge.gov.br) | No | Not tested | [SIDRA PAM (table 1612)](https://sidra.ibge.gov.br/tabela/1612) |
-| CONAB | Crop seasons, production costs, prices | State/municipality; monthly/season | Estimated income of each rotation crop | conab.gov.br | No | Not tested | [CONAB seasons](https://www.conab.gov.br/info-agro/safras) · [Production costs](https://www.conab.gov.br/info-agro/custos-de-producao) |
+| IBGE PAM | Municipal Agricultural Production (area, production, yield) | Municipality; annual | Municipal yield per crop (expected yield, bad year, track record) | SIDRA API (sidra.ibge.gov.br) | No | Downloaded: `data/raw/ibge/pam_pr.parquet`, `pam_extra_pr.parquet` (399 municipalities) | [SIDRA PAM (table 1612)](https://sidra.ibge.gov.br/tabela/1612) |
+| CONAB | Crop seasons, production costs, prices | State/municipality; monthly/season | Production costs (COE) of each rotation crop | conab.gov.br | No | In use: cost sheets in `data/ref/precos_custos.json` (`src/field_shift/income/update.py`) | [CONAB seasons](https://www.conab.gov.br/info-agro/safras) · [Production costs](https://www.conab.gov.br/info-agro/custos-de-producao) |
 | CEPEA | Price indicators (soybean, corn, sugarcane, etc.) | Daily/weekly | Market and crop prices | cepea.org.br | No (some require sign-up) | Not tested | [CEPEA indicators](https://www.cepea.org.br/br/indicador.aspx) |
-| INMET BDMEP | Historical weather station data | Station; hourly/daily | Validate NASA POWER against field measurements | bdmep.inmet.gov.br / portal.inmet.gov.br (historical data) | No | Not tested | [BDMEP](https://bdmep.inmet.gov.br/) · [Historical data](https://portal.inmet.gov.br/dadoshistoricos) |
+| INMET BDMEP | Historical weather station data | Station; hourly/daily | Validate NASA POWER against field measurements | bdmep.inmet.gov.br / portal.inmet.gov.br (historical data) | No | Downloaded: 7 stations used to validate POWER (`src/field_shift/climate/station_validation.py`) | [BDMEP](https://bdmep.inmet.gov.br/) · [Historical data](https://portal.inmet.gov.br/dadoshistoricos) |
 | ZARC (MAPA/Embrapa) | Agricultural climate-risk zoning | Municipality/soil; per season | Validates the planting window; basis for rural credit and insurance (engine validation: `docs/validation.md` §2) | ZARC portal (MAPA); risk table per season as open CSV at dados.agricultura.gov.br (`scripts/validation/zarc_agreement.py`) | No | Downloaded (2025/2026 table, Paraná rows in `data/raw/zarc/`) | [ZARC program (MAPA)](https://www.gov.br/agricultura/pt-br/assuntos/riscos-seguro/programa-nacional-de-zoneamento-agricola-de-risco-climatico) · [Risk table (open data)](https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico) |
 | PronaSolos / Embrapa GeoInfo | Official soil maps and geospatial data | Variable (soil maps) | Official soil classes | geoinfo.dados.embrapa.br | No | Not tested | [GeoInfo Embrapa](https://geoinfo.dados.embrapa.br/) · [PronaSolos](https://www.embrapa.br/solos/pronasolos) |
-| SoilGrids (ISRIC) | Estimated clay, sand, organic carbon, pH | 250 m | Default soil when the farmer has no analysis | soilgrids.org / API | No | Not tested | [SoilGrids](https://soilgrids.org/) · [API documentation](https://www.isric.org/explore/soilgrids/faq-soilgrids) |
+| SoilGrids (ISRIC) | Estimated clay, sand, organic carbon, pH | 250 m | Default soil when the farmer has no analysis | soilgrids.org / API | No | Downloaded: `data/raw/soilgrids_pr/` (REST API as fallback) | [SoilGrids](https://soilgrids.org/) · [API documentation](https://www.isric.org/explore/soilgrids/faq-soilgrids) |
 | CAR / SICAR | Rural property polygons | Property | Property boundary in the demo | car.gov.br | No | Not tested | [SICAR](https://www.car.gov.br/) |
+| SEAB/DERAL-PR | Weekly/monthly prices received by Paraná farmers | State and regional nucleus; weekly/monthly | Prices of the rotation crops (12-month average) | agricultura.pr.gov.br/deral/Precos | No | In use: `data/ref/precos_custos.json` (`src/field_shift/income/update.py`) | [DERAL prices](https://www.agricultura.pr.gov.br/deral/Precos) |
 | Observatório da Cana (UNICA) | Crushing, ATR, ethanol production | Season/monthly | Sugar-energy market context (sugarcane) | observatoriodacana.com.br | No | Not tested | [Observatório da Cana](https://observatoriodacana.com.br/) |
 
 ## (e) USA (official challenge resources that do not apply to Brazil)
@@ -104,11 +105,13 @@ Status of all: Not tested (outside the geographic scope). Login: no, unless stat
 | (a) NASA cited | 12 |
 | (b) Other NASA | 7 |
 | (c) ESA/reanalyses/international | 3 |
-| (d) Brazil | 11 |
+| (d) Brazil | 12 |
 | (e) USA | 13 |
 | (f) Tools | 13 |
 
 ## Consolidated sources
+
+These files are local to the team and not versioned in this repository.
 
 - `novos_datasets_Nasa.md` (official challenge resources, including USA and ESA)
 - `Field_Shift_—_Dados_e_ferramentas_da_NASA.pdf` (recommended products, tools, NASA extras and Brazilian sources)

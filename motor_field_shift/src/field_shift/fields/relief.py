@@ -1,5 +1,9 @@
 """Step 2: relief (NASADEM, Planetary Computer) per candidate field."""
-import numpy as np, pandas as pd, geopandas as gpd, planetary_computer as pc, pystac_client
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import planetary_computer as pc
+import pystac_client
 import rioxarray  # noqa
 from odc.stac import load
 from exactextract import exact_extract
@@ -11,7 +15,8 @@ def main():
     c = candidates()
     print("candidatos 20-200 ha, soja>=5/6:", len(c))
     c4 = c.to_crs(4326)
-    b = c4.total_bounds; pad = 0.03
+    b = c4.total_bounds
+    pad = 0.03
     bbox = [b[0]-pad, b[1]-pad, b[2]+pad, b[3]+pad]
     cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1", modifier=pc.sign_inplace)
     items = list(cat.search(collections=["nasadem"], bbox=bbox).items())
@@ -19,7 +24,9 @@ def main():
     ds = load(items, bands=["elevation"], bbox=bbox, crs="EPSG:4326", resolution=1/3600, chunks={})
     el = ds.elevation.isel(time=0).compute().astype("float32")
     el = el.where(el > -1000)
-    arr = el.values; lat = el.latitude.values; lon = el.longitude.values
+    arr = el.values
+    lat = el.latitude.values
+    lon = el.longitude.values
     # slope in %
     dy = abs(lat[1]-lat[0])*111320.0
     dx = abs(lon[1]-lon[0])*111320.0*np.cos(np.deg2rad(lat))[:, None]
@@ -30,13 +37,13 @@ def main():
     tr = from_origin(lon.min()-res/2, lat.max()+res/2, res, res)
     # latitude decreasing? make sure north is up
     if lat[0] < lat[-1]:
-        arr = arr[::-1]; slope = slope[::-1]
+        arr = arr[::-1]
+        slope = slope[::-1]
     prof = dict(driver="GTiff", height=arr.shape[0], width=arr.shape[1], count=1, dtype="float32",
                 crs="EPSG:4326", transform=tr, nodata=np.nan, compress="deflate")
     for name, a in [("nasadem_elev", arr), ("nasadem_slope_pct", slope)]:
         with rasterio.open(OUT / f"{name}.tif", "w", **prof) as o:
             o.write(a.astype("float32"), 1)
-    ids = c4[["id"]].reset_index(drop=True)
     # the raster needs per-polygon statistics
     def stats(layer, ops, geoms):
         g = gpd.GeoDataFrame({"id": c4["id"].values}, geometry=geoms, crs=4326)

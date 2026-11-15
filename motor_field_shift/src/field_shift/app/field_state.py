@@ -334,10 +334,14 @@ def prepare_fertility(f: dict | None, clay_pct: float | None = None, corg_g_dm3:
         v_source = "derivada de (Ca+Mg+K)/CTC"
     band, band_source = clay_band(clay_pct)
     classes = {}
-    if "p_mg_dm3" in f: classes["p"] = _p_class(f["p_mg_dm3"], band)
-    if "k_cmolc_dm3" in f: classes["k"] = _classify(f["k_cmolc_dm3"], CLASSES["k"])
-    if "v_pct" in f: classes["v"] = "condicao_evitar" if f["v_pct"] > V_AVOID_ABOVE else _classify(f["v_pct"], CLASSES["v"])
-    if "al_cmolc_dm3" in f: classes["al"] = _classify(f["al_cmolc_dm3"], CLASSES["al"])
+    if "p_mg_dm3" in f:
+        classes["p"] = _p_class(f["p_mg_dm3"], band)
+    if "k_cmolc_dm3" in f:
+        classes["k"] = _classify(f["k_cmolc_dm3"], CLASSES["k"])
+    if "v_pct" in f:
+        classes["v"] = "condicao_evitar" if f["v_pct"] > V_AVOID_ABOVE else _classify(f["v_pct"], CLASSES["v"])
+    if "al_cmolc_dm3" in f:
+        classes["al"] = _classify(f["al_cmolc_dm3"], CLASSES["al"])
     if corg_g_dm3 is not None:
         classes["mo"] = _classify(float(corg_g_dm3), CORG_CLASSES)
     sev = max([{"muito_baixo": 0, "baixo": 0, "medio": 1, "alto": 2, "muito_alto": 2}[classes["al"]] if "al" in classes else 0,

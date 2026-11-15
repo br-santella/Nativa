@@ -1,0 +1,520 @@
+{
+ "body": {
+  "fichas": [
+   {
+    "ciclo_dias": {
+     "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/caracteristicas-da-soja",
+     "max": 145,
+     "min": 100,
+     "unidade": "dias"
+    },
+    "demanda_hidrica_mm_ciclo": {
+     "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua",
+     "max": 800,
+     "min": 450,
+     "unidade": "mm/ciclo"
+    },
+    "finalidade": "graos",
+    "id": "soja",
+    "impactos_no_solo": [
+     {
+      "descricao": "Soybean can be part of a rotation with grasses.",
+      "direcao": "positiva",
+      "efeito": "diversificacao_da_rotacao",
+      "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf"
+     }
+    ],
+    "infraestrutura": {
+     "irrigacao": {
+      "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua",
+      "observacao": "Assess the need for irrigation according to the water available throughout the cycle."
+     },
+     "mao_de_obra": {
+      "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf",
+      "observacao": "Plan for operating the seeder and the combine in the mechanized system."
+     },
+     "maquinas": {
+      "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf",
+      "observacao": "Seeder for planting and combine for harvesting the grain in the mechanized system.",
+      "valores": [
+       "semeadora",
+       "colhedora"
+      ]
+     }
+    },
+    "nome": "Soybean",
+    "nome_cientifico": "Glycine max",
+    "requisitos_solo": {
+     "compactacao": {
+      "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf",
+      "observacao": "Prefer soil without compacted layers that restrict root growth."
+     },
+     "nitrogenio": {
+      "demanda_por_tonelada_de_graos": {
+       "fonte": "https://www.embrapa.br/web/agrobiologia/busca-de-solucoes-tecnologicas/-/produto-servico/3780/fixacao-biologica-de-nitrogenio-em-soja",
+       "max": 80,
+       "min": 80,
+       "unidade": "kg N/t of grain"
+      },
+      "observacao": "Approximate plant demand. Biological fixation by Bradyrhizobium can meet this demand when the symbiosis is efficient."
+     },
+     "ph": {
+      "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf",
+      "max": 6.0,
+      "min": 5.5,
+      "unidade": "pH in water"
+     },
+     "texturas_adequadas": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1150",
+      "observacao": "Medium texture is a reference optimal condition. The sheet also mentions organic soils.",
+      "valores": [
+       "media"
+      ]
+     },
+     "umidade": {
+      "deplecao_sem_estresse": {
+       "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm",
+       "max": 50,
+       "min": 50,
+       "unidade": "% of available water"
+      },
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1150",
+      "observacao": "Prefer well-drained soil and avoid waterlogging."
+     }
+    },
+    "vulnerabilidades": [
+     {
+      "fases": [
+       "florescimento",
+       "enchimento_de_graos"
+      ],
+      "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua",
+      "observacao": "Drought in these stages can reduce pod set and impair grain filling.",
+      "risco": "deficit_hidrico"
+     }
+    ]
+   },
+   {
+    "ciclo_dias": {
+     "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/relacoes-com-o-clima",
+     "max": 150,
+     "min": 100,
+     "unidade": "dias"
+    },
+    "demanda_hidrica_mm_ciclo": {
+     "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo",
+     "max": 700,
+     "min": 400,
+     "unidade": "mm/ciclo"
+    },
+    "finalidade": "graos",
+    "id": "milho",
+    "impactos_no_solo": [
+     {
+      "descricao": "Corn residues help cover the soil when they stay on the surface.",
+      "direcao": "positiva",
+      "efeito": "cobertura_por_palhada",
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf"
+     }
+    ],
+    "infraestrutura": {
+     "irrigacao": {
+      "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo",
+      "observacao": "Assess the need for irrigation according to the water available throughout the cycle."
+     },
+     "mao_de_obra": {
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf",
+      "observacao": "Plan for operating the seeder and the combine in the mechanized system."
+     },
+     "maquinas": {
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf",
+      "observacao": "Seeder for planting and combine for harvesting the grain in the mechanized system.",
+      "valores": [
+       "semeadora",
+       "colhedora"
+      ]
+     }
+    },
+    "nome": "Grain corn",
+    "nome_cientifico": "Zea mays",
+    "requisitos_solo": {
+     "compactacao": {
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf",
+      "observacao": "Prefer soil without compacted layers that restrict root growth."
+     },
+     "nitrogenio": {
+      "dose_adubacao_cobertura": {
+       "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1127262/1/LV-RecomendacaoSolo-2020-257-260.pdf",
+       "max": 60,
+       "min": 45,
+       "unidade": "kg N/ha"
+      },
+      "observacao": "Topdressing reference for second-crop corn after soybean, in the context of the cited manual."
+     },
+     "ph": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663",
+      "max": 7.0,
+      "min": 5.0,
+      "observacao": "General optimal range. Measurement method not stated in the source.",
+      "unidade": "pH"
+     },
+     "texturas_adequadas": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663",
+      "observacao": "Medium texture is a reference optimal condition. The sheet also mentions organic soils.",
+      "valores": [
+       "media"
+      ]
+     },
+     "umidade": {
+      "deplecao_sem_estresse": {
+       "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm",
+       "max": 55,
+       "min": 55,
+       "unidade": "% of available water"
+      },
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663",
+      "observacao": "Prefer well-drained soil."
+     }
+    },
+    "vulnerabilidades": [
+     {
+      "fases": [
+       "florescimento",
+       "enchimento_de_graos"
+      ],
+      "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo",
+      "observacao": "Drought in these stages can reduce grain set and filling.",
+      "risco": "deficit_hidrico"
+     }
+    ]
+   },
+   {
+    "ciclo_dias": {
+     "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm",
+     "max": 150,
+     "min": 120,
+     "unidade": "dias"
+    },
+    "demanda_hidrica_mm_ciclo": {
+     "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm",
+     "max": 650,
+     "min": 450,
+     "unidade": "mm/ciclo"
+    },
+    "finalidade": "graos",
+    "id": "trigo",
+    "infraestrutura": {
+     "maquinas": {
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1153536",
+      "observacao": "Basic equipment of the mechanized grain production scenario.",
+      "valores": [
+       "semeadora",
+       "colhedora"
+      ]
+     }
+    },
+    "nome": "Wheat",
+    "nome_cientifico": "Triticum aestivum L.",
+    "requisitos_solo": {
+     "compactacao": {
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1153536",
+      "observacao": "Assess physical restrictions to root growth before establishment."
+     },
+     "nitrogenio": {
+      "dose_adubacao_cobertura": {
+       "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1155370/1/Cultivo-de-Trigo.pdf",
+       "max": 60,
+       "min": 30,
+       "unidade": "kg N/ha"
+      },
+      "dose_adubacao_semeadura": {
+       "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1155370/1/Cultivo-de-Trigo.pdf",
+       "max": 30,
+       "min": 10,
+       "unidade": "kg N/ha"
+      },
+      "observacao": "Ranges of table 6 for wheat after soybean in Paraná."
+     },
+     "ph": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=2114",
+      "max": 7.0,
+      "min": 6.0,
+      "observacao": "General optimal range from ECOCROP.",
+      "unidade": "pH"
+     },
+     "texturas_adequadas": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=2114",
+      "observacao": "Medium texture is a reference optimal condition. The sheet also mentions organic soils.",
+      "valores": [
+       "media"
+      ]
+     },
+     "umidade": {
+      "deplecao_sem_estresse": {
+       "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm",
+       "max": 55,
+       "min": 55,
+       "unidade": "% of available water"
+      },
+      "fonte": "https://www.embrapa.br/busca-de-noticias/-/noticia/90345214/cuidados-na-semeadura-do-trigo-na-regiao-sul",
+      "observacao": "Avoid sowing in waterlogged soil and assess drainage."
+     }
+    },
+    "vulnerabilidades": [
+     {
+      "fonte": "https://www.embrapa.br/busca-de-noticias/-/noticia/90345214/cuidados-na-semeadura-do-trigo-na-regiao-sul",
+      "observacao": "Consider the disease history when choosing the field and the cultivar.",
+      "risco": "mosaico"
+     },
+     {
+      "fases": [
+       "espigamento"
+      ],
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/466677/1/trigo2005.pdf",
+      "observacao": "Frost at heading can cause yield losses.",
+      "risco": "geada"
+     }
+    ]
+   },
+   {
+    "ciclo_dias": {
+     "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm",
+     "max": 150,
+     "min": 120,
+     "unidade": "dias"
+    },
+    "demanda_hidrica_mm_ciclo": {
+     "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm",
+     "max": 650,
+     "min": 450,
+     "unidade": "mm/ciclo"
+    },
+    "finalidade": "graos",
+    "id": "aveia_branca",
+    "infraestrutura": {
+     "maquinas": {
+      "fonte": "https://www.bdpa.cnptia.embrapa.br/consulta/busca?b=ad&id=46408",
+      "observacao": "Basic equipment of the mechanized grain production scenario.",
+      "valores": [
+       "semeadora",
+       "colhedora"
+      ]
+     }
+    },
+    "nome": "White oat",
+    "nome_cientifico": "Avena sativa L.",
+    "requisitos_solo": {
+     "compactacao": {
+      "fonte": "https://www.bdpa.cnptia.embrapa.br/consulta/busca?b=ad&id=46408",
+      "observacao": "Assess the physical condition of the soil when choosing the area and preparing for sowing."
+     },
+     "nitrogenio": {
+      "dose_experimental_cobertura": {
+       "fonte": "https://doi.org/10.1590/S0103-84782004000600009",
+       "max": 80,
+       "min": 0,
+       "unidade": "kg N/ha"
+      },
+      "observacao": "Range of rates tested on white oat for grain after corn, in Botucatu (SP). Experimental data."
+     },
+     "ph": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481",
+      "max": 6.0,
+      "min": 5.0,
+      "observacao": "General optimal range from ECOCROP.",
+      "unidade": "pH"
+     },
+     "texturas_adequadas": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481",
+      "observacao": "ECOCROP lists light, medium and heavy textures as general optimal conditions.",
+      "valores": [
+       "arenosa",
+       "media",
+       "argilosa"
+      ]
+     },
+     "umidade": {
+      "deplecao_sem_estresse": {
+       "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm",
+       "max": 55,
+       "min": 55,
+       "unidade": "% of available water"
+      },
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481",
+      "observacao": "Prefer well-drained soil."
+     }
+    },
+    "vulnerabilidades": [
+     {
+      "fonte": "https://www.bdpa.cnptia.embrapa.br/consulta/busca?b=ad&id=46408",
+      "observacao": "Monitor leaf rust and consider the cultivar's susceptibility.",
+      "risco": "ferrugem_da_folha"
+     }
+    ]
+   },
+   {
+    "ciclo_dias": {
+     "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm",
+     "max": 150,
+     "min": 120,
+     "unidade": "dias"
+    },
+    "demanda_hidrica_mm_ciclo": {
+     "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm",
+     "max": 650,
+     "min": 450,
+     "unidade": "mm/ciclo"
+    },
+    "finalidade": "graos",
+    "id": "cevada",
+    "infraestrutura": {
+     "maquinas": {
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1179171/1/Indicacoes-Cevada-2025-e-2026-CGPE.pdf",
+      "observacao": "Basic equipment of the mechanized grain production scenario.",
+      "valores": [
+       "semeadora",
+       "colhedora"
+      ]
+     }
+    },
+    "nome": "Barley",
+    "nome_cientifico": "Hordeum vulgare L.",
+    "requisitos_solo": {
+     "compactacao": {
+      "fonte": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cevada/pre-producao/planejamento",
+      "observacao": "Prioritize deep, uncompacted soil."
+     },
+     "nitrogenio": {
+      "dose_adubacao_total": {
+       "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1179171/1/Indicacoes-Cevada-2025-e-2026-CGPE.pdf",
+       "max": 60,
+       "min": 41,
+       "unidade": "kg N/ha"
+      },
+      "observacao": "Scenario of table 6.4 for barley after a legume in Paraná.",
+      "produtividade_referencia": {
+       "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1179171/1/Indicacoes-Cevada-2025-e-2026-CGPE.pdf",
+       "max": 4.5,
+       "min": 3.5,
+       "unidade": "t of grain/ha"
+      }
+     },
+     "ph": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1232",
+      "max": 7.5,
+      "min": 6.5,
+      "observacao": "General optimal range from ECOCROP. Acidity correction depends on the soil analysis and the local recommendation.",
+      "unidade": "pH"
+     },
+     "texturas_adequadas": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1232",
+      "observacao": "Medium texture is ECOCROP's reference optimal condition.",
+      "valores": [
+       "media"
+      ]
+     },
+     "umidade": {
+      "deplecao_sem_estresse": {
+       "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm",
+       "max": 55,
+       "min": 55,
+       "unidade": "% of available water"
+      },
+      "fonte": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cevada/pre-producao/planejamento",
+      "observacao": "Prioritize well-drained soil."
+     }
+    },
+    "vulnerabilidades": [
+     {
+      "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1028626/1/ID43343BRSsampa.pdf",
+      "observacao": "Monitor diseases such as leaf rust, net blotch and head blight.",
+      "risco": "doencas_fungicas"
+     }
+    ]
+   },
+   {
+    "finalidade": "cobertura",
+    "florescimento_dias": {
+     "fonte": "https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf",
+     "max": 120,
+     "min": 100,
+     "unidade": "dias"
+    },
+    "id": "azevem_anual",
+    "infraestrutura": {
+     "maquinas": {
+      "fonte": "https://repositorio-dspace.agricultura.gov.br/bitstream/1/300/1/cartilha_adubos_verdes_informacoes_tecnicas.pdf",
+      "observacao": "Equipment expected in the mechanized row-sowing scenario.",
+      "valores": [
+       "semeadora"
+      ]
+     }
+    },
+    "janela_plantio": {
+     "fonte": "https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf",
+     "observacao": "March to June as a general reference for cover. Validate region, cultivar and purpose."
+    },
+    "nome": "Annual ryegrass",
+    "nome_cientifico": "Lolium multiflorum Lam.",
+    "requisitos_solo": {
+     "compactacao": {
+      "observacao": "In the establishment scenario, check for a compacted layer that hinders establishment.",
+      "status": "criterio_de_avaliacao_do_talhao"
+     },
+     "nitrogenio": {
+      "dose_adubacao_total": null,
+      "observacao": "N rate for annual ryegrass used only as a cover crop still lacks a reference."
+     },
+     "ph": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=7389",
+      "max": 7.5,
+      "min": 5.0,
+      "observacao": "General optimal range from ECOCROP.",
+      "unidade": "pH"
+     },
+     "texturas_adequadas": {
+      "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=7389",
+      "observacao": "Medium texture is the reference optimal condition. The sheet also records tolerance to light and heavy textures.",
+      "valores": [
+       "media"
+      ]
+     },
+     "umidade": {
+      "deplecao_sem_estresse": {
+       "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm",
+       "max": 60,
+       "min": 60,
+       "unidade": "% of available water"
+      },
+      "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm",
+      "observacao": "The FAO-56 value is for ryegrass managed for hay. Approximate reference for the cover-crop scenario."
+     }
+    },
+    "vulnerabilidades": [
+     {
+      "fonte": "https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf",
+      "observacao": "The cover-crop sheet indicates relative drought tolerance. Use this information as a qualitative description.",
+      "risco": "deficit_hidrico"
+     }
+    ]
+   }
+  ],
+  "fonte": "catalog/crops.yaml: ranges with unit and source (Embrapa, FAO Ecocrop, FAO-56); informative, not part of the score",
+  "mapeamento": {
+   "aveia": "aveia_branca",
+   "aveia_nabo": "aveia_branca",
+   "feijao_safrinha": null,
+   "milheto_crotalaria": null,
+   "milho_braquiaria": "milho",
+   "milho_safrinha": "milho",
+   "milho_verao": "milho",
+   "nabo_forrageiro": null,
+   "pousio": null,
+   "soja": "soja",
+   "soja_safrinha": "soja",
+   "sorgo": null,
+   "trigo": "trigo"
+  }
+ },
+ "status": 200
+}

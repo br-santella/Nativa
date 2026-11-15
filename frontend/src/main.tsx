@@ -1,5 +1,5 @@
 import { t as __text, t, locale, useLanguage, LanguageProvider, LanguageSwitcher } from "./i18n";
-import React, { useState, useEffect, useRef, createContext, useContext, } from "react";
+import React, { useState, useEffect, useRef, } from "react";
 import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
@@ -9,8 +9,11 @@ import "./styles.css";
 import EngineScenarios from "./EngineScenarios";
 import PropertyWizard from "./PropertyWizard";
 import type { SetupInputs } from "./PropertyWizard";
+import PropertySettings from "./PropertySettings";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
+import { loadSaved, persist, clearSaved } from "./storage";
+const saved = loadSaved();
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
 type Page = "about" | "landing" | "demo" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
@@ -28,34 +31,20 @@ const pages: Page[] = [
 ];
 function currentPage(): Page {
     const p = location.hash.slice(1) as Page;
-    if ((p as string) === "settings/property") return "farm";
+    if ((p as string) === "settings/property") return "settings";
     if (["signup", "onboard", "login"].includes(p)) return "demo";
+    if (p === "farm") return "settings";
     return pages.includes(p) ? p : "landing";
 }
-const DraftContext = createContext<{
-    draft: Farm;
-    setDraft: React.Dispatch<React.SetStateAction<Farm>>;
-}>({ draft: initialFarm, setDraft: () => { } });
-function Field({ label, name, type = "text", options, min, max, step, }: {
-    label: string;
-    name: keyof Farm;
-    type?: string;
-    options?: string[];
-    min?: number;
-    max?: number;
-    step?: string;
-}) {
-    const { draft, setDraft } = useContext(DraftContext);
-    return (<label className="field">
-      <span>{__text(label)}</span>
-      {__text(options ? (<select value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))}>
-          {__text(options.map((o) => (<option key={o} value={o}>{__text(o)}</option>)))}
-        </select>) : (<input type={type} value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))} min={min} max={max} step={step} required={name === "name" || name === "city" || name === "area"}/>))}
-    </label>);
+function CoverageNotice() {
+    return (<p className="coverage-notice" role="note">
+      <strong>{__text("Cobertura: somente Paran\u00E1 (PR).")}</strong>{" "}
+      {__text("Os dados de solo, relevo, clima e custos usados nas recomenda\u00E7\u00F5es foram preparados apenas para propriedades no estado.")}
+    </p>);
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState({
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(saved?.weights ?? profiles.soil), [applied, setApplied] = useState<number[]>(saved?.weights ?? profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
     const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
@@ -84,7 +73,25 @@ function App() {
             window.removeEventListener("keydown", closeOnEscape);
         };
     }, [menu]);
-    const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>();
+    const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
+    // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
+    const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
+    useEffect(() => {
+        if (persisted)
+            setSavedAt(persist({ farm, setupInputs, weights: applied, crops, settings }));
+    }, [persisted, farm, setupInputs, applied, crops, settings]);
+    function forgetProperty() {
+        clearSaved();
+        setPersisted(false);
+        setSavedAt(null);
+        setFarm({ ...initialFarm });
+        setDraft({ ...initialFarm });
+        setCrops(initialCrops);
+        setSetupInputs(undefined);
+        setWeights(profiles.soil);
+        setApplied(profiles.soil);
+        toast("Dados da propriedade apagados deste navegador.");
+    }
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const reduced = useReducedMotion();
     useEffect(() => {
@@ -117,8 +124,9 @@ function App() {
             clearTimeout(timer.current);
     }, []);
     function go(p: Page) {
-        location.hash = p === "farm" ? "settings/property" : p;
-        if (page === p) {
+        const target = p === "farm" ? "settings" : p;
+        location.hash = target;
+        if (page === target) {
             setMenu(false);
             setModal(null);
             window.scrollTo(0, 0);
@@ -126,11 +134,6 @@ function App() {
     }
     function toast(s: string) {
         setNotice(s);
-    }
-    function saveFarm(e: React.FormEvent) {
-        e.preventDefault();
-        setFarm({ ...draft });
-        toast("Alterações aplicadas nesta sessão.");
     }
     function compare() {
         if (!weights.some(Boolean)) {
@@ -379,7 +382,7 @@ function App() {
             </div>
             <hr />
             <h3>{__text("Um novo olhar para o pr\u00F3ximo ciclo.")}</h3>
-            <LinkButton onClick={() => go("farm")}>{__text("Ver minha propriedade \u2192")}</LinkButton>
+            <LinkButton onClick={() => go("settings")}>{__text("Ver minha propriedade \u2192")}</LinkButton>
             <LinkButton onClick={() => open("sources")}>{__text("Fontes e limita\u00E7\u00F5es \u2192")}</LinkButton>
           </aside>
         </div>
@@ -407,123 +410,6 @@ function App() {
         </button>
         {__text(calendar && <Timeline />)}
       </>);
-    }
-    function FarmPage() {
-        return (<form onSubmit={saveFarm}>
-        <div className="page-heading">
-          <div>
-            <h1>{__text("Minha Propriedade")}</h1>
-            <p>{__text("As caracter\u00EDsticas da sua terra s\u00E3o o ponto de partida.")}</p>
-          </div>
-          <Btn type="submit">{__text("Salvar altera\u00E7\u00F5es")}</Btn>
-        </div>
-        <Demo />
-        <div className="two-col">
-          <div className="stack">
-            <section className="panel">
-              <h2>{__text("01 Localiza\u00E7\u00E3o")}</h2>
-              <p>{__text("Informe onde voc\u00EA cultiva. Os campos marcados s\u00E3o opcionais.")}</p>
-              <div className="fields-grid">
-                <Field label={__text("Nome da propriedade")} name="name"/>
-                <Field label={__text("Pa\u00EDs")} name="country" options={[
-                "Brasil",
-                "Argentina",
-                "Uruguai",
-                "Paraguai",
-                "Outro",
-            ]}/>
-                <div className="fields-grid">
-                  <Field label={__text("Latitude")} name="latitude" type="number" min={-90} max={90} step="any"/>
-                  <Field label={__text("Longitude")} name="longitude" type="number" min={-180} max={180} step="any"/>
-                </div>
-                <Field label={__text("\u00C1rea da propriedade (ha)")} name="area" type="number" min={0.01} step="any"/>
-              </div>
-              <div className="location-preview">
-                <img src={assets["13:478"].imgLocalizacaoDemonstrativa} alt={__text("Localiza\u00E7\u00E3o ilustrativa da fazenda")}/>
-                <span>{__text("\u2316")}{__text(draft.latitude)}{__text(",")}{__text(draft.longitude)}{__text("\u2022 exemplo")}</span>
-              </div>
-            </section>
-            <section className="panel">
-              <h2>{__text("02 Caracter\u00EDsticas do solo")}</h2>
-              <div className="fields-grid">
-                <Field label={__text("Textura do solo")} name="texture" options={[
-                "Argiloso",
-                "Arenoso",
-                "Franco",
-                "Siltoso",
-                "Não informado",
-            ]}/>
-                <Field label={__text("pH do solo \u24D8")} name="ph" type="number" min={0} max={14} step=".1"/>
-                <Field label={__text("Drenagem")} name="drainage" options={["Moderada", "Boa", "Baixa", "Não informado"]}/>
-                <Field label={__text("Mat\u00E9ria org\u00E2nica (%) \u2022 opcional")} name="organic" type="number" min={0} max={100} step=".1"/>
-              </div>
-            </section>
-            <section className="panel">
-              <h2>{__text("03 Recursos h\u00EDdricos")}</h2>
-              <div className="fields-grid">
-                <Field label={__text("Disponibilidade de irriga\u00E7\u00E3o")} name="irrigation" options={["Sim", "Não", "Não informado"]}/>
-                <Field label={__text("Tipo de irriga\u00E7\u00E3o")} name="irrigationType" options={[
-                "Pivô central",
-                "Gotejamento",
-                "Aspersão",
-                "Não se aplica",
-                "Outro",
-            ]}/>
-                <div className="full">
-                  <Field label={__text("Restri\u00E7\u00F5es de \u00E1gua \u2022 opcional")} name="waterRestriction"/>
-                </div>
-              </div>
-            </section>
-          </div>
-          <aside className="stack">
-            <section className="panel">
-              <h2>{__text("Sua terra, em contexto")}</h2>
-              <h3 className="farm-name">{__text(farm.name)}</h3>
-              <p>
-                {__text(farm.city)}{__text("\u2022")}{__text(farm.country)}
-              </p>
-              <dl>
-                <div>
-                  <dt>{__text("\u00C1rea total")}</dt>
-                  <dd>{__text(farm.area)}{__text("ha")}</dd>
-                </div>
-                <div>
-                  <dt>{__text("Talh\u00F5es cadastrados")}</dt>
-                  <dd>{__text("1 talh\u00E3o")}</dd>
-                </div>
-                <div>
-                  <dt>{__text("Informa\u00E7\u00F5es preenchidas")}</dt>
-                  <dd>{__text(Object.values(draft).filter(Boolean).length)}{__text("campos")}</dd>
-                </div>
-              </dl>
-            </section>
-            <section className="panel">
-              <h3>{__text("Por que pedimos estes dados?")}</h3>
-              <p>{__text("Solo, \u00E1gua e localiza\u00E7\u00E3o ajudam a contextualizar os cen\u00E1rios de rota\u00E7\u00E3o.")}</p>
-              <p>{__text("Voc\u00EA pode come\u00E7ar com o que sabe e completar os campos opcionais depois.")}</p>
-              <small>{__text("\u24D8 Altera\u00E7\u00F5es mantidas somente nesta sess\u00E3o.")}</small>
-            </section>
-            <section className="panel">
-              <h2>{__text("An\u00E1lise de solo")}</h2>
-              <h3>{__text(report ? report.name : "Nenhum laudo anexado")}</h3>
-              <p>{__text("Se tiver um laudo recente, adicione-o para consultar junto ao cadastro.")}</p>
-              <label className="button upload">
-                {__text(report ? "Substituir laudo" : "Adicionar laudo")}
-                <input type="file" accept=".pdf,.png,.jpg,.jpeg" onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) {
-                    setReport(f);
-                    toast("Laudo selecionado localmente. Nenhum arquivo foi enviado.");
-                }
-            }}/>
-              </label>
-              {__text(report && (<button className="text-link" type="button" onClick={() => setReport(null)}>{__text("Remover arquivo")}</button>))}
-              <small>{__text("Arquivo local \u2022 n\u00E3o enviado nem analisado automaticamente.")}</small>
-            </section>
-          </aside>
-        </div>
-        <p className="footnote">{__text("Seus dados ajudam a explorar possibilidades; n\u00E3o substituem uma avalia\u00E7\u00E3o agron\u00F4mica local.")}</p>
-      </form>);
     }
     function Timeline() {
         return (<section className="panel timeline-panel">
@@ -816,11 +702,23 @@ function App() {
         <div className="page-heading">
           <div>
             <h1>{__text("Configura\u00E7\u00F5es")}</h1>
-            <p>{__text("Controle suas prefer\u00EAncias e a origem dos dados.")}</p>
+            <p>{__text("Sua propriedade, suas prefer\u00EAncias e a origem dos dados.")}</p>
           </div>
-          <Btn onClick={() => toast("Preferências aplicadas nesta sessão.")}>{__text("Salvar ajustes")}</Btn>
-        </div>
+                  </div>
         <Demo />
+        <PropertySettings key={JSON.stringify([farm, setupInputs, applied])} farm={farm} inputs={setupInputs} weights={applied} savedAt={savedAt} report={report} onReport={(f) => {
+                setReport(f);
+                if (f)
+                    toast("Laudo selecionado localmente. Nenhum arquivo foi enviado.");
+            }} onSave={(nextFarm, inputs, nextWeights) => {
+                setFarm(nextFarm);
+                setDraft(nextFarm);
+                setSetupInputs(inputs);
+                setWeights(nextWeights);
+                setApplied(nextWeights);
+                setPersisted(true);
+                toast("Alterações salvas. Os cenários foram recalculados.");
+            }} onRedo={() => go("demo")} onForget={forgetProperty}/>
         <div className="two-col">
           <div className="stack">
             <section className="panel">
@@ -836,7 +734,7 @@ function App() {
                     <select aria-label={__text("Unidade de temperatura")} value={settings.temperature} onChange={(e) => setSettings((v) => ({
                 ...v,
                 temperature: e.target.value,
-            }))}>
+            }))} onInput={() => setPersisted(true)}>
                       <option value={"Graus Celsius (\u00B0C)"}>{__text("Graus Celsius (\u00B0C)")}</option>
                       <option value={"Graus Fahrenheit (\u00B0F)"}>{__text("Graus Fahrenheit (\u00B0F)")}</option>
                     </select>
@@ -876,7 +774,7 @@ function App() {
             <section className="panel green-panel">
               <h2>{__text("Voc\u00EA est\u00E1 no controle")}</h2>
               <p>{__text("Este \u00E9 um ambiente demonstrativo. A fazenda, os cultivos, os indicadores e os cen\u00E1rios s\u00E3o fict\u00EDcios.")}</p>
-              <p>{__text("As altera\u00E7\u00F5es ficam apenas na mem\u00F3ria desta sess\u00E3o. N\u00E3o h\u00E1 conta real, sincroniza\u00E7\u00E3o ou envio de documentos.")}</p>
+              <p>{__text("Os dados da propriedade ficam salvos apenas neste navegador. N\u00E3o h\u00E1 conta real, sincroniza\u00E7\u00E3o ou envio de documentos.")}</p>
               <small>{__text("NASA Space Apps Challenge 2026")}<br />{__text("Projeto NATIVA")}</small>
             </section>
             <section className="panel">
@@ -962,6 +860,7 @@ function App() {
             setFarm(nextFarm);
             setDraft(nextFarm);
             setSetupInputs(inputs);
+            setPersisted(true);
             const nextWeights = [inputs.pesos.agua * 10, inputs.pesos.solo * 10, inputs.pesos.renda * 10, inputs.pesos.risco * 10];
             setWeights(nextWeights);
             setApplied(nextWeights);
@@ -1055,7 +954,8 @@ function App() {
               {__text(farm.city)}{__text("\u2022")}{__text(farm.area)}{__text("ha")}</small>
           </button>
           <p>{__text("Uma propriedade est\u00E1 dispon\u00EDvel nesta demonstra\u00E7\u00E3o.")}</p>
-          <LinkButton onClick={() => go("farm")}>{__text("Editar propriedade \u2192")}</LinkButton>
+          <CoverageNotice />
+          <LinkButton onClick={() => go("settings")}>{__text("Editar propriedade \u2192")}</LinkButton>
         </>);
         if (modal === "contact")
             return (<>
@@ -1096,7 +996,7 @@ function App() {
         return null;
     }
     const inDashboard = !["landing", "demo", "about"].includes(page);
-    return (<DraftContext.Provider value={{ draft, setDraft }}>
+    return (<>
       {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className={"dashboard" + (sidebarCollapsed ? " sidebar-collapsed" : "")}>
           {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
           <aside id="dashboard-sidebar" className={"sidebar " + (menu ? "shown" : "")}>
@@ -1130,17 +1030,9 @@ function App() {
               {__text(farm.name)}{__text("\u2304")}</button>
           </header>
           <main className="main-content">
-            {(page === "settings" || page === "farm") && (
-              <nav className="settings-nav" aria-label={__text("Configurações")}>
-                <button className={page === "settings" ? "selected" : ""} aria-current={page === "settings" ? "page" : undefined} onClick={() => go("settings")}>{__text("Preferências de leitura")}</button>
-                <button className={page === "farm" ? "selected" : ""} aria-current={page === "farm" ? "page" : undefined} onClick={() => go("farm")}>{__text("Minha Propriedade")}</button>
-              </nav>
-            )}
             {__text(page === "overview"
                 ? Overview()
-                : page === "farm"
-                    ? FarmPage()
-                    : page === "history"
+                : page === "history"
                         ? History()
                         : page === "climate"
                             ? Climate()
@@ -1156,7 +1048,7 @@ function App() {
           <button aria-label={__text("Fechar notifica\u00E7\u00E3o")} onClick={() => setNotice("")}>{__text("\u00D7")}</button>
         </div>))}
       {__text(inDashboard && <span className="sr-only">{__text("Demonstra\u00E7\u00E3o NATIVA")}</span>)}
-    </DraftContext.Provider>);
+    </>);
 }
 function Dialog({ children, onClose, wide, }: {
     children: React.ReactNode;
