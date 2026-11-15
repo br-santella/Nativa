@@ -1063,7 +1063,7 @@
        "nivel": "alto",
        "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
       },
-      "por_que": "It is the current rotation; it ranked #2 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.82. Largest contributions to the score: Income (0.35) and Climate risk (0.21).",
+      "por_que": "It is the current rotation; it ranked #2 among 10 valid options. The best alternative, second-season corn + brachiaria, has a score of 82/100. Largest contributions to the score: Income (0.35) and Climate risk (0.21).",
       "riscos": [
        "Confirm the calendar, cultivar and ZARC window with the agronomist."
       ]
@@ -3452,7 +3452,7 @@
      "nivel": "alto",
      "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
     },
-    "por_que": "It is the current rotation; it ranked #2 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.82. Largest contributions to the score: Income (0.35) and Climate risk (0.21).",
+    "por_que": "It is the current rotation; it ranked #2 among 10 valid options. The best alternative, second-season corn + brachiaria, has a score of 82/100. Largest contributions to the score: Income (0.35) and Climate risk (0.21).",
     "riscos": [
      "Confirm the calendar, cultivar and ZARC window with the agronomist."
     ]
@@ -6678,7 +6678,7 @@
       "nivel": "alto",
       "texto": "cooperatives and the poultry and pork agro-industry of Western Paraná"
      },
-     "por_que": "It is the current rotation; it ranked #2 among 10 valid options. The best alternative (second-season corn + brachiaria) has score 0.82. Largest contributions to the score: Income (0.35) and Climate risk (0.21).",
+     "por_que": "It is the current rotation; it ranked #2 among 10 valid options. The best alternative, second-season corn + brachiaria, has a score of 82/100. Largest contributions to the score: Income (0.35) and Climate risk (0.21).",
      "riscos": [
       "Confirm the calendar, cultivar and ZARC window with the agronomist."
      ]

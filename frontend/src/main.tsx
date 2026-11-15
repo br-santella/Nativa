@@ -4,6 +4,12 @@ import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
 import { months, initialFarm, initialCrops, series, info, } from "./data";
+/** Number in the active language (decimal comma in pt-BR, point in English). */
+const num = (n: number, digits = 1) => n.toLocaleString(locale(), { minimumFractionDigits: digits, maximumFractionDigits: digits });
+/** Area in hectares as typed or saved (always with a point), shown in the active language. */
+const ha = (v: string | number) => Number.isFinite(Number(v)) && String(v).trim() !== "" ? Number(v).toLocaleString(locale(), { maximumFractionDigits: 2 }) : String(v);
+/** Ids of the sample crops: their area follows the property when it changes. */
+const SAMPLE_CROP_IDS = new Set(initialCrops.map((c) => c.id));
 import type { Farm, Crop } from "./data";
 import "./styles.css";
 import "./crop-climate.css";
@@ -260,8 +266,7 @@ function App() {
               </text>)))}
           </g>
         </svg>
-        <small>{__text("\u25CF NASA")}{__text(" ")}
-          {__text(kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER")}{__text("\u00B7 s\u00E9rie fict\u00EDcia")}</small>
+        <small>{`● NASA ${kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} · `}{__text("s\u00E9rie fict\u00EDcia")}</small>
       </div>);
     }
     function Overview() {
@@ -277,7 +282,7 @@ function App() {
           <dl>
             <div><dt><PropertyIcon kind="crop" />{__text("CULTIVO ATUAL")}</dt><dd>{__text(farm.crop)}</dd></div>
             <div><dt><PropertyIcon kind="location" />{__text("Localização")}</dt><dd>{farm.city} · {__text(farm.country)}</dd></div>
-            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{farm.area} ha</dd></div>
+            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{ha(farm.area)} ha</dd></div>
           </dl>
         </section>
         <div className="overview-map">
@@ -304,7 +309,7 @@ function App() {
         <div className="section-heading">
           <div>
             <h2>{__text("Uma vis\u00E3o de cada safra")}</h2>
-            <p>{__text("Talh\u00E3o 01 \u2022")}{__text(farm.area)}{__text("ha \u2022 plantio, desenvolvimento e colheita")}</p>
+            <p>{__text("Talh\u00E3o 01")} • {ha(farm.area)} ha • {__text("plantio, desenvolvimento e colheita")}</p>
           </div>
           <select aria-label={__text("Ano do calend\u00E1rio")} value={year} onChange={(e) => { setYear(e.target.value); setPeriod("12"); }}>
             {__text(["2025", "2024", "2023"].map((y) => (<option key={y} value={y}>{__text(y)}</option>)))}
@@ -317,23 +322,20 @@ function App() {
               {__text(months.map((m) => (<span key={m}>{__text(m)}</span>)))}
             </div>
             <div className="timeline-row">
-              <strong>{__text("Soja")}{__text(Number(year) - 1)}{__text("/")}{__text(year.slice(2))}
-              </strong>
+              <strong>{__text("Soja")} {Number(year) - 1}/{year.slice(2)}</strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "1/3" }}>{__text("Desenvolvimento")}</span>
-                <span className="harvest" style={{ gridColumn: "3/4" }}>{__text("Colheita")}</span>
-                <span style={{ gridColumn: "10/11" }}>{__text("Plantio")}</span>
-                <span style={{ gridColumn: "11/13" }}>{__text("Soja")}{__text(year)}{__text("/")}{__text(String(Number(year) + 1).slice(2))}
-                </span>
+                <span className="harvest" style={{ gridColumn: "1/2" }}>{__text("Colheita")}</span>
+                <span style={{ gridColumn: "9/10" }}>{__text("Plantio")}</span>
+                <span style={{ gridColumn: "10/13" }}>{__text("Soja")} {year}/{String(Number(year) + 1).slice(2)}</span>
               </div>
             </div>
             <div className="timeline-row">
               <strong>{__text("Milho safrinha")}</strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "3/4" }}>{__text("Plantio")}</span>
-                <span style={{ gridColumn: "4/7" }}>{__text("Desenvolvimento")}</span>
-                <span className="harvest" style={{ gridColumn: "7/8" }}>{__text("Colheita")}</span>
-                <span className="bare" style={{ gridColumn: "8/10" }}>{__text("Solo descoberto")}</span>
+                <span style={{ gridColumn: "2/3" }}>{__text("Plantio")}</span>
+                <span style={{ gridColumn: "3/6" }}>{__text("Desenvolvimento")}</span>
+                <span className="harvest" style={{ gridColumn: "6/7" }}>{__text("Colheita")}</span>
+                <span className="bare" style={{ gridColumn: "7/9" }}>{__text("Solo descoberto")}</span>
               </div>
             </div>
           </div>
@@ -400,14 +402,14 @@ function App() {
               <tbody>
                 {__text(crops.map((c) => (<tr key={c.id}>
                     <td>
-                      {__text(c.crop)}{__text("\u2022")}{__text(c.season)}
+                      {__text(c.crop)} • {c.season}
                     </td>
                     <td>{__text(fmt(c.plant))}</td>
                     <td>
                       {__text(fmt(c.harvest))}
                       {__text(c.status !== "Concluído" ? "*" : "")}
                     </td>
-                    <td>{__text(c.area)}{__text("ha")}</td>
+                    <td>{ha(c.area)} ha</td>
                     <td>
                       {__text(c.yield ? c.yield + " sc/ha" : "Ainda não colhida")}
                     </td>
@@ -534,6 +536,7 @@ function App() {
             }} onSave={(nextFarm, inputs) => {
                 setFarm(nextFarm);
                 setDraft(nextFarm);
+                setCrops((p) => p.map((c) => SAMPLE_CROP_IDS.has(c.id) ? { ...c, area: nextFarm.area } : c));
                 setSetupInputs(inputs);
                 setPersisted(true);
                 toast("Alterações salvas. Os cenários foram recalculados.");
@@ -647,7 +650,7 @@ function App() {
           </div>
           <div className="carousel-controls">
             <div>
-              {__text(heroImgs.map((_, i) => (<button key={i} aria-label={__text("Ir para imagem " + (i + 1))} aria-pressed={slide === i} className={slide === i ? "active" : ""} onClick={() => setSlide(i)}/>)))}
+              {__text(heroImgs.map((_, i) => (<button key={i} aria-label={`${__text("Ir para imagem")} ${i + 1}`} aria-pressed={slide === i} className={slide === i ? "active" : ""} onClick={() => setSlide(i)}/>)))}
               <small>{__text("0")}{__text(slide + 1)}{__text("/ 03")}</small>
             </div>
             <div>
@@ -678,6 +681,7 @@ function App() {
         return <PropertyWizard initial={draft} brand={<Logo />} onHome={() => go("landing")} onComplete={(nextFarm, inputs) => {
             setFarm(nextFarm);
             setDraft(nextFarm);
+            setCrops((p) => p.map((c) => SAMPLE_CROP_IDS.has(c.id) ? { ...c, area: nextFarm.area } : c));
             setSetupInputs(inputs);
             setPersisted(true);
             go("overview");
@@ -686,8 +690,8 @@ function App() {
     function AddCrop() {
         const [value, setValue] = useState({
             crop: "Milho",
-            plant: "2026-03-05",
-            harvest: "2026-07-28",
+            plant: "2027-02-01",
+            harvest: "2027-06-25",
             area: farm.area,
             yield: "",
         });
@@ -708,7 +712,7 @@ function App() {
                     ...p,
                 ]);
                 setModal(null);
-                toast("Cultivo adicionado nesta sessão.");
+                toast("Cultivo adicionado.");
             }}>
         <h2>{__text("Adicionar cultivo")}</h2>
         <p>{__text("Registre um exemplo para explorar o hist\u00F3rico da propriedade.")}</p>
@@ -749,7 +753,7 @@ function App() {
           </p>))}
         <p>{__text("As datas podem coexistir com outros cultivos no mesmo ano.")}</p>
         <button type="submit" className="button">{__text("Salvar cultivo")}</button>
-        <small>{__text("Dados mantidos somente nesta sess\u00E3o.")}</small>
+        <small>{__text(persisted ? "Fica salvo neste navegador, junto com a propriedade." : "Dados mantidos somente nesta sess\u00E3o.")}</small>
       </form>);
     }
     function ModalContent() {
@@ -766,7 +770,7 @@ function App() {
           <button className="property-choice" onClick={() => open(null)}>
             <strong>{__text(farm.name)}{__text("\u2713")}</strong>
             <small>
-              {__text(farm.city)}{__text("\u2022")}{__text(farm.area)}{__text("ha")}</small>
+              {farm.city} • {ha(farm.area)} ha</small>
           </button>
           <p>{__text("Uma propriedade est\u00E1 dispon\u00EDvel nesta demonstra\u00E7\u00E3o.")}</p>
           <CoverageNotice />
@@ -819,7 +823,7 @@ function App() {
               <Logo toggleSidebar />
               <button className="sidebar-close" aria-label={__text("Fechar navegação")} onClick={() => setMenu(false)}><span aria-hidden="true">×</span></button>
             </div>
-            <small className="nav-section">{__text("PRINCIPAL")}</small>
+            <small className="nav-section">{__text("Principal")}</small>
             <nav id="dashboard-nav">
               {__text(navItems.map(([id, label, img]) => (<React.Fragment key={id}>
                   <button className={page === id ? "selected" : ""} aria-current={page === id ? "page" : undefined} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
