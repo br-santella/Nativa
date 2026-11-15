@@ -119,7 +119,7 @@ function App() {
     [crops, setCrops] = useState<Crop[]>(initialCrops),
     [year, setYear] = useState("2025"),
     [period, setPeriod] = useState("12"),
-    [layer, setLayer] = useState("Vegetation (NDVI)"),
+    [layer, setLayer] = useState("Vegetação (NDVI)"),
     [zoom, setZoom] = useState(1),
     [menu, setMenu] = useState(false),
     [notice, setNotice] = useState(""),
@@ -132,8 +132,8 @@ function App() {
     [explain, setExplain] = useState(false),
     [userName, setUserName] = useState("Marina Silva"),
     [settings, setSettings] = useState({
-      temperature: "Degrees Celsius (°C)",
-      language: "English",
+      temperature: "Graus Celsius (°C)",
+      language: "Português (Brasil)",
     });
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reduced = useReducedMotion();
@@ -172,28 +172,28 @@ function App() {
   function saveFarm(e: React.FormEvent) {
     e.preventDefault();
     setFarm({ ...draft });
-    toast("Changes applied for this session.");
+    toast("Alterações aplicadas nesta sessão.");
   }
   function compare() {
     if (!weights.some(Boolean)) {
-      toast("Set at least one priority above zero.");
+      toast("Defina pelo menos uma prioridade maior que zero.");
       return;
     }
     setBusy(true);
     timer.current = setTimeout(() => {
       setApplied([...weights]);
       setBusy(false);
-      toast("Demo comparison updated.");
+      toast("Comparação demonstrativa atualizada.");
     }, 600);
   }
   const chosen = scenarios.map((s) => score(s.notes, applied));
   const winner = chosen.indexOf(Math.max(...chosen));
   const navItems: [Page, string, string][] = [
-    ["overview", "Overview", A.imgIconeDeNavegacao],
-    ["farm", "My Property", A.imgIconeDeNavegacao1],
-    ["climate", "Climate Analysis", A.imgIconeDeNavegacao3],
-    ["history", "Crop History", A.imgIconeDeNavegacao2],
-    ["rotation", "Rotation Strategies", A.imgIconeDeNavegacao4],
+    ["overview", "Visão Geral", A.imgIconeDeNavegacao],
+    ["farm", "Minha Propriedade", A.imgIconeDeNavegacao1],
+    ["climate", "Análise Climática", A.imgIconeDeNavegacao3],
+    ["history", "Histórico de Cultivo", A.imgIconeDeNavegacao2],
+    ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
   ];
   const open = (m: Modal) => setModal(m);
   function Logo() {
@@ -201,7 +201,7 @@ function App() {
       <button
         className="brand"
         onClick={() => go("landing")}
-        aria-label="NATIVA — home"
+        aria-label="NATIVA — início"
       >
         <img src={A.imgLogoNativaEnviada} alt="" />
         <strong>NATIVA</strong>
@@ -211,10 +211,10 @@ function App() {
   function Demo() {
     return (
       <p className="demo">
-        DEMO DATA{" "}
+        DADOS DEMONSTRATIVOS{" "}
         <span>
-          • Fictitious property. Illustrative values, not real measurements
-          or validated recommendations.
+          • Propriedade fictícia. Valores ilustrativos, não são medições reais
+          nem recomendações validadas.
         </span>
       </p>
     );
@@ -282,7 +282,7 @@ function App() {
         <svg
           viewBox="0 0 350 174"
           role="img"
-          aria-label={`${kind === "rain" ? "Precipitation" : kind === "temperature" ? "Temperature" : kind === "moisture" ? "Soil moisture" : "NDVI"} — demo values for ${year}`}
+          aria-label={`${kind === "rain" ? "Precipitação" : kind === "temperature" ? "Temperatura" : kind === "moisture" ? "Umidade do solo" : "NDVI"} — valores demonstrativos de ${year}`}
         >
           <g transform="translate(34 8)">
             {[15, 70, 125].map((y, i) => (
@@ -293,7 +293,7 @@ function App() {
                     ? [35, 25, 15][i]
                     : i === 2
                       ? "0"
-                      : (max * (1 - i * 0.5)).toLocaleString("en-US")}
+                      : (max * (1 - i * 0.5)).toLocaleString("pt-BR")}
                 </text>
               </g>
             ))}
@@ -356,8 +356,8 @@ function App() {
               </>
             )}
             {(period === "6"
-              ? ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-              : ["Jan", "Apr", "Jul", "Oct", "Dec"]
+              ? ["Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+              : ["Jan", "Abr", "Jul", "Out", "Dez"]
             ).map((m, i, arr) => (
               <text
                 key={m}
@@ -373,7 +373,7 @@ function App() {
         <small>
           ● NASA{" "}
           {kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} ·
-          fictitious series
+          série fictícia
         </small>
       </div>
     );
@@ -384,44 +384,44 @@ function App() {
         <div className="map-image" style={{ transform: `scale(${zoom})` }}>
           <img
             src={A.imgPlanoGeografico}
-            alt="Illustrative aerial view of farm fields"
+            alt="Vista aérea ilustrativa de campos agrícolas"
           />
           <img
             className="field-boundary"
             src={A.imgLimiteFicticio}
-            alt="Fictitious property boundary"
+            alt="Limite fictício da propriedade"
           />
         </div>
         <select
           className="map-layer"
-          aria-label="Map layer"
+          aria-label="Camada do mapa"
           value={layer}
           onChange={(e) => setLayer(e.target.value)}
         >
           {[
-            "Vegetation (NDVI)",
-            "Soil moisture",
-            "Precipitation",
-            "Temperature",
+            "Vegetação (NDVI)",
+            "Umidade do solo",
+            "Precipitação",
+            "Temperatura",
           ].map((x) => (
             <option key={x}>{x}</option>
           ))}
         </select>
         <div className="map-controls">
           <button
-            aria-label="Zoom in"
+            aria-label="Aproximar mapa"
             onClick={() => setZoom((v) => Math.min(2.4, v + 0.2))}
           >
             +
           </button>
           <button
-            aria-label="Zoom out"
+            aria-label="Afastar mapa"
             onClick={() => setZoom((v) => Math.max(1, v - 0.2))}
           >
             −
           </button>
           <button
-            aria-label="Center on the property"
+            aria-label="Centralizar propriedade"
             onClick={() => setZoom(1)}
           >
             ⌖
@@ -429,16 +429,16 @@ function App() {
         </div>
         <div className="map-farm">
           <strong>{farm.name}</strong>
-          <small>{farm.area} ha • fictitious boundary</small>
+          <small>{farm.area} ha • limite fictício</small>
         </div>
         <small className="map-disclaimer">
-          Illustrative image • fictitious boundaries, not georeferenced
+          Imagem ilustrativa • limites fictícios, sem georreferenciamento
         </small>
         <div className="map-legend">
           <span>
-            {layer === "Vegetation (NDVI)"
-              ? "NDVI · 0.2–0.9"
-              : layer + " · example"}
+            {layer === "Vegetação (NDVI)"
+              ? "NDVI · 0,2–0,9"
+              : layer + " · exemplo"}
           </span>
           <div>
             {["#c4ad70", "#c3d58b", "#90b66c", "#4d8153", "#315b3d"].map(
@@ -450,7 +450,7 @@ function App() {
         </div>
         <button
           className="map-fullscreen"
-          aria-label={expanded ? "Close enlarged map" : "Enlarge map"}
+          aria-label={expanded ? "Fechar mapa ampliado" : "Ampliar mapa"}
           onClick={() => open(expanded ? null : "map")}
         >
           <img src={A.imgTelaCheia} alt="" />
@@ -463,18 +463,18 @@ function App() {
       <section className="panel climate-summary">
         <div className="section-heading">
           <div>
-            <h2>How is the climate changing?</h2>
+            <h2>Como o clima está mudando?</h2>
             <p>
-              Jan–Dec {year} · month-to-month comparison · demo values
+              Jan–Dez {year} · comparação entre meses · valores demonstrativos
             </p>
           </div>
           <select
-            aria-label="Chart period"
+            aria-label="Período dos gráficos"
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
           >
-            <option value="12">Last 12 months</option>
-            <option value="6">Last 6 months</option>
+            <option value="12">Últimos 12 meses</option>
+            <option value="6">Últimos 6 meses</option>
           </select>
         </div>
         <div className="charts-three">
@@ -482,9 +482,9 @@ function App() {
             <div key={kind}>
               <div className="chart-title">
                 <strong>
-                  {["Temperature", "Precipitation", "Soil moisture"][i]}
+                  {["Temperatura", "Precipitação", "Umidade do solo"][i]}
                 </strong>
-                <small>{["°C", "mm/month", "%"][i]}</small>
+                <small>{["°C", "mm/mês", "%"][i]}</small>
               </div>
               <Chart kind={kind} />
             </div>
@@ -498,23 +498,23 @@ function App() {
       <div className="metrics">
         {[
           [
-            "Mean temperature",
-            settings.temperature.startsWith("Degrees Fahrenheit")
-              ? "76.6"
-              : "24.8",
-            settings.temperature.startsWith("Degrees Fahrenheit") ? "°F" : "°C",
-            "↗ +1.2 °C vs history",
+            "Temperatura média",
+            settings.temperature.startsWith("Graus Fahrenheit")
+              ? "76,6"
+              : "24,8",
+            settings.temperature.startsWith("Graus Fahrenheit") ? "°F" : "°C",
+            "↗ +1,2 °C no histórico",
             "POWER",
           ],
           [
-            "Accumulated precipitation",
+            "Precipitação acumulada",
             "142",
             "mm",
-            "↘ −18% vs history",
+            "↘ −18% no histórico",
             "POWER",
           ],
-          ["Soil moisture", "32", "%", "↗ +4 p.p. this month", "SMAP"],
-          ["Vegetation index", "0.76", "NDVI", "↗ +0.08 this month", "MODIS"],
+          ["Umidade do solo", "32", "%", "↗ +4 p.p. no mês", "SMAP"],
+          ["Índice de vegetação", "0,76", "NDVI", "↗ +0,08 no mês", "MODIS"],
         ].map((m, i) => (
           <button
             className="metric panel"
@@ -543,7 +543,7 @@ function App() {
               <small>{m[2]}</small>
             </div>
             <span className={"delta " + (i < 2 ? "warm" : "")}>{m[3]}</span>
-            <small className="metric-source">NASA {m[4]} • example</small>
+            <small className="metric-source">NASA {m[4]} • exemplo</small>
             {i === 0 ? (
               <img
                 className="metric-spark"
@@ -578,13 +578,13 @@ function App() {
       <>
         <div className="page-heading overview-heading">
           <div>
-            <h1>Your property, a new perspective.</h1>
+            <h1>Sua propriedade, uma nova perspectiva.</h1>
             <p>
-              Explore your farm with NASA data and discover opportunities
-              for your next seasons.
+              Explore sua fazenda com dados da NASA e descubra oportunidades
+              para suas próximas safras.
             </p>
           </div>
-          <Btn onClick={() => go("rotation")}>＋ New Analysis</Btn>
+          <Btn onClick={() => go("rotation")}>＋ Nova Análise</Btn>
         </div>
         <Demo />
         <div className="overview-map">
@@ -595,20 +595,20 @@ function App() {
               {farm.city} · {farm.country}
             </p>
             <small>
-              {farm.latitude} / {farm.longitude} • fictitious coordinates
+              {farm.latitude} / {farm.longitude} • coordenadas fictícias
             </small>
             <div className="current-context">
-              <small>CURRENT CROP</small>
+              <small>CULTIVO ATUAL</small>
               <strong>{farm.crop}</strong>
-              <span>Field 01 · {farm.area} ha</span>
+              <span>Talhão 01 · {farm.area} ha</span>
             </div>
             <hr />
-            <h3>A fresh look at the next cycle.</h3>
+            <h3>Um novo olhar para o próximo ciclo.</h3>
             <LinkButton onClick={() => go("farm")}>
-              See my property →
+              Ver minha propriedade →
             </LinkButton>
             <LinkButton onClick={() => open("sources")}>
-              Sources and limitations →
+              Fontes e limitações →
             </LinkButton>
           </aside>
         </div>
@@ -618,7 +618,7 @@ function App() {
           aria-expanded={explain}
           onClick={() => setExplain(!explain)}
         >
-          Understand the indicators <span>{explain ? "−" : "⌄"}</span>
+          Entenda os indicadores <span>{explain ? "−" : "⌄"}</span>
         </button>
         {explain && (
           <div className="panel inline-info">
@@ -632,13 +632,13 @@ function App() {
         )}
         <section className="plan-banner">
           <div>
-            <h2>Plan your next season.</h2>
+            <h2>Planeje sua próxima safra.</h2>
             <p>
-              Compare rotation strategies considering the climate, the soil and
-              your property's priorities.
+              Compare estratégias de rotação considerando o clima, o solo e as
+              prioridades da sua propriedade.
             </p>
             <button className="button lime" onClick={() => go("rotation")}>
-              Compare strategies →
+              Comparar estratégias →
             </button>
           </div>
           <div className="banner-art">
@@ -655,7 +655,7 @@ function App() {
           aria-expanded={calendar}
           onClick={() => setCalendar(!calendar)}
         >
-          Crop calendar <span>{calendar ? "−" : "⌄"}</span>
+          Calendário agrícola <span>{calendar ? "−" : "⌄"}</span>
         </button>
         {calendar && <Timeline />}
       </>
@@ -667,30 +667,30 @@ function App() {
       <form onSubmit={saveFarm}>
         <div className="page-heading">
           <div>
-            <h1>My Property</h1>
-            <p>The characteristics of your land are the starting point.</p>
+            <h1>Minha Propriedade</h1>
+            <p>As características da sua terra são o ponto de partida.</p>
           </div>
-          <Btn type="submit">Save changes</Btn>
+          <Btn type="submit">Salvar alterações</Btn>
         </div>
         <Demo />
         <div className="two-col">
           <div className="stack">
             <section className="panel">
-              <h2>01 Location</h2>
+              <h2>01 Localização</h2>
               <p>
-                Tell us where you farm. The marked fields are optional.
+                Informe onde você cultiva. Os campos marcados são opcionais.
               </p>
               <div className="fields-grid">
-                <Field label="Property name" name="name" />
+                <Field label="Nome da propriedade" name="name" />
                 <Field
-                  label="Country"
+                  label="País"
                   name="country"
                   options={[
-                    "Brazil",
+                    "Brasil",
                     "Argentina",
-                    "Uruguay",
-                    "Paraguay",
-                    "Other",
+                    "Uruguai",
+                    "Paraguai",
+                    "Outro",
                   ]}
                 />
                 <div className="fields-grid">
@@ -712,7 +712,7 @@ function App() {
                   />
                 </div>
                 <Field
-                  label="Property area (ha)"
+                  label="Área da propriedade (ha)"
                   name="area"
                   type="number"
                   min={0.01}
@@ -722,29 +722,29 @@ function App() {
               <div className="location-preview">
                 <img
                   src={assets["13:478"].imgLocalizacaoDemonstrativa}
-                  alt="Illustrative farm location"
+                  alt="Localização ilustrativa da fazenda"
                 />
                 <span>
-                  ⌖ {draft.latitude}, {draft.longitude} • example
+                  ⌖ {draft.latitude}, {draft.longitude} • exemplo
                 </span>
               </div>
             </section>
             <section className="panel">
-              <h2>02 Soil characteristics</h2>
+              <h2>02 Características do solo</h2>
               <div className="fields-grid">
                 <Field
-                  label="Soil texture"
+                  label="Textura do solo"
                   name="texture"
                   options={[
-                    "Clayey",
-                    "Sandy",
-                    "Loam",
-                    "Silty",
-                    "Not provided",
+                    "Argiloso",
+                    "Arenoso",
+                    "Franco",
+                    "Siltoso",
+                    "Não informado",
                   ]}
                 />
                 <Field
-                  label="Soil pH ⓘ"
+                  label="pH do solo ⓘ"
                   name="ph"
                   type="number"
                   min={0}
@@ -752,12 +752,12 @@ function App() {
                   step=".1"
                 />
                 <Field
-                  label="Drainage"
+                  label="Drenagem"
                   name="drainage"
-                  options={["Moderate", "Good", "Poor", "Not provided"]}
+                  options={["Moderada", "Boa", "Baixa", "Não informado"]}
                 />
                 <Field
-                  label="Organic matter (%) • optional"
+                  label="Matéria orgânica (%) • opcional"
                   name="organic"
                   type="number"
                   min={0}
@@ -767,27 +767,27 @@ function App() {
               </div>
             </section>
             <section className="panel">
-              <h2>03 Water resources</h2>
+              <h2>03 Recursos hídricos</h2>
               <div className="fields-grid">
                 <Field
-                  label="Irrigation availability"
+                  label="Disponibilidade de irrigação"
                   name="irrigation"
-                  options={["Yes", "No", "Not provided"]}
+                  options={["Sim", "Não", "Não informado"]}
                 />
                 <Field
-                  label="Irrigation type"
+                  label="Tipo de irrigação"
                   name="irrigationType"
                   options={[
-                    "Center pivot",
-                    "Drip",
-                    "Sprinkler",
-                    "Not applicable",
-                    "Other",
+                    "Pivô central",
+                    "Gotejamento",
+                    "Aspersão",
+                    "Não se aplica",
+                    "Outro",
                   ]}
                 />
                 <div className="full">
                   <Field
-                    label="Water restrictions • optional"
+                    label="Restrições de água • opcional"
                     name="waterRestriction"
                   />
                 </div>
@@ -796,47 +796,47 @@ function App() {
           </div>
           <aside className="stack">
             <section className="panel">
-              <h2>Your land, in context</h2>
+              <h2>Sua terra, em contexto</h2>
               <h3 className="farm-name">{farm.name}</h3>
               <p>
                 {farm.city} • {farm.country}
               </p>
               <dl>
                 <div>
-                  <dt>Total area</dt>
+                  <dt>Área total</dt>
                   <dd>{farm.area} ha</dd>
                 </div>
                 <div>
-                  <dt>Registered fields</dt>
-                  <dd>1 field</dd>
+                  <dt>Talhões cadastrados</dt>
+                  <dd>1 talhão</dd>
                 </div>
                 <div>
-                  <dt>Information filled in</dt>
-                  <dd>{Object.values(draft).filter(Boolean).length} fields</dd>
+                  <dt>Informações preenchidas</dt>
+                  <dd>{Object.values(draft).filter(Boolean).length} campos</dd>
                 </div>
               </dl>
             </section>
             <section className="panel">
-              <h3>Why do we ask for this data?</h3>
+              <h3>Por que pedimos estes dados?</h3>
               <p>
-                Soil, water and location help put the rotation scenarios in
-                context.
+                Solo, água e localização ajudam a contextualizar os cenários de
+                rotação.
               </p>
               <p>
-                You can start with what you know and fill in the optional fields
-                later.
+                Você pode começar com o que sabe e completar os campos opcionais
+                depois.
               </p>
-              <small>ⓘ Changes are kept for this session only.</small>
+              <small>ⓘ Alterações mantidas somente nesta sessão.</small>
             </section>
             <section className="panel">
-              <h2>Soil analysis</h2>
-              <h3>{report ? report.name : "No report attached"}</h3>
+              <h2>Análise de solo</h2>
+              <h3>{report ? report.name : "Nenhum laudo anexado"}</h3>
               <p>
-                If you have a recent report, add it to keep it with the
-                registration.
+                Se tiver um laudo recente, adicione-o para consultar junto ao
+                cadastro.
               </p>
               <label className="button upload">
-                {report ? "Replace report" : "Add report"}
+                {report ? "Substituir laudo" : "Adicionar laudo"}
                 <input
                   type="file"
                   accept=".pdf,.png,.jpg,.jpeg"
@@ -845,7 +845,7 @@ function App() {
                     if (f) {
                       setReport(f);
                       toast(
-                        "Report selected locally. No file was uploaded.",
+                        "Laudo selecionado localmente. Nenhum arquivo foi enviado.",
                       );
                     }
                   }}
@@ -857,18 +857,18 @@ function App() {
                   type="button"
                   onClick={() => setReport(null)}
                 >
-                  Remove file
+                  Remover arquivo
                 </button>
               )}
               <small>
-                Local file • not uploaded or analyzed automatically.
+                Arquivo local • não enviado nem analisado automaticamente.
               </small>
             </section>
           </aside>
         </div>
         <p className="footnote">
-          Your data helps explore possibilities; it does not replace a
-          local agronomic assessment.
+          Seus dados ajudam a explorar possibilidades; não substituem uma
+          avaliação agronômica local.
         </p>
       </form>
     );
@@ -878,13 +878,13 @@ function App() {
       <section className="panel timeline-panel">
         <div className="section-heading">
           <div>
-            <h2>A view of each season</h2>
+            <h2>Uma visão de cada safra</h2>
             <p>
-              Field 01 • {farm.area} ha • planting, development and harvest
+              Talhão 01 • {farm.area} ha • plantio, desenvolvimento e colheita
             </p>
           </div>
           <select
-            aria-label="Calendar year"
+            aria-label="Ano do calendário"
             value={year}
             onChange={(e) => setYear(e.target.value)}
           >
@@ -903,101 +903,101 @@ function App() {
             </div>
             <div className="timeline-row">
               <strong>
-                Soybean {Number(year) - 1}/{year.slice(2)}
+                Soja {Number(year) - 1}/{year.slice(2)}
               </strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "1/3" }}>Development</span>
+                <span style={{ gridColumn: "1/3" }}>Desenvolvimento</span>
                 <span className="harvest" style={{ gridColumn: "3/4" }}>
-                  Harvest
+                  Colheita
                 </span>
-                <span style={{ gridColumn: "10/11" }}>Planting</span>
+                <span style={{ gridColumn: "10/11" }}>Plantio</span>
                 <span style={{ gridColumn: "11/13" }}>
-                  Soybean {year}/{String(Number(year) + 1).slice(2)}
+                  Soja {year}/{String(Number(year) + 1).slice(2)}
                 </span>
               </div>
             </div>
             <div className="timeline-row">
-              <strong>Off-season corn</strong>
+              <strong>Milho safrinha</strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "3/4" }}>Planting</span>
-                <span style={{ gridColumn: "4/7" }}>Development</span>
+                <span style={{ gridColumn: "3/4" }}>Plantio</span>
+                <span style={{ gridColumn: "4/7" }}>Desenvolvimento</span>
                 <span className="harvest" style={{ gridColumn: "7/8" }}>
-                  Harvest
+                  Colheita
                 </span>
                 <span className="bare" style={{ gridColumn: "8/10" }}>
-                  Bare soil
+                  Solo descoberto
                 </span>
               </div>
             </div>
           </div>
         </div>
         <div className="legend">
-          <span>● Planting</span>
-          <span>● Development</span>
-          <span className="warm">● Harvest</span>
-          <span>● Bare soil</span>
+          <span>● Plantio</span>
+          <span>● Desenvolvimento</span>
+          <span className="warm">● Colheita</span>
+          <span>● Solo descoberto</span>
         </div>
       </section>
     );
   }
   function History() {
     const fmt = (s: string) =>
-      new Date(s + "T12:00:00").toLocaleDateString("en-US");
+      new Date(s + "T12:00:00").toLocaleDateString("pt-BR");
     return (
       <>
         <div className="page-heading">
           <div>
-            <h1>Crop History</h1>
-            <p>Every season tells part of your land's story.</p>
+            <h1>Histórico de Cultivo</h1>
+            <p>Cada safra conta uma parte da história da sua terra.</p>
           </div>
-          <Btn onClick={() => open("addCrop")}>＋ Add crop</Btn>
+          <Btn onClick={() => open("addCrop")}>＋ Adicionar cultivo</Btn>
         </div>
         <Demo />
         <div className="grid-two">
           <section className="panel current-crop">
-            <small>CURRENT CROP • FIELD 01</small>
+            <small>CULTIVO ATUAL • TALHÃO 01</small>
             <div>
               <h2>{farm.crop}</h2>
-              <span>Growing</span>
+              <span>Em crescimento</span>
             </div>
-            <p>Planting: Oct 15, 2025 → Expected harvest: Feb 20, 2026</p>
+            <p>Plantio: 15 out 2025 → Colheita prevista: 20 fev 2026</p>
           </section>
           <section className="panel">
-            <h2>Your history in numbers</h2>
+            <h2>Seu histórico em números</h2>
             <div className="numbers">
               <div>
                 <strong>{crops.length + 2}</strong>
-                <small>crops recorded</small>
+                <small>cultivos registrados</small>
               </div>
               <div>
                 <strong>3</strong>
-                <small>years of history</small>
+                <small>anos de histórico</small>
               </div>
               <div>
                 <strong>2</strong>
-                <small>crops per year</small>
+                <small>cultivos por ano</small>
               </div>
             </div>
           </section>
         </div>
         <Timeline />
         <section className="panel">
-          <h2>Recorded crops</h2>
+          <h2>Cultivos registrados</h2>
           <p>
-            Demo values • yield in 60 kg bags
-            per hectare
+            Valores demonstrativos • produtividade informada em sacas de 60 kg
+            por hectare
           </p>
           <div className="table-scroll">
             <table>
               <thead>
                 <tr>
                   {[
-                    "Crop / season",
-                    "Planting",
-                    "Harvest",
-                    "Area",
-                    "Yield",
-                    "Status",
+                    "Cultura / safra",
+                    "Plantio",
+                    "Colheita",
+                    "Área",
+                    "Produtividade",
+                    "Situação",
                   ].map((t) => (
                     <th key={t}>{t}</th>
                   ))}
@@ -1012,11 +1012,11 @@ function App() {
                     <td>{fmt(c.plant)}</td>
                     <td>
                       {fmt(c.harvest)}
-                      {c.status !== "Completed" ? "*" : ""}
+                      {c.status !== "Concluído" ? "*" : ""}
                     </td>
                     <td>{c.area} ha</td>
                     <td>
-                      {c.yield ? c.yield + " bags/ha" : "Not harvested yet"}
+                      {c.yield ? c.yield + " sc/ha" : "Ainda não colhida"}
                     </td>
                     <td>
                       <span className="status">{c.status}</span>
@@ -1027,16 +1027,16 @@ function App() {
             </table>
           </div>
           <small>
-            * Expected date, not observed. Showing {crops.length} of{" "}
-            {crops.length + 2} crops.
+            * Data prevista, não observada. Mostrando {crops.length} de{" "}
+            {crops.length + 2} cultivos.
           </small>
         </section>
         <section className="callout">
           <div>
-            <h3>The next cycle starts with what you have already learned.</h3>
-            <p>Use your history to explore rotation strategies.</p>
+            <h3>O próximo ciclo começa com o que você já aprendeu.</h3>
+            <p>Use seu histórico para explorar estratégias de rotação.</p>
           </div>
-          <Btn onClick={() => go("rotation")}>Explore strategies →</Btn>
+          <Btn onClick={() => go("rotation")}>Explorar estratégias →</Btn>
         </section>
       </>
     );
@@ -1046,13 +1046,13 @@ function App() {
       <>
         <div className="page-heading">
           <div>
-            <h1>Climate Analysis</h1>
-            <p>From history to planning: understand the climate signals.</p>
+            <h1>Análise Climática</h1>
+            <p>Do histórico ao planejamento: entenda os sinais do clima.</p>
           </div>
         </div>
         <Demo />
         <div className="period-bar">
-          <span>Analysis period</span>
+          <span>Período de análise</span>
           <div>
             {["2023", "2024", "2025"].map((y) => (
               <button
@@ -1067,9 +1067,9 @@ function App() {
               </button>
             ))}
           </div>
-          <small>● Illustrative history</small>
-          <small className="warm">Illustrative estimate</small>
-          <small>Illustrative projection</small>
+          <small>● Histórico ilustrativo</small>
+          <small className="warm">Estimativa ilustrativa</small>
+          <small>Projeção ilustrativa</small>
         </div>
         <div className="grid-two climate-grid">
           {(["temperature", "rain", "moisture", "ndvi"] as const).map(
@@ -1080,33 +1080,33 @@ function App() {
                     <h2>
                       {
                         [
-                          "Mean temperature",
-                          "Accumulated precipitation",
-                          "Soil moisture ⓘ",
-                          "Vegetation vigor ⓘ",
+                          "Temperatura média",
+                          "Precipitação acumulada",
+                          "Umidade do solo ⓘ",
+                          "Vigor da vegetação ⓘ",
                         ][i]
                       }
                     </h2>
                     <p>
                       NASA {i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER"} •
-                      example historical series
+                      exemplo de série histórica
                     </p>
                   </div>
                   <strong className={"climate-number n" + i}>
                     {
                       [
                         year === "2025"
-                          ? "24.8 °C"
+                          ? "24,8 °C"
                           : year === "2024"
-                            ? "23.1 °C"
-                            : "25.8 °C",
+                            ? "23,1 °C"
+                            : "25,8 °C",
                         year === "2025"
                           ? "142 mm"
                           : year === "2024"
                             ? "132 mm"
                             : "148 mm",
                         "32%",
-                        "0.76",
+                        "0,76",
                       ][i]
                     }
                   </strong>
@@ -1115,10 +1115,10 @@ function App() {
                 <p>
                   {
                     [
-                      "Warmer months can increase water demand.",
-                      "Rain is concentrated between October and March in this example.",
-                      "Water in the surface layer; it does not represent the whole root zone.",
-                      "NDVI indicates vegetation activity, not crop yield.",
+                      "Meses mais quentes podem aumentar a demanda por água.",
+                      "A chuva se concentra entre outubro e março neste exemplo.",
+                      "Água na camada superficial; não representa toda a zona de raízes.",
+                      "NDVI indica atividade da vegetação, não rendimento da safra.",
                     ][i]
                   }
                 </p>
@@ -1128,46 +1128,46 @@ function App() {
         </div>
         <div className="two-col">
           <section className="panel">
-            <h2>Plan with seasonality</h2>
-            <p>Illustrative pattern • not a weather forecast</p>
+            <h2>Planeje com a sazonalidade</h2>
+            <p>Padrão ilustrativo • não é previsão meteorológica</p>
             <div className="season wet">
-              <strong>Oct–Mar</strong>
+              <strong>Out–Mar</strong>
               <div>
-                Wettest period
-                <small>Watch drainage and the planting window.</small>
+                Período mais chuvoso
+                <small>Atenção à drenagem e à janela de plantio.</small>
               </div>
             </div>
             <div className="season dry">
-              <strong>May–Aug</strong>
+              <strong>Mai–Ago</strong>
               <div>
-                Driest period
-                <small>Soil cover helps reduce evaporation.</small>
+                Período mais seco
+                <small>Cobertura do solo ajuda a reduzir evaporação.</small>
               </div>
             </div>
           </section>
           <section className="panel">
-            <h2>Before deciding</h2>
-            <h3>History</h3>
+            <h2>Antes de decidir</h2>
+            <h3>Histórico</h3>
             <p>
-              Past observations, represented here by fictitious examples.
+              Observações passadas, aqui representadas por exemplos fictícios.
             </p>
-            <h3 className="warm">Estimates and projections</h3>
+            <h3 className="warm">Estimativas e projeções</h3>
             <p>
-              They are approximations with uncertainty. Dashed lines are not
-              observations.
+              São aproximações com incerteza. Linhas tracejadas não são
+              observações.
             </p>
           </section>
         </div>
         <section className="callout">
           <div>
-            <h3>ⓘ Sources, resolution and limitations of the indicators</h3>
+            <h3>ⓘ Fontes, resolução e limitações dos indicadores</h3>
             <p>
-              Explore the difference between the satellite scale and the field
-              scale.
+              Explore a diferença entre a escala do satélite e a escala do
+              talhão.
             </p>
           </div>
           <LinkButton onClick={() => open("sources")}>
-            See details →
+            Ver detalhes →
           </LinkButton>
         </section>
       </>
@@ -1179,7 +1179,7 @@ function App() {
       <div
         className="radar-assets"
         role="img"
-        aria-label="Illustrative comparison of the four criteria"
+        aria-label="Comparação ilustrativa dos quatro critérios"
       >
         <div className="radar-shapes">
           {[
@@ -1200,10 +1200,10 @@ function App() {
           <img className="radar-soil" src={R.imgAreaDoCenario1} alt="" />
           <img className="radar-climate" src={R.imgAreaDoCenario2} alt="" />
         </div>
-        <span className="radar-water">Water</span>
-        <span className="radar-soil-label">Soil</span>
-        <span className="radar-profit">Profitability</span>
-        <span className="radar-resilience">Resilience</span>
+        <span className="radar-water">Água</span>
+        <span className="radar-soil-label">Solo</span>
+        <span className="radar-profit">Rentabilidade</span>
+        <span className="radar-resilience">Resiliência</span>
       </div>
     );
   }
@@ -1212,25 +1212,25 @@ function App() {
       <>
         <div className="page-heading">
           <div>
-            <h1>Rotation Strategies</h1>
+            <h1>Estratégias de Rotação</h1>
             <p>
-              Compare paths for the next season, with your priorities.
+              Compare caminhos para a próxima safra, com as suas prioridades.
             </p>
           </div>
         </div>
         <Demo />
         <section className="panel priorities">
-          <h2>01 What matters most for your next season?</h2>
+          <h2>01 O que importa mais para a sua próxima safra?</h2>
           <p>
-            Adjust the controls or explore the three predefined priority
-            profiles.
+            Ajuste os controles ou explore os três perfis predefinidos de
+            prioridade.
           </p>
           <div className="sliders">
             {[
-              "Water savings",
-              "Soil health",
-              "Profitability",
-              "Climate resilience",
+              "Economia de água",
+              "Saúde do solo",
+              "Rentabilidade",
+              "Resiliência climática",
             ].map((label, i) => (
               <label key={label}>
                 <span>
@@ -1250,7 +1250,7 @@ function App() {
                   }
                 />
                 <small>
-                  Lower <span>Higher</span>
+                  Menor <span>Maior</span>
                 </small>
               </label>
             ))}
@@ -1258,9 +1258,9 @@ function App() {
           <div className="profile-buttons">
             {(
               [
-                ["soil", "Balanced soil"],
-                ["water", "Water and climate"],
-                ["profit", "Profitability"],
+                ["soil", "Solo equilibrado"],
+                ["water", "Água e clima"],
+                ["profit", "Rentabilidade"],
               ] as const
             ).map(([key, label]) => (
               <button
@@ -1279,11 +1279,11 @@ function App() {
         </section>
         <div className="section-heading scenarios-heading">
           <div>
-            <h2>02 Compare the scenarios</h2>
-            <p>Illustrative scores weighted by the goals above.</p>
+            <h2>02 Compare os cenários</h2>
+            <p>Pontuações ilustrativas ponderadas pelos objetivos acima.</p>
           </div>
           <button className="button" onClick={compare} disabled={busy}>
-            {busy ? "Comparing…" : "Compare Strategies"}
+            {busy ? "Comparando…" : "Comparar Estratégias"}
           </button>
         </div>
         <div className="scenario-grid">
@@ -1296,19 +1296,19 @@ function App() {
             >
               <div className="scenario-ribbon">
                 {winner === i
-                  ? "BEST FIT FOR YOUR WEIGHTS"
+                  ? "MAIOR ADERÊNCIA AOS SEUS PESOS"
                   : i === 0
-                    ? "Comparison baseline"
-                    : "Alternative to explore"}
+                    ? "Referência de comparação"
+                    : "Alternativa para explorar"}
               </div>
               <h2>{s.name}</h2>
               <div className="score">
                 <strong style={{ color: s.color }}>{chosen[i]}</strong>
                 <small>/ 100</small>
-                <small>illustrative fit ⓘ</small>
+                <small>aderência ilustrativa ⓘ</small>
               </div>
               <h3>{s.sequence}</h3>
-              <small>SCENARIO CALENDAR • 12 MONTHS</small>
+              <small>CALENDÁRIO DO CENÁRIO • 12 MESES</small>
               <div className="mini-calendar">
                 {months.map((m, n) => (
                   <div key={n}>
@@ -1331,36 +1331,36 @@ function App() {
               <small>{s.calendar}</small>
               <dl>
                 <div>
-                  <dt>Water</dt>
+                  <dt>Água</dt>
                   <dd>{s.water}</dd>
                 </div>
                 <div>
-                  <dt>Soil</dt>
+                  <dt>Solo</dt>
                   <dd>{s.soil}</dd>
                 </div>
                 <div>
-                  <dt>Climate</dt>
+                  <dt>Clima</dt>
                   <dd>{s.climate}</dd>
                 </div>
               </dl>
               <div className="benefit">
-                <small>POTENTIAL BENEFIT</small>
+                <small>BENEFÍCIO POTENCIAL</small>
                 <p>{s.benefit}</p>
               </div>
               <div className="risk">
-                <small>POINT OF ATTENTION</small>
+                <small>PONTO DE ATENÇÃO</small>
                 <p>{s.risk}</p>
               </div>
               <Btn onClick={() => open(i)} secondary={winner !== i}>
-                Understand this scenario →
+                Entender este cenário →
               </Btn>
             </article>
           ))}
         </div>
         <div className="grid-two compare-bottom">
           <section className="panel">
-            <h2>The goals, side by side</h2>
-            <p>Relative scale: 0–100 • higher = better fit</p>
+            <h2>Os objetivos, lado a lado</h2>
+            <p>Escala relativa: 0–100 • maior = maior aderência</p>
             <Radar />
             <div className="legend">
               {scenarios.map((s) => (
@@ -1371,25 +1371,25 @@ function App() {
             </div>
           </section>
           <section className="panel green-panel">
-            <h2>Why was this strategy suggested?</h2>
+            <h2>Por que esta estratégia foi sugerida?</h2>
             <p className="body-text">
-              {scenarios[winner].name} had the best fit for the weights in this
-              example.
+              {scenarios[winner].name} teve maior aderência aos pesos deste
+              exemplo.
             </p>
             <p>{scenarios[winner].detail}</p>
-            <h3>How the score works</h3>
+            <h3>Como a pontuação funciona</h3>
             <p>
-              Weighted average of the scenario's four scores. Scores and weights are
-              for demonstration and do not represent a validated model.
+              Média ponderada das quatro notas do cenário. Notas e pesos são
+              demonstrativos e não representam um modelo validado.
             </p>
             <LinkButton onClick={() => open("sources")}>
-              See assumptions and limitations →
+              Ver premissas e limitações →
             </LinkButton>
           </section>
         </div>
         <p className="footnote">
-          No scenario is an absolute recommendation. Confirm feasibility with
-          agronomic assistance and local data before deciding.
+          Nenhum cenário é uma recomendação absoluta. Confirme a viabilidade com
+          assistência agronômica e dados locais antes de decidir.
         </p>
       </>
     );
@@ -1399,28 +1399,28 @@ function App() {
       <>
         <div className="page-heading">
           <div>
-            <h1>Settings</h1>
-            <p>Control your preferences and the origin of the data.</p>
+            <h1>Configurações</h1>
+            <p>Controle suas preferências e a origem dos dados.</p>
           </div>
-          <Btn onClick={() => toast("Preferences applied for this session.")}>
-            Save settings
+          <Btn onClick={() => toast("Preferências aplicadas nesta sessão.")}>
+            Salvar ajustes
           </Btn>
         </div>
         <Demo />
         <div className="two-col">
           <div className="stack">
             <section className="panel">
-              <h2>Display preferences</h2>
+              <h2>Preferências de leitura</h2>
               <dl className="preferences">
                 <div>
-                  <dt>Language</dt>
+                  <dt>Idioma</dt>
                   <dd>{settings.language}</dd>
                 </div>
                 <div>
-                  <dt>Temperature</dt>
+                  <dt>Temperatura</dt>
                   <dd>
                     <select
-                      aria-label="Temperature unit"
+                      aria-label="Unidade de temperatura"
                       value={settings.temperature}
                       onChange={(e) =>
                         setSettings((v) => ({
@@ -1429,65 +1429,65 @@ function App() {
                         }))
                       }
                     >
-                      <option>Degrees Celsius (°C)</option>
-                      <option>Degrees Fahrenheit (°F)</option>
+                      <option>Graus Celsius (°C)</option>
+                      <option>Graus Fahrenheit (°F)</option>
                     </select>
                   </dd>
                 </div>
                 <div>
-                  <dt>Area and yield</dt>
-                  <dd>Hectares • 60 kg bags / ha</dd>
+                  <dt>Área e produtividade</dt>
+                  <dd>Hectares • sacas de 60 kg / ha</dd>
                 </div>
                 <div>
-                  <dt>Precipitation</dt>
-                  <dd>Millimeters (mm)</dd>
+                  <dt>Precipitação</dt>
+                  <dd>Milímetros (mm)</dd>
                 </div>
               </dl>
             </section>
             <section className="panel">
-              <h2>Reference sources</h2>
-              <p className="warm">No source is connected in this version.</p>
+              <h2>Fontes de referência</h2>
+              <p className="warm">Nenhuma fonte está conectada nesta versão.</p>
               <dl className="source-list">
                 <div>
                   <dt>NASA POWER</dt>
-                  <dd>Climate • temperature and precipitation</dd>
+                  <dd>Clima • temperatura e precipitação</dd>
                 </div>
                 <div>
                   <dt>NASA SMAP</dt>
-                  <dd>Surface soil moisture</dd>
+                  <dd>Umidade superficial do solo</dd>
                 </div>
                 <div>
                   <dt>NASA MODIS</dt>
-                  <dd>Vegetation • example NDVI index</dd>
+                  <dd>Vegetação • exemplo de índice NDVI</dd>
                 </div>
               </dl>
               <LinkButton onClick={() => open("sources")}>
-                See documentation and limitations →
+                Consultar documentação e limitações →
               </LinkButton>
             </section>
           </div>
           <aside className="stack">
             <section className="panel green-panel">
-              <h2>You are in control</h2>
+              <h2>Você está no controle</h2>
               <p>
-                This is a demo environment. The farm, the crops, the
-                indicators and the scenarios are fictitious.
+                Este é um ambiente demonstrativo. A fazenda, os cultivos, os
+                indicadores e os cenários são fictícios.
               </p>
               <p>
-                Changes stay only in this session's memory. There is no real
-                account, sync or document upload.
+                As alterações ficam apenas na memória desta sessão. Não há conta
+                real, sincronização ou envio de documentos.
               </p>
               <small>
                 NASA Space Apps Challenge 2026
                 <br />
-                NATIVA Project
+                Projeto NATIVA
               </small>
             </section>
             <section className="panel">
-              <h2>Start over</h2>
-              <p>Go back to the overview to explore the flow.</p>
+              <h2>Começar de novo</h2>
+              <p>Volte à visão geral para explorar o fluxo.</p>
               <LinkButton onClick={() => go("overview")}>
-                Back to the overview →
+                Voltar à visão geral →
               </LinkButton>
             </section>
           </aside>
@@ -1515,7 +1515,7 @@ function App() {
                 });
               }}
             >
-              How it works
+              Como funciona
             </a>
             <a
               href="#tecnologia"
@@ -1526,14 +1526,14 @@ function App() {
                 });
               }}
             >
-              Technology
+              Tecnologia
             </a>
-            <button onClick={() => open("technology")}>About us</button>
+            <button onClick={() => open("technology")}>Sobre nós</button>
           </div>
           <div>
-            <button onClick={() => open("login")}>Log in</button>
+            <button onClick={() => open("login")}>Entrar</button>
             <button className="button lime" onClick={() => go("signup")}>
-              Sign up →
+              Cadastre-se →
             </button>
           </div>
         </nav>
@@ -1542,7 +1542,7 @@ function App() {
             key={slide}
             className="hero-photo"
             src={heroImgs[slide]}
-            alt="Farm landscape at sunrise"
+            alt="Paisagem agrícola ao nascer do sol"
             initial={reduced ? false : { scale: 1 }}
             animate={reduced ? { scale: 1 } : { scale: [1, 1.015] }}
             transition={{
@@ -1554,26 +1554,26 @@ function App() {
           />
           <div className="hero-shade" />
           <div className="hero-content">
-            <small>INTELLIGENCE FROM SPACE</small>
+            <small>INTELIGÊNCIA QUE VEM DO ESPAÇO</small>
             <h1>
               {
                 [
-                  "The future of your\nfarm starts here.",
-                  "A fresh look\nat your land.",
-                  "From observation\nto the next season.",
+                  "O futuro da sua\nlavoura começa aqui.",
+                  "Um novo olhar\npara a sua terra.",
+                  "Da observação\nà próxima safra.",
                 ][slide]
               }
             </h1>
             <p>
-              Turn space data into smart decisions for your
-              property.
+              Transforme dados espaciais em decisões inteligentes para sua
+              propriedade.
             </p>
             <div>
               <button className="button yellow" onClick={() => go("signup")}>
-                Start for free →
+                Começar gratuitamente →
               </button>
               <button className="button outline" onClick={() => go("overview")}>
-                Explore the platform
+                Conhecer a plataforma
               </button>
             </div>
           </div>
@@ -1582,7 +1582,7 @@ function App() {
               {heroImgs.map((_, i) => (
                 <button
                   key={i}
-                  aria-label={"Go to image " + (i + 1)}
+                  aria-label={"Ir para imagem " + (i + 1)}
                   aria-pressed={slide === i}
                   className={slide === i ? "active" : ""}
                   onClick={() => setSlide(i)}
@@ -1592,13 +1592,13 @@ function App() {
             </div>
             <div>
               <button
-                aria-label="Previous image"
+                aria-label="Imagem anterior"
                 onClick={() => setSlide((slide + 2) % 3)}
               >
                 ‹
               </button>
               <button
-                aria-label="Next image"
+                aria-label="Próxima imagem"
                 onClick={() => setSlide((slide + 1) % 3)}
               >
                 ›
@@ -1607,21 +1607,21 @@ function App() {
           </div>
         </section>
         <section className="landing-intro" id="produto">
-          <small>THE FULL PICTURE. NO COMPLICATIONS.</small>
+          <small>UM OLHAR COMPLETO. SEM COMPLICAÇÃO.</small>
           <h2>
-            Know your land
+            Conheça sua terra
             <br />
-            like never before.
+            como nunca antes.
           </h2>
           <p>
-            Climate, soil and vegetation. Connected to open new
+            Clima, solo e vegetação. Conectados para abrir novas
             <br />
-            possibilities in the field.
+            possibilidades no campo.
           </p>
           <button
             className="product-preview"
             onClick={() => go("overview")}
-            aria-label="Explore the NATIVA dashboard"
+            aria-label="Explorar painel NATIVA"
           >
             <div className="preview-dots">
               <i />
@@ -1632,23 +1632,23 @@ function App() {
               <img src={L.imgLogoNoProduto} alt="" />
               <strong>NATIVA</strong>
               {[
-                "Overview",
-                "My Property",
-                "Climate Analysis",
-                "Crop History",
-                "Rotation Strategies",
+                "Visão Geral",
+                "Minha Propriedade",
+                "Análise Climática",
+                "Histórico de Cultivo",
+                "Estratégias de Rotação",
               ].map((t) => (
                 <span key={t}>{t}</span>
               ))}
             </aside>
             <div className="preview-main">
-              <h3>Property Overview</h3>
-              <small>Your land, a new perspective</small>
+              <h3>Visão Geral da Propriedade</h3>
+              <small>Sua terra, uma nova perspectiva</small>
               <div className="preview-metrics">
-                {["24.8 °C", "142 mm", "32 %", "0.76 NDVI"].map((t) => (
+                {["24,8 °C", "142 mm", "32 %", "0,76 NDVI"].map((t) => (
                   <div key={t}>
                     {t}
-                    <small>Demo indicator</small>
+                    <small>Indicador demonstrativo</small>
                   </div>
                 ))}
               </div>
@@ -1656,7 +1656,7 @@ function App() {
                 <img
                   className="preview-map"
                   src={L.imgMapaAgricola}
-                  alt="Illustrative farm map"
+                  alt="Mapa agrícola ilustrativo"
                 />
                 <div>
                   <div className="preview-chart">
@@ -1664,35 +1664,35 @@ function App() {
                     <img src={L.imgSerieClimaticaDemonstrativa1} alt="" />
                   </div>
                   <div className="preview-note">
-                    Explore the opportunities of your next season.
+                    Explore as oportunidades da sua próxima safra.
                   </div>
                 </div>
               </div>
             </div>
           </button>
           <p className="green-text">
-            Your property at the center. Data that broadens your view.
+            Sua propriedade no centro. Dados que ampliam sua visão.
           </p>
-          <small>Discover the experience →</small>
+          <small>Conheça a experiência →</small>
         </section>
         <section className="how-it-works" id="como-funciona">
-          <small>SIMPLE TO USE. RICH IN POSSIBILITIES.</small>
-          <h2>From observation to decision.</h2>
+          <small>SIMPLES DE USAR. AMPLO EM POSSIBILIDADES.</small>
+          <h2>Da observação à decisão.</h2>
           <div className="steps">
             {[
               [
-                "Locate your property.",
-                "Start with your land. Tell us where you farm and your context.",
+                "Localize sua propriedade.",
+                "Comece pela sua terra. Informe onde você cultiva e o seu contexto.",
                 L.imgIconeDoPasso1,
               ],
               [
-                "Explore the environmental conditions.",
-                "See climate, moisture and vegetation from a new perspective.",
+                "Explore as condições ambientais.",
+                "Veja clima, umidade e vegetação com uma nova perspectiva.",
                 L.imgIconeDoPasso2,
               ],
               [
-                "Compare rotation strategies.",
-                "Explore paths for the next cycle with your priorities.",
+                "Compare estratégias de rotação.",
+                "Explore caminhos para o próximo ciclo com as suas prioridades.",
                 L.imgIconeDoPasso3,
               ],
             ].map(([t, d, img], i) => (
@@ -1705,38 +1705,38 @@ function App() {
             ))}
           </div>
           <LinkButton onClick={() => go("overview")}>
-            Start with our property →
+            Comece pela nossa propriedade →
           </LinkButton>
         </section>
         <section className="space-section" id="tecnologia">
           <img
             src={L.imgFotografiaComZoomSuave1}
-            alt="The Earth seen from space"
+            alt="A Terra vista do espaço"
           />
           <div>
-            <small>NASA TECHNOLOGY. LOCAL CONTEXT.</small>
+            <small>TECNOLOGIA NASA. CONTEXTO LOCAL.</small>
             <h2>
-              A new perspective
+              Uma nova perspectiva
               <br />
-              on your farm.
+              sobre sua lavoura.
             </h2>
             <h3>
-              Earth observation helps us see beyond what is in
-              view.
+              A observação da Terra nos ajuda a enxergar além do que está à
+              vista.
             </h3>
             <p>
-              NATIVA uses NASA observation data to explore
-              environmental conditions and support farming decisions, bringing together
-              space, context and the reality of your property.
+              A NATIVA utiliza dados de observação da NASA para explorar
+              condições ambientais e apoiar decisões agrícolas, integrando o
+              espaço, o contexto e a realidade da sua propriedade.
             </p>
             <LinkButton onClick={() => open("technology")}>
-              Discover our technology →
+              Conheça nossa tecnologia →
             </LinkButton>
             <div className="source-chips">
               {["POWER", "SMAP", "MODIS"].map((s) => (
                 <span key={s}>
                   {s}
-                  <small>NASA · reference</small>
+                  <small>NASA · referência</small>
                 </span>
               ))}
             </div>
@@ -1744,51 +1744,51 @@ function App() {
         </section>
         <section className="about-section">
           <div>
-            <small>ABOUT THE PROJECT</small>
+            <small>SOBRE O PROJETO</small>
             <h2>
-              Space technology.
+              Tecnologia espacial.
               <br />
-              Purpose in the field.
+              Propósito no campo.
             </h2>
           </div>
           <div>
             <p>
-              Developed for the NASA Space Apps Challenge 2026, NATIVA
-              explores new ways of using Earth observation data to
-              broaden the possibilities of farmers.
+              Desenvolvido para o NASA Space Apps Challenge 2026, a NATIVA
+              explora novas formas de usar dados de observação da Terra para
+              ampliar as possibilidades do produtor rural.
             </p>
             <LinkButton onClick={() => open("technology")}>
-              Open science. Possibilities for the field.
+              Ciência aberta. Possibilidades para o campo.
             </LinkButton>
           </div>
         </section>
         <section className="landing-cta">
-          <img src={L.imgFotografiaComZoomSuave2} alt="Crop fields" />
+          <img src={L.imgFotografiaComZoomSuave2} alt="Campos de cultivo" />
           <div>
-            <small>FROM YOUR FIELD TO THE FUTURE.</small>
+            <small>DO SEU CAMPO PARA O FUTURO.</small>
             <h2>
-              Your next season starts
+              Sua próxima safra começa
               <br />
-              with a decision.
+              com uma decisão.
             </h2>
-            <p>Discover new possibilities for your property.</p>
+            <p>Descubra novas possibilidades para sua propriedade.</p>
             <button className="button yellow" onClick={() => go("signup")}>
-              Start for free →
+              Começar gratuitamente →
             </button>
-            <small>Explore the demo for free.</small>
+            <small>Explore a demonstração gratuitamente.</small>
           </div>
         </section>
         <footer>
           <Logo />
           <div>
-            <button onClick={() => open("technology")}>About the project</button>
-            <button onClick={() => open("technology")}>Technology</button>
-            <button onClick={() => open("contact")}>Contact</button>
+            <button onClick={() => open("technology")}>Sobre o projeto</button>
+            <button onClick={() => open("technology")}>Tecnologia</button>
+            <button onClick={() => open("contact")}>Contato</button>
           </div>
           <small>NASA Space Apps Challenge 2026</small>
           <small>
-            Demo prototype • fictitious data and scenarios without local
-            validation.
+            Protótipo demonstrativo • dados fictícios e cenários sem validação
+            local.
           </small>
         </footer>
       </div>
@@ -1798,32 +1798,32 @@ function App() {
     return (
       <div className="signup">
         <section className="signup-photo">
-          <img src={L.imgFotografiaComZoomSuave2} alt="Farm at dawn" />
+          <img src={L.imgFotografiaComZoomSuave2} alt="Fazenda ao amanhecer" />
           <Logo />
           <div>
             <h1>
-              Your land deserves
+              Sua terra merece
               <br />
-              a fresh look.
+              um novo olhar.
             </h1>
             <p>
-              From observing space to the possibilities
+              Da observação do espaço às possibilidades
               <br />
-              of your next season.
+              da sua próxima safra.
             </p>
           </div>
         </section>
         <section className="signup-form">
           <button className="back-link" onClick={() => go("landing")}>
-            Back to home
+            Voltar ao início
           </button>
-          <small>01 / 02 • YOUR SIGN-UP</small>
+          <small>01 / 02 • SEU CADASTRO</small>
           <h1>
-            Start with your
+            Comece pela sua
             <br />
-            property.
+            propriedade.
           </h1>
-          <p>A broader view starts with your context.</p>
+          <p>Uma visão mais ampla começa com o seu contexto.</p>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -1831,7 +1831,7 @@ function App() {
             }}
           >
             <label className="field">
-              <span>Your name</span>
+              <span>Seu nome</span>
               <input
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
@@ -1840,13 +1840,13 @@ function App() {
             </label>
             <label className="field">
               <span>E-mail</span>
-              <input type="email" placeholder="farmer@example.com" />
+              <input type="email" placeholder="produtor@example.com" />
             </label>
-            <Field label="Property name" name="name" />
+            <Field label="Nome da propriedade" name="name" />
             <div className="signup-location">
-              <Field label="City / State" name="city" />
+              <Field label="Cidade / UF" name="city" />
               <Field
-                label="Area (ha) • optional"
+                label="Área (ha) • opcional"
                 name="area"
                 type="number"
                 min={0.01}
@@ -1854,14 +1854,14 @@ function App() {
               />
             </div>
             <button className="button yellow" type="submit">
-              Continue →
+              Continuar →
             </button>
             <small>
-              Demo environment. No account will be created or stored.
+              Ambiente demonstrativo. Nenhuma conta será criada ou armazenada.
             </small>
           </form>
           <LinkButton onClick={() => open("login")}>
-            Already know NATIVA? Log in
+            Já conhece a NATIVA? Entrar
           </LinkButton>
         </section>
       </div>
@@ -1873,26 +1873,26 @@ function App() {
         <header>
           <Logo />
           <LinkButton onClick={() => go("signup")}>
-            Back to sign-up
+            Voltar ao cadastro
           </LinkButton>
         </header>
         <div className="onboard-grid">
           <section>
-            <small>02 / 02 • YOUR PROPERTY</small>
+            <small>02 / 02 • SUA PROPRIEDADE</small>
             <h1>
-              Let's get to know
-              <br />your land.
+              Vamos conhecer
+              <br />a sua terra.
             </h1>
-            <p>Confirm the context to explore the platform.</p>
+            <p>Confirme o contexto para explorar a plataforma.</p>
             <div className="onboard-map">
               <img
                 src={assets["13:478"].imgLocalizacaoDemonstrativa}
-                alt="Demo location"
+                alt="Localização demonstrativa"
               />
               <span>
                 ⌖ {draft.name}
                 <small>
-                  {draft.city} · {draft.area} ha · example
+                  {draft.city} · {draft.area} ha · exemplo
                 </small>
               </span>
             </div>
@@ -1903,31 +1903,31 @@ function App() {
               setFarm({ ...draft });
               go("overview");
               toast(
-                `Welcome, ${userName.split(" ")[0]}. Explore your property!`,
+                `Bem-vinda, ${userName.split(" ")[0]}. Explore sua propriedade!`,
               );
             }}
           >
             <Field
-              label="Current crop"
+              label="Cultura atual"
               name="crop"
-              options={["Soybean", "Corn", "Sorghum", "Coffee", "Wheat", "Other"]}
+              options={["Soja", "Milho", "Sorgo", "Café", "Trigo", "Outra"]}
             />
             <Field
-              label="Soil texture"
+              label="Textura do solo"
               name="texture"
-              options={["Clayey", "Sandy", "Loam", "Not provided"]}
+              options={["Argiloso", "Arenoso", "Franco", "Não informado"]}
             />
             <Field
-              label="Irrigation availability"
+              label="Disponibilidade de irrigação"
               name="irrigation"
-              options={["Yes", "No", "Not provided"]}
+              options={["Sim", "Não", "Não informado"]}
             />
             <button className="button yellow" type="submit">
-              Explore the platform →
+              Explorar plataforma →
             </button>
             <small>
-              Demo flow. The conditions do not represent a real
-              farm.
+              Fluxo demonstrativo. As condições não representam uma fazenda
+              real.
             </small>
           </form>
         </div>
@@ -1936,7 +1936,7 @@ function App() {
   }
   function AddCrop() {
     const [value, setValue] = useState({
-      crop: "Corn",
+      crop: "Milho",
       plant: "2026-03-05",
       harvest: "2026-07-28",
       area: farm.area,
@@ -1948,7 +1948,7 @@ function App() {
         onSubmit={(e) => {
           e.preventDefault();
           if (value.harvest < value.plant) {
-            setError("The harvest must come after planting.");
+            setError("A colheita deve ocorrer após o plantio.");
             return;
           }
           setCrops((p) => [
@@ -1956,19 +1956,19 @@ function App() {
               ...value,
               id: Date.now(),
               season: value.plant.slice(0, 4),
-              status: value.yield ? "Completed" : "Planned",
+              status: value.yield ? "Concluído" : "Planejado",
             },
             ...p,
           ]);
           setModal(null);
-          toast("Crop added for this session.");
+          toast("Cultivo adicionado nesta sessão.");
         }}
       >
-        <h2>Add crop</h2>
-        <p>Record an example to explore the property history.</p>
+        <h2>Adicionar cultivo</h2>
+        <p>Registre um exemplo para explorar o histórico da propriedade.</p>
         <div className="fields-grid">
           <label className="field">
-            <span>Crop</span>
+            <span>Cultura</span>
             <select
               value={value.crop}
               onChange={(e) =>
@@ -1976,21 +1976,21 @@ function App() {
               }
             >
               {[
-                "Corn",
-                "Soybean",
-                "Sorghum",
-                "Crotalaria",
-                "Brachiaria",
-                "Wheat",
+                "Milho",
+                "Soja",
+                "Sorgo",
+                "Crotalária",
+                "Braquiária",
+                "Trigo",
               ].map((c) => (
                 <option key={c}>{c}</option>
               ))}
             </select>
           </label>
           <label className="field">
-            <span>Field</span>
+            <span>Talhão</span>
             <select>
-              <option>Field 01</option>
+              <option>Talhão 01</option>
             </select>
           </label>
           {(["plant", "harvest", "area", "yield"] as const).map((key, i) => (
@@ -1998,10 +1998,10 @@ function App() {
               <span>
                 {
                   [
-                    "Planting date",
-                    "Harvest date • expected",
-                    "Planted area (ha)",
-                    "Yield (bags/ha) • optional",
+                    "Data de plantio",
+                    "Data de colheita • prevista",
+                    "Área cultivada (ha)",
+                    "Produtividade (sc/ha) • opcional",
                   ][i]
                 }
               </span>
@@ -2023,11 +2023,11 @@ function App() {
             {error}
           </p>
         )}
-        <p>The dates may overlap with other crops in the same year.</p>
+        <p>As datas podem coexistir com outros cultivos no mesmo ano.</p>
         <button type="submit" className="button">
-          Save crop
+          Salvar cultivo
         </button>
-        <small>Data kept for this session only.</small>
+        <small>Dados mantidos somente nesta sessão.</small>
       </form>
     );
   }
@@ -2036,8 +2036,8 @@ function App() {
     if (modal === "map")
       return (
         <>
-          <h2>Map • {layer}</h2>
-          <p>Demo layer • values and areas are not georeferenced.</p>
+          <h2>Mapa • {layer}</h2>
+          <p>Camada demonstrativa • valores e áreas sem georreferenciamento.</p>
           <Map expanded />
         </>
       );
@@ -2047,56 +2047,56 @@ function App() {
         <>
           <h2>{s.name}</h2>
           <h3>{s.sequence}</h3>
-          <h3>Agronomic rationale</h3>
+          <h3>Fundamento agronômico</h3>
           <p>{s.detail}</p>
-          <h3>Potential benefit</h3>
+          <h3>Benefício potencial</h3>
           <p>{s.benefit}</p>
-          <h3>Risks and conditions</h3>
+          <h3>Riscos e condições</h3>
           <p>{s.risk}</p>
           <small>
-            General assumptions, not validated for this fictitious property.
+            Hipóteses gerais, sem validação para esta propriedade fictícia.
           </small>
-          <Btn onClick={() => open(null)}>Back</Btn>
+          <Btn onClick={() => open(null)}>Voltar</Btn>
         </>
       );
     }
     if (modal === "account")
       return (
         <>
-          <h2>Your account</h2>
-          <h3>Demo profile</h3>
+          <h2>Sua conta</h2>
+          <h3>Perfil de demonstração</h3>
           <p>
-            Explore the experience without creating a real account. Changes stay
-            in this session only.
+            Explore a experiência sem criar uma conta real. As alterações ficam
+            somente nesta sessão.
           </p>
           <LinkButton onClick={() => go("settings")}>
-            Account settings →
+            Configurações da conta →
           </LinkButton>
         </>
       );
     if (modal === "property")
       return (
         <>
-          <h2>Select property</h2>
+          <h2>Selecionar propriedade</h2>
           <button className="property-choice" onClick={() => open(null)}>
             <strong>{farm.name} ✓</strong>
             <small>
               {farm.city} • {farm.area} ha
             </small>
           </button>
-          <p>One property is available in this demo.</p>
+          <p>Uma propriedade está disponível nesta demonstração.</p>
           <LinkButton onClick={() => go("farm")}>
-            Edit property →
+            Editar propriedade →
           </LinkButton>
         </>
       );
     if (modal === "login")
       return (
         <>
-          <h2>Welcome to NATIVA</h2>
+          <h2>Bem-vinda à NATIVA</h2>
           <p>
-            Enter the demo experience. No authentication or real account
-            is needed.
+            Entre na experiência demonstrativa. Nenhuma autenticação ou conta
+            real é necessária.
           </p>
           <form
             onSubmit={(e) => {
@@ -2105,11 +2105,11 @@ function App() {
             }}
           >
             <label className="field">
-              <span>Email • optional</span>
-              <input type="email" placeholder="farmer@example.com" />
+              <span>E-mail • opcional</span>
+              <input type="email" placeholder="produtor@example.com" />
             </label>
             <button type="submit" className="button yellow">
-              Explore the demo →
+              Explorar demonstração →
             </button>
           </form>
         </>
@@ -2117,29 +2117,29 @@ function App() {
     if (modal === "contact")
       return (
         <>
-          <h2>Shall we talk?</h2>
-          <p>Demo form: this version does not send messages.</p>
+          <h2>Vamos conversar?</h2>
+          <p>Formulário demonstrativo: esta versão não envia mensagens.</p>
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              toast("Demo completed. No message was sent.");
+              toast("Demonstração concluída. Nenhuma mensagem foi enviada.");
               open(null);
             }}
           >
             <label className="field">
-              <span>Your name</span>
-              <input required placeholder="Your name" />
+              <span>Seu nome</span>
+              <input required placeholder="Seu nome" />
             </label>
             <label className="field">
-              <span>Your email</span>
-              <input required type="email" placeholder="farmer@example.com" />
+              <span>Seu e-mail</span>
+              <input required type="email" placeholder="produtor@example.com" />
             </label>
             <label className="field">
-              <span>Your message</span>
-              <textarea required placeholder="I would like to learn about NATIVA." />
+              <span>Sua mensagem</span>
+              <textarea required placeholder="Quero conhecer a NATIVA." />
             </label>
             <button className="button yellow" type="submit">
-              Complete demo
+              Concluir demonstração
             </button>
           </form>
         </>
@@ -2156,7 +2156,7 @@ function App() {
               <p>{d}</p>
             </section>
           ))}
-          <Btn onClick={() => open(null)}>Got it</Btn>
+          <Btn onClick={() => open(null)}>Entendi</Btn>
         </>
       );
     }
@@ -2176,18 +2176,18 @@ function App() {
           {menu && (
             <button
               className="nav-shade"
-              aria-label="Close navigation"
+              aria-label="Fechar navegação"
               onClick={() => setMenu(false)}
             />
           )}
           <aside className={"sidebar " + (menu ? "shown" : "")}>
             <Logo />
-            <small className="nav-section">MAIN</small>
+            <small className="nav-section">PRINCIPAL</small>
             <nav>
               {navItems.map(([id, label, img], i) => (
                 <React.Fragment key={id}>
                   {i === 3 && (
-                    <small className="nav-section planning">PLANNING</small>
+                    <small className="nav-section planning">PLANEJAMENTO</small>
                   )}
                   <button
                     className={page === id ? "selected" : ""}
@@ -2205,21 +2205,21 @@ function App() {
                 onClick={() => go("settings")}
               >
                 <img src={A.imgIconeDeNavegacao5} alt="" />
-                Settings
+                Configurações
               </button>
               <button onClick={() => open("help")}>
                 <img src={A.imgIconeAjuda} alt="" />
-                Help
+                Ajuda
               </button>
               <LinkButton onClick={() => go("landing")}>
-                Back to home ↗
+                Voltar ao início ↗
               </LinkButton>
             </div>
           </aside>
           <header className="topbar">
             <button
               className="mobile-menu"
-              aria-label="Open navigation"
+              aria-label="Abrir navegação"
               onClick={() => setMenu(true)}
             >
               ☰
@@ -2233,7 +2233,7 @@ function App() {
             </button>
             <button
               className="account"
-              aria-label="My account"
+              aria-label="Minha conta"
               onClick={() => open("account")}
             >
               <img src={A.imgIconeDeConta} alt="" />
@@ -2262,12 +2262,12 @@ function App() {
       {notice && (
         <div className="toast" role="status">
           ✓ {notice}
-          <button aria-label="Close notification" onClick={() => setNotice("")}>
+          <button aria-label="Fechar notificação" onClick={() => setNotice("")}>
             ×
           </button>
         </div>
       )}
-      {inDashboard && <span className="sr-only">NATIVA demo</span>}
+      {inDashboard && <span className="sr-only">Demonstração NATIVA</span>}
     </DraftContext.Provider>
   );
 }
@@ -2292,7 +2292,7 @@ function Dialog({
     <dialog
       ref={ref}
       className={"modal " + (wide ? "modal-wide" : "")}
-      aria-label="NATIVA details"
+      aria-label="Detalhes NATIVA"
       onCancel={(e) => {
         e.preventDefault();
         onClose();
@@ -2310,7 +2310,7 @@ function Dialog({
         }
       }}
     >
-      <button className="close-modal" aria-label="Close" onClick={onClose}>
+      <button className="close-modal" aria-label="Fechar" onClick={onClose}>
         ×
       </button>
       {children}
