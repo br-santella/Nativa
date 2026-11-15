@@ -17,11 +17,12 @@ export type SetupInputs = {
   restricoes: { sem_comprador: string[]; maquinas: { plataforma_milho: boolean; semeadora_consorcio: boolean } };
   irrigacao: { disponivel: boolean };
 };
-const soilFields = [['argila_pct','Argila (%)'],['silte_pct','Silte (%)'],['areia_pct','Areia (%)'],['materia_organica_pct','Matéria orgânica (%)'],['ph','pH'],['p_mg_dm3','Fósforo (mg/dm³)'],['k_cmolc_dm3','Potássio (cmolc/dm³)'],['ca_cmolc_dm3','Cálcio (cmolc/dm³)'],['mg_cmolc_dm3','Magnésio (cmolc/dm³)'],['al_cmolc_dm3','Alumínio (cmolc/dm³)'],['v_pct','Saturação por bases (%)'],['ctc_cmolc_dm3','CTC (cmolc/dm³)']];
-const soilMax: Record<string, number> = {ph:9, p_mg_dm3:500, k_cmolc_dm3:10, ca_cmolc_dm3:40, mg_cmolc_dm3:20, al_cmolc_dm3:15, ctc_cmolc_dm3:60};
+export const soilFields = [['argila_pct','Argila (%)'],['silte_pct','Silte (%)'],['areia_pct','Areia (%)'],['materia_organica_pct','Matéria orgânica (%)'],['ph','pH'],['p_mg_dm3','Fósforo (mg/dm³)'],['k_cmolc_dm3','Potássio (cmolc/dm³)'],['ca_cmolc_dm3','Cálcio (cmolc/dm³)'],['mg_cmolc_dm3','Magnésio (cmolc/dm³)'],['al_cmolc_dm3','Alumínio (cmolc/dm³)'],['v_pct','Saturação por bases (%)'],['ctc_cmolc_dm3','CTC (cmolc/dm³)']];
+export const soilMax: Record<string, number> = {ph:9, p_mg_dm3:500, k_cmolc_dm3:10, ca_cmolc_dm3:40, mg_cmolc_dm3:20, al_cmolc_dm3:15, ctc_cmolc_dm3:60};
 /** Clay, silt and sand add up to 100%: two typed values fill in the third. Silt is not sent to the engine. */
 const TEXTURE = ['argila_pct', 'silte_pct', 'areia_pct'];
-const commodities = [['soja','Soja'],['milho','Milho'],['trigo','Trigo'],['feijao','Feijão'],['sorgo','Sorgo']];
+export const PROBLEMS = [['nematoide','Nematoide'],['mofo_branco','Mofo-branco'],['cigarrinha','Cigarrinha'],['compactacao','Compactação']];
+export const commodities = [['soja','Soja'],['milho','Milho'],['trigo','Trigo'],['feijao','Feijão'],['sorgo','Sorgo']];
 const copy = [
  ['Vamos começar','Um novo olhar começa aqui.','Vamos conhecer um pouquinho da sua terra. No seu tempo.'],
  ['Sua lavoura','O que você cultiva hoje?','Começamos com o que já faz parte da sua rotina.'],
@@ -37,7 +38,7 @@ const LAST = copy.length - 1;
 const OPTIONAL_STEPS = [2, 3, 5, 6];
 const isoToday = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
 /** Approximate area (ha) of a boundary drawn on the map, projected around its centroid. */
-function hectares(vertices: LatLon[]): number {
+export function hectares(vertices: LatLon[]): number {
  if (vertices.length < 3) return 0;
  const lat0 = vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length * Math.PI / 180;
  const xy = vertices.map(([lat, lon]) => [lon * 111320 * Math.cos(lat0), lat * 110540]);
@@ -46,7 +47,7 @@ function hectares(vertices: LatLon[]): number {
 }
 type Place = { label: string; lat: number; lon: number };
 /** Square of `ha` hectares centred on a point, as [lat, lon] corners. */
-function square(lat: number, lon: number, ha: number): LatLon[] {
+export function square(lat: number, lon: number, ha: number): LatLon[] {
  const half = Math.sqrt(ha * 10000) / 2, dLat = half / 110540, dLon = half / (111320 * Math.cos(lat * Math.PI / 180));
  return [[lat - dLat, lon - dLon], [lat - dLat, lon + dLon], [lat + dLat, lon + dLon], [lat + dLat, lon - dLon]];
 }
@@ -282,7 +283,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      </>)}
      
     </>}
-    {step === 2 && <><fieldset className="wizard-choices"><legend>{say('Problemas conhecidos','Known issues')}</legend>{[['nematoide','Nematoide'],['mofo_branco','Mofo-branco'],['cigarrinha','Cigarrinha'],['compactacao','Compactação']].map(([id,label]) => <label key={id}><input type="checkbox" checked={problems.includes(id)} onChange={() => setProblems(toggle(problems,id))}/>{t(label)}</label>)}</fieldset><p className="wizard-hint">{say('Nenhum conhecido? Pode continuar sem marcar nada.','No known issues? You can continue without selecting anything.')}</p></>}
+    {step === 2 && <><fieldset className="wizard-choices"><legend>{say('Problemas conhecidos','Known issues')}</legend>{PROBLEMS.map(([id,label]) => <label key={id}><input type="checkbox" checked={problems.includes(id)} onChange={() => setProblems(toggle(problems,id))}/>{t(label)}</label>)}</fieldset><p className="wizard-hint">{say('Nenhum conhecido? Pode continuar sem marcar nada.','No known issues? You can continue without selecting anything.')}</p></>}
     {step === 3 && <>
       
       <div className="wizard-grid wizard-soil-grid">{soilFields.map(([id,label]) => <div key={id} className={textureAuto === id ? 'is-calculated' : undefined}>{field(label, <input type="number" step="any" min={id === 'ph' ? 3 : 0} max={soilMax[id] ?? 100} value={soil[id] ?? ''} onChange={e => TEXTURE.includes(id) ? setTexture(id, e.target.value) : setSoil({...soil,[id]:e.target.value})}/>)}{textureAuto === id && <span className="wizard-calculated">{say('calculado','calculated')}</span>}</div>)}</div><p className="wizard-hint">{say('Argila, silte e areia somam 100%: preencha duas e calculamos a terceira.','Clay, silt and sand add up to 100%: fill in two and we work out the third.')}</p>
@@ -327,7 +328,7 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
     </div>
     {error && <p className="wizard-error" role="alert">{error}</p>}
     <div className="wizard-actions"><button className="button yellow" type="submit">{step === LAST ? say('Explorar meus cenários →','Explore my scenarios →') : step === 2 && !problems.length ? say('Continuar sem marcar →','Continue without selecting →') : step === 3 && !Object.values(soil).some(v => v !== '') ? say('Vamos seguir sem análise →','Let’s continue without a soil test →') : say('Vamos continuar →','Let’s continue →')}</button></div>
-    <small>{say('Seus dados ficam só nesta sessão.','Your data stays in this session only.')}</small>
+    <small>{say('Seus dados ficam salvos neste navegador.','Your data is saved in this browser.')}</small>
    </form>
   </section>
  </div>;
