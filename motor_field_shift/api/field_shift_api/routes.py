@@ -1,4 +1,4 @@
-"""Rotas HTTP. Endpoints `def` (síncronos) rodam no threadpool do FastAPI."""
+"""HTTP routes. `def` (sync) endpoints run in the FastAPI threadpool."""
 
 from __future__ import annotations
 
@@ -128,7 +128,7 @@ def climate(
 def _area_context(area: dict[str, Any], sowing: str) -> dict[str, Any]:
     from field_shift import context
 
-    a = service._resolver_area(area)  # mesmas validações e erros (400/422) da recomendação
+    a = service._resolver_area(area)  # same validations and errors (400/422) as the recommendation
     return context.build(a["lat"], a["lon"], sowing)
 
 

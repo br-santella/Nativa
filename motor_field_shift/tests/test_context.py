@@ -1,4 +1,4 @@
-"""Testes das fontes de contexto com rede mockada (sem acesso à internet, cache em diretório temporário)."""
+"""Tests of the context sources with a mocked network (no internet access, cache in a temporary directory)."""
 from __future__ import annotations
 
 import json
@@ -42,7 +42,7 @@ def _enso_network(monkeypatch, fail=False):
 def test_enso_success_and_history(monkeypatch):
     _enso_network(monkeypatch)
     annual = []
-    # anos agrícolas 1991..1995 -> DJF 1992..1996 (El Niño, Neutro, La Niña, El Niño, La Niña)
+    # crop years 1991..1995 -> DJF 1992..1996 (El Niño, Neutral, La Niña, El Niño, La Niña)
     for y, v in zip(range(1991, 1996), [1, 0, 0, 1, 0]):
         annual.append(("c1", y, "veranico_safrinha_ge15", float(v)))
     monkeypatch.setattr(enso, "_annual", lambda: pd.DataFrame(annual, columns=["ponto_id", "ano", "indicador", "valor"]))
@@ -62,7 +62,7 @@ def test_enso_cache_and_fallback_with_expired_cache(monkeypatch):
     monkeypatch.setattr(enso, "_annual", lambda: pd.DataFrame(columns=["ponto_id", "ano", "indicador", "valor"]))
     assert enso.query_source(None)["do_cache"] is False
     _enso_network(monkeypatch, fail=True)
-    assert enso.query_source(None)["do_cache"] is True  # nem tocou na rede
+    assert enso.query_source(None)["do_cache"] is True  # did not even touch the network
 
 
 def test_enso_fallback_without_network(monkeypatch):
@@ -83,7 +83,7 @@ def test_classify_and_cache_only(monkeypatch):
 
 
 def test_mjo_phase_and_fallback(monkeypatch):
-    # PC1=0,PC2=1 -> RMM1=1, RMM2=0 -> ângulo 0 -> fase 5; amplitude 1
+    # PC1=0,PC2=1 -> RMM1=1, RMM2=0 -> angle 0 -> phase 5; amplitude 1
     assert mjo.rmm_phase(0.0, 1.0)[0] == 5
     assert mjo.rmm_phase(0.0, -1.0)[0] == 1
     assert mjo.rmm_phase(1.0, 0.0)[0] == 7 or mjo.rmm_phase(1.0, 0.0)[0] in range(1, 9)
@@ -150,7 +150,7 @@ def test_curated_current_expired_and_region(tmp_path):
     path_ = _curated(tmp_path, [
         {**base, "id": "a", "regiao": ["Oeste do PR"]},
         {**base, "id": "b", "regiao": ["Oeste do PR"], "data": "2026-01-01"},       # vencido
-        {**base, "id": "c", "regiao": ["Londrina"]},                                  # outra região
+        {**base, "id": "c", "regiao": ["Londrina"]},                                  # another region
     ])
     r = pests.query_curated("Toledo", today=date(2026, 11, 14), file_path=path_)
     assert [a["id"] for a in r["alertas"]] == ["a"] and r["alertas_vencidos_ignorados"] == 1

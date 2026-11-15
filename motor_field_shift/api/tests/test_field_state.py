@@ -1,7 +1,7 @@
 """Field state: `problemas_area` and fertility in `analise_solo` (both optional).
 
 Unit tests (no data): vocabulary, validation, P/K/V%/Al classes by clay band, liming formula, qualitative levels, API with a fake service.
-Integration (`uv run pytest -m integracao api/tests/test_estado_area.py`): real engine on demo field 72638.
+Integration (`uv run pytest -m integration api/tests/test_field_state.py`): real engine on demo field 72638.
 """
 
 from __future__ import annotations

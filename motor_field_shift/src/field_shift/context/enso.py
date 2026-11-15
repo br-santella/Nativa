@@ -1,14 +1,14 @@
-"""ENSO: status oficial da NOAA CPC, tabela ONI e histórico por fase para a célula do talhão.
+"""ENSO: official NOAA CPC status, ONI table and per-phase history for the field cell.
 
-Fontes:
-- Status/sinopse: https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml
-  (HTML; texto após "ENSO Alert System Status:" e bloco "Synopsis:"). Não há JSON; extração por texto.
-- ONI: https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt (colunas SEAS YR TOTAL ANOM).
+Sources:
+- Status/synopsis: https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml
+  (HTML; text after "ENSO Alert System Status:" and the "Synopsis:" block). There is no JSON; extraction from text.
+- ONI: https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt (columns SEAS YR TOTAL ANOM).
 
-Convenção do ano agrícola (projeto): Y = jul/Y a jun/Y+1. A fase do ENSO do ano agrícola Y é a do
-trimestre DJF (dez/Y, jan/Y+1, fev/Y+1), o pico do verão austral, que cai no meio do ciclo da soja
-e antes da safrinha. Fase: ONI >= +0,5 El Niño; <= -0,5 La Niña; senão Neutro.
-Os anos 1991–2024 são os mesmos do motor (indicadores_anuais.parquet).
+Crop-year convention (project): Y = Jul/Y to Jun/Y+1. The ENSO phase of crop year Y is the one of the
+DJF quarter (Dec/Y, Jan/Y+1, Feb/Y+1), the peak of the austral summer, in the middle of the soybean cycle
+and before the second season. Phase: ONI >= +0.5 El Niño; <= -0.5 La Niña; otherwise Neutral.
+The years 1991–2024 are the same as the engine's (indicadores_anuais.parquet).
 """
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ URL_ONI = "https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt"
 SOURCE = B.source("NOAA Climate Prediction Center (CPC) — ENSO Diagnostic Discussion e ONI", URL_STATUS)
 THRESHOLD = 0.5
 PHASES = ("El Niño", "La Niña", "Neutro")
-INDICATORS = {  # nome amigável -> (rótulo, indicador do motor; {tag} = semeadura sem barra)
+INDICATORS = {  # friendly name -> (label, engine indicator; {tag} = sowing date without the slash)
     "veranico_safrinha": ("veranico no safrinha", "veranico_safrinha_ge15"),
     "geada_safrinha": ("geada no safrinha", "geada_safrinha_semeadura_{tag}_le3"),
     "geada_trigo": ("geada no trigo", "geada_trigo_le3"),
@@ -80,7 +80,7 @@ def _search() -> dict[str, Any]:
 
 
 def phase_by_crop_year(oni: list[dict]) -> dict[int, dict[str, Any]]:
-    """{Y: {fase, oni}} usando DJF cuja rotulagem no arquivo é o ano Y+1."""
+    """{Y: {fase, oni}} using DJF, which the file labels as year Y+1."""
     djf = {r["ano"]: r["oni"] for r in oni if r["trimestre"] == "DJF"}
     return {y: {"fase": classify(djf[y + 1]), "oni": djf[y + 1]} for y in range(1991, 2025) if (y + 1) in djf}
 

@@ -1,4 +1,4 @@
-"""Renda da rotação: margem = rendimento municipal (IBGE PAM) × preço (SEAB/DERAL) − custo (CONAB)."""
+"""Rotation income: margin = municipal yield (IBGE PAM) × price (SEAB/DERAL) − cost (CONAB)."""
 from field_shift.income.income import (CASH_CROPS, INCOME_SCALE_MIN, compute_margins, load_reference, cost_source, price_source,
                                      yields)
 

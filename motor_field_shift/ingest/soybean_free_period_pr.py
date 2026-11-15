@@ -65,22 +65,22 @@ def main(pdf: Path) -> None:
         names = lists[score]
         missing_items = [n for n in names if norm(n) not in by_name]
         if missing_items:
-            raise SystemExit(f"municípios da portaria sem correspondência no IBGE (região {info['regiao']}): {missing_items}")
+            raise SystemExit(f"ordinance municipalities with no IBGE match (region {info['regiao']}): {missing_items}")
         codes = sorted(by_name[norm(n)] for n in names)
         for c in codes:
             if c in assigned:
-                raise SystemExit(f"município {c} aparece em duas regiões")
+                raise SystemExit(f"municipality {c} appears in two regions")
             assigned[c] = info["regiao"]
         regions.append(dict(info, municipios=codes, n_municipios=len(codes)))
     no_region = sorted(set(by_name.values()) - set(assigned))
     if no_region:
-        raise SystemExit(f"municípios do IBGE fora das 3 listas da portaria: {no_region}")
+        raise SystemExit(f"IBGE municipalities outside the 3 ordinance lists: {no_region}")
     ref = dict(consulta=str(date.today()), safra=SEASON, portaria=ORDINANCE, url_portaria=ORDINANCE_URL, url_adapar=URL_ADAPAR,
                observacao="datas conferidas na página da ADAPAR (o quadro de datas da portaria é imagem no PDF); listas de municípios "
                           "lidas do anexo da portaria. Muda a cada safra: atualizar todo ano em abril.",
                regioes=regions)
     OUTPUT.write_text(json.dumps(ref, ensure_ascii=False, indent=1))
-    print("gravado", OUTPUT, {r["regiao"]: r["n_municipios"] for r in regions}, "total", len(assigned))
+    print("written", OUTPUT, {r["regiao"]: r["n_municipios"] for r in regions}, "total", len(assigned))
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
-"""MJO: fase e amplitude atuais (índice ROMI, NOAA PSL; OLR em tempo quase real).
+"""MJO: current phase and amplitude (ROMI index, NOAA PSL; near-real-time OLR).
 
-Fonte: https://psl.noaa.gov/mjo/mjoindex/romi.cpcolr.1x.txt (colunas: ano mês dia hora PC1 PC2 amplitude).
-O RMM da BoM bloqueia acesso automatizado (HTTP 403) e o OMI do PSL está parado desde jun/2026, então
-usamos o ROMI. Para obter a fase no padrão RMM (1–8): RMM1 = PC2 e RMM2 = -PC1 (convenção do PSL para
-comparar OMI/ROMI com RMM). Amplitude < 1: MJO fraca/indefinida. Só informativo.
+Source: https://psl.noaa.gov/mjo/mjoindex/romi.cpcolr.1x.txt (columns: year month day hour PC1 PC2 amplitude).
+The BoM RMM blocks automated access (HTTP 403) and the PSL OMI has been stalled since Jun/2026, so
+we use ROMI. To get the phase in the RMM convention (1–8): RMM1 = PC2 and RMM2 = -PC1 (PSL convention to
+compare OMI/ROMI with RMM). Amplitude < 1: weak/undefined MJO. Informative only.
 """
 from __future__ import annotations
 

@@ -1,8 +1,8 @@
-"""Infraestrutura comum das fontes de contexto: cache em disco com TTL, fallback e carimbos.
+"""Shared infrastructure of the context sources: disk cache with TTL, fallback and stamps.
 
-Regras: cada fonte tem timeout curto, nunca levanta exceção para o chamador e devolve sempre
-`consultado_em` e `fonte` (nome + URL). Falha vira {"disponivel": False, "motivo": ...}.
-O contexto é informativo: nada aqui altera ranking ou nota do motor.
+Rules: each source has a short timeout, never raises to the caller and always returns
+`consultado_em` and `fonte` (name + URL). A failure becomes {"disponivel": False, "motivo": ...}.
+The context is informative: nothing here changes the engine ranking or score.
 """
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ def read_cache(key: str, ttl: float, allow_expired: bool = False) -> Any | None:
         if not allow_expired and time.time() - p.stat().st_mtime > ttl:
             return None
         return json.loads(p.read_text(encoding="utf-8"))
-    except Exception:  # cache corrompido não pode quebrar nada
+    except Exception:  # a corrupted cache must not break anything
         return None
 
 
@@ -67,12 +67,12 @@ def write_cache(key: str, valor: Any) -> None:
         tmp.write_text(json.dumps(valor, ensure_ascii=False), encoding="utf-8")
         tmp.replace(_file(key))
     except Exception:
-        log.warning("não foi possível gravar cache %s", key, exc_info=True)
+        log.warning("could not write cache %s", key, exc_info=True)
 
 
 def com_cache(key: str, ttl: float, fetch: Callable[[], Any]) -> tuple[Any, bool]:
-    """Valor bruto da fonte com cache. Devolve (valor, veio_do_cache). `buscar` pode levantar exceção:
-    nesse caso, usa o cache vencido (se existir) e marca; sem cache, repassa a exceção."""
+    """Raw value of the source with cache. Returns (value, from_cache). `fetch` may raise:
+    in that case the expired cache is used (if any) and flagged; without cache, the exception is re-raised."""
     v = read_cache(key, ttl)
     if v is not None:
         return v, True
@@ -97,7 +97,7 @@ def download_text(url: str, timeout: float = TIMEOUT_HTTP, params: dict | None =
 
 
 def insurance(nome: str, source_: dict[str, str], fn: Callable[[], dict[str, Any]]) -> dict[str, Any]:
-    """Executa a consulta de uma fonte garantindo o contrato (nunca levanta)."""
+    """Run a source query enforcing the contract (never raises)."""
     try:
         out = fn()
         out.setdefault("consultado_em", now_iso())
@@ -105,5 +105,5 @@ def insurance(nome: str, source_: dict[str, str], fn: Callable[[], dict[str, Any
         out.setdefault("disponivel", True)
         return out
     except Exception as exc:
-        log.warning("fonte de contexto %s indisponível: %s: %s", nome, type(exc).__name__, exc)
+        log.warning("context source %s unavailable: %s: %s", nome, type(exc).__name__, exc)
         return unavailable(f"{type(exc).__name__}: {exc}"[:300], source_)

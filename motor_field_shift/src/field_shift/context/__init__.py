@@ -1,7 +1,7 @@
-"""Contexto atual (informativo): consulta fontes oficiais sobre eventos climáticos/fitossanitários em curso.
+"""Current context (informative): queries official sources about ongoing climate/plant-health events.
 
-NÃO prevê nada e NÃO altera ranking ou notas do motor. Cada fonte tem timeout, cache em disco e fallback
-({"disponivel": False, "motivo": ...}); uma fonte que falha nunca derruba as outras.
+It does NOT forecast anything and does NOT change the engine ranking or scores. Each source has a timeout, a disk cache and a fallback
+({"disponivel": False, "motivo": ...}); a failing source never brings down the others.
 """
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ WARNING = ("Contexto informativo de fontes oficiais (NOAA, NASA, IDR-PR/ADAPAR).
 
 
 def build(lat: float, lon: float, sowing: str = "01/02", cache_only: bool = False) -> dict[str, Any]:
-    """Contexto para um ponto (centroide do talhão) dentro do Paraná. Nunca levanta exceção por falha de fonte."""
+    """Context for a point (field centroid) inside Paraná. Never raises because of a source failure."""
     from field_shift.climate.lookup import indicators_for
 
     try:
@@ -39,7 +39,7 @@ def build(lat: float, lon: float, sowing: str = "01/02", cache_only: bool = Fals
         for k, fut in futs.items():
             try:
                 out[k] = fut.result()
-            except Exception as exc:  # defesa extra: cada fonte já é "segura"
+            except Exception as exc:  # extra safety: each source is already "safe"
                 out[k] = B.unavailable(f"{type(exc).__name__}: {exc}"[:300], B.source(k, ""))
     return {"consultado_em": B.now_iso(), "aviso": WARNING,
             "local": {"lat": lat, "lon": lon, "municipio": mun_name, "celula_clima": cell, "semeadura_safrinha": sowing},

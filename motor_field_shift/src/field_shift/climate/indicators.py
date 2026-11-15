@@ -1,9 +1,9 @@
-"""Indicadores de risco climático (por ponto POWER e por ano agrícola).
+"""Climate-risk indicators (per POWER point and per crop year).
 
-CONVENÇÃO DE ANO AGRÍCOLA: safra Y = 01/07/Y a 30/06/Y+1 (ex.: safra 2010 = 2010/11). O rótulo `ano` é Y.
-Toda janela é ancorada explicitamente (ver JANELAS): soja (set–fev) começa em Y; safrinha, trigo,
-geada jun–jul, veranico safrinha etc. caem em Y+1 (mesma safra: soja Y -> safrinha/trigo Y+1).
-Anos completos: safras 1991..2024 (34 anos; dados POWER vão até 31/12/2025). Normal 1991–2020 = safras 1991..2019.
+CROP-YEAR CONVENTION: season Y = 01/07/Y to 30/06/Y+1 (e.g. season 2010 = 2010/11). The `ano` label is Y.
+Every window is anchored explicitly (see JANELAS): soybean (Sep–Feb) starts in Y; second-season corn, wheat,
+Jun–Jul frost, second-season dry spell etc. fall in Y+1 (same season: soybean Y -> second crop/wheat Y+1).
+Complete years: seasons 1991..2024 (34 years; POWER data go to 31/12/2025). 1991–2020 normal = seasons 1991..2019.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ YEARS = list(range(1991, 2025))
 NORMAL_YEARS = [a for a in YEARS if a <= 2019]
 THRESHOLDS = {"le3": 3.0, "le2": 2.0, "le0": 0.0}
 SOWINGS_2ND = {"1501": (1, 15), "0102": (2, 1), "1502": (2, 15), "0103": (3, 1), "1503": (3, 15)}
-# ciclo: (mês_ini, dia_ini, mês_fim, dia_fim, offset do ano de início em relação a Y)
+# cycle: (start_month, start_day, end_month, end_day, offset of the start year relative to Y)
 CYCLES = {"soja": (10, 15, 2, 15, 0), "safrinha": (2, 15, 6, 15, 1), "trigo": (5, 1, 9, 30, 1)}
 
 
@@ -29,8 +29,8 @@ def _window(s: pd.Series | pd.DataFrame, y: int, m0, d0, m1, d1, off: int):
 
 # ----------------------------------------------------------------------------- ET0 FAO-56
 def et0_fao56(df: pd.DataFrame, lat: float, elev: float) -> pd.Series:
-    """ET0 diária (mm/dia), Penman-Monteith FAO-56. df com T2M, T2M_MIN, T2M_MAX, T2MDEW, RH2M, WS2M,
-    ALLSKY_SFC_SW_DWN (MJ/m2/dia). Fluxo de calor do solo G = 0."""
+    """Daily ET0 (mm/day), FAO-56 Penman-Monteith. df with T2M, T2M_MIN, T2M_MAX, T2MDEW, RH2M, WS2M,
+    ALLSKY_SFC_SW_DWN (MJ/m2/day). Soil heat flux G = 0."""
     t, tmin, tmax = df["T2M"], df["T2M_MIN"], df["T2M_MAX"]
     rs = df["ALLSKY_SFC_SW_DWN"]
     u2 = df["WS2M"]
@@ -40,7 +40,7 @@ def et0_fao56(df: pd.DataFrame, lat: float, elev: float) -> pd.Series:
     delta = 4098 * _svp(t) / (t + 237.3) ** 2
     p = 101.3 * ((293 - 0.0065 * elev) / 293) ** 5.26
     gamma = 0.000665 * p
-    # radiação extraterrestre
+    # extraterrestrial radiation
     doy = df.index.dayofyear.values
     phi = math.radians(lat)
     dr = 1 + 0.033 * np.cos(2 * np.pi * doy / 365)
@@ -65,7 +65,7 @@ def _svp(t):
 
 # ----------------------------------------------------------------------------- helpers
 def _max_seq(arr: np.ndarray, cond: np.ndarray) -> float:
-    """Maior sequência consecutiva de dias com cond True (NaN no dado quebra a sequência)."""
+    """Longest run of consecutive days with cond True (NaN in the data breaks the run)."""
     best = cur = 0
     for c in cond:
         cur = cur + 1 if c else 0
@@ -74,8 +74,8 @@ def _max_seq(arr: np.ndarray, cond: np.ndarray) -> float:
 
 
 def _rain_onset(p: pd.Series, y: int) -> float:
-    """Dias desde 01/09/Y do primeiro dia com >=20 mm em 3 dias (dia, dia+1, dia+2) sem veranico >=10 d
-    (P<1 mm) nos 30 dias seguintes (dia+3..dia+32). Busca até 31/01. NaN se não houver."""
+    """Days since 01/09/Y of the first day with >=20 mm in 3 days (day, day+1, day+2) with no dry spell >=10 d
+    (P<1 mm) in the following 30 days (day+3..day+32). Searches up to 31/01. NaN if there is none."""
     start = pd.Timestamp(y, 9, 1)
     s = p.loc[start:pd.Timestamp(y + 1, 3, 5)]
     if len(s) < 100:
@@ -92,7 +92,7 @@ def _rain_onset(p: pd.Series, y: int) -> float:
     return np.nan
 
 
-# ----------------------------------------------------------------------------- por ponto
+# ----------------------------------------------------------------------------- per point
 def point_indicators(df: pd.DataFrame, lat: float, elev: float) -> dict[str, dict[int, float]]:
     df = df.sort_index()
     df = df.loc["1991-01-01":"2025-12-31"]
@@ -107,7 +107,7 @@ def point_indicators(df: pd.DataFrame, lat: float, elev: float) -> dict[str, dic
 
     drought = p < 1
     for y in YEARS:
-        # geada safrinha por semeadura
+        # second-season frost by sowing date
         for tag, (m, d) in SOWINGS_2ND.items():
             sow_date = pd.Timestamp(y + 1, m, d)
             w = tmin.loc[sow_date + pd.Timedelta(days=60): sow_date + pd.Timedelta(days=120)]
@@ -122,7 +122,7 @@ def point_indicators(df: pd.DataFrame, lat: float, elev: float) -> dict[str, dic
         # veranico
         for nome, args in {"safrinha": (3, 1, 4, 30, 1), "soja": (12, 1, 2, 28, 0)}.items():
             ws = _window(p, y, *args)
-            if args[3] == 28:  # fim de fevereiro: usa último dia real
+            if args[3] == 28:  # end of February: use the real last day
                 ws = p.loc[pd.Timestamp(y, 12, 1): pd.Timestamp(y + 1, 3, 1) - pd.Timedelta(days=1)]
             mx = _max_seq(ws.values, (ws < 1).values)
             put(f"veranico_maxseq_{nome}", y, mx)
@@ -133,7 +133,7 @@ def point_indicators(df: pd.DataFrame, lat: float, elev: float) -> dict[str, dic
         nd = float((wc >= 35).sum())
         put("calor_soja_dias", y, nd)
         put("calor_soja_ge5", y, float(nd >= 5))
-        # início das chuvas
+        # rain onset
         put("inicio_chuvas_dias_desde_0109", y, _rain_onset(p, y))
         # chuva intensa, chuva mensal (safra jul Y..jun Y+1)
         ps = p.loc[pd.Timestamp(y, 7, 1): pd.Timestamp(y + 1, 6, 30)]
@@ -186,5 +186,5 @@ def build_indicators(proc: Path):
     agg = (annual_value.groupby(["ponto_id", "indicador"])[["ano", "valor"]].apply(_aggregate).reset_index())
     agg = agg.merge(pts.reset_index(), on="ponto_id")
     agg.to_parquet(proc / "indicadores.parquet", index=False)
-    print(f"indicadores_anuais: {len(annual_value)} linhas; indicadores: {len(agg)} linhas "
-          f"({agg.indicador.nunique()} indicadores, {agg.ponto_id.nunique()} pontos)")
+    print(f"indicadores_anuais: {len(annual_value)} rows; indicadores: {len(agg)} rows "
+          f"({agg.indicador.nunique()} indicators, {agg.ponto_id.nunique()} points)")

@@ -1,4 +1,4 @@
-"""Testes da camada de serviço (rodar: uv run python tests/test_servico.py  ou  uv run pytest tests/test_servico.py)."""
+"""Service-layer tests (run: uv run python tests/test_service.py  or  uv run pytest tests/test_service.py)."""
 import json
 import time
 
@@ -7,11 +7,11 @@ from field_shift.core import recommend as _recommend
 
 
 def recommend(area, **kw):
-    """`rotacao_atual` é obrigatória no serviço; os testes antigos usam soja → milho safrinha (premissa de calendário do catálogo)."""
+    """`current_rotation` is required in the service; the old tests use soybean → second-season corn (catalog calendar assumption)."""
     kw.setdefault("current_rotation", "soja__milho_safrinha")
     return _recommend(area, **kw)
 
-# Notas das 6 rotações antigas (soja no verão), pelo slug antigo (`id_legado`): não mudam com o catálogo maior (escala absoluta).
+# Scores of the 6 old rotations (summer soybean), by old slug (`id_legado`): they do not change with the larger catalog (absolute scale).
 EXPECTED = {"milho_braquiaria": 0.821, "milho_safrinha": 0.774, "milheto_crotalaria": 0.757, "aveia": 0.7, "pousio": 0.55, "trigo": 0.466}
 
 
@@ -32,12 +32,12 @@ def test_field_72638():
     assert r["entrada"]["rotacao_atual"] == "soja__milho_safrinha" and r["atual"]["atual"] and r["atual"]["id_legado"] == "milho_safrinha"
     assert [a["id"] for a in r["alternativas"]] == ["soja__milho_braquiaria", "soja__milheto_crotalaria", "soja__aveia_nabo"]
     assert [e["id"] for e in r["eliminadas"]][0] == "soja__soja_safrinha" and len(r["eliminadas"]) == 7
-    # margem incremental e escala S (soja de Cascavel); saída arredondada (R$ sem casas, critérios com 3)
+    # incremental margin and S scale (Cascavel soybean); rounded output (R$ without decimals, criteria with 3)
     m = _rk(r)
     assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 1762 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1802
     assert m["trigo"]["margem"]["escala_S_r_ha"] == 1192
     assert r["ranking"][0]["criterios"]["renda"] == 1.0 and m["trigo"]["criterios"]["renda"] == 0.0  # both clipped
-    # "por quê" comparado com a atual
+    # "why" compared with the current one
     top = r["ranking"][0]["card"]["por_que"]
     assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top  # income is clipped at 1 for both corn options
     current = r["atual"]["card"]["por_que"]
@@ -46,7 +46,7 @@ def test_field_72638():
 
 
 def test_polygon_cascavel():
-    # ~100 ha em lavoura a ~15 km a leste de Cascavel (conferido no MapBiomas pelo diagnóstico)
+    # ~100 ha of cropland ~15 km east of Cascavel (checked in MapBiomas through the diagnosis)
     lon, lat, h = -53.30, -24.90, 0.0045
     g = {"type": "Polygon", "coordinates": [[[lon - h, lat - h], [lon + h, lat - h], [lon + h, lat + h], [lon - h, lat + h], [lon - h, lat - h]]]}
     r, dt = _t(recommend, {"geometry": {"type": "Feature", "properties": {}, "geometry": g}}, pesos={"renda": 10}, adjustments={"precos": {"soja": 100}, "custos": {"milho": 4000}, "linha_custo": "cot"})
@@ -61,7 +61,7 @@ def test_point_guaira():
     r, dt = _t(recommend, {"lat": -24.20, "lon": -54.20}, n_alternatives=2, include_diagnosis=False)
     assert len(r["alternativas"]) == 2 and "diagnostico" not in r
     d, dt2 = _t(diagnose, {"lat": -24.20, "lon": -54.20})
-    print("ponto Guaíra", round(dt, 2), d["area"]["area_ha"], d["area"]["municipio"], [(h["ano"], h["nome_classe"]) for h in d["historico"][-3:]], d["avisos"])
+    print("Guaíra point", round(dt, 2), d["area"]["area_ha"], d["area"]["municipio"], [(h["ano"], h["nome_classe"]) for h in d["historico"][-3:]], d["avisos"])
 
 
 def test_errors():
@@ -78,7 +78,7 @@ def test_errors():
         try:
             recommend({"talhao_id": "72638"}, **kw)
         except InvalidInput as e:
-            print("ok EntradaInvalida", str(e)[:70])
+            print("ok InvalidInput", str(e)[:70])
         else:
             raise AssertionError(kw)
 
@@ -90,18 +90,18 @@ def test_options_and_current_eliminated():
     assert r["atual"]["eliminada"] and r["atual"]["id"] == "soja__soja_safrinha" and not any(x["atual"] for x in r["ranking"])
 
 
-# --------------------------------------------------------------------------- entradas opcionais (dados próprios)
+# --------------------------------------------------------------------------- optional inputs (own data)
 T = {"talhao_id": "72638"}
 TYPICAL_SOIL = {"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "cad_mm_cm": 1.4}
 
 
 def _rk(r):
-    """Ranking por slug antigo (`id_legado`) quando existe, senão pelo id novo."""
+    """Ranking by old slug (`id_legado`) when there is one, otherwise by the new id."""
     return {x.get("id_legado", x["id"]): x for x in r["agora"]["ranking"] + r["proxima_safra"]["ranking"]}
 
 
 def test_regression_without_new_inputs():
-    """Sem as entradas novas, o ranking é idêntico ao anterior e a entrada/metodologia não ganham chaves novas."""
+    """Without the new inputs, the ranking is identical to the previous one and the input/methodology get no new keys."""
     r, _ = _t(recommend, T)
     assert _old(r) == EXPECTED
     assert set(r["entrada"]) == {"semeadura_safrinha", "pesos", "rotacao_atual", "estagio_verao", "colheita_prevista", "data_referencia",
@@ -119,7 +119,7 @@ def test_own_yield():
     assert soy["rendimento_sc_ha"] == 70 and corn["rendimento_sc_ha"] == 120
     assert "informado pelo produtor" in soy["fonte"] and "informado pelo produtor" in corn["fonte"]
     assert any("informado pelo produtor" in e for e in _rk(r)["milho_safrinha"]["card"]["evidencias"])
-    # soja informada muda a escala S; ano ruim escala proporcional (p20/média da PAM)
+    # a given soybean yield changes the S scale; the bad year scales proportionally (p20/PAM mean)
     assert m["escala_S_r_ha"] > mb["escala_S_r_ha"] and m["total_r_ha"] > mb["total_r_ha"]
     assert any("p20/média da PAM" in e for e in _rk(r)["milho_safrinha"]["card"]["evidencias"])
     assert any("Produtividade informada" in a for a in r["metodologia"]["ajustes_aplicados"])
@@ -136,11 +136,11 @@ def test_soil_analysis():
     assert r["entrada"]["analise_solo"]["cad_mm_cm"] == 1.4
     assert _rk(r)["milho_safrinha"]["criterios"]["agua"] > _rk(base)["milho_safrinha"]["criterios"]["agua"]
     assert any("análise de solo do produtor" in e for e in _rk(r)["milho_safrinha"]["card"]["evidencias"])
-    # sem cad_mm_cm: Saxton & Rawls com os valores informados; MO como carbono orgânico equivale
+    # without cad_mm_cm: Saxton & Rawls with the given values; OM as organic carbon is equivalent
     r_sr, _ = _t(recommend, T, soil_analysis={"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5}, include_diagnosis=False)
     r_c, _ = _t(recommend, T, soil_analysis={"argila_pct": 65, "areia_pct": 10, "carbono_organico_g_kg": 3.5 / 1.724 * 10}, include_diagnosis=False)
     assert _rk(r_sr)["milho_safrinha"]["criterios"]["agua"] == _rk(r_c)["milho_safrinha"]["criterios"]["agua"]
-    # só CAD também vale; diagnosticar aceita a análise
+    # AWC only is also valid; diagnose accepts the analysis
     d, _ = _t(diagnose, T, soil_analysis={"cad_mm_cm": 1.0})
     assert d["solo"]["fonte"] == "análise de solo do produtor" and d["solo"]["classe_textura"] is None
 
@@ -164,9 +164,9 @@ def test_constraints_excluded_and_no_buyer():
     r, _ = _t(recommend, T, constraints={"culturas_excluidas": ["trigo"], "sem_comprador": ["milho", "aveia_grao"]}, include_diagnosis=False)
     el = {e["id"]: e["motivos"] for e in r["eliminadas"]}
     assert el["soja__trigo"] == ["Excluída pelo produtor."]  # slug antigo = soja__trigo; milho_verao__trigo segue valendo
-    assert el["milho_verao__trigo"] == ["Sem comprador local informado pelo produtor (milho)."]  # a exclusão antiga só vale p/ soja no verão
+    assert el["milho_verao__trigo"] == ["Sem comprador local informado pelo produtor (milho)."]  # the old exclusion only applies to summer soybean
     assert "Sem comprador local informado pelo produtor" in el["soja__milho_safrinha"][0] and "soja__milho_braquiaria" in el
-    assert "Sem comprador local informado pelo produtor (milho)" in el["milho_verao__aveia"][0]  # verão em milho também precisa de comprador
+    assert "Sem comprador local informado pelo produtor (milho)" in el["milho_verao__aveia"][0]  # summer corn also needs a buyer
     assert [x["id"] for x in r["ranking"]][:3] == ["soja__milheto_crotalaria", "soja__aveia_nabo", "soja__aveia"]
     assert r["atual"]["eliminada"] and r["entrada"]["restricoes"]["sem_comprador"] == ["milho", "aveia_grao"]
     assert r["entrada"]["restricoes"]["culturas_excluidas"] == ["soja__trigo"]
@@ -185,15 +185,15 @@ def test_constraints_machines():
     base, _ = _t(recommend, T, include_diagnosis=False)
     r, _ = _t(recommend, T, constraints={"maquinas": {"plataforma_milho": False, "semeadora_consorcio": False}}, include_diagnosis=False)
     rb, rr = _rk(base), _rk(r)
-    assert "milho_safrinha" in rr and "milho_braquiaria" in rr  # não elimina
+    assert "milho_safrinha" in rr and "milho_braquiaria" in rr  # does not eliminate
     assert "milho_verao__aveia" in rr
     assert any("plataforma de milho" in a for a in rr["milho_safrinha"]["card"]["avisos"])
     assert any("semeadora de consórcio" in a for a in rr["milho_braquiaria"]["card"]["avisos"])
     assert rr["milho_safrinha"]["margem"]["total_r_ha"] == rb["milho_safrinha"]["margem"]["total_r_ha"] - 250
-    assert rr["milho_verao__aveia"]["margem"]["total_r_ha"] == rb["milho_verao__aveia"]["margem"]["total_r_ha"] - 250  # colheita do milho verão
+    assert rr["milho_verao__aveia"]["margem"]["total_r_ha"] == rb["milho_verao__aveia"]["margem"]["total_r_ha"] - 250  # summer-corn harvest
     assert rr["milho_braquiaria"]["margem"]["total_r_ha"] == rb["milho_braquiaria"]["margem"]["total_r_ha"] - 330
     assert rr["trigo"]["margem"] == rb["trigo"]["margem"] and not any("terceirizar" in a for a in rr["trigo"]["card"]["avisos"])
-    # máquina true / omitida = tem
+    # machine true / omitted = owned
     r_ok, _ = _t(recommend, T, constraints={"maquinas": {"plataforma_milho": True}}, include_diagnosis=False)
     assert _old(r_ok) == EXPECTED
 
@@ -213,9 +213,9 @@ def test_irrigation():
         assert rr[k]["criterios"]["agua"] >= rb[k]["criterios"]["agua"] and rr[k]["irrigacao"]["lamina_media_mm_ano"] > 0
         assert rr[k]["margem"]["total_r_ha"] < rb[k]["margem"]["total_r_ha"]
         assert any(e.startswith("Irrigado: lâmina média") for e in rr[k]["card"]["evidencias"])
-    assert rr["milho_safrinha"]["criterios"]["risco"] > rb["milho_safrinha"]["criterios"]["risco"]  # sem veranico
-    assert rr["trigo"]["criterios"]["risco"] == rb["trigo"]["criterios"]["risco"]  # trigo só tem geada
-    for k in ("aveia", "milheto_crotalaria", "pousio", "nabo_forrageiro"):  # cobertura/pousio: não irriga
+    assert rr["milho_safrinha"]["criterios"]["risco"] > rb["milho_safrinha"]["criterios"]["risco"]  # no dry spell
+    assert rr["trigo"]["criterios"]["risco"] == rb["trigo"]["criterios"]["risco"]  # wheat only has frost
+    for k in ("aveia", "milheto_crotalaria", "pousio", "nabo_forrageiro"):  # cover/fallow: not irrigated
         k = k if k in rr else f"soja__{k}"
         assert "irrigacao" not in rr[k] and rr[k]["criterios"] == rb[k]["criterios"]
     # disponivel=False = sequeiro; custo maior aumenta o desconto

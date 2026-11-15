@@ -1,9 +1,9 @@
-"""Anexa o MapBiomas Brasil (Colecao 10) aos talhoes FTW, filtra agricultura e gera historico anual.
+"""Attach MapBiomas Brazil (Collection 10) to the FTW fields, filter agriculture and build the annual history.
 
-Fonte: espelho COG no Source Cooperative (tristangruppwri/mapbiomas), Colecao 10, anos 2019-2024.
-(O bucket oficial storage.googleapis.com/mapbiomas-public retorna 403 anonimo.)
+Source: COG mirror on Source Cooperative (tristangruppwri/mapbiomas), Collection 10, years 2019-2024.
+(The official bucket storage.googleapis.com/mapbiomas-public returns 403 for anonymous access.)
 
-Uso: uv run python -m field_shift.mapbiomas.join_fields [--skip-download]
+Usage: uv run python -m field_shift.mapbiomas.join_fields [--skip-download]
 """
 import argparse
 import json
@@ -24,7 +24,7 @@ URL = ("https://data.source.coop/tristangruppwri/mapbiomas/mapbiomas-brazil/"
        "mapbiomas_brazil_{y}/mapbiomas_brazil_{y}.tif")
 YEARS = list(range(2019, 2025))
 LAST = YEARS[-1]
-PAD = 0.02  # graus de folga
+PAD = 0.02  # degrees of slack
 
 # Legenda Colecao 10 (codigos nacionais brutos)
 LEGEND = {

@@ -1,4 +1,4 @@
-"""Fixtures: serviço falso (monkeypatch) para testar a API sem dados em data/."""
+"""Fixtures: fake service (monkeypatch) to test the API without data in data/."""
 
 from __future__ import annotations
 
@@ -7,11 +7,11 @@ import types
 
 import pytest
 
-try:  # serviço real, se já existir
+try:  # real service, if it already exists
     from field_shift.core import service  # noqa: F401
 
     REAL_SERVICE = True
-except ImportError:  # registra um módulo mínimo para a API poder ser importada
+except ImportError:  # registers a minimal module so the API can be imported
     REAL_SERVICE = False
     import field_shift
 

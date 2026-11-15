@@ -22,12 +22,12 @@ def test_health_degraded_if_warm_up_fails(fake, monkeypatch):
     from field_shift_api.main import app
 
     def boom():
-        raise RuntimeError("sem dados")
+        raise RuntimeError("no data")
 
     monkeypatch.setattr(svc, "warm_up", boom)
     with TestClient(app) as c:
         j = c.get("/health").json()
-    assert j["status"] == "degradado" and "sem dados" in j["detalhe"]
+    assert j["status"] == "degradado" and "no data" in j["detalhe"]
 
 
 def test_options_and_fields(client):
@@ -107,7 +107,7 @@ def test_recommendation_own_data(client, calls):
     assert kw["soil_analysis"] == {"argila_pct": 65.0, "areia_pct": 10.0, "materia_organica_pct": 3.5, "cad_mm_cm": 1.4}
     assert kw["constraints"] == body["restricoes"]
     assert kw["irrigation"] == {"disponivel": True, "custo_r_mm_ha": 4.5}
-    # sem as entradas novas, chegam None
+    # without the new inputs, None arrives
     client.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA})
     kw = calls[1][2]
     assert kw["soil_analysis"] is None and kw["constraints"] is None and kw["irrigation"] is None
@@ -134,8 +134,8 @@ def test_climate_shortcut(client, calls):
         {"area": {"lat": -24.9}},
         {"area": {"talhao_id": "1", "geometry": POLY}},
         {"area": {"talhao_id": "1"}, **RA, "semeadura_safrinha": "10/02"},
-        {"area": {"talhao_id": "1"}},  # rotacao_atual é obrigatória
-        {"area": {"talhao_id": "1"}, **RA, "estagio_verao": "pendoamento"},  # estágio de milho com verão soja
+        {"area": {"talhao_id": "1"}},  # rotacao_atual is required
+        {"area": {"talhao_id": "1"}, **RA, "estagio_verao": "pendoamento"},  # corn stage with a soybean summer
         {"area": {"talhao_id": "1"}, **RA, "estagio_verao": "colheita"},
         {"area": {"talhao_id": "1"}, "rotacao_atual": "milho_verao__aveia", "estagio_verao": "enchimento_graos"},
         {"area": {"talhao_id": "1"}, **RA, "colheita_prevista": "2026-01-10"},

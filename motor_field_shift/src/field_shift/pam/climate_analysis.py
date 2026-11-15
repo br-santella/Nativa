@@ -1,14 +1,14 @@
-"""Análise PAM x clima: o milho 2ª safra (SIDRA 839) rende menos em anos com geada ou veranico no safrinha?
+"""PAM x climate analysis: does 2nd-season corn (SIDRA 839) yield less in years with frost or a dry spell in the second season?
 
-Para cada município do Oeste do PR: rendimento anual do milho 2ª safra (kg/ha, 2003–2025) vs indicadores anuais do
-clima do centróide do município (indicadores_anuais.parquet, pontos `mun_*`):
-  geada: geada_safrinha_semeadura_1502_le3 (T mín ≤ 3 °C no enchimento; semeadura típica 15/02);
-  veranico: veranico_safrinha_ge15 (≥ 15 dias seguidos com chuva < 1 mm em mar–abr).
-Convenção: safra Y (jul/Y–jun/Y+1) -> safrinha colhida em Y+1 = ano do PAM. Logo ano_PAM = Y + 1.
-Desvio do rendimento = (rendimento − tendência linear do município) / tendência, em %. Queda média = média dos desvios nos
-anos SEM evento − média nos anos COM evento (positivo = rende menos com evento).
-Saída: data/processed/pam/analise_pam_clima.csv e analise_pam_clima.png.
-Uso: uv run python -m field_shift.pam.analise_clima
+For each Oeste do PR municipality: annual 2nd-season corn yield (kg/ha, 2003–2025) vs annual climate indicators of the
+municipality centroid (indicadores_anuais.parquet, points `mun_*`):
+  frost: geada_safrinha_semeadura_1502_le3 (min T ≤ 3 °C during grain fill; typical sowing 15/02);
+  dry spell: veranico_safrinha_ge15 (≥ 15 consecutive days with rain < 1 mm in Mar–Apr).
+Convention: season Y (Jul/Y–Jun/Y+1) -> second crop harvested in Y+1 = PAM year. So PAM_year = Y + 1.
+Yield deviation = (yield − municipality linear trend) / trend, in %. Mean drop = mean deviation in years
+WITHOUT the event − mean in years WITH the event (positive = yields less with the event).
+Output: data/processed/pam/analise_pam_clima.csv and analise_pam_clima.png.
+Usage: uv run python -m field_shift.pam.climate_analysis
 """
 from __future__ import annotations
 
@@ -86,7 +86,7 @@ def main():
     fig.suptitle("PAM x clima: milho 2ª safra, 2003–2025 (geada ≤3 °C c/ semeadura 15/02; veranico ≥15 d mar–abr)", fontsize=9)
     fig.tight_layout()
     fig.savefig(OUT / "analise_pam_clima.png", dpi=130)
-    print("salvo em", OUT)
+    print("saved to", OUT)
 
 
 if __name__ == "__main__":

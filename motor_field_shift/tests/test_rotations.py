@@ -1,5 +1,5 @@
-"""Rotação = (cultura de verão, cultura da 2ª janela): regras de calendário, milho sobre milho, `rotacoes`, slugs antigos, renda do verão.
-Usa o serviço real e os dados em data/ (rodar: uv run pytest tests/test_rotacoes.py)."""
+"""Rotation = (summer crop, 2nd-window crop): calendar rules, corn on corn, `rotacoes`, old slugs, summer income.
+Uses the real service and the data in data/ (run: uv run pytest tests/test_rotations.py)."""
 import pytest
 
 from field_shift.app import engine as E
@@ -23,13 +23,13 @@ def _eliminated(r):
     return {e["id"]: e["motivos"] for e in r["eliminadas"]}
 
 
-# --------------------------------------------------------------------------- regras de calendário e legais
+# --------------------------------------------------------------------------- calendar and legal rules
 @pytest.mark.parametrize("sow_date", E.SOWINGS_2ND)
 def test_soy_in_second_window_always_eliminated(sow_date):
     el = _eliminated(_rec(sowing_second=sow_date))
     assert any("Soja sobre soja" in m for m in el["soja__soja_safrinha"])
     assert any("01/09–31/12" in m for m in el["soja__soja_safrinha"])
-    # depois de milho verão não é soja sobre soja, mas a janela legal de semeadura da soja continua valendo
+    # after summer corn it is not soybean on soybean, but the legal soybean sowing window still applies
     assert not any("Soja sobre soja" in m for m in el["milho_verao__soja_safrinha"])
     assert any("01/09–31/12" in m for m in el["milho_verao__soja_safrinha"])
     assert any("vazio sanitário" in m for m in el["milho_verao__soja_safrinha"])
@@ -40,11 +40,11 @@ def test_summer_corn_harvest_limits_the_second_crop():
     el = _eliminated(r)
     for sec_ in ("milho_safrinha", "milho_braquiaria", "milheto_crotalaria", "sorgo", "feijao_safrinha"):
         assert any("colheita de milho verão" in m and "01/02" in m for m in el[f"milho_verao__{sec_}"]), sec_
-    # trigo, aveia, nabo e pousio têm data fixa: não dependem da colheita do verão
+    # wheat, oat, radish and fallow have a fixed date: they do not depend on the summer harvest
     ids = _by_id(r)
     for sec_ in ("trigo", "aveia", "nabo_forrageiro", "aveia_nabo", "pousio"):
         assert f"milho_verao__{sec_}" in ids, sec_
-    # a soja (precoce) libera todas as semeaduras da 2ª cultura
+    # (early) soybean allows every 2nd-crop sowing date
     assert "soja__milho_safrinha" in ids
     ok = _by_id(_rec(sowing_second="01/03"))
     assert "milho_verao__milho_safrinha" in ok and "milho_verao__sorgo" in ok
@@ -77,12 +77,12 @@ def test_corn_on_corn_penalizes_and_does_not_eliminate():
     assert ids["milho_verao__milho_braquiaria"]["criterios"]["pragas"] == pytest.approx(0.40)
     assert any("cigarrinha" in x and "enfezamento" in x for x in mm["card"]["riscos"])
     assert any("0.25" in x and "cigarrinha" in x for x in mm["card"]["evidencias"])
-    # outras culturas depois do milho verão não levam a penalidade
+    # other crops after summer corn do not get the penalty
     assert ids["milho_verao__sorgo"]["criterios"]["pragas"] == ids["soja__sorgo"]["criterios"]["pragas"]
     assert not any("cigarrinha" in x for x in ids["soja__milho_safrinha"]["card"]["riscos"])
 
 
-# --------------------------------------------------------------------------- benefício de rotação e renda do verão
+# --------------------------------------------------------------------------- rotation benefit and summer income
 def test_summer_corn_income():
     r = _rec(sowing_second="01/03", rotations=[SOYBEAN_CORN, {"verao": "milho_verao", "segunda": "aveia"}, {"verao": "soja", "segunda": "aveia"}])
     ids = _by_id(r)
@@ -91,12 +91,12 @@ def test_summer_corn_income():
     assert soy["cultura"] == "Soja" and corn1["cultura"] == "Milho verão (1ª safra)"
     assert "milho 1ª safra" not in corn1["fonte"] and "IBGE PAM" in corn1["fonte"] and "Ponta Grossa-PR" in corn1["fonte"]
     assert "SEAB/DERAL" in corn1["fonte"]
-    # mesma escala S (margem da soja do município): rendas comparáveis entre verão soja e milho verão
+    # same S scale (municipality soybean margin): incomes comparable between summer soybean and summer corn
     assert mv["escala_S_r_ha"] == sa["escala_S_r_ha"] == sv["escala_S_r_ha"]
-    # incremental = (milho verão − soja) + aveia + bônus (aveia 2 + milho verão 3 sc/ha × preço da soja)
+    # incremental = (summer corn − soybean) + oat + bonus (oat 2 + summer corn 3 bags/ha × soybean price)
     expected = (corn1["margem_r_ha"] - soy["margem_r_ha"]) + (mv["itens"][1]["margem_r_ha"]) + mv["bonus_proxima_soja_r_ha"]
     assert mv["incremental_r_ha"] == pytest.approx(expected, abs=2)
-    assert mv["bonus_proxima_soja_r_ha"] - sa["bonus_proxima_soja_r_ha"] == pytest.approx(3.0 * 120.14, abs=2)  # +3 sc/ha de catálogo
+    assert mv["bonus_proxima_soja_r_ha"] - sa["bonus_proxima_soja_r_ha"] == pytest.approx(3.0 * 120.14, abs=2)  # +3 bags/ha from the catalog
     c = ids["milho_verao__aveia"]["card"]
     assert any("quebra ciclo de doença e nematoide" in b for b in c["beneficios"])
     assert any("Bônus na soja seguinte: 5 sc/ha" in e for e in c["evidencias"])
@@ -148,15 +148,15 @@ def test_no_buyer_for_sorghum_and_beans():
 def test_rotations_evaluates_only_requested():
     requested = [{"verao": "milho_verao", "segunda": "aveia_nabo"}, SOYBEAN_CORN, {"verao": "soja", "segunda": "sorgo"},
                {"verao": "soja", "segunda": "soja_safrinha"}, {"verao": "milho_verao", "segunda": "milho_safrinha"}]
-    r = _rec(rotations=requested)  # semeadura padrão 01/02: milho verão → milho safrinha cai pela colheita
+    r = _rec(rotations=requested)  # default sowing 01/02: summer corn → second-season corn is eliminated by the harvest
     assert set(_by_id(r)) == {"milho_verao__aveia_nabo", "soja__milho_safrinha", "soja__sorgo"}
-    assert set(_eliminated(r)) == {"soja__soja_safrinha", "milho_verao__milho_safrinha"}  # eliminada = resultado, não erro
+    assert set(_eliminated(r)) == {"soja__soja_safrinha", "milho_verao__milho_safrinha"}  # eliminated = a result, not an error
     assert r["entrada"]["rotacoes"] == requested
     assert r["atual"]["id"] == "soja__milho_safrinha" and r["atual"]["atual"]
-    # a nota não depende das outras rotações avaliadas
+    # the score does not depend on the other evaluated rotations
     all_ = _by_id(_rec())
     assert {k: v["nota"] for k, v in _by_id(r).items()} == {k: all_[k]["nota"] for k in _by_id(r)}
-    # sem `rotacoes`, tudo do catálogo é avaliado
+    # without `rotacoes`, the whole catalog is evaluated
     assert len(all_) + len(_eliminated(_rec())) == len(E.CATALOG) == 22
     assert "rotacoes" not in _rec()["entrada"]
 

@@ -1,3 +1,3 @@
-"""API HTTP do Field Shift (motor de rotação de culturas, Paraná)."""
+"""Field Shift HTTP API (crop-rotation engine, Paraná)."""
 
 __version__ = "0.1.0"

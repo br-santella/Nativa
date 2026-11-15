@@ -1,9 +1,9 @@
-"""Ingestao regional (mesorregiao Oeste do PR, IBGE 4106): limite, MapBiomas C10 2000-2024, NASADEM + declividade.
+"""Regional ingestion (Oeste mesoregion of PR, IBGE 4106): boundary, MapBiomas C10 2000-2024, NASADEM + slope.
 
-Idempotente: pula o que ja existe.
-Uso: uv run python ingest/mapbiomas_relevo_oeste_pr.py [--regiao oeste_pr|pr]
-  --regiao pr: Parana inteiro (UF 41, 399 municipios); grava em *_pr (regiao/pr.geojson, mapbiomas_pr/,
-  nasadem_pr/, relevo_pr/). Default oeste_pr = comportamento original.
+Idempotent: skips what already exists.
+Usage: uv run python ingest/mapbiomas_relief_oeste_pr.py [--regiao oeste_pr|pr]
+  --regiao pr: whole of Paraná (UF 41, 399 municipalities); writes to *_pr (regiao/pr.geojson, mapbiomas_pr/,
+  nasadem_pr/, relevo_pr/). Default oeste_pr = original behavior.
 """
 import argparse
 import json
@@ -20,7 +20,7 @@ from rasterio.windows import Window, from_bounds
 ROOT = Path(__file__).resolve().parents[1]
 REG = ROOT / "data/raw/regiao"
 REGIONS = {
-    # meso=None -> estado inteiro (UF 41); blocos=True -> processa em blocos (raster grande demais p/ a RAM)
+    # meso=None -> whole state (UF 41); blocos=True -> process in blocks (raster too large for RAM)
     "oeste_pr": dict(sufixo="oeste_pr", nome="Oeste Paranaense", meso=4106, n_mun=50, blocos=False),
     "pr": dict(sufixo="pr", nome="Paraná", meso=None, n_mun=399, blocos=True),
 }
@@ -66,7 +66,7 @@ def limit():
         g.to_file(muni, driver="GeoJSON")
         info = {"nome": [CFG["nome"]], "cod_meso": [meso]} if meso else {"nome": [CFG["nome"]], "cod_uf": [41]}
         gpd.GeoDataFrame(info, geometry=[g.union_all()], crs=4326).to_file(union_, driver="GeoJSON")
-        print("limite salvo,", len(g), "municipios")
+        print("boundary saved,", len(g), "municipalities")
     b = gpd.read_file(union_).total_bounds
     return (b[0] - MARGIN, b[1] - MARGIN, b[2] + MARGIN, b[3] + MARGIN)
 
@@ -80,7 +80,7 @@ def mapbiomas(bounds):
         try:
             src = rasterio.open(URL.format(y=y))
         except rasterio.errors.RasterioIOError as e:
-            # o espelho do Source Cooperative so tem 2019-2024; anos anteriores dao 404
+            # the Source Cooperative mirror only has 2019-2024; earlier years return 404
             print("mapbiomas", y, "indisponivel:", str(e)[:60], flush=True)
             continue
         with src:
@@ -89,7 +89,7 @@ def mapbiomas(bounds):
                         crs=src.crs, transform=src.window_transform(win), nodata=0,
                         compress="deflate", predictor=2, tiled=True, blockxsize=512, blockysize=512)
             tmp = dst.with_suffix(".tmp")
-            # leitura em faixas de linhas: o PR inteiro nao cabe confortavelmente de uma vez na RAM
+            # read in row strips: the whole of PR does not fit comfortably in RAM at once
             with rasterio.open(tmp, "w", driver="GTiff", **prof) as o:
                 for r0 in range(0, win.height, 4096):
                     h = min(4096, win.height - r0)
@@ -101,7 +101,7 @@ def mapbiomas(bounds):
 
 
 def _dem_blocks(bounds):
-    """NASADEM em blocos de BLOCO x BLOCO pixels (grade unica de 1 arcsec), gravados direto no GeoTIFF."""
+    """NASADEM in BLOCK x BLOCK pixel blocks (single 1 arcsec grid), written straight into the GeoTIFF."""
     import planetary_computer as pc
     import pystac_client
     from odc.geo.geobox import GeoBox
@@ -110,7 +110,7 @@ def _dem_blocks(bounds):
     cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1", modifier=pc.sign_inplace)
     items = list(cat.search(collections=["nasadem"], bbox=list(bounds)).items())
     print("itens NASADEM:", len(items), flush=True)
-    # grade alinhada a multiplos inteiros de 1 arcsec (mesma convencao do elev.tif do Oeste)
+    # grid aligned to integer multiples of 1 arcsec (same convention as the Oeste elev.tif)
     bounds = (np.floor(bounds[0] * 3600) / 3600, np.floor(bounds[1] * 3600) / 3600,
               np.ceil(bounds[2] * 3600) / 3600, np.ceil(bounds[3] * 3600) / 3600)
     gbox = GeoBox.from_bbox(bounds, "EPSG:4326", resolution=1 / 3600)
@@ -144,7 +144,7 @@ def _dem_blocks(bounds):
 
 
 def _slope(dem, transform, crs):
-    """Declividade (%) de um array: reprojeta para UTM 22S (metros), gradiente, volta para a grade original."""
+    """Slope (%) of an array: reproject to UTM 22S (meters), gradient, back to the original grid."""
     bounds = rasterio.transform.array_bounds(dem.shape[0], dem.shape[1], transform)
     dst_crs = "EPSG:31982"
     tr, w, h = calculate_default_transform(crs, dst_crs, dem.shape[1], dem.shape[0], *bounds, resolution=30)
@@ -161,7 +161,7 @@ def _slope(dem, transform, crs):
 
 
 def _slope_blocks():
-    """Declividade em blocos com halo (mesmo algoritmo do caso pequeno), para rasters que nao cabem na RAM."""
+    """Slope in blocks with a halo (same algorithm as the small case), for rasters that do not fit in RAM."""
     B, HALO = 3000, 48
     with rasterio.open(DEM) as src:
         prof = src.profile | dict(compress="deflate", predictor=3)
@@ -205,7 +205,7 @@ def nasadem(bounds):
             arr = arr[::-1]
         res = abs(lon[1] - lon[0])
         tr = rasterio.transform.from_origin(lon.min() - res / 2, max(lat) + res / 2, res, res)
-        arr = np.where(arr < -1000, np.nan, arr)  # nodata do NASADEM (-32768) -> NaN
+        arr = np.where(arr < -1000, np.nan, arr)  # NASADEM nodata (-32768) -> NaN
         prof = dict(driver="GTiff", height=arr.shape[0], width=arr.shape[1], count=1, dtype="float32",
                     crs="EPSG:4326", transform=tr, nodata=np.nan, compress="deflate", predictor=3,
                     tiled=True, blockxsize=512, blockysize=512)
@@ -219,7 +219,7 @@ def nasadem(bounds):
         _slope_blocks()
     if not SLOPE.exists():
         SLOPE.parent.mkdir(parents=True, exist_ok=True)
-        # declividade: reprojeta para UTM 22S (metros), gradiente, volta para 4326 na grade original
+        # slope: reproject to UTM 22S (meters), gradient, back to 4326 on the original grid
         with rasterio.open(DEM) as src:
             dem = src.read(1)
             dst_crs = "EPSG:31982"

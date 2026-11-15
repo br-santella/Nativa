@@ -1,4 +1,4 @@
-"""MVP Field Shift (didático). Rodar: uv run streamlit run src/field_shift/app/mvp.py"""
+"""Field Shift MVP (teaching version). Run: uv run streamlit run src/field_shift/app/mvp.py"""
 import sys
 from pathlib import Path
 
@@ -49,7 +49,7 @@ fig.update_layout(map=dict(style="open-street-map", center=dict(lat=t["lat"], lo
 c2.plotly_chart(fig, width="stretch")
 source("o clima e o histórico dependem de onde está o talhão; polígono detectado pelo modelo FTW (Fields of the World) sobre Sentinel-2.")
 
-# ------------------------------------------------------------------ 2. Histórico
+# ------------------------------------------------------------------ 2. History
 st.header("2. Passado — histórico (pré-calculado)")
 st.write("**MapBiomas (uso do solo por ano):** " + " · ".join(f"{a}: {n}" for a, n in t["historico"].items()))
 ndvi = _ndvi()
@@ -76,7 +76,7 @@ try:
 except Exception as e:
     st.error(f"Não foi possível obter o clima: {e}")
     st.stop()
-rk = _enrich(rk, t["lat"], t["lon"])  # + solo (SoilGrids), contexto do balanço hídrico e PAM do município
+rk = _enrich(rk, t["lat"], t["lon"])  # + soil (SoilGrids), water-balance context and municipality PAM
 if rk["modo"] == "reduzido":
     st.warning("Modo reduzido: o talhão está fora do Paraná. Clima pelo NASA POWER ao vivo (ponto do centróide); "
                "sem tabela por data de semeadura nem diagnóstico ampliado.")

@@ -1,4 +1,4 @@
-"""Aplicação FastAPI do Field Shift."""
+"""Field Shift FastAPI application."""
 
 from __future__ import annotations
 
@@ -44,8 +44,8 @@ async def lifespan(app: FastAPI):
     try:
         service.warm_up()
         app.state.dados_ok = True
-    except Exception as exc:  # a API sobe mesmo sem dados; /health mostra "degradado"
-        log.exception("falha ao carregar dados no startup")
+    except Exception as exc:  # the API starts even without data; /health reports "degradado"
+        log.exception("failed to load data at startup")
         app.state.data_error = f"{type(exc).__name__}: {exc}"
     yield
 
@@ -83,7 +83,7 @@ async def _external_query_error(request: Request, exc: Exception) -> JSONRespons
 
 @app.exception_handler(Exception)
 async def _internal(request: Request, exc: Exception) -> JSONResponse:
-    log.error("erro inesperado em %s %s", request.method, request.url.path, exc_info=exc)
+    log.error("unexpected error in %s %s", request.method, request.url.path, exc_info=exc)
     return JSONResponse(
         status_code=500,
         content={"erro": "interno", "mensagem": "Erro interno do servidor."},

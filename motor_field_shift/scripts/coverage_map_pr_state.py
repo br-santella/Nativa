@@ -102,4 +102,4 @@ fig.text(.5, .012, "Fontes: IBGE (malha municipal, PAM), NASA POWER (clima), INM
          ha="center", fontsize=8, color="#444")
 fig.tight_layout(rect=(0, .03, 1, 1))
 fig.savefig(OUT, dpi=200)
-print("salvo", OUT)
+print("saved", OUT)

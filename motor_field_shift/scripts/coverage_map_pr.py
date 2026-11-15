@@ -1,4 +1,4 @@
-"""Gera docs/figuras/mapa_cobertura_api_pr.png: onde a API do Field Shift funciona no Paraná."""
+"""Generate docs/figuras/mapa_cobertura_api_pr.png: where the Field Shift API works in Paraná."""
 from pathlib import Path
 
 import geopandas as gpd
@@ -23,7 +23,7 @@ fld = gpd.read_parquet(ROOT / "data/processed/ftw/fields_tile_mapbiomas_geo.parq
 fld = fld[fld["id"].astype(str) == FIELD_ID]
 tcent = fld.to_crs(31982).centroid.to_crs(4326).iloc[0]
 
-# áreas em projeção métrica
+# areas in a metric projection
 a_pr = pr.to_crs(5880).union_all().area / 1e6
 a_oe = oeste.to_crs(5880).union_all().area / 1e6
 print(f"PR {a_pr:,.0f} km2 | Oeste {a_oe:,.0f} km2 | {100*a_oe/a_pr:.1f}%")
@@ -35,7 +35,7 @@ mun.plot(ax=ax, facecolor=OESTE_COLOR, alpha=0.55, edgecolor="white", linewidth=
 oeste.boundary.plot(ax=ax, color="#0b4a35", linewidth=1.8)
 gpd.GeoSeries([pr.union_all()], crs=4326).boundary.plot(ax=ax, color="#333", linewidth=1.1)
 
-# grade de células NASA POWER (0,5° x 0,625°)
+# NASA POWER cell grid (0.5° x 0.625°)
 cell = climate[climate["tipo"] == "celula"][["lat", "lon"]].drop_duplicates()
 for la, lo in zip(cell.lat, cell.lon):
     ax.add_patch(Rectangle((lo - .3125, la - .25), .625, .5, fill=False, ec="#2b6cb0", lw=0.5, ls="--", alpha=.7, zorder=3))
@@ -47,7 +47,7 @@ ax.annotate("Talhão demo 72638", (tcent.x, tcent.y), xytext=(55, -45), textcoor
             arrowprops=dict(arrowstyle="-", color="#e11d48", lw=.8),
             bbox=dict(boxstyle="round,pad=.2", fc="white", ec="#e11d48", lw=.6), zorder=8)
 
-# municípios-polo
+# hub municipalities
 poles = ["Cascavel", "Toledo", "Foz do Iguaçu", "Marechal Cândido Rondon", "Medianeira", "Palotina", "Assis Chateaubriand"]
 mp = mun.to_crs(5880)
 for n in poles:
@@ -90,4 +90,4 @@ fig.text(.5, .01, "Fontes: IBGE (malha municipal), NASA POWER (clima, células 0
          "FTW/Field Boundaries (talhão).", ha="center", fontsize=8, color="#444")
 fig.tight_layout(rect=(0, .03, 1, 1))
 fig.savefig(OUT, dpi=200)
-print("salvo", OUT)
+print("saved", OUT)

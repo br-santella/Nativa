@@ -1,6 +1,6 @@
-"""Timelapse de um talhão FTW: quadros Sentinel-2 L2A + curva NDVI HLS (Planetary Computer).
+"""Timelapse of an FTW field: Sentinel-2 L2A frames + HLS NDVI curve (Planetary Computer).
 
-Uso: uv run python ingest/timelapse_talhao.py --id 72638 --start 2024-01-01 --end 2026-11-14
+Usage: uv run python ingest/field_timelapse.py --id 72638 --start 2024-01-01 --end 2026-11-14
 """
 import argparse, os, subprocess, time, warnings
 os.environ.update(GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR', GDAL_HTTP_MAX_RETRY='4',
@@ -135,7 +135,7 @@ def main():
     hls.to_csv(hls_csv, index=False); print('HLS obs:', len(hls))
     curve = smooth(hls, start, end, a.min_clear_hls)
 
-    # S2 janela: bbox + margem, na grade de 10 m
+    # S2 window: bbox + margin, on the 10 m grid
     minx, miny, maxx, maxy = geom.bounds; m = a.margin
     bx = [np.floor((minx - m) / 10) * 10, np.floor((miny - m) / 10) * 10, np.ceil((maxx + m) / 10) * 10, np.ceil((maxy + m) / 10) * 10]
     shape = (int((bx[3] - bx[1]) / 10), int((bx[2] - bx[0]) / 10))
@@ -151,7 +151,7 @@ def main():
     scn['item'] = scn.cena
     scn.drop(columns='item').sort_values('data').to_csv(f'{os_}/cenas_s2_{a.id}.csv', index=False)
     print('S2 cenas avaliadas:', len(scn))
-    # seleção por janela de 10 dias
+    # selection per 10-day window
     grid = pd.date_range(start, end, freq='10D')
     scn['jan'] = ((scn.data - pd.Timestamp(start)).dt.days // 10)
     good = scn[scn.frac_clear >= a.min_clear_s2]

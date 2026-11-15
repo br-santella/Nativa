@@ -1,7 +1,7 @@
-"""INMET: dados históricos anuais -> diário (Tmin, Tmax, chuva) das estações dentro do bbox.
+"""INMET: annual historical data -> daily (Tmin, Tmax, rain) of the stations inside the bbox.
 
-Dia = dia local (UTC-3): os horários do CSV são UTC. Dia com < MIN_HORAS horas válidas -> NaN.
-Conteúdo dos zips é tratado só como dados (nunca executado).
+Day = local day (UTC-3): the CSV hours are UTC. A day with < MIN_HOURS valid hours -> NaN.
+Zip contents are treated as data only (never executed).
 """
 from __future__ import annotations
 
@@ -79,7 +79,7 @@ def process_inmet(bbox, zips_dir: Path, proc_dir: Path, headers: dict, years=ran
     proc_dir.mkdir(parents=True, exist_ok=True)
     daily, stations = [], {}
     failures = []
-    cache = proc_dir / "_inmet_ano"  # diário por ano já processado (idempotência)
+    cache = proc_dir / "_inmet_ano"  # daily data per year already processed (idempotency)
     cache.mkdir(exist_ok=True)
     for year in years:
         pq = cache / f"{year}.parquet"
@@ -120,7 +120,7 @@ def process_inmet(bbox, zips_dir: Path, proc_dir: Path, headers: dict, years=ran
             for h in est_year:
                 stations[h["codigo"]] = dict(codigo=h["codigo"], nome=h["estacao"], uf=h["uf"], lat=h["lat"],
                                              lon=h["lon"], alt=h["alt"])
-            print(f"INMET {year}: {len(est_year)} estações no bbox", flush=True)
+            print(f"INMET {year}: {len(est_year)} stations in the bbox", flush=True)
         except Exception as e:  # noqa: BLE001
             failures.append((year, f"{type(e).__name__}: {e}"))
             print(f"INMET {year} falhou: {e}", flush=True)
@@ -140,4 +140,4 @@ def process_inmet(bbox, zips_dir: Path, proc_dir: Path, headers: dict, years=ran
     est.to_csv(proc_dir / "inmet_estacoes.csv", index=False)
     print(est.to_string())
     if failures:
-        print("Anos com falha:", failures)
+        print("Failed years:", failures)

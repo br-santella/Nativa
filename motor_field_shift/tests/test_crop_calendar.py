@@ -1,5 +1,5 @@
-"""Estágio da cultura de verão -> colheita estimada -> semeadura da 2ª janela; blocos `agora`/`proxima_safra`; `ganho_vs_atual`.
-Usa o serviço real e os dados em data/ (rodar: uv run pytest tests/test_calendario.py)."""
+"""Summer-crop stage -> estimated harvest -> 2nd-window sowing; `agora`/`proxima_safra` blocks; `ganho_vs_atual`.
+Uses the real service and the data in data/ (run: uv run pytest tests/test_crop_calendar.py)."""
 from datetime import date
 
 import pytest
@@ -26,7 +26,7 @@ def _eliminated(block):
     return {e["id"]: e["motivos"] for e in block["eliminadas"]}
 
 
-# --------------------------------------------------------------------------- calendário puro
+# --------------------------------------------------------------------------- pure calendar
 def test_stage_days():
     assert [e["dias"] for e in cal.STAGES["soja"].values()] == [90, 65, 48, 32, 10, 0]
     assert list(cal.STAGES["milho_verao"]) == ["vegetativo", "pendoamento", "grao_leitoso", "grao_farinaceo", "maturacao", "colhida"]
@@ -37,8 +37,8 @@ def test_stage_days():
     ("enchimento_graos", "2026-12-01", "02/01", "15/01", False),
     ("floracao", "2026-12-01", "04/02", "15/02", False),
     ("vegetativo", "2026-12-01", "01/03", "01/03", False),
-    ("vegetativo", "2026-12-20", "20/03", None, True),   # depois da última semeadura (15/03)
-    ("colhida", "2027-02-01", "01/02", "01/02", False),  # colhida: colheita = referência
+    ("vegetativo", "2026-12-20", "20/03", None, True),   # after the last sowing (15/03)
+    ("colhida", "2027-02-01", "01/02", "01/02", False),  # harvested: harvest = reference
     ("colhida", "2026-11-14", "14/11", "15/01", False),
 ])
 def test_stage_to_harvest_and_sowing(stage, ref, harvest, sowing, late):
@@ -48,7 +48,7 @@ def test_stage_to_harvest_and_sowing(stage, ref, harvest, sowing, late):
 
 def test_precedence_and_given_sowing():
     ref = date(2026, 12, 1)
-    r = cal.resolver("soja", "vegetativo", "20/01", ref)  # colheita_prevista vence o estágio
+    r = cal.resolver("soja", "vegetativo", "20/01", ref)  # colheita_prevista overrides the stage
     assert (r["origem"], r["colheita"], r["semeadura_2a"], r["dias_ate_colheita"]) == ("informada", "20/01", "01/02", 50)
     assert cal.resolver("soja", "enchimento_graos", None, ref, "01/03")["semeadura_2a"] == "01/03"  # informada vence a derivada
     assert cal.resolver("soja", None, None, ref) is None  # premissa
@@ -78,7 +78,7 @@ def test_soy_grain_fill_field_72638():
     assert r["semeadura_2a"] == {"data": "15/01", "origem": "derivada"} and r["dias_ate_colheita"] == 32
     assert r["entrada"]["semeadura_safrinha"] == "15/01" and r["entrada"]["data_referencia"] == REF
     assert not r["avisos"]
-    # `agora`: só soja no verão; `proxima_safra`: só milho verão; ranking e alternativas são alias de `agora`
+    # `agora`: summer soybean only; `proxima_safra`: summer corn only; ranking and alternatives are aliases of `agora`
     assert all(i.startswith("soja__") for i in _ids(r["agora"])) and all(i.startswith("milho_verao__") for i in _ids(r["proxima_safra"]))
     assert r["ranking"] == r["agora"]["ranking"] and r["alternativas"] == r["agora"]["alternativas"]
     assert [x["posicao"] for x in r["agora"]["ranking"]] == list(range(1, len(r["agora"]["ranking"]) + 1))
@@ -86,25 +86,25 @@ def test_soy_grain_fill_field_72638():
     assert r["atual"]["id"] == SOYBEAN and r["atual"]["atual"] and r["atual"]["posicao"] is not None
     assert [x["id"] for x in r["eliminadas"]] == [x["id"] for x in r["agora"]["eliminadas"] + r["proxima_safra"]["eliminadas"]]
     assert "soja__soja_safrinha" in _eliminated(r["agora"])
-    # com semeadura em 15/01 o milho verão (colheita típica 05/02) não libera milho safrinha na próxima safra
+    # with sowing on 15/01, summer corn (typical harvest 05/02) does not allow second-season corn in the next season
     assert any("colheita de milho verão" in m for m in _eliminated(r["proxima_safra"])["milho_verao__milho_safrinha"])
 
 
 def test_gain_vs_current():
     r = _rec(summer_stage="enchimento_graos", reference_date=REF)
     by_id = {x["id"]: x for x in r["agora"]["ranking"] + r["proxima_safra"]["ranking"]}
-    assert by_id[SOYBEAN]["ganho_vs_atual"] is None  # a própria atual
+    assert by_id[SOYBEAN]["ganho_vs_atual"] is None  # the current one itself
     g = by_id["soja__milho_braquiaria"]["ganho_vs_atual"]
     assert g["comparado_com"] == SOYBEAN
-    assert g["soja_seguinte_sc"] == 2.0  # bônus 3,0 (milho + braquiária) − 1,0 (milho safrinha)
-    assert g["soja_seguinte_sc_faixa"] == [2.0, 2.0]  # por enquanto faixa = valor central
+    assert g["soja_seguinte_sc"] == 2.0  # bonus 3.0 (corn + brachiaria) − 1.0 (second-season corn)
+    assert g["soja_seguinte_sc_faixa"] == [2.0, 2.0]  # for now range = central value
     assert g["soja_seguinte_rs"] == pytest.approx(2.0 * g["preco_soja_r_sc"], abs=1)
     assert "validar com agrônomo/Embrapa" in g["fonte"]
     assert g["renda_2a_safra"]["origem"].startswith("dado:") and g["agua"]["origem"].startswith("dado:")
     assert g["solo"]["dias_descobertos"] == 30 - 60 and g["solo"]["cobertura"] == 0.3
-    # mesmo verão: margem total = renda extra da 2ª safra + valor do bônus na soja seguinte
+    # same summer: total margin = extra income of the 2nd season + value of the bonus in the following soybean
     assert g["margem_total"]["r_ha"] == pytest.approx(g["renda_2a_safra"]["r_ha"] + g["soja_seguinte_rs"], abs=2)
-    # cobertura perde renda mas ganha solo; outro verão também traz ganho (milho verão: +3 sc/ha de bônus no verão)
+    # a cover crop loses income but gains soil; the other summer also brings a gain (summer corn: +3 bags/ha of summer bonus)
     c = by_id["soja__aveia"]["ganho_vs_atual"]
     assert c["renda_2a_safra"]["r_ha"] < 0 and c["solo"]["dias_descobertos"] == 40 - 60 and c["soja_seguinte_sc"] == 1.0
     p = by_id["milho_verao__aveia"]["ganho_vs_atual"]
@@ -133,10 +133,10 @@ def test_too_late_harvest_eliminates_only_sowing_followers():
         assert any("tarde demais para a safrinha" in m for m in el[f"soja__{sec_}"]), sec_
     assert {"trigo", "aveia", "nabo_forrageiro", "aveia_nabo", "pousio"} == {i.split("__")[1] for i in _ids(r["agora"])}
     assert r["atual"]["eliminada"] and r["atual"]["posicao"] is None and r["atual"]["nota"] is None
-    assert all(x["ganho_vs_atual"] is None for x in r["agora"]["ranking"])  # sem a atual, nada a comparar
+    assert all(x["ganho_vs_atual"] is None for x in r["agora"]["ranking"])  # without the current one, nothing to compare
 
 
-# --------------------------------------------------------------------------- precedência e entradas
+# --------------------------------------------------------------------------- precedence and inputs
 def test_expected_harvest_beats_stage_and_sowing_beats_derived():
     r = _rec(summer_stage="vegetativo", expected_harvest="20/01", reference_date=REF)
     assert r["colheita_estimada"] == {"data": "20/01", "origem": "informada"} and r["dias_ate_colheita"] == 50
@@ -171,7 +171,7 @@ def test_invalid_inputs():
         _rec(expected_harvest="2027-01-20")
 
 
-# --------------------------------------------------------------------------- rotacoes distribuído nos blocos
+# --------------------------------------------------------------------------- rotacoes split into the blocks
 def test_rotations_land_in_the_right_block():
     requested = [{"verao": "soja", "segunda": "milho_safrinha"}, {"verao": "soja", "segunda": "aveia"}, {"verao": "soja", "segunda": "soja_safrinha"},
                {"verao": "milho_verao", "segunda": "aveia_nabo"}, {"verao": "milho_verao", "segunda": "milho_safrinha"}]
@@ -179,7 +179,7 @@ def test_rotations_land_in_the_right_block():
     assert set(_ids(r["agora"])) == {SOYBEAN, "soja__aveia"} and set(_eliminated(r["agora"])) == {"soja__soja_safrinha"}
     assert _ids(r["proxima_safra"]) == ["milho_verao__aveia_nabo"] and set(_eliminated(r["proxima_safra"])) == {"milho_verao__milho_safrinha"}
     assert r["proxima_safra"]["ranking"][0]["ganho_vs_atual"]
-    # atual fora de `rotacoes`: não aparece, mas o ganho continua sendo calculado contra ela
+    # current one outside `rotacoes`: it does not show up, but the gain is still computed against it
     r = _rec(summer_stage="enchimento_graos", reference_date=REF, rotations=[{"verao": "milho_verao", "segunda": "aveia_nabo"}])
     assert r["agora"]["ranking"] == [] and r["atual"]["avaliada"] is False
     assert r["proxima_safra"]["ranking"][0]["ganho_vs_atual"]["comparado_com"] == SOYBEAN

@@ -1,4 +1,4 @@
-"""Testes contra o serviço real (precisam dos dados em data/). Rodar: uv run pytest -m integracao"""
+"""Tests against the real service (they need the data in data/). Run: uv run pytest -m integration"""
 
 from __future__ import annotations
 
@@ -64,7 +64,7 @@ def test_oeste_without_region_warning(real):
 def test_scores_72638(real):
     r = real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "semeadura_safrinha": "01/02"})
     rk = r.json()["ranking"]
-    scores = {i.get("id_legado"): i["nota"] for i in rk if "id_legado" in i}  # as 6 rotações antigas (soja no verão)
+    scores = {i.get("id_legado"): i["nota"] for i in rk if "id_legado" in i}  # the 6 old rotations (summer soybean)
     assert scores["milho_braquiaria"] == 0.821
     assert scores["milho_safrinha"] == 0.774 and scores["milheto_crotalaria"] == 0.757
     assert scores["aveia"] == 0.7 and scores["pousio"] == 0.55 and scores["trigo"] == 0.466
@@ -112,14 +112,14 @@ def test_recommendation_own_data(real):
     assert top["soja__milho_braquiaria"]["irrigacao"]["lamina_media_mm_ano"] > 0
     assert any("terceirizar" in a for a in top["soja__milho_braquiaria"]["card"]["avisos"])
     assert j["metodologia"]["ajustes_aplicados"]
-    # entradas inválidas: Pydantic (422) e motor (400)
+    # invalid inputs: Pydantic (422) and engine (400)
     assert real.post("/v1/recomendacao", json={**body, "analise_solo": {"argila_pct": 70, "areia_pct": 40}}).status_code == 422
     assert real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "restricoes": {
         "culturas_excluidas": ["milho_safrinha", "milho_braquiaria", "trigo", "aveia", "milheto_crotalaria", "pousio"],
-        "sem_comprador": ["milho"]}, "rotacoes": [{"verao": "soja", "segunda": "milho_safrinha"}]}).status_code == 200  # `rotacoes` só eliminadas: sem erro
+        "sem_comprador": ["milho"]}, "rotacoes": [{"verao": "soja", "segunda": "milho_safrinha"}]}).status_code == 200  # `rotacoes` only eliminated: no error
     assert real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "restricoes": {
         "culturas_excluidas": ["milho_safrinha", "milho_braquiaria", "trigo", "aveia", "milheto_crotalaria", "pousio"],
-        "sem_comprador": ["milho"]}}).status_code == 200  # os slugs antigos só valem p/ soja; sobram nabo, sorgo, feijão
+        "sem_comprador": ["milho"]}}).status_code == 200  # the old slugs only apply to soybean; radish, sorghum and beans remain
 
 
 def test_requested_rotations(real):
@@ -159,7 +159,7 @@ def test_soy_grain_fill_main_example(real):
     assert all(x["id"].startswith("milho_verao__") for x in j["proxima_safra"]["ranking"])
     top = j["agora"]["ranking"][0]
     assert top["ganho_vs_atual"]["soja_seguinte_sc"] == 2.0 and top["ganho_vs_atual"]["renda_2a_safra"]["origem"].startswith("dado")
-    # 422 do contrato novo
+    # 422 of the new contract
     assert real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}}).status_code == 422
     assert real.post("/v1/recomendacao", json={**body, "estagio_verao": "pendoamento"}).status_code == 422
     assert real.post("/v1/recomendacao", json={**body, "estagio_verao": "floracao", "semeadura_safrinha": "15/01"}).status_code == 422

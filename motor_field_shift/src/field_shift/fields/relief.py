@@ -1,4 +1,4 @@
-"""Passo 2: relevo (NASADEM, Planetary Computer) por talhao candidato."""
+"""Step 2: relief (NASADEM, Planetary Computer) per candidate field."""
 import numpy as np, pandas as pd, geopandas as gpd, planetary_computer as pc, pystac_client
 import rioxarray  # noqa
 from odc.stac import load
@@ -20,7 +20,7 @@ def main():
     el = ds.elevation.isel(time=0).compute().astype("float32")
     el = el.where(el > -1000)
     arr = el.values; lat = el.latitude.values; lon = el.longitude.values
-    # declividade em %
+    # slope in %
     dy = abs(lat[1]-lat[0])*111320.0
     dx = abs(lon[1]-lon[0])*111320.0*np.cos(np.deg2rad(lat))[:, None]
     gy, gx = np.gradient(arr, dy, axis=0)[0:1][0] if False else (np.gradient(arr, axis=0)/dy, None)
@@ -28,7 +28,7 @@ def main():
     slope = np.hypot(gy, gx)*100
     res = abs(lon[1]-lon[0])
     tr = from_origin(lon.min()-res/2, lat.max()+res/2, res, res)
-    # latitude decresce? garantir norte no topo
+    # latitude decreasing? make sure north is up
     if lat[0] < lat[-1]:
         arr = arr[::-1]; slope = slope[::-1]
     prof = dict(driver="GTiff", height=arr.shape[0], width=arr.shape[1], count=1, dtype="float32",
@@ -37,7 +37,7 @@ def main():
         with rasterio.open(OUT / f"{name}.tif", "w", **prof) as o:
             o.write(a.astype("float32"), 1)
     ids = c4[["id"]].reset_index(drop=True)
-    # raster precisa de estatistica por poligono
+    # the raster needs per-polygon statistics
     def stats(layer, ops, geoms):
         g = gpd.GeoDataFrame({"id": c4["id"].values}, geometry=geoms, crs=4326)
         return exact_extract(str(OUT / f"{layer}.tif"), g, ops, include_cols=["id"], output="pandas", progress=False)

@@ -1,16 +1,16 @@
-"""Pragas em surto: ferrugem asiática (automático, IDR-PR) + alertas fitossanitários curados à mão.
+"""Pest outbreaks: Asian soybean rust (automatic, IDR-PR) + hand-curated plant-health alerts.
 
-AUTOMÁTICO — monitoramento da ferrugem da soja (IDR-Paraná, ex-Emater), WFS público do GeoServer do Estado:
-  https://geoserver.pr.gov.br/geoserver/ows  camada `emater:monitoramento_ferrugem_soja_pto_p4674`
-  (GeoJSON; campos municipio, mesorregiao, regiao, safra, situacao "Sem esporos"/"Com esporos", dtpriespo, estfeno).
-  A situação "Com esporos" é captura de esporos em coletor, não confirmação de doença na lavoura. Ponto = sede/coletor
-  do município. Contagem no município do talhão, na mesorregião Oeste e num raio de 100 km.
-  O Consórcio Antiferrugem (consorcioantiferrugem.net) não respondeu desta rede; não usado.
+AUTOMATIC — soybean rust monitoring (IDR-Paraná, former Emater), public WFS of the State GeoServer:
+  https://geoserver.pr.gov.br/geoserver/ows  layer `emater:monitoramento_ferrugem_soja_pto_p4674`
+  (GeoJSON; fields municipio, mesorregiao, regiao, safra, situacao "Sem esporos"/"Com esporos", dtpriespo, estfeno).
+  The "Com esporos" status is spore capture in a collector, not confirmation of disease in the field. Point = seat/collector
+  of the municipality. Count in the field's municipality, in the Oeste mesoregion and within a 100 km radius.
+  The Consórcio Antiferrugem (consorcioantiferrugem.net) did not respond from this network; not used.
 
-CURADO — `data/contexto/pragas_alertas.json` (versionado, atualizado à mão): cigarrinha-do-milho/enfezamento e
-outros alertas da ADAPAR/IDR-PR, que só existem em boletins PDF/painéis sem API documentada (CigarrinhaWeb:
-https://cigarrinhaweb.com.br/). Sem scraping. Alertas vencidos (data + validade_dias) são ignorados.
-Só informativo; não altera nota.
+CURATED — `data/contexto/pragas_alertas.json` (versioned, updated by hand): corn leafhopper/corn stunt and
+other ADAPAR/IDR-PR alerts, which only exist in PDF bulletins/dashboards without a documented API (CigarrinhaWeb:
+https://cigarrinhaweb.com.br/). No scraping. Expired alerts (data + validade_dias) are ignored.
+Informative only; does not change the score.
 """
 from __future__ import annotations
 

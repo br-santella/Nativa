@@ -1,9 +1,9 @@
-"""Ingestão de clima da mesorregião Oeste do Paraná (NASA POWER diário + INMET).
+"""Climate ingestion for the Oeste mesoregion of Paraná (daily NASA POWER + INMET).
 
-Uso: uv run python ingest/clima_oeste_pr.py {area,power,inmet,indicadores,validacao,all} [--regiao oeste_pr|pr]
---regiao pr aplica a mesma lógica (células 0,5x0,625 + centroides de município) ao Paraná inteiro (UF 41),
-gravando em data/raw/clima_pr/ e data/processed/clima_pr/. Default: oeste_pr (comportamento original).
-Idempotente: pula o que já está em cache / já processado.
+Usage: uv run python ingest/climate_oeste_pr.py {area,power,inmet,indicadores,validacao,all} [--regiao oeste_pr|pr]
+--regiao pr applies the same logic (0.5x0.625 cells + municipality centroids) to the whole of Paraná (UF 41),
+writing to data/raw/clima_pr/ and data/processed/clima_pr/. Default: oeste_pr (original behavior).
+Idempotent: skips what is already cached / processed.
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 REGIONS = {
-    # sufixo dos caminhos; mesorregião IBGE (None = estado inteiro); qualidade da malha
+    # path suffix; IBGE mesoregion (None = whole state); mesh quality
     "oeste_pr": dict(raw="data/raw/clima", proc="data/processed/clima", meso=4106),
     "pr": dict(raw="data/raw/clima_pr", proc="data/processed/clima_pr", meso=None),
 }
@@ -46,9 +46,9 @@ POWER_URL = "https://power.larc.nasa.gov/api/temporal/daily/point"
 UA = {"User-Agent": "field-shift-hackathon/0.1 (pesquisa academica)"}
 
 
-# ----------------------------------------------------------------------------- 1. Área
+# ----------------------------------------------------------------------------- 1. Area
 def configure(region: str):
-    """Aponta os caminhos globais para a região escolhida (default do módulo: oeste_pr)."""
+    """Point the global paths to the chosen region (module default: oeste_pr)."""
     global RAW, PROC, MESO, REGION, MUN_GEOJSON, POWER_DIR, INMET_ZIPS
     c = REGIONS[region]
     REGION, MESO = region, c["meso"]
@@ -80,14 +80,14 @@ def cmd_area() -> gpd.GeoDataFrame:
     scn = scn.where(inside, proj.geometry.representative_point()).to_crs(4326)
     gdf["lon_c"], gdf["lat_c"] = scn.x.values, scn.y.values
     gdf[["cod_ibge", "nome", "lat_c", "lon_c", "geometry"]].to_file(MUN_GEOJSON, driver="GeoJSON")
-    print(f"{len(gdf)} municípios salvos em {MUN_GEOJSON}")
+    print(f"{len(gdf)} municipalities saved to {MUN_GEOJSON}")
     return gdf
 
 
 def cell_grid(gdf) -> list[tuple[float, float]]:
     x0, y0, x1, y1 = gdf.total_bounds
     x0, y0, x1, y1 = x0 - MARGIN, y0 - MARGIN, x1 + MARGIN, y1 + MARGIN
-    # célula k: lat em [k*0.5-0.25, k*0.5+0.25]; lon j: [j*0.625-0.3125, j*0.625+0.3125]
+    # cell k: lat in [k*0.5-0.25, k*0.5+0.25]; lon j: [j*0.625-0.3125, j*0.625+0.3125]
     ks = range(math.floor((y0 + DLAT / 2) / DLAT), math.ceil((y1 - DLAT / 2) / DLAT) + 1)
     js = range(math.floor((x0 + DLON / 2) / DLON), math.ceil((x1 - DLON / 2) / DLON) + 1)
     return [(round(k * DLAT, 4), round(j * DLON, 4)) for k in ks for j in js]
@@ -130,7 +130,7 @@ def download_point(pid: str, lat: float, lon: float, params: list[str]) -> dict 
 def cmd_power():
     POWER_DIR.mkdir(parents=True, exist_ok=True)
     pts = list_points()
-    print(f"{len(pts)} pontos ({(pts.tipo == 'celula').sum()} células, {(pts.tipo == 'municipio').sum()} municípios)")
+    print(f"{len(pts)} points ({(pts.tipo == 'celula').sum()} cells, {(pts.tipo == 'municipio').sum()} municipalities)")
     for i, p in enumerate(pts.itertuples(), 1):
         new = not (POWER_DIR / f"{p.ponto_id}.json").exists()
         js = download_point(p.ponto_id, p.lat, p.lon, PARAMS)
@@ -170,9 +170,9 @@ def consolidate_power(pts: pd.DataFrame):
         if c in out:
             out[c] = out[c].astype("float32")
     out.to_parquet(PROC / "power_diario.parquet", index=False)
-    print(f"power_diario.parquet: {len(out)} linhas, {out.ponto_id.nunique()} pontos, "
-          f"{out.data.min().date()}..{out.data.max().date()}; parâmetros ausentes: {sorted(missing_values) or 'nenhum'}; "
-          f"pontos sem arquivo: {missing or 'nenhum'}")
+    print(f"power_diario.parquet: {len(out)} rows, {out.ponto_id.nunique()} points, "
+          f"{out.data.min().date()}..{out.data.max().date()}; missing parameters: {sorted(missing_values) or 'none'}; "
+          f"points without a file: {missing or 'none'}")
 
 
 # ----------------------------------------------------------------------------- 3. INMET

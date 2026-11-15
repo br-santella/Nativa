@@ -1,8 +1,8 @@
-"""Baixa preços (SEAB/DERAL-PR) e custos (CONAB) e grava data/ref/precos_custos.json.
+"""Download prices (SEAB/DERAL-PR) and costs (CONAB) and write data/ref/precos_custos.json.
 
-Uso:  uv run python -m field_shift.renda.atualizar
-Os brutos ficam em data/raw/renda/ (fora do git); o JSON final é pequeno e vai para o git.
-Coberturas/pousio NÃO têm fonte oficial: são estimativas de referência marcadas no JSON.
+Usage:  uv run python -m field_shift.income.update
+The raw files stay in data/raw/renda/ (outside git); the final JSON is small and goes into git.
+Cover crops/fallow have NO official source: they are reference estimates flagged in the JSON.
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ PRICES_URL = "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp
 PRICES_PAGE_URL = "https://www.agricultura.pr.gov.br/deral/Precos"
 CONAB = ("https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/"
          "arquivos-custo-de-producao/agricolas/")
-# (arquivo, aba, rótulo humano)
+# (file, sheet, human label)
 COSTS = {
     "soja": (CONAB + "serie-historica-custos-soja-1997-a-2026.xls", "OGM-Londrina-PR-2026",
              "CONAB, soja OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 1ª safra 2026/27 (estimado, mar/2026)"),
@@ -30,7 +30,7 @@ COSTS = {
                      "CONAB, milho 2ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 2026 (estimado, mar/2026)"),
     "trigo": (CONAB + "seriehistoricacustostrigo1998a2025.xls", "Ponta Grossa-PR-2025-11",
               "CONAB, trigo plantio direto alta tecnologia, agricultura empresarial, Ponta Grossa-PR, safra de inverno 2025 (ex-post, nov/2025)"),
-    # milho de verão (1ª safra): só há planilha PR em Ponta Grossa/Guarapuava (produtividade de referência 12 t/ha, maior que a do Oeste)
+    # summer corn (1st season): the only PR sheet is Ponta Grossa/Guarapuava (reference yield 12 t/ha, higher than the Oeste's)
     "milho_1safra": (CONAB + "milho/milho_1a_safra_serie_historica_1997-2026.xls", "Ponta Grossa-PR-2026",
                      "CONAB, milho 1ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Ponta Grossa-PR, 2026/27 (estimado, mar/2026; "
                      "produtividade de referência 12 t/ha, acima da média do Oeste do PR)"),
@@ -38,7 +38,7 @@ COSTS = {
                       "CONAB, feijão 2ª safra plantio direto alta tecnologia, agricultura familiar, Francisco Beltrão-PR, 2026 (estimado, mar/2026; "
                       "a planilha de Cascavel-PR só vai até 2021)"),
 }
-# Sem planilha CONAB do sorgo no PR: usa a do sorgo granífero 2ª safra de Rio Verde-GO como aproximação (marcada como estimativa).
+# No CONAB sorghum sheet for PR: uses the 2nd-season grain sorghum sheet of Rio Verde-GO as an approximation (flagged as an estimate).
 PROXY_COST = {
     "sorgo": (CONAB + "seriehistoricacustossorgo2013a2026.xls", "Rio Verde-GO-2026",
               "estimativa — validar: não há planilha CONAB do sorgo no PR; usa CONAB, sorgo granífero 2ª safra OGM plantio direto alta tecnologia, "
@@ -50,7 +50,7 @@ SHORT = {"soja": "CONAB Londrina-PR, safra 2026/27 (est. mar/2026)", "milho_2saf
          "feijao_2safra": "CONAB Francisco Beltrão-PR, 2ª safra 2026 (est. mar/2026)",
          "sorgo": "estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)"}
 ESTIMATED = "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time)"
-COVER_CROPS = {  # R$/ha: ponto médio das faixas de referência
+COVER_CROPS = {  # R$/ha: midpoint of the reference ranges
     "aveia": (375.0, "aveia como cobertura (semente + operação): faixa R$ 300–450/ha"),
     "milheto_crotalaria": (450.0, "milheto/crotalária (semente + operação): milheto ~R$ 300–450, crotalária ~R$ 400–600/ha"),
     "braquiaria_consorcio": (200.0, "braquiária em consórcio com o milho, adicional ao custo do milho: faixa R$ 150–250/ha"),
@@ -82,11 +82,11 @@ def _download(url: str, nome: str) -> Path:
 def prices() -> dict:
     f = _download(PRICES_URL, "seab_pmrp.xls")
     d = pd.read_excel(f, header=None)
-    cols = d.iloc[1, 3:16].tolist()  # OUT/26 ... OUT/25 (mais recente primeiro)
+    cols = d.iloc[1, 3:16].tolist()  # OUT/26 ... OUT/25 (most recent first)
     out = {}
     for key, product in (("soja", "Soja"), ("milho", "Milho"), ("trigo", "Trigo"), ("feijao", "Feijao preto")):
         r = d[d[1] == product].iloc[0]
-        v = pd.to_numeric(r[3:15], errors="coerce").dropna()  # 12 meses mais recentes
+        v = pd.to_numeric(r[3:15], errors="coerce").dropna()  # 12 most recent months
         assert len(v) == 12, (product, len(v))
         out[key] = dict(
             valor=round(float(v.mean()), 2), unidade="R$/sc 60 kg", estimativa=False,
@@ -154,7 +154,7 @@ def main():
     ref = dict(consulta=str(date.today()), linha_custo_padrao="coe", precos=prices(), custos=costs())
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(ref, ensure_ascii=False, indent=2))
-    print("gravado", OUTPUT)
+    print("written", OUTPUT)
     print(json.dumps({k: v["valor"] for k, v in ref["precos"].items()}), {k: (v["coe"], v["cot"]) for k, v in ref["custos"].items()})
 
 

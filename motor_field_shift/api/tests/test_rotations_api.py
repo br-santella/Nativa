@@ -1,4 +1,4 @@
-"""Validação do campo `rotacoes` e dos ids de rotação na API (serviço falso: só o contrato de entrada/saída)."""
+"""Validation of the `rotacoes` field and of the rotation ids in the API (fake service: input/output contract only)."""
 
 from __future__ import annotations
 
@@ -29,11 +29,11 @@ def test_no_rotations_evaluates_all(client, calls):
     [
         [],  # vazia
         [OK, OK],  # duplicada
-        [{"verao": "soja", "segunda": "girassol"}],  # fora do enum
+        [{"verao": "soja", "segunda": "girassol"}],  # outside the enum
         [{"verao": "trigo", "segunda": "milho_safrinha"}],
         [{"verao": "soja"}],  # falta campo
         [{"verao": "soja", "segunda": "pousio", "x": 1}],  # campo extra
-        ["soja__milho_safrinha"],  # texto livre no lugar do par
+        ["soja__milho_safrinha"],  # free text instead of the pair
     ],
 )
 def test_invalid_rotations_422(client, calls, rotations):
@@ -69,7 +69,7 @@ def test_stages_and_calendar_forwarded_to_service(client, calls):
 def test_corn_stage_ok_with_summer_corn_and_422_with_soy(client, calls):
     ok = {"area": AREA, "rotacao_atual": "milho_verao__aveia", "estagio_verao": "grao_leitoso"}
     assert client.post("/v1/recomendacao", json=ok).status_code == 200
-    r = client.post("/v1/recomendacao", json={**ok, "rotacao_atual": "milho_safrinha"})  # slug antigo = soja no verão
+    r = client.post("/v1/recomendacao", json={**ok, "rotacao_atual": "milho_safrinha"})  # old slug = summer soybean
     assert r.status_code == 422 and "milho verao" in r.text.replace("_", " ") and len(calls) == 1
 
 

@@ -1,9 +1,9 @@
-"""SMAP: umidade do solo recente no talhão (NASA SMAP L4, SPL4SMGP v8, ~9 km, 3 h, latência ~2-3 dias).
+"""SMAP: recent soil moisture at the field (NASA SMAP L4, SPL4SMGP v8, ~9 km, 3 h, ~2-3 day latency).
 
-Lê só o pixel do talhão via HTTPS com requisição por faixa (earthaccess.open + h5py), sem baixar o arquivo
-de ~145 MB. O próprio produto traz o percentil em relação à climatologia SMAP (`sm_rootzone_pctl`,
-`sm_surface_pctl`), então não é preciso montar climatologia própria. Credenciais Earthdata em ~/.netrc.
-Cache por pixel, 24 h. Classe: < 20 abaixo do normal; 20–80 normal; > 80 acima.
+Reads only the field pixel over HTTPS with range requests (earthaccess.open + h5py), without downloading the
+~145 MB file. The product itself carries the percentile relative to the SMAP climatology (`sm_rootzone_pctl`,
+`sm_surface_pctl`), so there is no need to build our own climatology. Earthdata credentials in ~/.netrc.
+Per-pixel cache, 24 h. Class: < 20 below normal; 20–80 normal; > 80 above.
 """
 from __future__ import annotations
 

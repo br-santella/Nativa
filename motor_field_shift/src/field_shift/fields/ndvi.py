@@ -1,4 +1,4 @@
-"""Passo 3: serie mensal de NDVI (Sentinel-2 L2A, Planetary Computer) por talhao."""
+"""Step 3: monthly NDVI series (Sentinel-2 L2A, Planetary Computer) per field."""
 import sys, time
 import numpy as np, pandas as pd, geopandas as gpd, planetary_computer as pc, pystac_client, xarray as xr
 import rasterio
@@ -7,7 +7,7 @@ from odc.stac import load
 from exactextract import exact_extract
 from field_shift.fields.common import OUT, candidates, YEARS
 
-BOX = [-53.64, -24.72, -53.40, -24.60]   # recorte de trabalho (~24 x 13 km)
+BOX = [-53.64, -24.72, -53.40, -24.60]   # working clip (~24 x 13 km)
 RES = 20
 
 def main():
@@ -26,7 +26,7 @@ def main():
         t0 = time.time()
         items = list(cat.search(collections=["sentinel-2-l2a"], bbox=bbox, datetime=f"{y}-01-01/{y}-12-31",
                                 query={"eo:cloud_cover": {"lt": 85}}).items())
-        # offset de reflectancia: baseline >= 04.00 => -1000
+        # reflectance offset: baseline >= 04.00 => -1000
         off = {}
         for it in items:
             bl = it.properties.get("s2:processing_baseline", "02.00")
@@ -41,9 +41,9 @@ def main():
         ok = ds.SCL.isin([4, 5, 6]) & (ds.B04 > 0)
         ndvi = ndvi.where(ok)
         mon = ndvi.groupby("time.month").median("time", skipna=True).compute()
-        cnt = ok.groupby("time.month").sum("time").compute()  # obs validas por pixel (soma)
+        cnt = ok.groupby("time.month").sum("time").compute()  # valid observations per pixel (sum)
         print(y, "itens", len(items), "dias", len(days), f"{time.time()-t0:.0f}s", flush=True)
-        # zonal por mes
+        # zonal stats per month
         xs = ds.x.values; ys = ds.y.values
         tr = from_origin(xs.min()-RES/2, ys.max()+RES/2, RES, RES)
         g32 = sel.to_crs(32722)

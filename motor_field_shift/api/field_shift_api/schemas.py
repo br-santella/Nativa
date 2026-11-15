@@ -1,4 +1,7 @@
-"""Schemas Pydantic (entrada e saída) da API."""
+"""Pydantic schemas (input and output) of the API.
+
+Model and field names, and the class docstrings (shown as OpenAPI descriptions), are the public contract and stay in Portuguese.
+"""
 
 from __future__ import annotations
 
@@ -10,7 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from field_shift import crop_calendar
 
 Sowing = Literal["15/01", "01/02", "15/02", "01/03", "15/03"]
-# Enums fechados do catálogo (espelham field_shift.app.engine; um teste confere). Rotação = par (verão, 2ª janela).
+# Closed catalog enums (mirror field_shift.app.engine; a test checks it). Rotation = pair (summer, 2nd window).
 SummerCrop = Literal["soja", "milho_verao"]
 SecondCrop = Literal[
     "milho_safrinha",
@@ -25,11 +28,11 @@ SecondCrop = Literal[
     "nabo_forrageiro",
     "aveia_nabo",
 ]
-# Slugs antigos da API (só soja no verão): milho_safrinha = soja__milho_safrinha.
+# Old API slugs (soybean-only summer): milho_safrinha = soja__milho_safrinha.
 LEGACY_SLUGS = ("milho_safrinha", "milho_braquiaria", "trigo", "aveia", "milheto_crotalaria", "pousio", "soja_safrinha")
 ROTATION_IDS = tuple(f"{v}__{s}" for v in SummerCrop.__args__ for s in SecondCrop.__args__)
-RotationSlug = Literal[ROTATION_IDS + LEGACY_SLUGS]  # id novo "<verao>__<segunda>" ou slug antigo
-# Estágios da cultura de verão (espelham field_shift.calendario.ESTAGIOS; um teste confere). O estágio precisa combinar com o verão da rotação atual.
+RotationSlug = Literal[ROTATION_IDS + LEGACY_SLUGS]  # new id "<verao>__<segunda>" or old slug
+# Summer-crop stages (mirror field_shift.crop_calendar.STAGES; a test checks it). The stage must match the summer crop of the current rotation.
 SummerStage = Literal[
     "vegetativo", "floracao", "formacao_vagens", "enchimento_graos", "maturacao", "colhida", "pendoamento", "grao_leitoso", "grao_farinaceo"
 ]
@@ -51,7 +54,7 @@ CropCost = Literal[
     "aveia_nabo",
 ]
 CropYield = Literal["soja", "milho", "milho_2safra", "milho_verao", "trigo", "feijao", "sorgo"]
-# Problemas da área informados pelo produtor (espelha catalog/vocabulario.yaml `problemas_area`; um teste confere).
+# Area problems given by the farmer (mirrors catalog/vocabulario.yaml `problemas_area`; a test checks it).
 AreaProblem = Literal["nematoide", "mofo_branco", "cigarrinha", "compactacao"]
 NoBuyer = Literal["milho", "trigo", "sorgo", "feijao", "aveia_grao"]
 Peso = Annotated[float, Field(ge=0, le=10)]
@@ -363,7 +366,7 @@ class _EntradaMotor(BaseModel):
     )
     @model_validator(mode="after")
     def _calendar(self) -> "_EntradaMotor":
-        """Estágio compatível com o verão da atual; semeadura informada não pode ser anterior à colheita (422)."""
+        """Stage compatible with the summer crop of the current rotation; a given sowing cannot be earlier than the harvest (422)."""
         crop_calendar.resolver(
             crop_calendar.summer_of(self.rotacao_atual), self.estagio_verao, self.colheita_prevista, self.data_referencia,
             self.semeadura_safrinha,
@@ -432,7 +435,7 @@ class RecomendacaoIn(_EntradaMotor):
 
 
 # --------------------------------------------------------------------------
-# Saída (permissiva: campos extras do serviço passam adiante)
+# Output (permissive: extra fields from the service pass through)
 # --------------------------------------------------------------------------
 class _Saida(BaseModel):
     model_config = ConfigDict(extra="allow")

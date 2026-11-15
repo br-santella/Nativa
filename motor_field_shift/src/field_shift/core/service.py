@@ -1,12 +1,12 @@
-"""Camada de serviço do motor Field Shift (sem FastAPI): aceita qualquer polígono do Paraná.
+"""Service layer of the Field Shift engine (no FastAPI): accepts any polygon in Paraná.
 
-Funções públicas: opcoes(), diagnosticar(area, semeadura), recomendar(area, ...), aquecer().
-Exceções: ForaDaRegiao, EntradaInvalida, ErroConsultaExterna. Todas as saídas são JSON-serializáveis (NaN -> None).
+Public functions: options(), diagnose(area, sowing), recommend(area, ...), warm_up().
+Exceptions: OutOfRegion, InvalidInput, ExternalQueryError. Every output is JSON-serializable (NaN -> None).
 
-`area` (exatamente uma forma):
-  {"geometry": <GeoJSON Polygon/MultiPolygon ou Feature>}  EPSG:4326, ordem [lon, lat]
-  {"lat": float, "lon": float}  ponto -> quadrado de ~100 ha (1000 m x 1000 m, UTM 22S) centrado no ponto
-  {"talhao_id": "72638"}        talhão demo do FTW (id do parquet FTW)
+`area` (exactly one shape):
+  {"geometry": <GeoJSON Polygon/MultiPolygon or Feature>}  EPSG:4326, [lon, lat] order
+  {"lat": float, "lon": float}  point -> ~100 ha square (1000 m x 1000 m, UTM 22S) centered on the point
+  {"talhao_id": "72638"}        FTW demo field (id from the FTW parquet)
 """
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ from field_shift.soil.soil import ANALYSIS_SOURCE, text as soil_text
 VERSION = "0.1.0"
 AREA_MAX_HA = 5000.0
 POINT_AREA_HA = 100.0
-CRS_M = 32722  # UTM 22S (m), para áreas e quadrado do ponto
+CRS_M = 32722  # UTM 22S (m), for areas and the point square
 
 
 # Shown when the area centroid is in Paraná but outside the Oeste mesoregion (the reference region of costs and prices).
@@ -56,25 +56,25 @@ def soy_calendar_warning(cs: dict) -> str:
 
 
 class OutOfRegion(Exception):
-    """Área (ou parte dela) fora do Paraná."""
+    """Area (or part of it) outside Paraná."""
 
 
 class InvalidInput(Exception):
-    """Entrada inválida: geometria, semeadura, rotação, pesos, ajustes, área > 5000 ha etc."""
+    """Invalid input: geometry, sowing, rotation, weights, adjustments, area > 5000 ha etc."""
 
 
 class ExternalQueryError(Exception):
-    """Timeout ou falha de ligação ao consultar APIs externas (NASA POWER / SoilGrids)."""
+    """Timeout or connection failure when querying external APIs (NASA POWER / SoilGrids)."""
 
 
-# Rotação = par (cultura de verão, cultura da 2ª janela). id estável "<verao>__<segunda>" (ex.: soja__milho_safrinha) -> nome do catálogo.
-# Os slugs antigos da API (só soja no verão: milho_safrinha, trigo...) seguem aceitos em E.LEGADO (milho_safrinha = soja__milho_safrinha).
+# Rotation = pair (summer crop, 2nd-window crop). Stable id "<verao>__<segunda>" (e.g. soja__milho_safrinha) -> catalog name.
+# The old API slugs (soybean-only summer: milho_safrinha, trigo...) are still accepted via E.LEGACY (milho_safrinha = soja__milho_safrinha).
 ROTATIONS: dict[str, str] = dict(E.NOME_DE)
 _SLUG_DE = dict(E.ID_DE)
 SUMMER_CROPS = tuple(E.SUMMER)
 SECOND_CROPS = tuple(E.SECOND)
 
-_DESCRIPTION = {  # por cultura da 2ª janela
+_DESCRIPTION = {  # per 2nd-window crop
     "milho_safrinha": "Milho na segunda safra, após a soja; rotação mais comum no Oeste do PR.",
     "milho_braquiaria": "Milho safrinha consorciado com braquiária: grãos mais palhada para o plantio direto.",
     "trigo": "Trigo de inverno após a soja; sensível a geada no florescimento.",
@@ -108,7 +108,7 @@ _PRODUCTIVITY = ("soja", "milho_2safra", "trigo", "milho_1safra", "feijao_2safra
 
 # --------------------------------------------------------------------------- utilidades
 def _clean(o):
-    """Converte para tipos nativos JSON: numpy -> python, NaN/inf -> None, tuplas -> listas, chaves -> str."""
+    """Convert to native JSON types: numpy -> python, NaN/inf -> None, tuples -> lists, keys -> str."""
     if o is None or isinstance(o, (str, bool)):
         return o
     if isinstance(o, (np.bool_,)):
@@ -183,7 +183,7 @@ def _geojson(poly: BaseGeometry) -> dict:
     return json.loads(shapely.to_geojson(shapely.set_precision(poly, 1e-6)))
 
 
-# --------------------------------------------------------------------------- 1. resolver a área
+# --------------------------------------------------------------------------- 1. resolve the area
 def _polygon_geojson(g) -> BaseGeometry:
     if not isinstance(g, dict):
         raise InvalidInput("'geometry' deve ser um objeto GeoJSON (Polygon, MultiPolygon ou Feature).")
@@ -250,7 +250,7 @@ def _resolver_area(area: dict) -> dict:
     return dict(origem=origin, talhao_id=tid, poly=poly, area_ha=ha, lat=lat, lon=lon)
 
 
-# --------------------------------------------------------------------------- 2. diagnóstico
+# --------------------------------------------------------------------------- 2. diagnosis
 def _validate_sowing(s) -> str:
     if s not in E.SOWINGS_2ND:
         raise InvalidInput(f"semeadura_safrinha inválida: {s!r}. Opções: {E.SOWINGS_2ND}.")
@@ -258,18 +258,18 @@ def _validate_sowing(s) -> str:
 
 
 def _legacy(id_: str | None) -> str | None:
-    """Slug antigo da API (só soja no verão, as 7 rotações originais): soja__milho_safrinha -> milho_safrinha; None para as demais."""
+    """Old API slug (soybean-only summer, the 7 original rotations): soja__milho_safrinha -> milho_safrinha; None for the others."""
     return id_.split("__", 1)[1] if id_ in E.LEGACY.values() else None
 
 
 def _ids(id_: str) -> dict:
-    """{'id': id novo} + 'id_legado' (slug antigo) quando existe."""
+    """{'id': new id} + 'id_legado' (old slug) when there is one."""
     leg = _legacy(id_)
     return dict(id=id_, **({"id_legado": leg} if leg else {}))
 
 
 def _resolver_id(x, field_name: str) -> str:
-    """Aceita o id novo ('soja__milho_safrinha') ou o slug antigo ('milho_safrinha' = soja__milho_safrinha)."""
+    """Accept the new id ('soja__milho_safrinha') or the old slug ('milho_safrinha' = soja__milho_safrinha)."""
     if isinstance(x, str) and x in ROTATIONS:
         return x
     if isinstance(x, str) and x in E.LEGACY:
@@ -278,7 +278,7 @@ def _resolver_id(x, field_name: str) -> str:
 
 
 def _normalize_rotations(r) -> list[str] | None:
-    """Valida `rotacoes` ([{'verao','segunda'}], enums do catálogo, sem duplicatas, não vazia). Devolve os ids na ordem dada, ou None."""
+    """Validate `rotacoes` ([{'verao','segunda'}], catalog enums, no duplicates, not empty). Return the ids in the given order, or None."""
     if r is None:
         return None
     if not isinstance(r, (list, tuple)) or not r:
@@ -309,7 +309,7 @@ def _detected_rotation(tid: str | None) -> dict:
 
 
 def _load_nasa_cache() -> dict | None:
-    """Lê data/nasa_normalizado.json do disco se existir (suporta dict com metadados ou lista de registos)."""
+    """Read data/nasa_normalizado.json from disk if it exists (supports a dict with metadata or a list of records)."""
     path_ = E.ROOT / "data/nasa_normalizado.json"
     if not path_.exists():
         return None
@@ -325,7 +325,7 @@ def _load_nasa_cache() -> dict | None:
 
 
 def _context(area: dict, sowing: str, soil_analysis: dict | None = None, fert: dict | None = None) -> dict:
-    """Calcula tudo que diagnosticar/recomendar precisam; devolve dict com `rk` (clima enriquecido) e `diag` (saída)."""
+    """Compute everything diagnose/recommend need; return a dict with `rk` (enriched climate) and `diag` (output)."""
     sowing = _validate_sowing(sowing)
     a = _resolver_area(area)
     poly = a["poly"]
@@ -432,15 +432,15 @@ def _context(area: dict, sowing: str, soil_analysis: dict | None = None, fert: d
 
 
 def diagnose(area: dict, sowing_second: str = "01/02", soil_analysis: dict | None = None) -> dict:
-    """Diagnóstico da área (relevo, solo 0–30 cm + CAD, histórico MapBiomas, clima da célula, PAM do município).
-    `analise_solo` (opcional, ver `recomendar`) substitui o SoilGrids no bloco solo.
+    """Area diagnosis (slope, 0–30 cm soil + AWC, MapBiomas history, cell climate, municipality PAM).
+    `soil_analysis` (optional, see `recommend`) replaces SoilGrids in the soil block.
 
-    Lança EntradaInvalida (geometria/semeadura/área/análise de solo inválidas), ForaDaRegiao ou ErroConsultaExterna."""
+    Raises InvalidInput (invalid geometry/sowing/area/soil analysis), OutOfRegion or ExternalQueryError."""
     phys, fert = _split_fertility(_normalize_soil_analysis(soil_analysis))
     return _context(area, sowing_second, phys, fert)["diag"]
 
 
-# Arredondamento só na serialização (o cálculo e a ordem do ranking usam precisão total).
+# Rounding only at serialization (the computation and the ranking order use full precision).
 def _round(o, digits: int):
     if isinstance(o, dict):
         return {k: _round(v, digits) for k, v in o.items()}
@@ -448,7 +448,7 @@ def _round(o, digits: int):
 
 
 def _round_ranking(item: dict) -> dict:
-    """nota, criterios e contribuicoes com 3 casas; valores em R$ com 0 casas; rendimentos/preços/probabilidades 3 casas."""
+    """score, criteria and contributions with 3 decimals; R$ values with 0 decimals; yields/prices/probabilities 3 decimals."""
     r0 = lambda x: None if x is None else float(round(x))
     item["nota"] = _round(item["nota"], 3)
     item["criterios"] = _round(item["criterios"], 3)
@@ -463,11 +463,11 @@ def _round_ranking(item: dict) -> dict:
     return item
 
 
-# --------------------------------------------------------------------------- 3. recomendação
+# --------------------------------------------------------------------------- 3. recommendation
 def _normalize_adjustments(aj) -> dict:
-    """Aceita {"precos": {soja, milho, trigo, feijao, sorgo}, "custos": {soja, milho|milho_2safra, milho_verao|milho_1safra,
+    """Accept {"precos": {soja, milho, trigo, feijao, sorgo}, "custos": {soja, milho|milho_2safra, milho_verao|milho_1safra,
     trigo, feijao|feijao_2safra, sorgo, aveia, milheto_crotalaria, braquiaria_consorcio, pousio, nabo_forrageiro, aveia_nabo},
-    "linha_custo": coe|cot|ct}; devolve o formato do engine (preco/custo/linha_custo)."""
+    "linha_custo": coe|cot|ct}; return the engine format (preco/custo/linha_custo)."""
     if aj is None:
         return {}
     if not isinstance(aj, dict):
@@ -516,7 +516,7 @@ _CAMPOS_SOLO = {"argila_pct", "areia_pct", "materia_organica_pct", "carbono_orga
 
 
 def _normalize_area_problems(p) -> list[str] | None:
-    """Valida `problemas_area` (lista fechada de catalog/vocabulario.yaml; sem duplicatas). None/[] = não informado."""
+    """Validate `problemas_area` (closed list from catalog/vocabulario.yaml; no duplicates). None/[] = not given."""
     if p is None:
         return None
     if not isinstance(p, (list, tuple)):
@@ -528,7 +528,7 @@ def _normalize_area_problems(p) -> list[str] | None:
 
 
 def _split_fertility(solo_n: dict | None) -> tuple[dict | None, dict | None]:
-    """Divide a análise validada em (parte física/CAD que substitui o SoilGrids | None, fertilidade interpretada | None)."""
+    """Split the validated analysis into (physical/AWC part that replaces SoilGrids | None, interpreted fertility | None)."""
     if not solo_n:
         return None, None
     fert = EA.prepare_fertility({k: v for k, v in solo_n.items() if k in _FERT_FIELDS}, solo_n.get("argila_pct"))
@@ -537,10 +537,10 @@ def _split_fertility(solo_n: dict | None) -> tuple[dict | None, dict | None]:
 
 
 def _normalize_soil_analysis(a) -> dict | None:
-    """Valida a análise de solo do produtor. Devolve {argila_pct, areia_pct, soc_g_kg, ph, cad_mm_cm, profundidade_cm}
-    (só o que veio; `profundidade_cm` padrão 20) ou None. Exige argila+areia OU cad_mm_cm OU algum campo de fertilidade
-    (p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3: todos opcionais, nada é estimado
-    quando faltam)."""
+    """Validate the farmer's soil analysis. Return {argila_pct, areia_pct, soc_g_kg, ph, cad_mm_cm, profundidade_cm}
+    (only what was given; `profundidade_cm` defaults to 20) or None. Requires clay+sand OR cad_mm_cm OR some fertility field
+    (p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3: all optional, nothing is estimated
+    when they are missing)."""
     if a is None:
         return None
     if not isinstance(a, dict):
@@ -580,8 +580,8 @@ _NO_BUYER = {"milho": "milho", "milho_2safra": "milho", "trigo": "trigo", "sorgo
 
 
 def _normalize_constraints(r) -> dict | None:
-    """Valida `restricoes`. Devolve {'excluidas': {nomes do catálogo}, 'maquinas': {...}, 'sem_comprador': {...},
-    'eco': formato de entrada normalizado} ou None."""
+    """Validate `restricoes`. Return {'excluidas': {catalog names}, 'maquinas': {...}, 'sem_comprador': {...},
+    'eco': normalized input format} or None."""
     if r is None:
         return None
     if not isinstance(r, dict):
@@ -594,7 +594,7 @@ def _normalize_constraints(r) -> dict | None:
     mach = r.get("maquinas") or {}
     if not isinstance(exc, list) or not isinstance(sow_date, list) or not isinstance(mach, dict):
         raise InvalidInput("restricoes: 'culturas_excluidas' e 'sem_comprador' são listas; 'maquinas' é um objeto.")
-    exc = [_resolver_id(x, "Rotação excluída") for x in exc]  # ids novos ou slugs antigos (= soja__<slug>)
+    exc = [_resolver_id(x, "Rotação excluída") for x in exc]  # new ids or old slugs (= soja__<slug>)
     for x in sow_date:
         if x not in _NO_BUYER:
             raise InvalidInput(f"sem_comprador desconhecido: {x!r}. Opções: {sorted(_NO_BUYER)}.")
@@ -609,7 +609,7 @@ def _normalize_constraints(r) -> dict | None:
 
 
 def _normalize_irrigation(i) -> dict | None:
-    """Valida `irrigacao`: {disponivel: bool, custo_r_mm_ha (padrão 4,0), lamina_max_mm_dia (padrão 6)}."""
+    """Validate `irrigacao`: {disponivel: bool, custo_r_mm_ha (default 4.0), lamina_max_mm_dia (default 6)}."""
     if i is None:
         return None
     if not isinstance(i, dict):
@@ -699,7 +699,7 @@ def _item_ranking(pos, nome, line, marg_, current, rk, ndvi_days, why_cmp=None) 
 
 
 def _applied_adjustments(aj: dict, soil, restr, irr) -> list[str]:
-    """Uma frase por ajuste/entrada opcional usada (vai em metodologia.ajustes_aplicados)."""
+    """One sentence per adjustment/optional input used (goes into metodologia.ajustes_aplicados)."""
     o = []
     if aj.get("preco"):
         o.append("Preços informados pelo produtor (" + ", ".join(f"{k} R$ {v:g}/sc" for k, v in aj["preco"].items())
@@ -739,8 +739,8 @@ _SOIL_SOURCE = "estimativa de catálogo, validar com agrônomo/Embrapa"
 
 
 def _gain_vs_current(res: dict, nome: str, current_name: str) -> dict | None:
-    """Como a candidata melhora (ou piora) a produção em relação à rotação atual. None se for a própria atual ou se a atual
-    foi eliminada (sem margem para comparar). Valores com sinal: positivo = a candidata ganha."""
+    """How the candidate improves (or worsens) production relative to the current rotation. None if it is the current one itself or if
+    the current one was eliminated (no margin to compare). Signed values: positive = the candidate gains."""
     m, ma = res["margens"].get(nome), res["margens"].get(current_name)
     if nome == current_name or m is None or ma is None:
         return None
@@ -775,7 +775,7 @@ def _reference_date(d) -> date | None:
 
 def _normalize_inputs(sowing_second, pesos, current_rotation, adjustments, soil_analysis, constraints, irrigation, rotations,
                          area_problems) -> dict:
-    """Valida e normaliza as entradas de `recomendar` (mesma ordem de erros)."""
+    """Validate and normalize the inputs of `recommend` (same error order)."""
     if current_rotation is None:
         raise InvalidInput("'rotacao_atual' é obrigatória (id '<verao>__<segunda>', ex.: soja__milho_safrinha).")
     if sowing_second is not None:
@@ -796,7 +796,7 @@ def _normalize_inputs(sowing_second, pesos, current_rotation, adjustments, soil_
 
 
 def _timeline_and_context(area, inp: dict, sowing_second, summer_stage, expected_harvest, reference_date) -> dict:
-    """Cronologia da safra atual (colheita estimada, semeadura da 2ª janela) e contexto da área (`rk` pronto para `E.pontuar`)."""
+    """Timeline of the current season (estimated harvest, 2nd-window sowing) and area context (`rk` ready for `E.score_rotation`)."""
     current_summer, restr_n, irr_n = inp["verao_atual"], inp["restr_n"], inp["irr_n"]
     data_ref = _reference_date(reference_date) or date.today()
     try:
@@ -830,7 +830,7 @@ def _timeline_and_context(area, inp: dict, sowing_second, summer_stage, expected
     ctx = _context(area, sow_2nd or E.SOWINGS_2ND[-1], inp["solo_fis"], inp["fert_n"])
     rk, diag = ctx["rk"], ctx["diag"]
     probs_n, fert_n = inp["probs_n"], inp["fert_n"]
-    if probs_n or fert_n:  # só existe se o produtor informou; sem isso o motor roda exatamente como antes
+    if probs_n or fert_n:  # only exists if the farmer gave it; without it the engine runs exactly as before
         rk["estado_area"] = dict(problemas=probs_n or [], fert=fert_n)
     rk["restr"] = restr_n
     rk["irrig"] = irr_n if irr_n and irr_n["disponivel"] else None
@@ -851,49 +851,49 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
                constraints: dict | None = None, irrigation: dict | None = None, rotations: list[dict] | None = None,
                summer_stage: str | None = None, expected_harvest: str | None = None, reference_date=None,
                area_problems: list[str] | None = None) -> dict:
-    """O que pode entrar depois da colheita do verão e como isso melhora a produção, mais o que mudar na próxima safra.
+    """What can come after the summer harvest and how it improves production, plus what to change in the next season.
 
-    rotacao_atual (OBRIGATÓRIA): id de ROTACOES ("soja__milho_safrinha") ou slug antigo ("milho_safrinha" = soja__milho_safrinha).
-    estagio_verao (opcional): estágio da cultura de verão da rotação atual (calendario.ESTAGIOS; soja: vegetativo, floracao,
-      formacao_vagens, enchimento_graos, maturacao, colhida; milho verão: vegetativo, pendoamento, grao_leitoso, grao_farinaceo,
-      maturacao, colhida). colheita estimada = data_referencia + dias típicos do estágio.
-    colheita_prevista (opcional, dd/mm): vence o estágio. data_referencia (opcional, date ou ISO; padrão hoje).
-    semeadura_safrinha (opcional): sem ela, é a primeira data de SEMEADURAS >= colheita estimada (+ preparo); com ela, vence a
-      derivada mas não pode ser anterior à colheita. Sem estágio nem colheita: premissa do catálogo (colheita) e 01/02 (semeadura).
-      Colheita depois da última data de SEMEADURAS: as culturas de 2ª janela que seguem a semeadura são eliminadas.
+    current_rotation (REQUIRED): id from ROTATIONS ("soja__milho_safrinha") or old slug ("milho_safrinha" = soja__milho_safrinha).
+    summer_stage (optional): stage of the summer crop of the current rotation (crop_calendar.STAGES; soybean: vegetativo, floracao,
+      formacao_vagens, enchimento_graos, maturacao, colhida; summer corn: vegetativo, pendoamento, grao_leitoso, grao_farinaceo,
+      maturacao, colhida). estimated harvest = reference_date + typical days of the stage.
+    expected_harvest (optional, dd/mm): overrides the stage. reference_date (optional, date or ISO; default today).
+    sowing_second (optional): without it, it is the first date in SOWINGS_2ND >= estimated harvest (+ preparation); with it, it overrides
+      the derived one but cannot be earlier than the harvest. Without stage or harvest: catalog assumption (harvest) and 01/02 (sowing).
+      Harvest after the last date in SOWINGS_2ND: the 2nd-window crops that follow the sowing date are eliminated.
 
-    Saída: `agora` (mesmo verão da atual: ranking, alternativas, eliminadas) e `proxima_safra` (outro verão), cada item com
-    `ganho_vs_atual`. `ranking`, `alternativas` e `eliminadas` no topo são alias de `agora` (eliminadas = união dos dois blocos).
+    Output: `agora` (same summer as the current one: ranking, alternatives, eliminated) and `proxima_safra` (the other summer), each item
+    with `ganho_vs_atual`. `ranking`, `alternativas` and `eliminadas` at the top are aliases of `agora` (eliminadas = union of both blocks).
 
-    rotacoes (opcional): [{"verao": "soja"|"milho_verao", "segunda": <cultura da 2ª janela>}]; se vier, avalia e ranqueia só
-      essas (enums fechados do catálogo; não vazia, sem duplicatas); cada par cai no bloco do seu verão. Sem `rotacoes`, avalia
-      todas as combinações do catálogo. Combinação eliminada pelas regras volta em `eliminadas` com motivo (não é erro).
+    rotations (optional): [{"verao": "soja"|"milho_verao", "segunda": <2nd-window crop>}]; when given, only these are evaluated and
+      ranked (closed catalog enums; not empty, no duplicates); each pair lands in the block of its summer. Without `rotations`, every
+      catalog combination is evaluated. A combination eliminated by the rules comes back in `eliminadas` with a reason (not an error).
 
-    pesos: renda, solo, agua, pragas, risco (0–10; faltantes = padrão {renda 5, demais 3}; todos 0 = pesos iguais).
-    ajustes (todas opcionais):
-      "precos": {"soja"|"milho"|"trigo": R$/saca de 60 kg}
+    pesos: renda, solo, agua, pragas, risco (0–10; missing = default {renda 5, others 3}; all 0 = equal weights).
+    adjustments (all optional):
+      "precos": {"soja"|"milho"|"trigo": R$/60 kg bag}
       "custos": {"soja"|"milho"|"milho_verao"|"trigo"|"feijao"|"sorgo"|"aveia"|"milheto_crotalaria"|"braquiaria_consorcio"|
-                "pousio"|"nabo_forrageiro"|"aveia_nabo": R$/ha} ("milho" = milho 2ª safra; "milho_verao" = milho 1ª safra)
-      "linha_custo": "coe" (custo variável, padrão) | "cot" | "ct"  (CONAB; vale para soja, milho e trigo)
-      "produtividade": {"soja"|"milho"|"milho_2safra"|"milho_verao"|"trigo"|"feijao"|"sorgo": sc/ha > 0}  substitui o rendimento PAM do município; o ano ruim
-                escala proporcionalmente (próprio × p20/média da PAM); a soja informada também muda a escala S da renda
-    analise_solo (opcional): {"argila_pct", "areia_pct", "materia_organica_pct"|"carbono_organico_g_kg", "ph", "cad_mm_cm",
-      "profundidade_cm"}; exige argila+areia ou cad_mm_cm (ou só fertilidade). Substitui o SoilGrids no diagnóstico e na CAD do balanço
-      hídrico. Fertilidade (opcional, qualquer subconjunto): p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct,
-      ctc_cmolc_dm3. Se informada: custo de calagem e adubação P/K na margem, penalidade (critério solo) para cultura sensível em solo
-      ácido/pobre e bônus para cobertura recicladora; se NÃO informada, não entra na análise (sem estimativa nem padrão).
-    problemas_area (opcional): lista fechada ["nematoide", "mofo_branco", "cigarrinha", "compactacao"] (catalog/vocabulario.yaml);
-      ajusta os critérios pragas e solo por cultura em três níveis (favorece/neutro/penaliza), só onde há fonte lida
-      (tabela e fontes em field_shift.app.estado_area; sem fonte o efeito é neutro). Sem ela, nada muda.
-    restricoes (opcional): {"culturas_excluidas": [slugs], "maquinas": {"plataforma_milho": bool, "semeadora_consorcio": bool},
-      "sem_comprador": ["milho"|"trigo"|"aveia_grao"]}. Excluída/sem comprador -> eliminada; máquina false -> aviso + custo
-      extra de terceirização (estimativa); máquina omitida = tem.
-    irrigacao (opcional): {"disponivel": bool, "custo_r_mm_ha": 4,0, "lamina_max_mm_dia": 6}. Irriga milho, milho+braquiária,
-      trigo, sorgo e feijão da 2ª janela (não cobertura/pousio nem o verão): água sobe, o déficit hídrico não conta no risco, margem desconta lâmina × custo. O ganho de
-      produtividade da irrigação NÃO é modelado.
-    n_alternativas: 1–6 melhores rotações de cada bloco, excluindo a atual. Se a atual estiver eliminada pelas regras duras
-    (ex.: soja__soja_safrinha ou colheita tarde demais), `atual` traz {"eliminada": True, "motivos": [...]}, sem posição nem nota
-    (e sem `ganho_vs_atual` nos itens). Com `rotacoes` que não inclui a atual, `atual` traz {"avaliada": False}."""
+                "pousio"|"nabo_forrageiro"|"aveia_nabo": R$/ha} ("milho" = 2nd-season corn; "milho_verao" = 1st-season corn)
+      "linha_custo": "coe" (variable cost, default) | "cot" | "ct"  (CONAB; applies to soybean, corn and wheat)
+      "produtividade": {"soja"|"milho"|"milho_2safra"|"milho_verao"|"trigo"|"feijao"|"sorgo": bags/ha > 0}  replaces the municipality PAM
+                yield; the bad year scales proportionally (own × p20/PAM mean); a given soybean yield also changes the income scale S
+    soil_analysis (optional): {"argila_pct", "areia_pct", "materia_organica_pct"|"carbono_organico_g_kg", "ph", "cad_mm_cm",
+      "profundidade_cm"}; requires clay+sand or cad_mm_cm (or fertility only). Replaces SoilGrids in the diagnosis and in the AWC of the
+      water balance. Fertility (optional, any subset): p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct,
+      ctc_cmolc_dm3. When given: liming and P/K fertilization cost in the margin, a penalty (soil criterion) for sensitive crops on
+      acid/poor soil and a bonus for nutrient-recycling cover crops; when NOT given, it does not enter the analysis (no estimate or default).
+    area_problems (optional): closed list ["nematoide", "mofo_branco", "cigarrinha", "compactacao"] (catalog/vocabulario.yaml);
+      adjusts the pest and soil criteria per crop on three levels (favors/neutral/penalizes), only where there is a source read
+      (table and sources in field_shift.app.field_state; without a source the effect is neutral). Without it, nothing changes.
+    constraints (optional): {"culturas_excluidas": [slugs], "maquinas": {"plataforma_milho": bool, "semeadora_consorcio": bool},
+      "sem_comprador": ["milho"|"trigo"|"aveia_grao"]}. Excluded/no buyer -> eliminated; machine false -> warning + extra
+      outsourcing cost (estimate); omitted machine = owned.
+    irrigation (optional): {"disponivel": bool, "custo_r_mm_ha": 4.0, "lamina_max_mm_dia": 6}. Irrigates corn, corn+brachiaria,
+      wheat, sorghum and 2nd-window beans (not cover/fallow nor the summer crop): water goes up, the water deficit does not count in
+      the risk, the margin subtracts depth × cost. The yield gain from irrigation is NOT modeled.
+    n_alternatives: 1–6 best rotations of each block, excluding the current one. If the current one is eliminated by the hard rules
+    (e.g. soja__soja_safrinha or a too-late harvest), `atual` holds {"eliminada": True, "motivos": [...]}, with no position or score
+    (and no `ganho_vs_atual` in the items). With `rotations` that do not include the current one, `atual` holds {"avaliada": False}."""
     inp = _normalize_inputs(sowing_second, pesos, current_rotation, adjustments, soil_analysis, constraints, irrigation, rotations,
                                area_problems)
     if isinstance(n_alternatives, bool) or not isinstance(n_alternatives, int) or not 1 <= n_alternatives <= 6:
@@ -904,7 +904,7 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
     base = _timeline_and_context(area, inp, sowing_second, summer_stage, expected_harvest, reference_date)
     cron, harvest, days_until, sow_2nd, sow_origin = base["cron"], base["colheita"], base["dias_ate"], base["sem_2a"], base["sem_origem"]
     data_ref, ctx, rk, diag, warnings, days = base["data_ref"], base["ctx"], base["rk"], base["diag"], base["avisos"], base["dias"]
-    # a atual é sempre avaliada (para o ganho_vs_atual), mesmo fora de `rotacoes`; só aparece se estiver em `rotacoes`
+    # the current rotation is always evaluated (for ganho_vs_atual), even outside `rotations`; it only shows up if it is in `rotations`
     evaluate = None if sel is None else list(dict.fromkeys([ROTATIONS[i] for i in sel] + [current_name]))
     try:
         res = E.score_rotation(pesos_n, rk, aj_n, evaluate)
@@ -991,7 +991,7 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
     return _clean(out)
 
 
-# --------------------------------------------------------------------------- 4. opções e aquecimento
+# --------------------------------------------------------------------------- 4. options and warm-up
 @lru_cache(maxsize=1)
 def _demo_fields() -> list[dict]:
     demo = gpd.read_file(E.ROOT / "data/processed/ftw/candidatos_demo.geojson")
@@ -1015,8 +1015,8 @@ def _capitalize(t: str) -> str:
 
 
 def _combinations() -> list[dict]:
-    """Todos os pares (verão, 2ª janela) do catálogo. `semeaduras_validas`: semeaduras da 2ª cultura em que o par passa nas regras de
-    calendário e legais (vazia = sempre eliminado, ex.: soja na 2ª janela)."""
+    """Every (summer, 2nd window) pair in the catalog. `semeaduras_validas`: 2nd-crop sowings in which the pair passes the calendar
+    and legal rules (empty = always eliminated, e.g. soybean in the 2nd window)."""
     out = []
     for i, nome in ROTATIONS.items():
         c = E.CATALOG[nome]
@@ -1028,8 +1028,8 @@ def _combinations() -> list[dict]:
 
 
 def options() -> dict:
-    """Catálogo para montar o formulário: culturas de verão e da 2ª janela, combinações (rotações), semeaduras, critérios, pesos,
-    referência de renda, região, talhões demo."""
+    """Catalog to build the form: summer and 2nd-window crops, combinations (rotations), sowings, criteria, weights,
+    income reference, region, demo fields."""
     ref = load_reference()
     sources = [dict(item=f"preço {k}", fonte=v["fonte"], periodo=v.get("periodo"), estimativa=v.get("estimativa", False), url=v.get("url"))
               for k, v in ref["precos"].items()]
@@ -1056,12 +1056,12 @@ def options() -> dict:
 
 
 def warm_up() -> None:
-    """Pré-carrega parquets/rasters/caches pesados (chamar no startup da API)."""
+    """Preload heavy parquets/rasters/caches (call at API startup)."""
     E.fields_gdf()
     E._annual()
     _region_info()
     yields(None)
     _demo_fields()
-    indicators_for(-24.9555, -53.4552)  # Cascavel: carrega o lookup climático
+    indicators_for(-24.9555, -53.4552)  # Cascavel: loads the climate lookup
     pam_yield("4104808")
     recommend({"talhao_id": E.FIELD_ID}, current_rotation="soja__milho_safrinha", include_diagnosis=False)

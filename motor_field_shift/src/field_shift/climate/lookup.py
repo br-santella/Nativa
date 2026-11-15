@@ -1,7 +1,7 @@
-"""Lookup de indicadores climáticos pré-calculados (Paraná) por lat/lon + fallback NASA POWER.
+"""Lookup of precomputed climate indicators (Paraná) by lat/lon + NASA POWER fallback.
 
-indicadores_para(lat, lon) -> dict | None. None se o ponto está fora da região.
-fallback_power(lat, lon)   -> dict | None. Consulta NASA POWER (1991-2025) ao vivo no mesmo formato.
+indicators_for(lat, lon) -> dict | None. None if the point is outside the region.
+fallback_power(lat, lon)  -> dict | None. Queries NASA POWER (1991-2025) live, in the same format.
 """
 from __future__ import annotations
 
@@ -174,7 +174,7 @@ def _download_power_cache(lat_cell: float, lon_cell: float) -> tuple[pd.DataFram
 
 
 def fallback_power(lat: float, lon: float) -> dict | None:
-    """Baixa NASA POWER (1991-2025) para a célula do ponto e calcula indicadores no formato de indicadores_para."""
+    """Download NASA POWER (1991-2025) for the point's cell and compute indicators in the indicators_for format."""
     lat_cell = round(lat / DLAT) * DLAT
     lon_cell = round(lon / DLON) * DLON
     df, elev = _download_power_cache(lat_cell, lon_cell)

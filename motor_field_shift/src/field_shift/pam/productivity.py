@@ -1,10 +1,10 @@
-"""Rendimento municipal (IBGE PAM, SIDRA 1612, 839 e 1002), lido de data/raw/ibge/pam_pr.parquet e, se existir,
-de data/raw/ibge/pam_extra_pr.parquet (ou pam_extra_oeste_pr.parquet; sorgo e feijão 2ª safra; ingest/pam_culturas_extra.py), mesmo esquema.
+"""Municipal yield (IBGE PAM, SIDRA 1612, 839 and 1002), read from data/raw/ibge/pam_pr.parquet and, if it exists,
+from data/raw/ibge/pam_extra_pr.parquet (or pam_extra_oeste_pr.parquet; sorghum and 2nd-season beans; ingest/pam_extra_crops.py), same schema.
 
-produtividade(cod_ibge) -> {cultura: {...}}; culturas: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
-Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos YIELD_WINDOW_YEARS (10) anos COM dado (até 2025, se existir).
+productivity(cod_ibge) -> {crop: {...}}; crops: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
+Bag = 60 kg (soybean, corn, wheat, sorghum, beans); oat only in kg/ha. Last YIELD_WINDOW_YEARS (10) years WITH data (up to 2025, if present).
 Expected yield (`kg_ha`/`sc_ha`) = linear trend of that window projected to the next season, clipped to the window's min–max
-(`expected_yield`); the plain mean stays in `media_kg_ha`/`media_sc_ha`. CV and the p20 "bad year" (renda.py) use the same window.
+(`expected_yield`); the plain mean stays in `media_kg_ha`/`media_sc_ha`. CV and the p20 "bad year" (income.py) use the same window.
 """
 from __future__ import annotations
 
@@ -16,10 +16,10 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 PAM = ROOT / "data/raw/ibge/pam_pr.parquet"
-PAM_EXTRA_PR = ROOT / "data/raw/ibge/pam_extra_pr.parquet"  # sorgo e feijão 2ª safra, 399 municípios (ingest/pam_culturas_extra.py --regiao pr)
-PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"  # só os 50 municípios do Oeste; usado se o do PR inteiro não existir
+PAM_EXTRA_PR = ROOT / "data/raw/ibge/pam_extra_pr.parquet"  # sorghum and 2nd-season beans, 399 municipalities (ingest/pam_extra_crops.py --regiao pr)
+PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"  # only the 50 Oeste municipalities; used if the statewide one does not exist
 BAG_KG = {"soja": 60, "milho_total": 60, "milho_1safra": 60, "milho_2safra": 60, "trigo": 60, "sorgo": 60, "feijao_2safra": 60}
-MIN_YEAR = {"sorgo": 2013, "feijao_2safra": 2013}  # séries antigas/interrompidas do sorgo e do feijão 2ª safra não representam o manejo atual
+MIN_YEAR = {"sorgo": 2013, "feijao_2safra": 2013}  # old/interrupted series of sorghum and 2nd-season beans do not represent current management
 YIELD_WINDOW_YEARS = 10  # single window for the expected yield (trend), CV and the p20 "bad year" (renda._p20_sc)
 MIN_YEARS_TREND = 5  # fewer years: the expected yield is the plain mean
 NAMES = {"soja": "soja", "milho_total": "milho", "milho_1safra": "milho 1ª safra", "milho_2safra": "milho 2ª safra",
@@ -37,7 +37,7 @@ def _yield() -> pd.DataFrame:
 
 
 def series(cod_ibge, crop: str) -> pd.Series:
-    """Rendimento anual (kg/ha) do município; NaN removidos."""
+    """Annual yield (kg/ha) of the municipality; NaN removed."""
     r = _yield()
     try:
         s = r.xs(str(int(cod_ibge)), level="cod_ibge")[crop]
@@ -81,7 +81,7 @@ def productivity(cod_ibge, n_years: int = YIELD_WINDOW_YEARS) -> dict:
 
 
 def text(mun_name: str, p: dict) -> str:
-    """Linha pronta para exibição."""
+    """Row ready for display."""
     parts = []
     for c in ("soja", "milho_2safra", "trigo"):
         if c in p:
