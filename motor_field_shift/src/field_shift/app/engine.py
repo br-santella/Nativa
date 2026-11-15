@@ -643,8 +643,10 @@ def fmt_margin(m: dict, risks: dict) -> list[str]:
     for i in m["itens"]:
         local = local_rend(risks, i["chave"])
         if i.get("extra"):
-            nome_c = "custo extra" if i["custo"] >= 0 else "economia"
-            lines.append(f"{i['rotulo']}: {nome_c} R$ {_r(abs(i['custo']))}/ha ({i['detalhe']}) = {_rs(i['margem'])}.")
+            if i["custo"] >= 0:
+                lines.append(f"{i['rotulo']}: custo extra R$ {_r(i['custo'])}/ha ({i['detalhe']}) = {_rs(i['margem'])}.")
+            else:
+                lines.append(f"{i['rotulo']}: economia R$ {_r(-i['custo'])}/ha ({i['detalhe']}) = {_rs(i['margem'])}.")
         elif i["sc_ha"] is not None and i.get("prod_usuario"):
             rz = i.get("razao_p20")
             bad = (f"ano ruim: rendimento próprio × p20/média da PAM ({rz:.2f}) = {i['sc_ha_ruim']:.0f} sc/ha → R$ {_r(i['margem_ano_ruim'])}/ha"
@@ -746,7 +748,11 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
     """`why_cmp`: text from `why_compared` (comparison with the current rotation); if None, only the largest contributions."""
     c = CATALOG[line["candidata"]]
     top = sorted(line["contrib"].items(), key=lambda kv: -kv[1])[:2]
-    contribs = "Maiores contribuições para a nota: " + " e ".join(f"{CRITERIA[k]} ({_c2(v)})" for k, v in top) + "."
+    if len(top) == 2:
+        (k1, v1), (k2, v2) = top
+        contribs = f"Maiores contribuições para a nota: {CRITERIA[k1]} ({_c2(v1)}) e {CRITERIA[k2]} ({_c2(v2)})."
+    else:
+        contribs = "Maiores contribuições para a nota: " + " e ".join(f"{CRITERIA[k]} ({_c2(v)})" for k, v in top) + "."
     why = f"{why_cmp} {contribs}" if why_cmp else contribs
     ev = [f"Dias de solo descoberto/ano (catálogo): ~{c['dias_descobertos']} dias."]
     if current and not np.isnan(ndvi_bare_soil_days):
@@ -824,9 +830,11 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
         ev.append(f"Pragas: milho sobre milho, nota de catálogo {c['pragas_base']:.2f} − penalidade {CORN_ON_CORN_PENALTY:.2f} "
                   f"= {c['pragas']:.2f} (cigarrinha-do-milho/enfezamento; estimativa de referência).")
     if "geada_safrinha" in c["riscos"] and risks["geada_safrinha"] >= 0.2:
-        review.append(f"Geada (≤ 3 °C) no safrinha em {risks['geada_safrinha']:.0%} dos anos"
-                       + (f" com semeadura em {risks['semeadura']}" if risks.get("semeadura") else "")
-                       + ": avaliar data de semeadura/híbrido.")
+        if risks.get("semeadura"):
+            review.append(f"Geada (≤ 3 °C) no safrinha em {risks['geada_safrinha']:.0%} dos anos com semeadura em {risks['semeadura']}: "
+                          "avaliar data de semeadura/híbrido.")
+        else:
+            review.append(f"Geada (≤ 3 °C) no safrinha em {risks['geada_safrinha']:.0%} dos anos: avaliar data de semeadura/híbrido.")
     if "deficit_hidrico" in rs_ef and (p_def := risk_probability(line["candidata"], "deficit_hidrico", risks)) >= 0.2:
         review.append(f"Déficit hídrico na fase crítica em {p_def:.0%} dos anos: avaliar data de semeadura/cultivar.")
     if "geada_trigo" in c["riscos"] and risks["geada_trigo"] >= 0.2:

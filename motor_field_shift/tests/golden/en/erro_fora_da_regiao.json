@@ -1,0 +1,7 @@
+{
+ "body": {
+  "erro": "fora_da_regiao",
+  "mensagem": "The point (lat -23.55000, lon -46.63000) is outside Paraná; the engine only covers the state."
+ },
+ "status": 422
+}

@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import json
 import logging
 from contextlib import asynccontextmanager
+from typing import Annotated
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
+from field_shift import i18n
 from field_shift.core import service
 
 from . import __version__
@@ -50,12 +53,43 @@ async def lifespan(app: FastAPI):
     yield
 
 
+def _language(
+    lang: Annotated[str | None, Query(
+        description="Idioma dos textos da resposta: `pt-BR` (padrão) ou `en`. Tem precedência sobre o header "
+                    "`Accept-Language`; valor desconhecido = pt-BR. Só os textos mudam: chaves, ids e números são os mesmos.",
+    )] = None,
+) -> None:
+    """Documents the `lang` parameter; the response is translated by the middleware below."""
+
+
 app = FastAPI(
     title="Field Shift API",
     description=DESCRIPTION,
     version=__version__,
     lifespan=lifespan,
+    dependencies=[Depends(_language)],
 )
+_UNTRANSLATED_PATHS = ("/openapi.json", "/docs", "/redoc")  # the OpenAPI schema stays in Portuguese
+
+
+@app.middleware("http")
+async def _response_language(request: Request, call_next):
+    """Translate the JSON body to the requested language (`lang` > Accept-Language > pt-BR) and set Content-Language.
+
+    The engine always writes pt-BR; English is produced here, at the edge, so the pt-BR response is untouched."""
+    locale = i18n.resolve_locale(request.query_params.get("lang"), request.headers.get("accept-language"))
+    response = await call_next(request)
+    if request.url.path.startswith(_UNTRANSLATED_PATHS):
+        return response
+    response.headers["Content-Language"] = locale
+    response.headers["Vary"] = "Accept-Language"
+    if locale == i18n.DEFAULT_LOCALE or not response.headers.get("content-type", "").startswith("application/json"):
+        return response
+    body = b"".join([chunk async for chunk in response.body_iterator])
+    translated = i18n.translate(json.loads(body), locale)
+    headers = {k: v for k, v in response.headers.items() if k.lower() != "content-length"}
+    return Response(content=json.dumps(translated, ensure_ascii=False, allow_nan=False, separators=(",", ":")).encode(),
+                    status_code=response.status_code, headers=headers, media_type="application/json")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

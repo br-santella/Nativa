@@ -702,30 +702,37 @@ def _applied_adjustments(aj: dict, soil, restr, irr) -> list[str]:
     """One sentence per adjustment/optional input used (goes into metodologia.ajustes_aplicados)."""
     o = []
     if aj.get("preco"):
-        o.append("Preços informados pelo produtor (" + ", ".join(f"{k} R$ {v:g}/sc" for k, v in aj["preco"].items())
-                 + ") substituem a média de 12 meses da SEAB/DERAL.")
+        items = ", ".join(f"{k} R$ {v:g}/sc" for k, v in aj["preco"].items())
+        o.append(f"Preços informados pelo produtor ({items}) substituem a média de 12 meses da SEAB/DERAL.")
     if aj.get("custo"):
-        o.append("Custos informados pelo produtor (" + ", ".join(f"{k} R$ {v:g}/ha" for k, v in aj["custo"].items())
-                 + ") substituem o custo CONAB.")
+        items = ", ".join(f"{k} R$ {v:g}/ha" for k, v in aj["custo"].items())
+        o.append(f"Custos informados pelo produtor ({items}) substituem o custo CONAB.")
     if aj.get("linha_custo"):
         o.append(f"Linha de custo CONAB '{aj['linha_custo']}' em vez do padrão.")
     if aj.get("produtividade"):
-        o.append("Produtividade informada pelo produtor (" + ", ".join(f"{k} {v:g} sc/ha" for k, v in aj["produtividade"].items())
-                 + ") substitui o rendimento PAM do município; o ano ruim escala proporcionalmente (próprio × p20/média da PAM); "
-                 "a soja informada também muda a escala S da renda.")
+        items = ", ".join(f"{k} {v:g} sc/ha" for k, v in aj["produtividade"].items())
+        o.append(f"Produtividade informada pelo produtor ({items}) substitui o rendimento PAM do município; o ano ruim escala "
+                 "proporcionalmente (próprio × p20/média da PAM); a soja informada também muda a escala S da renda.")
     if soil:
-        o.append("Análise de solo do produtor substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico"
-                 + (" (CAD informada diretamente)." if "cad_mm_cm" in soil else " (CAD por Saxton & Rawls com a análise)."))
+        if "cad_mm_cm" in soil:
+            o.append("Análise de solo do produtor substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico (CAD informada diretamente).")
+        else:
+            o.append("Análise de solo do produtor substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico "
+                     "(CAD por Saxton & Rawls com a análise).")
     if restr:
         e = restr["eco"]
         if e["culturas_excluidas"]:
-            o.append("Rotações excluídas pelo produtor: " + ", ".join(e["culturas_excluidas"]) + ".")
+            o.append(f"Rotações excluídas pelo produtor: {', '.join(e['culturas_excluidas'])}.")
         if e["sem_comprador"]:
-            o.append("Sem comprador local (eliminam as rotações que dependem da venda): " + ", ".join(e["sem_comprador"])
-                     + ("; aveia_grao não tem efeito, pois a aveia é tratada como cobertura sem venda." if "aveia_grao" in e["sem_comprador"] else "."))
+            crops = ", ".join(e["sem_comprador"])
+            if "aveia_grao" in e["sem_comprador"]:
+                o.append(f"Sem comprador local (eliminam as rotações que dependem da venda): {crops}; aveia_grao não tem efeito, pois a "
+                         "aveia é tratada como cobertura sem venda.")
+            else:
+                o.append(f"Sem comprador local (eliminam as rotações que dependem da venda): {crops}.")
         sow_date = [k for k, v in e["maquinas"].items() if v is False]
         if sow_date:
-            o.append("Máquinas que o produtor não tem (" + ", ".join(sow_date) + "): a rotação não é eliminada, ganha aviso e custo extra "
+            o.append(f"Máquinas que o produtor não tem ({', '.join(sow_date)}): a rotação não é eliminada, ganha aviso e custo extra "
                      "de terceirização (estimativas, validar).")
     if irr and irr["disponivel"]:
         o.append(f"Irrigação disponível (R$ {irr['custo_r_mm_ha']:g}/mm/ha, lâmina máx. {irr['lamina_max_mm_dia']:g} mm/dia): irriga "
@@ -823,10 +830,15 @@ def _timeline_and_context(area, inp: dict, sowing_second, summer_stage, expected
         days_until = None
         sow_2nd = sowing_second or E.DEFAULT_SOWING
         sow_origin = "informada" if sowing_second else "premissa"
-        calendar_warnings.append(f"Sem estagio_verao nem colheita_prevista: colheita de {E.SUMMER[current_summer]['nome'].lower()} assumida em "
-                          f"~{harvest['data']} (premissa do catálogo, estimativa)"
-                          + ("" if sowing_second else f" e semeadura da 2ª janela em {sow_2nd} (padrão)")
-                          + ". Informe o estágio da cultura de verão para uma resposta sobre o que entra depois da colheita.")
+        crop = E.SUMMER[current_summer]["nome"].lower()
+        if sowing_second:
+            calendar_warnings.append(f"Sem estagio_verao nem colheita_prevista: colheita de {crop} assumida em ~{harvest['data']} (premissa "
+                                     "do catálogo, estimativa). Informe o estágio da cultura de verão para uma resposta sobre o que entra "
+                                     "depois da colheita.")
+        else:
+            calendar_warnings.append(f"Sem estagio_verao nem colheita_prevista: colheita de {crop} assumida em ~{harvest['data']} (premissa "
+                                     f"do catálogo, estimativa) e semeadura da 2ª janela em {sow_2nd} (padrão). Informe o estágio da "
+                                     "cultura de verão para uma resposta sobre o que entra depois da colheita.")
     ctx = _context(area, sow_2nd or E.SOWINGS_2ND[-1], inp["solo_fis"], inp["fert_n"])
     rk, diag = ctx["rk"], ctx["diag"]
     probs_n, fert_n = inp["probs_n"], inp["fert_n"]

@@ -349,8 +349,8 @@ def costs(c: dict, state: dict | None) -> list[dict]:
         dp, dk, parts, src = dd
         delta = dp * P2O5_PRICE_R_KG + dk * K2O_PRICE_R_KG
         out.append(dict(chave="adubacao_pk", rotulo="Adubação P/K acima/abaixo da referência" if delta >= 0 else "Economia de adubação P/K",
-                        custo=delta, detalhe=", ".join(parts) + f" em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa sem fonte); "
-                                                              f"doses: {src}; preços: {PRICE_SOURCE}"))
+                        custo=delta, detalhe=f"{', '.join(parts)} em relação à classe média, que ASSUMIMOS embutida no custo CONAB (premissa "
+                                             f"sem fonte); doses: {src}; preços: {PRICE_SOURCE}"))
     return out
 
 
@@ -407,21 +407,21 @@ def card(c: dict, state: dict | None) -> dict:
     ev, gap, rev = [], [], []
     aj = adjustment(c, state)
     if probs:
-        gap.append("Problemas da área considerados: " + ", ".join(PROBLEM_LABELS[p] for p in probs)
-                   + f" (efeito por cultura em três níveis: {_scale_txt()}).")
+        labels = ", ".join(PROBLEM_LABELS[p] for p in probs)
+        gap.append(f"Problemas da área considerados: {labels} (efeito por cultura em três níveis: {_scale_txt()}).")
         efs = [e for e in aj["efeitos"] if e["problema"]]
         for e in efs:
+            caveat = f"; ressalva: {e['ressalva']}" if e["ressalva"] else ""
             ev.append(f"Problema da área ({PROBLEM_LABELS[e['problema']]}): {e['nivel']}, critério {e['criterio']} {e['delta']:+.2f} "
-                      f"({e['motivo']}; fonte: {'; '.join(e['fontes'])}" + (f"; ressalva: {e['ressalva']}" if e["ressalva"] else "") + ").")
+                      f"({e['motivo']}; fonte: {'; '.join(e['fontes'])}{caveat}).")
         if not efs:
-            ev.append("Problemas da área informados (" + ", ".join(PROBLEM_LABELS[p] for p in probs)
-                      + "): sem efeito com fonte confirmada nesta rotação (neutro).")
+            ev.append(f"Problemas da área informados ({labels}): sem efeito com fonte confirmada nesta rotação (neutro).")
         gap.extend(_unsourced_neutrals(c, probs))
     else:
         gap.append("Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.")
     if fert:
-        ev.append(f"Fertilidade informada pelo produtor ({_fert_txt(fert)}); classes: "
-                  + ", ".join(f"{k.upper()} {v.replace('_', ' ')}" for k, v in fert["classes"].items()) + f" ({MANUAL_SOURCE}).")
+        classes = ", ".join(f"{k.upper()} {v.replace('_', ' ')}" for k, v in fert["classes"].items())
+        ev.append(f"Fertilidade informada pelo produtor ({_fert_txt(fert)}); classes: {classes} ({MANUAL_SOURCE}).")
         if fert.get("argila_faixa_g_kg"):
             ev.append(f"Classe de P pela argila {fert['argila_faixa_g_kg']} g/kg ({fert['argila_origem']}).")
         for e in (x for x in aj["efeitos"] if x["origem"] == "fertilidade"):
@@ -431,7 +431,7 @@ def card(c: dict, state: dict | None) -> dict:
         if _nc_t_ha(fert, V2.get(c["segunda"], V2_AREA)) is None:
             gap.append("Calagem não calculada: faltam V% (ou Ca+Mg+K+CTC) e CTC informados; nada foi estimado.")
         if fert["ausentes"]:
-            gap.append("Fertilidade parcial: não informados " + ", ".join(fert["ausentes"]) + "; esses itens não entram na análise.")
+            gap.append(f"Fertilidade parcial: não informados {', '.join(fert['ausentes'])}; esses itens não entram na análise.")
         if fert.get("argila_faixa_g_kg") and not fert["argila_origem"].startswith("informada"):
             gap.append("Argila não informada: a classe de P usou a faixa mais exigente do Manual PR (< 250 g/kg); informe argila_pct para a classe correta.")
         if c["segunda"] in PK_DEMAND:
@@ -454,17 +454,18 @@ def applied_adjustments(state: dict | None, analysis_given: bool) -> list[str]:
         return []
     o = []
     if probs:
-        o.append("Problemas da área informados pelo produtor (" + ", ".join(PROBLEM_LABELS[p] for p in probs)
-                 + f") ajustam os critérios pragas e solo por cultura em três níveis (favorece/neutro/penaliza; {_scale_txt()}). "
-                 "Só há efeito onde existe fonte lida (Embrapa/artigos, listadas em docs/fontes_estado_area.md); sem fonte, o efeito é neutro.")
+        labels = ", ".join(PROBLEM_LABELS[p] for p in probs)
+        o.append(f"Problemas da área informados pelo produtor ({labels}) ajustam os critérios pragas e solo por cultura em três níveis "
+                 f"(favorece/neutro/penaliza; {_scale_txt()}). Só há efeito onde existe fonte lida (Embrapa/artigos, listadas em "
+                 "docs/fontes_estado_area.md); sem fonte, o efeito é neutro.")
     else:
         o.append("Problemas da área não informados: não considerados.")
     if fert:
-        o.append("Fertilidade informada pelo produtor (" + ", ".join(fert["informados"]) + "): classes de P (por argila), K, V% e Al do Manual de "
+        o.append(f"Fertilidade informada pelo produtor ({', '.join(fert['informados'])}): classes de P (por argila), K, V% e Al do Manual de "
                  "Adubação e Calagem do Paraná; custo de calagem (saturação por bases, fórmula do Manual) e de adubação P/K por cultura na margem "
-                 "(doses do Manual PR para o milho e da CBPTT 2020 para o trigo; feijão e sorgo " + ESTIMATE_SOURCE + "), penalidade no critério solo "
+                 f"(doses do Manual PR para o milho e da CBPTT 2020 para o trigo; feijão e sorgo {ESTIMATE_SOURCE}), penalidade no critério solo "
                  "para cultura sensível em solo ácido/pobre e bônus para cobertura recicladora e crotalária (escolha de modelagem sem fonte); "
-                 "itens não informados não entram. Preço do calcário, teto de dose e diluição da calagem: " + ESTIMATE_SOURCE + ".")
+                 f"itens não informados não entram. Preço do calcário, teto de dose e diluição da calagem: {ESTIMATE_SOURCE}.")
     else:
         o.append("Fertilidade não considerada (não informada).")
     return o

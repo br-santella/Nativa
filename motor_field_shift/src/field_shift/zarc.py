@@ -127,9 +127,8 @@ def warning_text(zs: dict, municipality: str) -> str | None:
     if not fora:
         return None
     parts = [f"{x['cultura']} semeado(a) em {x['semeadura']} ({x['motivo']})" for x in fora]
-    return (f"Fora do {SOURCE.split(' (')[0]} em {municipality}: " + "; ".join(parts)
-            + ". Sem ZARC não há acesso ao crédito rural com juros controlados, ao Proagro nem ao seguro rural subvencionado "
-              "(aviso informativo: não muda a nota).")
+    return (f"Fora do {SOURCE.split(' (')[0]} em {municipality}: {'; '.join(parts)}. Sem ZARC não há acesso ao crédito rural com "
+            "juros controlados, ao Proagro nem ao seguro rural subvencionado (aviso informativo: não muda a nota).")
 
 
 def evidence_text(zs: dict, municipality: str) -> str | None:
@@ -143,5 +142,6 @@ def evidence_text(zs: dict, municipality: str) -> str | None:
                           f"({x['solos_indicados_pct']}% das classes de solo; {x['portaria']})")
         else:
             parts.append(f"{x['cultura']} em {x['semeadura']}: não indicado")
-    extra = " A cobertura da 2ª janela não tem zoneamento ZARC." if zs["segunda_sem_zoneamento"] else ""
-    return f"{SOURCE}, {municipality}: " + "; ".join(parts) + "." + extra
+    if zs["segunda_sem_zoneamento"]:
+        return f"{SOURCE}, {municipality}: {'; '.join(parts)}. A cobertura da 2ª janela não tem zoneamento ZARC."
+    return f"{SOURCE}, {municipality}: {'; '.join(parts)}."
