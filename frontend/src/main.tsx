@@ -128,6 +128,8 @@ function App() {
     [applied, setApplied] = useState<number[]>(profiles.soil),
     [busy, setBusy] = useState(false),
     [slide, setSlide] = useState(0),
+    [carouselPaused, setCarouselPaused] = useState(false),
+    [carouselFocused, setCarouselFocused] = useState(false),
     [report, setReport] = useState<File | null>(null),
     [calendar, setCalendar] = useState(false),
     [explain, setExplain] = useState(false),
@@ -138,6 +140,14 @@ function App() {
     });
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reduced = useReducedMotion();
+  useEffect(() => {
+    if (page !== "landing" || reduced || carouselPaused || carouselFocused) return;
+    const interval = window.setInterval(() => {
+      if (!document.hidden) setSlide((current) => (current + 1) % 3);
+    }, 6000);
+    return () => window.clearInterval(interval);
+  }, [page, reduced, carouselPaused, carouselFocused, slide]);
+
   useEffect(() => {
     const h = () => {
       setPage(currentPage());
@@ -1538,21 +1548,16 @@ function App() {
             </button>
           </div>
         </nav>
-        <section className="hero">
-          <motion.img
-            key={slide}
-            className="hero-photo"
-            src={heroImgs[slide]}
-            alt="Paisagem agrícola ao nascer do sol"
-            initial={reduced ? false : { scale: 1 }}
-            animate={reduced ? { scale: 1 } : { scale: [1, 1.015] }}
-            transition={{
-              duration: 6,
-              times: [0, 1],
-              ease: "linear",
-              repeat: Infinity,
-            }}
-          />
+        <section className="hero" aria-label="Destaques NATIVA" aria-roledescription="carrossel"
+          onFocusCapture={() => setCarouselFocused(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCarouselFocused(false);
+          }}>
+          {heroImgs.map((src, index) => (
+            <img key={src} className={`hero-photo${slide === index ? " hero-photo-active" : ""}`}
+              src={src} alt={slide === index ? "Paisagem agrícola em destaque" : ""}
+              aria-hidden={slide !== index} fetchPriority={index === 0 ? "high" : "auto"} decoding="async" />
+          ))}
           <div className="hero-shade" />
           <div className="hero-content">
             <small>INTELIGÊNCIA QUE VEM DO ESPAÇO</small>
@@ -1592,15 +1597,20 @@ function App() {
               <small>0{slide + 1} / 03</small>
             </div>
             <div>
+              {!reduced && <button
+                aria-label={carouselPaused ? "Retomar troca automática de imagens" : "Pausar troca automática de imagens"}
+                aria-pressed={carouselPaused}
+                onClick={() => { setCarouselPaused((paused) => !paused); setCarouselFocused(false); }}
+              >{carouselPaused ? "▶" : "Ⅱ"}</button>}
               <button
                 aria-label="Imagem anterior"
-                onClick={() => setSlide((slide + 2) % 3)}
+                onClick={() => setSlide((current) => (current + 2) % 3)}
               >
                 ‹
               </button>
               <button
                 aria-label="Próxima imagem"
-                onClick={() => setSlide((slide + 1) % 3)}
+                onClick={() => setSlide((current) => (current + 1) % 3)}
               >
                 ›
               </button>

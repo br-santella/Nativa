@@ -1573,6 +1573,16 @@ td:first-child {
   height: 100%;
   object-fit: cover;
 }
+.hero .hero-photo {
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1.1s ease-in-out, transform 6s linear;
+  pointer-events: none;
+}
+.hero .hero-photo-active { opacity: 1; transform: scale(1.015); }
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-photo { transition: none; transform: none; }
+}
 .hero-shade {
   position: absolute;
   inset: 0;
