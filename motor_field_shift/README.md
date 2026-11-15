@@ -26,5 +26,5 @@ uv run pytest                                                    # unit tests
 | `src/field_shift/motor/` | service layer: `diagnosticar()`, `recomendar()` |
 | `src/field_shift/app/` | hard rules, criteria, weighted score, cards (`engine.py`) + Streamlit app (`mvp.py`) |
 | `src/field_shift/{clima,regiao,solo,agua,pam,renda}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, FAO-56 water balance, IBGE PAM, prices/costs |
-| `ingest/` | scripts that download and pre-compute the data (only the `*_oeste_pr` versions; the whole-of-Paraná `*_pr` ingests are not versioned yet, see `docs/pendencias.md`) |
+| `ingest/` | scripts that download and pre-compute the data (`--regiao oeste_pr|pr`); `scripts/download_pr/run_all.sh` runs the whole-of-Paraná ingestion |
 | `api/` | FastAPI app, tests and real response examples |

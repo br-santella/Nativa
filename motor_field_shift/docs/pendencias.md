@@ -85,7 +85,8 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Ingest scripts of the `*_pr` data are not in the repo**: the engine now reads `data/raw/mapbiomas_pr`, `nasadem_pr`, `soilgrids_pr`, `regiao/{pr,municipios_pr}.geojson`, `clima_pr/` (raw), `processed/clima_pr/`, `processed/relevo_pr/` and `ibge/pam_pr.parquet` (399 municipalities), but `ingest/` only has the `*_oeste_pr` scripts. Confirm who generated the data, version the scripts, and document the commands.
   Files: `ingest/`, `api/README.md`.
-  Status: pending
+  Done (15/11/2026): the pending note was outdated. The ingestion is versioned in `scripts/download_pr/01..06_*.sh` (added by Lucas in commit 65a69ac); each one calls `ingest/*.py --regiao pr`. Added `07_pam_extra.sh` (sorghum and beans PAM for all of Paraná) and put it in `run_all.sh`; `api/README.md` now maps every `*_pr` file to its script. Not re-run end to end here (POWER alone takes ~40 min); only `07_pam_extra` was run and checked.
+  Status: done
 
 - **SEAB/DERAL prices and costs by regional nucleus**: the values in `data/ref/precos_custos.json` are the Oeste/PR references. Outside the Oeste the response only warns (`avisos`) that they may differ; a per-nucleus table (SEAB/DERAL regional prices, CONAB sheet closest to the municipality) is missing.
   Files: `data/ref/precos_custos.json`, `src/field_shift/renda/`, `src/field_shift/motor/servico.py` (`AVISOS_FORA_DO_OESTE`).
