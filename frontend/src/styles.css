@@ -3635,7 +3635,6 @@ footer > small:last-child {
   .sidebar-collapsed .sidebar { width: 72px; padding-inline: 12px; }
   .sidebar-collapsed .topbar,
   .sidebar-collapsed .main-content { margin-left: 72px; }
-  .sidebar-collapsed .sidebar-header { flex-direction: column; gap: 12px; }
   .sidebar-collapsed .sidebar .brand { margin-left: 0; }
   .sidebar-collapsed .sidebar .brand img { width: 40px; height: 40px; }
   .sidebar-collapsed .brand-wordmark,
@@ -3658,6 +3657,21 @@ footer > small:last-child {
 .dashboard .main-content { container: dashboard-content / inline-size; min-width: 0; }
 .main-content :is(.panel, .stack, .grid-two > *, .two-col > *, .scenario-grid > *) { min-width: 0; }
 .sidebar-header { position: relative; }
+@media (min-width: 701px) {
+  .dashboard .sidebar-header {
+    height: 108px;
+    flex-shrink: 0;
+    padding-top: 52px;
+  }
+  .dashboard .sidebar-toggle {
+    position: fixed;
+    top: 18px;
+    left: 14px;
+    width: 44px;
+    height: 44px;
+  }
+  .sidebar-collapsed .sidebar-header { justify-content: center; }
+}
 .sidebar-header .brand-wordmark { min-width: 0; }
 .sidebar-header .brand strong { font-size: clamp(18px, 1.6vw, 22px); }
 .sidebar-toggle { width: 36px; height: 44px; font-size: 28px; }
