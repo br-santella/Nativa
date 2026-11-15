@@ -29,3 +29,11 @@ criterios:
   - cobertura_do_solo
   - custo
   - retornos
+
+# Problemas da área informados pelo produtor (lista fechada; efeito por cultura em
+# motor_field_shift/src/field_shift/app/estado_area.py, níveis qualitativos com fonte; ver docs/fontes_estado_area.md).
+problemas_area:
+  - nematoide
+  - mofo_branco
+  - cigarrinha
+  - compactacao

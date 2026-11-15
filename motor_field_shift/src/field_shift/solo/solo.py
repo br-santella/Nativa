@@ -1,4 +1,4 @@
-"""solo(poligono) -> dict com SoilGrids médio no polígono (data/raw/soilgrids_oeste_pr/, gerado por ingest/solo_pam_oeste_pr.py).
+"""solo(poligono) -> dict com SoilGrids médio no polígono (data/raw/soilgrids_pr/, gerado por ingest/solo_pam_oeste_pr.py).
 
 UNIDADES FÍSICAS (já convertidas na ingestão; SoilGrids 2.0 guarda inteiros escalados):
   clay, sand, silt: % (g/100 g)   [SoilGrids: g/kg  -> /10]
@@ -31,7 +31,7 @@ from rasterio.features import geometry_mask
 from rasterio.windows import Window, from_bounds
 
 ROOT = Path(__file__).resolve().parents[3]
-SG = ROOT / "data/raw/soilgrids_oeste_pr"
+SG = ROOT / "data/raw/soilgrids_pr"
 PROPS = ["clay", "sand", "silt", "soc", "phh2o", "bdod"]
 PROFS = ["0-5cm", "5-15cm", "15-30cm", "30-60cm"]
 ESPESSURA = np.array([5.0, 10.0, 15.0, 30.0])  # cm

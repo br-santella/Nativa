@@ -16,7 +16,7 @@ Only `area` is required. Three forms (exactly one):
 | Lat/lon point | `area.lat` + `area.lon` | Becomes a ~100 ha square, with a warning |
 | Demo field ID | `area.talhao_id` | E.g. `"72638"` (see `GET /v1/talhoes/demo`) |
 
-Constraints: inside Western Paraná (50 municipalities, IBGE 4106) and at most 5000 ha.
+Constraints: inside Paraná (399 municipalities, IBGE 41) and at most 5000 ha. Outside the Oeste mesoregion the response adds two `avisos` (costs/prices and calendar are the Oeste reference).
 
 ## 2. Choice inputs (they have defaults; the user clicks, does not type)
 
@@ -45,7 +45,7 @@ Mapping of the NATIVA screen sliders (0–100%) to `pesos` (0–10):
 | Soil (clay, sand, organic C, pH, available water capacity) | SoilGrids | 250 m | `diagnostico.solo` |
 | Terrain (elevation, slope, Embrapa class) | NASADEM | 30 m | `diagnostico.relevo` |
 | Crop history | MapBiomas | 2019–2024 | `diagnostico.historico` |
-| Municipality and average yield | IBGE PAM | Last 5 years | `diagnostico.area.municipio`, `diagnostico.produtividade` |
+| Municipality and average yield | IBGE PAM | Last 10 years | `diagnostico.area.municipio`, `diagnostico.produtividade` |
 | Price | SEAB/DERAL-PR | 12-month average | `ranking[].margem.itens[].preco` |
 | Cost | CONAB COE (Londrina/Ponta Grossa) | Latest season | `ranking[].margem.itens[].custo` |
 | Legal rules (soybean-free period, soybean after soybean) | ADAPAR (free period 02/06–31/08) and Ordinance SDA/MAPA 1.124/2024 | In force (check before the pitch) | `eliminadas[]`, `avisos` |

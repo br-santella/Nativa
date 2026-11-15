@@ -41,7 +41,7 @@ if t["declividade"] is not None:
     c1.write(f"Declividade média: **{t['declividade']:.1f}%** (p90 {t['declividade_p90']:.1f}%) · classe Embrapa: **{t['classe_embrapa']}** "
              f"· altitude **{t['altitude']:.0f} m** (NASADEM)")
 else:
-    c1.write("Declividade / altitude: **sem dado** (polígono fora do Oeste do PR)")
+    c1.write("Declividade / altitude: **sem dado** (polígono fora do Paraná)")
 xs, ys = t["poly"].exterior.xy
 fig = go.Figure(go.Scattermap(lon=list(xs), lat=list(ys), mode="lines", fill="toself", line=dict(color="#d62728")))
 fig.update_layout(map=dict(style="open-street-map", center=dict(lat=t["lat"], lon=t["lon"]), zoom=13),
@@ -78,7 +78,7 @@ except Exception as e:
     st.stop()
 rk = _enriquecer(rk, t["lat"], t["lon"])  # + solo (SoilGrids), contexto do balanço hídrico e PAM do município
 if rk["modo"] == "reduzido":
-    st.warning("Modo reduzido: o talhão está fora do Oeste do PR. Clima pelo NASA POWER ao vivo (ponto do centróide); "
+    st.warning("Modo reduzido: o talhão está fora do Paraná. Clima pelo NASA POWER ao vivo (ponto do centróide); "
                "sem tabela por data de semeadura nem diagnóstico ampliado.")
     st.caption(f"Origem dos dados: {origem} · período {rk['periodo']} ({rk['n_anos']} anos)")
 else:
@@ -127,11 +127,11 @@ if rk["solo"]:
     st.caption(f"Textura: {s['classe_textura']}. CAD (água disponível) por pedotransferência de Saxton & Rawls (2006), "
                "que pode errar em latossolos tropicais; o SoilGrids não traz umidade a 33/1500 kPa. Alimenta o balanço hídrico do critério Água.")
 else:
-    st.info("Solo (SoilGrids): sem dado fora do Oeste do PR; o critério Água usa só chuva × demanda do ciclo.")
+    st.info("Solo (SoilGrids): sem dado fora do Paraná; o critério Água usa só chuva × demanda do ciclo.")
 if rk["pam"]:
     st.subheader("Produtividade do município (IBGE PAM)")
     st.write(E.fmt_pam(rk))
-    st.caption("Média dos últimos 5 anos com dado (SIDRA tabelas 1612 e 839); sacas de 60 kg. Alimenta a margem (critério renda).")
+    st.caption("Média dos últimos 10 anos com dado (SIDRA tabelas 1612 e 839); sacas de 60 kg. Alimenta a margem (critério renda).")
 
 # ------------------------------------------------------------------ 4. Operador
 st.header("4. Situação do operador")
@@ -194,7 +194,7 @@ st.dataframe(pd.DataFrame([{
 _any = next(iter(_vistos.values()))[0]
 if rk["rend"]["_origem"].startswith("média"):
     st.warning("Sem município/PAM para este talhão: usando " + rk["rend"]["_origem"] + ".")
-st.caption(f"Rendimento: {rk['rend']['_origem']}, média dos últimos 5 anos ({_any['anos']}). CV e p20 (ano ruim): últimos 10 anos, só exibição. "
+st.caption(f"Rendimento: {rk['rend']['_origem']}, média dos últimos 10 anos ({_any['anos']}); CV e p20 (ano ruim) usam a mesma janela. "
            f"Preços consultados em {REF['consulta']}. Margem = rendimento × preço − custo; cobertura/pousio = − custo (estimativa de referência, validar). "
            "(CONAB não cobre o Oeste do PR em empresarial: custo de Londrina/Ponta Grossa).")
 if res["eliminadas"]:

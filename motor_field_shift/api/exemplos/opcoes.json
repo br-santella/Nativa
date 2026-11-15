@@ -4,15 +4,83 @@
       "id": "soja",
       "nome": "Soja",
       "tipo": "grão",
-      "descricao_curta": "Soja no verão: a cultura mais comum do Oeste do PR; semeadura de 01/09 a 31/12."
+      "descricao_curta": "Soja no verão: a cultura mais comum do Oeste do PR; semeadura de 01/09 a 31/12.",
+      "estagios": [
+        {
+          "id": "vegetativo",
+          "nome": "Vegetativo (antes do florescimento)",
+          "dias_ate_colheita": 90
+        },
+        {
+          "id": "floracao",
+          "nome": "Floração (R1–R2)",
+          "dias_ate_colheita": 65
+        },
+        {
+          "id": "formacao_vagens",
+          "nome": "Formação de vagens (R3–R4)",
+          "dias_ate_colheita": 48
+        },
+        {
+          "id": "enchimento_graos",
+          "nome": "Enchimento de grãos (R5–R6)",
+          "dias_ate_colheita": 32
+        },
+        {
+          "id": "maturacao",
+          "nome": "Maturação (R7–R8)",
+          "dias_ate_colheita": 10
+        },
+        {
+          "id": "colhida",
+          "nome": "Já colhida",
+          "dias_ate_colheita": 0
+        }
+      ],
+      "colheita_catalogo": "10/01"
     },
     {
       "id": "milho_verao",
       "nome": "Milho verão",
       "tipo": "grão",
-      "descricao_curta": "Milho de 1ª safra no lugar da soja: quebra ciclo de doença e nematoide e deixa mais palhada."
+      "descricao_curta": "Milho de 1ª safra no lugar da soja: quebra ciclo de doença e nematoide e deixa mais palhada.",
+      "estagios": [
+        {
+          "id": "vegetativo",
+          "nome": "Vegetativo (antes do pendoamento)",
+          "dias_ate_colheita": 110
+        },
+        {
+          "id": "pendoamento",
+          "nome": "Pendoamento e espigamento (VT–R1)",
+          "dias_ate_colheita": 80
+        },
+        {
+          "id": "grao_leitoso",
+          "nome": "Grão leitoso (R2–R3)",
+          "dias_ate_colheita": 60
+        },
+        {
+          "id": "grao_farinaceo",
+          "nome": "Grão pastoso a farináceo (R4–R5)",
+          "dias_ate_colheita": 40
+        },
+        {
+          "id": "maturacao",
+          "nome": "Maturação fisiológica (R6)",
+          "dias_ate_colheita": 15
+        },
+        {
+          "id": "colhida",
+          "nome": "Já colhido",
+          "dias_ate_colheita": 0
+        }
+      ],
+      "colheita_catalogo": "05/02"
     }
   ],
+  "estagios_fonte": "estimativa (escala Fehr & Caviness / Ritchie), validar com Embrapa",
+  "dias_preparo_2a": 0,
   "culturas_segunda": [
     {
       "id": "milho_safrinha",

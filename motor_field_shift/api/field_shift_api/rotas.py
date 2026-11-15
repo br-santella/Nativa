@@ -24,7 +24,7 @@ from .schemas import (
 
 ERROS = {
     400: {"model": ErroOut, "description": "Entrada inválida segundo o motor (`entrada_invalida`)."},
-    422: {"model": ErroOut, "description": "Fora do Oeste do PR (`fora_da_regiao`) ou erro de validação do corpo."},
+    422: {"model": ErroOut, "description": "Fora do Paraná (`fora_da_regiao`) ou erro de validação do corpo."},
     500: {"model": ErroOut, "description": "Erro interno (`interno`)."},
 }
 
@@ -100,7 +100,9 @@ def recomendacao(corpo: RecomendacaoIn) -> dict[str, Any]:
         analise_solo=_dump(corpo.analise_solo),
         restricoes=_dump(corpo.restricoes),
         irrigacao=_dump(corpo.irrigacao),
+        problemas_area=corpo.problemas_area or None,
     )
+
 
 
 @router.get(

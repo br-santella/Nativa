@@ -51,6 +51,8 @@ CulturaCusto = Literal[
     "aveia_nabo",
 ]
 CulturaProdutividade = Literal["soja", "milho", "milho_2safra", "milho_verao", "trigo", "feijao", "sorgo"]
+# Problemas da área informados pelo produtor (espelha catalog/vocabulario.yaml `problemas_area`; um teste confere).
+ProblemaArea = Literal["nematoide", "mofo_branco", "cigarrinha", "compactacao"]
 SemComprador = Literal["milho", "trigo", "sorgo", "feijao", "aveia_grao"]
 Peso = Annotated[float, Field(ge=0, le=10)]
 
@@ -140,7 +142,12 @@ class Ajustes(BaseModel):
 
 class AnaliseSolo(BaseModel):
     """Análise de solo do produtor. Substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico.
-    Informe argila_pct e areia_pct (juntos), ou cad_mm_cm."""
+    Informe argila_pct e areia_pct (juntos), cad_mm_cm, ou ao menos um campo de fertilidade.
+
+    Fertilidade (opcional, qualquer subconjunto; unidades do laudo): se NÃO informada, não entra na análise (sem estimativa nem valor
+    padrão) e o card diz que não foi considerada. Se informada: custo de calagem (saturação por bases, precisa de V% e CTC) e de adubação
+    P/K na margem, penalidade no critério solo para cultura sensível em solo ácido/pobre e bônus para cobertura recicladora.
+    """
 
     argila_pct: float | None = Field(None, ge=0, le=100, description="Argila (%).")
     areia_pct: float | None = Field(None, ge=0, le=100, description="Areia (%). Areia + argila ≤ 100.")
@@ -153,6 +160,15 @@ class AnaliseSolo(BaseModel):
     profundidade_cm: float | None = Field(
         None, ge=1, le=200, description="Profundidade da amostra (cm; padrão 20, ou seja, 0–20 cm). A amostra é tomada como representativa do perfil."
     )
+    p_mg_dm3: float | None = Field(None, ge=0, le=500, description="Fósforo (Mehlich-1), mg/dm³. Fertilidade (opcional).")
+    k_cmolc_dm3: float | None = Field(None, ge=0, le=10, description="Potássio, cmolc/dm³. Fertilidade (opcional).")
+    ca_cmolc_dm3: float | None = Field(None, ge=0, le=40, description="Cálcio, cmolc/dm³. Fertilidade (opcional).")
+    mg_cmolc_dm3: float | None = Field(None, ge=0, le=20, description="Magnésio, cmolc/dm³. Fertilidade (opcional).")
+    al_cmolc_dm3: float | None = Field(None, ge=0, le=15, description="Alumínio trocável, cmolc/dm³. Fertilidade (opcional).")
+    v_pct: float | None = Field(
+        None, ge=0, le=100, description="Saturação por bases V% (0–100). Fertilidade (opcional). Com CTC, calcula a calagem; sem V%, é derivada se vierem Ca, Mg, K e CTC."
+    )
+    ctc_cmolc_dm3: float | None = Field(None, ge=0, le=60, description="CTC a pH 7, cmolc/dm³. Fertilidade (opcional).")
 
     model_config = ConfigDict(
         extra="forbid",
@@ -160,6 +176,7 @@ class AnaliseSolo(BaseModel):
             "examples": [
                 {"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "ph": 5.4, "cad_mm_cm": 1.4},
                 {"argila_pct": 45, "areia_pct": 30, "carbono_organico_g_kg": 18},
+                {"p_mg_dm3": 4, "k_cmolc_dm3": 0.12, "al_cmolc_dm3": 1.2, "v_pct": 38, "ctc_cmolc_dm3": 9},
             ]
         },
     )
@@ -168,8 +185,9 @@ class AnaliseSolo(BaseModel):
     def _minimo(self) -> "AnaliseSolo":
         if (self.argila_pct is None) != (self.areia_pct is None):
             raise ValueError("informe 'argila_pct' e 'areia_pct' juntos")
-        if self.argila_pct is None and self.cad_mm_cm is None:
-            raise ValueError("informe 'argila_pct' e 'areia_pct', ou 'cad_mm_cm'")
+        fert = ("p_mg_dm3", "k_cmolc_dm3", "ca_cmolc_dm3", "mg_cmolc_dm3", "al_cmolc_dm3", "v_pct", "ctc_cmolc_dm3")
+        if self.argila_pct is None and self.cad_mm_cm is None and all(getattr(self, k) is None for k in fert):
+            raise ValueError("informe 'argila_pct' e 'areia_pct', ou 'cad_mm_cm', ou algum campo de fertilidade")
         if self.argila_pct is not None and self.argila_pct + self.areia_pct > 100:
             raise ValueError("argila_pct + areia_pct não pode passar de 100")
         if self.materia_organica_pct is not None and self.carbono_organico_g_kg is not None:
@@ -283,7 +301,9 @@ class ContextoIn(BaseModel):
     model_config = ConfigDict(json_schema_extra={"examples": [{"area": {"talhao_id": "72638"}, "semeadura_safrinha": "01/02"}]})
 
 
-class RecomendacaoIn(BaseModel):
+class _EntradaMotor(BaseModel):
+    """Campos comuns das entradas do motor."""
+
     area: Area
     rotacao_atual: RotacaoSlug = Field(
         ...,
@@ -331,11 +351,18 @@ class RecomendacaoIn(BaseModel):
         None, description="Culturas excluídas, máquinas que o produtor tem e culturas sem comprador local."
     )
     irrigacao: Irrigacao | None = Field(None, description="Irrigação disponível (muda o critério água, o risco e a margem).")
-    n_alternativas: int = Field(3, ge=1, le=6, description="Quantas alternativas devolver.")
-    incluir_diagnostico: bool = Field(True, description="Inclui o diagnóstico completo na resposta.")
-
+    problemas_area: list[ProblemaArea] | None = Field(
+        None,
+        description=(
+            "Problemas da área (opcional; lista fechada: nematoide, mofo_branco, cigarrinha, compactacao). Ajustam os critérios pragas e solo "
+            "por cultura (estimativa de catálogo, validar com agrônomo/Embrapa): mofo-branco pesa em feijão, soja e nabo; nematoide favorece "
+            "crotalária/milheto e braquiária e pesa em feijão e soja; cigarrinha pesa no milho (mais no milho sobre milho); compactação favorece "
+            "nabo e braquiária. Se não vier, nada muda e o card diz que não foi considerado. Valor fora da lista dá 422."
+        ),
+        examples=[["mofo_branco", "nematoide"]],
+    )
     @model_validator(mode="after")
-    def _calendario(self) -> "RecomendacaoIn":
+    def _calendario(self) -> "_EntradaMotor":
         """Estágio compatível com o verão da atual; semeadura informada não pode ser anterior à colheita (422)."""
         calendario.resolver(
             calendario.verao_de(self.rotacao_atual), self.estagio_verao, self.colheita_prevista, self.data_referencia,
@@ -344,12 +371,17 @@ class RecomendacaoIn(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def _sem_duplicatas(self) -> "RecomendacaoIn":
+    def _sem_duplicatas(self) -> "_EntradaMotor":
         if self.rotacoes:
             pares = [(r.verao, r.segunda) for r in self.rotacoes]
             if len(set(pares)) != len(pares):
                 raise ValueError("'rotacoes' tem combinações duplicadas")
         return self
+
+
+class RecomendacaoIn(_EntradaMotor):
+    n_alternativas: int = Field(3, ge=1, le=6, description="Quantas alternativas devolver.")
+    incluir_diagnostico: bool = Field(True, description="Inclui o diagnóstico completo na resposta.")
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -455,6 +487,9 @@ class DiagnosticoOut(_Saida):
     rotacao_detectada: RotacaoDetectada | None = None
     clima: ClimaOut | None = None
     produtividade: dict[str, Any] | None = None
+    fertilidade: dict[str, Any] | None = Field(
+        None, description="Só se o produtor informou fertilidade em `analise_solo`: valores, classes (P, K, V%, Al), origem da V%, severidade de acidez e itens não informados."
+    )
     avisos: list[str] = []
 
 

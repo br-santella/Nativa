@@ -213,7 +213,7 @@ def test_mapeamento_erros(client, falso, monkeypatch, rota, metodo, corpo):
 def test_openapi_exemplos(client):
     j = client.get("/openapi.json").json()
     assert j["info"]["version"] == "0.1.0"
-    assert "Oeste do Paraná" in j["info"]["description"]
+    assert "Paraná inteiro" in j["info"]["description"]
     exs = j["components"]["schemas"]["RecomendacaoIn"]["examples"]
     assert exs[0]["area"]["talhao_id"] == "72638" and exs[0]["estagio_verao"] == "enchimento_graos"
     assert exs[0]["data_referencia"] == "2026-12-01"
