@@ -3586,3 +3586,31 @@ footer > small:last-child {
 @media(max-width:480px) { .about-team{grid-template-columns:1fr}.about-intro{margin-bottom:36px}.about-member{padding:24px} }
 
 .about-footer .back-link { position:static; inset:auto; flex-shrink:0; }
+
+.settings-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border, #28464b);
+}
+.settings-nav button {
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.settings-nav button:hover,
+.settings-nav button.selected {
+  background: #193b40;
+  border-color: #47605b;
+  color: #e2edc0;
+}
+.settings-nav button:focus-visible {
+  outline: 2px solid #e2edc0;
+  outline-offset: 3px;
+}

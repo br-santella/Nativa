@@ -28,6 +28,7 @@ const pages: Page[] = [
 ];
 function currentPage(): Page {
     const p = location.hash.slice(1) as Page;
+    if ((p as string) === "settings/property") return "farm";
     if (["signup", "onboard", "login"].includes(p)) return "demo";
     return pages.includes(p) ? p : "landing";
 }
@@ -90,7 +91,7 @@ function App() {
             clearTimeout(timer.current);
     }, []);
     function go(p: Page) {
-        location.hash = p;
+        location.hash = p === "farm" ? "settings/property" : p;
         if (page === p) {
             setMenu(false);
             setModal(null);
@@ -123,7 +124,6 @@ function App() {
         string
     ][] = [
         ["overview", "Visão Geral", A.imgIconeDeNavegacao],
-        ["farm", "Minha Propriedade", A.imgIconeDeNavegacao1],
         ["climate", "Análise Climática", A.imgIconeDeNavegacao3],
         ["history", "Histórico de Cultivo", A.imgIconeDeNavegacao2],
         ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
@@ -1080,7 +1080,7 @@ function App() {
             <small className="nav-section">{__text("PRINCIPAL")}</small>
             <nav>
               {__text(navItems.map(([id, label, img], i) => (<React.Fragment key={id}>
-                  {__text(i === 3 && (<small className="nav-section planning">{__text("PLANEJAMENTO")}</small>))}
+                  {__text(i === 2 && (<small className="nav-section planning">{__text("PLANEJAMENTO")}</small>))}
                   <button className={page === id ? "selected" : ""} onClick={() => go(id)}>
                     <img src={img} alt={__text("")}/>
                     {__text(label)}
@@ -1088,7 +1088,7 @@ function App() {
                 </React.Fragment>)))}
             </nav>
             <div className="sidebar-bottom">
-              <button className={page === "settings" ? "selected" : ""} onClick={() => go("settings")}>
+              <button className={page === "settings" || page === "farm" ? "selected" : ""} onClick={() => go("settings")}>
                 <img src={A.imgIconeDeNavegacao5} alt={__text("")}/>{__text("Configura\u00E7\u00F5es")}</button>
               <button onClick={() => open("help")}>
                 <img src={A.imgIconeAjuda} alt={__text("")}/>{__text("Ajuda")}</button>
@@ -1103,6 +1103,12 @@ function App() {
               {__text(farm.name)}{__text("\u2304")}</button>
           </header>
           <main className="main-content">
+            {(page === "settings" || page === "farm") && (
+              <nav className="settings-nav" aria-label={__text("Configurações")}>
+                <button className={page === "settings" ? "selected" : ""} aria-current={page === "settings" ? "page" : undefined} onClick={() => go("settings")}>{__text("Preferências de leitura")}</button>
+                <button className={page === "farm" ? "selected" : ""} aria-current={page === "farm" ? "page" : undefined} onClick={() => go("farm")}>{__text("Minha Propriedade")}</button>
+              </nav>
+            )}
             {__text(page === "overview"
                 ? Overview()
                 : page === "farm"
