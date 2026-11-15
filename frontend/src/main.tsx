@@ -11,12 +11,12 @@ import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
-type Page = "landing" | "signup" | "onboard" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
-type Modal = null | "sources" | "indicators" | "help" | "technology" | "addCrop" | "account" | "property" | "login" | "contact" | "map" | number;
+type Page = "about" | "landing" | "demo" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
+type Modal = null | "sources" | "indicators" | "help" | "technology" | "addCrop" | "property" | "contact" | "map" | number;
 const pages: Page[] = [
+    "about",
     "landing",
-    "signup",
-    "onboard",
+    "demo",
     "overview",
     "farm",
     "history",
@@ -26,6 +26,7 @@ const pages: Page[] = [
 ];
 function currentPage(): Page {
     const p = location.hash.slice(1) as Page;
+    if (["signup", "onboard", "login"].includes(p)) return "demo";
     return pages.includes(p) ? p : "landing";
 }
 const DraftContext = createContext<{
@@ -46,12 +47,12 @@ function Field({ label, name, type = "text", options, min, max, step, }: {
       <span>{__text(label)}</span>
       {__text(options ? (<select value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))}>
           {__text(options.map((o) => (<option key={o} value={o}>{__text(o)}</option>)))}
-        </select>) : (<input type={type} value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))} min={min} max={max} step={step} required={name === "name" || name === "area"}/>))}
+        </select>) : (<input type={type} value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))} min={min} max={max} step={step} required={name === "name" || name === "city" || name === "area"}/>))}
     </label>);
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [userName, setUserName] = useState("Marina Silva"), [settings, setSettings] = useState({
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [settings, setSettings] = useState({
         temperature: "Graus Celsius (°C)",
     });
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -130,7 +131,7 @@ function App() {
     function Logo() {
         return (<button className="brand" onClick={() => go("landing")} aria-label={__text("NATIVA \u2014 in\u00EDcio")}>
         <img src={A.imgLogoNativaEnviada} alt={__text("")}/>
-        <strong>{__text("NATIVA")}</strong>
+        <span className="brand-wordmark"><strong>{__text("NATIVA")}</strong><small className="brand-slogan">Every harvest begins with a better decision</small></span>
       </button>);
     }
     function Demo() {
@@ -982,7 +983,7 @@ function App() {
                 e.preventDefault();
                 open("technology");
             }}>{__text("Tecnologia")}</a>
-            <button onClick={() => open("technology")}>{__text("Sobre n\u00F3s")}</button>
+            <button onClick={() => go("about")}>{__text("Sobre n\u00F3s")}</button>
           </div>
         </nav>
         <section className="hero" aria-label={__text("Destaques NATIVA")} aria-roledescription={__text("carrossel")} onFocusCapture={() => setCarouselFocused(true)} onBlurCapture={(event) => {
@@ -997,8 +998,7 @@ function App() {
             <h1>{__text(["Esteja preparado\npara as mudanças do clima.", "Decida com mais contexto.\nDo espaço à sua lavoura.", "Encontre caminhos\npara uma safra mais resiliente."][slide])}</h1>
             <p>{__text(["Chuvas imprevisíveis e secas prolongadas exigem um novo planejamento. Explore sinais ambientais para preparar o próximo ciclo.", "Explore como observações de clima, solo e vegetação da NASA podem apoiar as decisões da sua propriedade.", "Compare estratégias de rotação considerando água, solo e clima antes de planejar o próximo plantio."][slide])}</p>
             <div>
-              <button className="button yellow" onClick={() => go("signup")}>{__text("Come\u00E7ar gratuitamente \u2192")}</button>
-              <button className="button outline" onClick={() => go("overview")}>{__text("Conhecer a plataforma")}</button>
+              <button className="button yellow" onClick={() => go("demo")}>{__text("Explore a demo →")}</button>
             </div>
           </div>
           <div className="carousel-controls">
@@ -1014,82 +1014,50 @@ function App() {
           </div>
         </section>
         <ClimateStory/>
-        <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={() => go("overview")}/>
+        <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={() => go("demo")}/>
       </div>);
     }
-    function Signup() {
+    function AboutPage() {
+        const members = ["Fernanda", "Bruna", "Pedro", "Caio", "Lucas", "Enzo"];
+        return <div className="landing about-page">
+            <nav className="landing-nav"><LanguageSwitcher /><Logo /><div><button onClick={() => go("landing")}>{__text("Voltar ao início")}</button><button className="button yellow" onClick={() => go("demo")}>{__text("Explore a demo →")}</button></div></nav>
+            <main className="about-content">
+                <header className="about-intro"><span className="about-eyebrow">AGRO NAUTAS · NATIVA</span><h1>{__text("Seis pessoas. Uma missão em comum.")}</h1><p>{__text("Criamos a NATIVA para aproximar a observação da Terra das decisões no campo. Somos a equipe AgroNautas, participante do NASA Space Apps Challenge.")}</p></header>
+                <section className="about-team" aria-label={__text("Nossa equipe")}>
+                    {members.map((name, index) => <article className="about-member" key={name}><div className="about-avatar" aria-hidden="true">{name.slice(0, 1)}</div><span className="about-member-number">0{index + 1}</span><h2>{name}</h2><p>{__text("Apresentação em breve.")}</p></article>)}
+                </section>
+                <footer className="about-footer"><p>{__text("Diferentes perspectivas para uma agricultura mais preparada.")}</p><button className="back-link" onClick={() => go("landing")}>{__text("Voltar ao início")} →</button></footer>
+            </main>
+        </div>;
+    }
+    function PropertySetup() {
         return (<div className="signup">
         <section className="signup-photo">
-          <img src={L.imgFotografiaComZoomSuave2} alt={__text("Fazenda ao amanhecer")}/>
+          <img src="/assets/hero-br-parana-v1.webp" alt={__text("Campos de cultivo")}/>
           <Logo />
           <div>
             <h1>{__text("Sua terra merece")}<br />{__text("um novo olhar.")}</h1>
-            <p>{__text("Da observa\u00E7\u00E3o do espa\u00E7o \u00E0s possibilidades")}<br />{__text("da sua pr\u00F3xima safra.")}</p>
+            <p>{__text("Uma visão mais ampla começa com o seu contexto.")}</p>
           </div>
         </section>
         <section className="signup-form">
           <div className="signup-language"><LanguageSwitcher /></div>
-          <button className="back-link" onClick={() => go("landing")}>{__text("Voltar ao in\u00EDcio")}</button>
-          <small>{__text("01 / 02 \u2022 SEU CADASTRO")}</small>
+          <button className="back-link" onClick={() => go("landing")}>{__text("Voltar ao início")}</button>
+          <small>{__text("SUA PROPRIEDADE")}</small>
           <h1>{__text("Comece pela sua")}<br />{__text("propriedade.")}</h1>
-          <p>{__text("Uma vis\u00E3o mais ampla come\u00E7a com o seu contexto.")}</p>
-          <form onSubmit={(e) => {
-                e.preventDefault();
-                go("onboard");
-            }}>
-            <label className="field">
-              <span>{__text("Seu nome")}</span>
-              <input value={userName} onChange={(e) => setUserName(e.target.value)} required/>
-            </label>
-            <label className="field">
-              <span>{__text("E-mail")}</span>
-              <input type="email" placeholder={__text("produtor@example.com")}/>
-            </label>
-            <Field label={__text("Nome da propriedade")} name="name"/>
-            <div className="signup-location">
-              <Field label={__text("Cidade / UF")} name="city"/>
-              <Field label={__text("\u00C1rea (ha) \u2022 opcional")} name="area" type="number" min={0.01} step="any"/>
-            </div>
-            <button className="button yellow" type="submit">{__text("Continuar \u2192")}</button>
-            <small>{__text("Ambiente demonstrativo. Nenhuma conta ser\u00E1 criada ou armazenada.")}</small>
-          </form>
-          <LinkButton onClick={() => open("login")}>{__text("J\u00E1 conhece a NATIVA? Entrar")}</LinkButton>
-        </section>
-      </div>);
-    }
-    function Onboard() {
-        return (<div className="onboard">
-        <header>
-          <Logo />
-          <LanguageSwitcher />
-          <LinkButton onClick={() => go("signup")}>{__text("Voltar ao cadastro")}</LinkButton>
-        </header>
-        <div className="onboard-grid">
-          <section>
-            <small>{__text("02 / 02 \u2022 SUA PROPRIEDADE")}</small>
-            <h1>{__text("Vamos conhecer")}<br />{__text("a sua terra.")}</h1>
-            <p>{__text("Confirme o contexto para explorar a plataforma.")}</p>
-            <div className="onboard-map">
-              <img src={assets["13:478"].imgLocalizacaoDemonstrativa} alt={__text("Localiza\u00E7\u00E3o demonstrativa")}/>
-              <span>{__text("\u2316")}{__text(draft.name)}
-                <small>
-                  {__text(draft.city)}{__text("\u00B7")}{__text(draft.area)}{__text("ha \u00B7 exemplo")}</small>
-              </span>
-            </div>
-          </section>
+          <p>{__text("Informe os dados da sua propriedade para explorar a demo.")}</p>
           <form onSubmit={(e) => {
                 e.preventDefault();
                 setFarm({ ...draft });
                 go("overview");
-                toast(`${t("Bem-vinda")}, ${userName.split(" ")[0]}. ${t("Explore sua propriedade!")}`);
             }}>
-            <Field label={__text("Cultura atual")} name="crop" options={["Soja", "Milho", "Sorgo", "Café", "Trigo", "Outra"]}/>
-            <Field label={__text("Textura do solo")} name="texture" options={["Argiloso", "Arenoso", "Franco", "Não informado"]}/>
-            <Field label={__text("Disponibilidade de irriga\u00E7\u00E3o")} name="irrigation" options={["Sim", "Não", "Não informado"]}/>
-            <button className="button yellow" type="submit">{__text("Explorar plataforma \u2192")}</button>
-            <small>{__text("Fluxo demonstrativo. As condi\u00E7\u00F5es n\u00E3o representam uma fazenda real.")}</small>
+            <Field label={__text("Nome da propriedade")} name="name"/>
+            <Field label={__text("Cidade / UF")} name="city"/>
+            <Field label={__text("Área (ha)")} name="area" type="number" min={0.01} step="any"/>
+            <button className="button yellow" type="submit">{__text("Explore a demo →")}</button>
+            <small>{__text("Os dados ficam apenas nesta sessão.")}</small>
           </form>
-        </div>
+        </section>
       </div>);
     }
     function AddCrop() {
@@ -1185,13 +1153,6 @@ function App() {
           <Btn onClick={() => open(null)}>{__text("Voltar")}</Btn>
         </>);
         }
-        if (modal === "account")
-            return (<>
-          <h2>{__text("Sua conta")}</h2>
-          <h3>{__text("Perfil de demonstra\u00E7\u00E3o")}</h3>
-          <p>{__text("Explore a experi\u00EAncia sem criar uma conta real. As altera\u00E7\u00F5es ficam somente nesta sess\u00E3o.")}</p>
-          <LinkButton onClick={() => go("settings")}>{__text("Configura\u00E7\u00F5es da conta \u2192")}</LinkButton>
-        </>);
         if (modal === "property")
             return (<>
           <h2>{__text("Selecionar propriedade")}</h2>
@@ -1202,21 +1163,6 @@ function App() {
           </button>
           <p>{__text("Uma propriedade est\u00E1 dispon\u00EDvel nesta demonstra\u00E7\u00E3o.")}</p>
           <LinkButton onClick={() => go("farm")}>{__text("Editar propriedade \u2192")}</LinkButton>
-        </>);
-        if (modal === "login")
-            return (<>
-          <h2>{__text("Bem-vinda \u00E0 NATIVA")}</h2>
-          <p>{__text("Entre na experi\u00EAncia demonstrativa. Nenhuma autentica\u00E7\u00E3o ou conta real \u00E9 necess\u00E1ria.")}</p>
-          <form onSubmit={(e) => {
-                    e.preventDefault();
-                    go("overview");
-                }}>
-            <label className="field">
-              <span>{__text("E-mail \u2022 opcional")}</span>
-              <input type="email" placeholder={__text("produtor@example.com")}/>
-            </label>
-            <button type="submit" className="button yellow">{__text("Explorar demonstra\u00E7\u00E3o \u2192")}</button>
-          </form>
         </>);
         if (modal === "contact")
             return (<>
@@ -1256,9 +1202,9 @@ function App() {
         }
         return null;
     }
-    const inDashboard = !["landing", "signup", "onboard"].includes(page);
+    const inDashboard = !["landing", "demo", "about"].includes(page);
     return (<DraftContext.Provider value={{ draft, setDraft }}>
-      {__text(page === "landing" ? (Landing()) : page === "signup" ? (Signup()) : page === "onboard" ? (Onboard()) : (<div className="dashboard">
+      {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className="dashboard">
           {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
           <aside className={"sidebar " + (menu ? "shown" : "")}>
             <Logo />
@@ -1286,9 +1232,6 @@ function App() {
             <span className="mobile-brand">{__text("NATIVA")}</span>
             <button className="property-select" onClick={() => open("property")}>
               {__text(farm.name)}{__text("\u2304")}</button>
-            <button className="account" aria-label={__text("Minha conta")} onClick={() => open("account")}>
-              <img src={A.imgIconeDeConta} alt={__text("")}/>
-            </button>
           </header>
           <main className="main-content">
             {__text(page === "overview"
