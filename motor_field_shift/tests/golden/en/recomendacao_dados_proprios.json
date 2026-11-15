@@ -22,7 +22,7 @@
        "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Outsourced sowing of the brachiaria intercrop: extra cost R$ 80/ha (outsourcing estimate, validate with service providers) = −R$ 80/ha.",
        "Irrigation: extra cost R$ 234/ha (mean depth 52 mm/year × R$ 4.50/mm/ha) = −R$ 234/ha.",
-       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season)).",
        "Rotation total: R$ 4,322/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 1,336/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,829/ha/yr.",
        "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
@@ -74,7 +74,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": 171.0
@@ -278,7 +278,7 @@
        "Days of bare soil/year (catalog): ~35 days.",
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
-       "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate)).",
        "Rotation total: R$ 2,776/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -210/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,776/ha/yr.",
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -327,7 +327,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1375.0
@@ -449,7 +449,7 @@
        "Days of bare soil/year (catalog): ~40 days.",
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
-       "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina).",
        "Rotation total: R$ 2,971/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -15/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,971/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -498,7 +498,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1180.0
@@ -683,7 +683,7 @@
        "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
        "Outsourced sowing of the brachiaria intercrop: extra cost R$ 80/ha (outsourcing estimate, validate with service providers) = −R$ 80/ha.",
        "Irrigation: extra cost R$ 234/ha (mean depth 52 mm/year × R$ 4.50/mm/ha) = −R$ 234/ha.",
-       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season)).",
        "Rotation total: R$ 4,322/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 1,336/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,829/ha/yr.",
        "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
@@ -735,7 +735,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": 171.0
@@ -938,7 +938,7 @@
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "2nd-season corn: 110 bags/ha (given by the farmer; PAM Toledo: 117 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,678/ha (CONAB Londrina-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ 1,250/ha (bad year: own yield × p20/PAM mean (0.75) = 82 bags/ha → R$ -243/ha).",
        "Irrigation: extra cost R$ 205/ha (mean depth 46 mm/year × R$ 4.50/mm/ha) = −R$ 205/ha.",
-       "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −3 to 3.5 bags/ha; source: Embrapa Soja trials in PR: soybean after off-season corn ties with fallow on average (Londrina 2016–2025, −3 to +7 bags/ha; Palotina 2022/23, +1.4 bags/ha, not statistically different) + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −3 to 3.5 bags/ha; source: Embrapa Soja trials in PR: soybean after off-season corn ties with fallow on average (Londrina 2016–2025, −3 to +7 bags/ha; Palotina 2022/23, +1.4 bags/ha, not statistically different)).",
        "Rotation total: R$ 4,151/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 1,165/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,658/ha/yr.",
        "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
        "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
@@ -1148,7 +1148,7 @@
        "Days of bare soil/year (catalog): ~35 days.",
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
-       "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate)).",
        "Rotation total: R$ 2,776/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -210/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,776/ha/yr.",
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -1197,7 +1197,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1375.0
@@ -1321,7 +1321,7 @@
        "Days of bare soil/year (catalog): ~40 days.",
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
-       "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina).",
        "Rotation total: R$ 2,971/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -15/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,971/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -1370,7 +1370,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1180.0
@@ -1505,7 +1505,7 @@
        "Days of bare soil/year (catalog): ~35 days.",
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
-       "Bonus on the following soybean: 2.5 bags/ha × R$ 120.14/bag = R$ 300/ha (straw/N and disease-cycle break; range 1 to 6 bags/ha; source: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 2.5 bags/ha × R$ 120.14/bag = R$ 300/ha (straw/N and disease-cycle break; range 1 to 6 bags/ha; source: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn).",
        "Rotation total: R$ 2,886/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,886/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -1554,7 +1554,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1265.0
@@ -1688,7 +1688,7 @@
        "Days of bare soil/year (catalog): ~35 days.",
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
-       "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 4 bags/ha; source: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 4 bags/ha; source: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate)).",
        "Rotation total: R$ 2,951/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -35/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,951/ha/yr.",
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -1737,7 +1737,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1200.0
@@ -1859,7 +1859,7 @@
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "Sorghum: 60 bags/ha (PAM Western Paraná (mean, the municipality has no recent PAM) 2023–2025 trend projected to the next season; mean 61 bags/ha) × R$ 40.42/bag (estimate — validate: 75% of the SEAB/DERAL-PR corn price (ratio of CONAB minimum prices, not market prices)) − cost R$ 2,807/ha (estimate — validate (CONAB Rio Verde-GO 2026, no PR sheet)) = R$ -369/ha (yield CV 19%; bad year, p20 of the same 10-year window = 57 bags/ha → R$ -486/ha).",
        "Irrigation: extra cost R$ 141/ha (mean depth 31 mm/year × R$ 4.50/mm/ha) = −R$ 141/ha.",
-       "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −2 to 2 bags/ha; source: ensaio Embrapa in Palotina 2022/23: soja após sorgo igual à soja após milho safrinha + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −2 to 2 bags/ha; source: Embrapa trial in Palotina 2022/23: soybean after sorghum equal to soybean after off-season corn).",
        "Rotation total: R$ 2,596/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -389/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,479/ha/yr.",
        "Water: in the critical phase (sorghum booting/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
        "Irrigated: mean depth 31 mm/year, cost R$ 141/ha (R$ 4.50/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -1910,7 +1910,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: ensaio Embrapa in Palotina 2022/23: soja após sorgo igual à soja após milho safrinha + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa trial in Palotina 2022/23: soybean after sorghum equal to soybean after off-season corn (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1554.0
@@ -2231,7 +2231,7 @@
        "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
        "2nd-season beans: 25 bags/ha (PAM Toledo 2013–2021 trend projected to the next season; mean 25 bags/ha) × R$ 174.30/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,453/ha (CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ -63/ha (yield CV 34%; bad year, p20 of the same 10-year window = 15 bags/ha → R$ -1,780/ha).",
        "Irrigation: extra cost R$ 286/ha (mean depth 64 mm/year × R$ 4.50/mm/ha) = −R$ 286/ha.",
-       "Bonus on the following soybean: −1 bags/ha × R$ 120.14/bag = R$ -120/ha (straw/N and disease-cycle break; range −8 to 1.5 bags/ha; source: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi) + reference estimate — validate with an agronomist/Embrapa).",
+       "Bonus on the following soybean: −1 bags/ha × R$ 120.14/bag = R$ -120/ha (straw/N and disease-cycle break; range −8 to 1.5 bags/ha; source: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi)).",
        "Rotation total: R$ 2,517/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -469/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 800/ha/yr.",
        "Water: in the critical phase (bean flowering/pod formation, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 84 mm).",
        "Irrigated: mean depth 64 mm/year, cost R$ 286/ha (R$ 4.50/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -2283,7 +2283,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -1634.0
@@ -2444,7 +2444,7 @@
       "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
       "Outsourced sowing of the brachiaria intercrop: extra cost R$ 80/ha (outsourcing estimate, validate with service providers) = −R$ 80/ha.",
       "Irrigation: extra cost R$ 234/ha (mean depth 52 mm/year × R$ 4.50/mm/ha) = −R$ 234/ha.",
-      "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season)).",
       "Rotation total: R$ 4,322/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 1,336/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,829/ha/yr.",
       "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
       "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
@@ -2496,7 +2496,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season) (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": 171.0
@@ -2700,7 +2700,7 @@
       "Days of bare soil/year (catalog): ~35 days.",
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
-      "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate)).",
       "Rotation total: R$ 2,776/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -210/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,776/ha/yr.",
       "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
@@ -2749,7 +2749,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate) (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1375.0
@@ -2871,7 +2871,7 @@
       "Days of bare soil/year (catalog): ~40 days.",
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
-      "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina).",
       "Rotation total: R$ 2,971/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -15/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,971/ha/yr.",
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
@@ -2920,7 +2920,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1180.0
@@ -3054,7 +3054,7 @@
      "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
      "2nd-season corn: 110 bags/ha (given by the farmer; PAM Toledo: 117 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,678/ha (CONAB Londrina-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ 1,250/ha (bad year: own yield × p20/PAM mean (0.75) = 82 bags/ha → R$ -243/ha).",
      "Irrigation: extra cost R$ 205/ha (mean depth 46 mm/year × R$ 4.50/mm/ha) = −R$ 205/ha.",
-     "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −3 to 3.5 bags/ha; source: Embrapa Soja trials in PR: soybean after off-season corn ties with fallow on average (Londrina 2016–2025, −3 to +7 bags/ha; Palotina 2022/23, +1.4 bags/ha, not statistically different) + reference estimate — validate with an agronomist/Embrapa).",
+     "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −3 to 3.5 bags/ha; source: Embrapa Soja trials in PR: soybean after off-season corn ties with fallow on average (Londrina 2016–2025, −3 to +7 bags/ha; Palotina 2022/23, +1.4 bags/ha, not statistically different)).",
      "Rotation total: R$ 4,151/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 1,165/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,658/ha/yr.",
      "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
      "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
@@ -4549,7 +4549,7 @@
        "Days of bare soil/year (catalog): ~40 days.",
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
-       "Bonus on the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break; range 1 to 12.5 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
+       "Bonus on the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break; range 1 to 12.5 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
        "Rotation total: R$ -673/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -3,659/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -673/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -4599,7 +4599,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -4824.0
@@ -4732,7 +4732,7 @@
        "Days of bare soil/year (catalog): ~35 days.",
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
-       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break; range 0 to 8.5 bags/ha; source: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
+       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break; range 0 to 8.5 bags/ha; source: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
        "Rotation total: R$ -694/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -3,679/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -694/ha/yr.",
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -4782,7 +4782,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -4844.0
@@ -5212,7 +5212,7 @@
        "Days of bare soil/year (catalog): ~40 days.",
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
-       "Bonus on the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break; range 1 to 12.5 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
+       "Bonus on the following soybean: 6 bags/ha × R$ 120.14/bag = R$ 721/ha (3 bags/ha from summer corn in place of soybean + 3 from the 2nd crop) (straw/N and disease-cycle break; range 1 to 12.5 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
        "Rotation total: R$ -673/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -3,659/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -673/ha/yr.",
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -5262,7 +5262,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -4824.0
@@ -5398,7 +5398,7 @@
        "Days of bare soil/year (catalog): ~35 days.",
        "Summer corn (1st season): 130 bags/ha (PAM Toledo 2016–2025 trend projected to the next season; mean 142 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 8,043/ha (CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026), variable cost (≈COE); fertilizers, transport, storage and CESSR adjusted to the local yield (130 bags/ha against 200 bags/ha of the CONAB reference) — estimate, validate) = R$ -1,019/ha (yield CV 25%; bad year, p20 of the same 10-year window = 130 bags/ha → R$ -1,019/ha).",
        "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
-       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break; range 0 to 8.5 bags/ha; source: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
+       "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (3 bags/ha from summer corn in place of soybean + 2 from the 2nd crop) (straw/N and disease-cycle break; range 0 to 8.5 bags/ha; source: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated)).",
        "Rotation total: R$ -694/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -3,679/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ -694/ha/yr.",
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
@@ -5448,7 +5448,7 @@
        "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
       },
       "comparado_com": "soja__milho_safrinha",
-      "fonte": "following soybean: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
+      "fonte": "following soybean: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate) + Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 seasons): rotation with summer corn and radish, 0 to +4.5 bags/ha on soybean (effects not separated) (SEAB/DERAL soybean price)",
       "margem_total": {
        "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
        "r_ha": -4844.0
@@ -5997,7 +5997,7 @@
       "Intercropped brachiaria: no sale, establishment cost R$ 200/ha (reference estimate, validate) = R$ -200/ha.",
       "Outsourced sowing of the brachiaria intercrop: extra cost R$ 80/ha (outsourcing estimate, validate with service providers) = −R$ 80/ha.",
       "Irrigation: extra cost R$ 234/ha (mean depth 52 mm/year × R$ 4.50/mm/ha) = −R$ 234/ha.",
-      "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 5 bags/ha × R$ 120.14/bag = R$ 601/ha (straw/N and disease-cycle break; range 1 to 9 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season)).",
       "Rotation total: R$ 4,322/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 1,336/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,829/ha/yr.",
       "Income track record of second-season corn + brachiaria in the municipality (realized margin, soybean bags/ha): 2021: -2, 2022: +10, 2023: +9, 2024: +6, 2025: +22; mean 8.7; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
       "Water: in the critical phase (intercropped corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
@@ -6049,7 +6049,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho solteiro in Cafelândia (3 safras, Doc. 459) and +1 bags/ha in Palotina (1 safra) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over sole corn in Cafelândia (3 seasons, Doc. 459) and +1 bag/ha in Palotina (1 season) (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": 171.0
@@ -6252,7 +6252,7 @@
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "2nd-season corn: 110 bags/ha (given by the farmer; PAM Toledo: 117 bags/ha) × R$ 53.89/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,678/ha (CONAB Londrina-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ 1,250/ha (bad year: own yield × p20/PAM mean (0.75) = 82 bags/ha → R$ -243/ha).",
       "Irrigation: extra cost R$ 205/ha (mean depth 46 mm/year × R$ 4.50/mm/ha) = −R$ 205/ha.",
-      "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −3 to 3.5 bags/ha; source: Embrapa Soja trials in PR: soybean after off-season corn ties with fallow on average (Londrina 2016–2025, −3 to +7 bags/ha; Palotina 2022/23, +1.4 bags/ha, not statistically different) + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −3 to 3.5 bags/ha; source: Embrapa Soja trials in PR: soybean after off-season corn ties with fallow on average (Londrina 2016–2025, −3 to +7 bags/ha; Palotina 2022/23, +1.4 bags/ha, not statistically different)).",
       "Rotation total: R$ 4,151/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ 1,165/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,658/ha/yr.",
       "Income track record of second-season corn in the municipality (realized margin, soybean bags/ha): 2021: -1, 2022: +12, 2023: +11, 2024: +7, 2025: +23; mean 10.4; negative margin in 1 of 5. Source: IBGE PAM (municipality yield; realized PR price = value/production) and CONAB variable cost Londrina-PR of each season; in bags of soybean/ha (÷ realized soybean price in PR in the same year); without the bonus in the following soybean. Informative: not in the score (the farmer provided price, cost or yield).",
       "Water: in the critical phase (corn flowering/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
@@ -6462,7 +6462,7 @@
       "Days of bare soil/year (catalog): ~35 days.",
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "Pearl millet/sunn hemp (cover): no sale, establishment cost R$ 450/ha (reference estimate, validate) = R$ -450/ha.",
-      "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 5 bags/ha; source: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate)).",
       "Rotation total: R$ 2,776/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -210/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,776/ha/yr.",
       "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
@@ -6511,7 +6511,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: sem ensaio do consórcio no Oeste do PR; in Londrina milheto + crotalária não mudou a soja and a crotalária solteira não diferiu do pousio (estimativa conservadora) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: no trial of the mix in Western PR; in Londrina millet + crotalaria did not change soybean and sole crotalaria did not differ from fallow (conservative estimate) (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1375.0
@@ -6635,7 +6635,7 @@
       "Days of bare soil/year (catalog): ~40 days.",
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "Oat (cover): no sale, establishment cost R$ 375/ha (reference estimate, validate) = R$ -375/ha.",
-      "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 3 bags/ha × R$ 120.14/bag = R$ 360/ha (straw/N and disease-cycle break; range 1 to 8 bags/ha; source: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina).",
       "Rotation total: R$ 2,971/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -15/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,971/ha/yr.",
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
@@ -6684,7 +6684,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: ensaios Embrapa Soja in Western Paraná: +7 bags/ha sobre o milho safrinha in Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 bags/ha in Palotina + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: Embrapa Soja trials in Western PR: +7 bags/ha over off-season corn in Cafelândia (Doc. 459); oat/radish/rye mix +1 bag/ha in Palotina (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1180.0
@@ -6819,7 +6819,7 @@
       "Days of bare soil/year (catalog): ~35 days.",
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "Oat + radish (cover): no sale, establishment cost R$ 400/ha (reference estimate, validate) = R$ -400/ha.",
-      "Bonus on the following soybean: 2.5 bags/ha × R$ 120.14/bag = R$ 300/ha (straw/N and disease-cycle break; range 1 to 6 bags/ha; source: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 2.5 bags/ha × R$ 120.14/bag = R$ 300/ha (straw/N and disease-cycle break; range 1 to 6 bags/ha; source: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn).",
       "Rotation total: R$ 2,886/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -100/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,886/ha/yr.",
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
@@ -6868,7 +6868,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: Embrapa trials in Western PR: oat/radish/rye mix +1 bag/ha (Palotina) and oat +7 bags/ha (Cafelândia) over off-season corn (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1265.0
@@ -7002,7 +7002,7 @@
       "Days of bare soil/year (catalog): ~35 days.",
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "Forage radish (cover): no sale, establishment cost R$ 275/ha (reference estimate, validate) = R$ -275/ha.",
-      "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 4 bags/ha; source: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 2 bags/ha × R$ 120.14/bag = R$ 240/ha (straw/N and disease-cycle break; range 0 to 4 bags/ha; source: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate)).",
       "Rotation total: R$ 2,951/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -35/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,951/ha/yr.",
       "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
@@ -7051,7 +7051,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho in Palotina 2022/23 (estimativa) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: no isolated trial; oat/radish/rye mix +1 bag/ha over corn in Palotina 2022/23 (estimate) (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1200.0
@@ -7173,7 +7173,7 @@
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "Sorghum: 60 bags/ha (PAM Western Paraná (mean, the municipality has no recent PAM) 2023–2025 trend projected to the next season; mean 61 bags/ha) × R$ 40.42/bag (estimate — validate: 75% of the SEAB/DERAL-PR corn price (ratio of CONAB minimum prices, not market prices)) − cost R$ 2,807/ha (estimate — validate (CONAB Rio Verde-GO 2026, no PR sheet)) = R$ -369/ha (yield CV 19%; bad year, p20 of the same 10-year window = 57 bags/ha → R$ -486/ha).",
       "Irrigation: extra cost R$ 141/ha (mean depth 31 mm/year × R$ 4.50/mm/ha) = −R$ 141/ha.",
-      "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −2 to 2 bags/ha; source: ensaio Embrapa in Palotina 2022/23: soja após sorgo igual à soja após milho safrinha + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: 1 bags/ha × R$ 120.14/bag = R$ 120/ha (straw/N and disease-cycle break; range −2 to 2 bags/ha; source: Embrapa trial in Palotina 2022/23: soybean after sorghum equal to soybean after off-season corn).",
       "Rotation total: R$ 2,596/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -389/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 2,479/ha/yr.",
       "Water: in the critical phase (sorghum booting/grain fill, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 112 mm).",
       "Irrigated: mean depth 31 mm/year, cost R$ 141/ha (R$ 4.50/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -7224,7 +7224,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: ensaio Embrapa in Palotina 2022/23: soja após sorgo igual à soja após milho safrinha + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: Embrapa trial in Palotina 2022/23: soybean after sorghum equal to soybean after off-season corn (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1554.0
@@ -7545,7 +7545,7 @@
       "Soybean: 65 bags/ha (given by the farmer; PAM Toledo: 50 bags/ha) × R$ 120.14/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,824/ha (CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)) = R$ 2,986/ha (bad year: own yield × p20/PAM mean (1.00) = 65 bags/ha → R$ 2,986/ha).",
       "2nd-season beans: 25 bags/ha (PAM Toledo 2013–2021 trend projected to the next season; mean 25 bags/ha) × R$ 174.30/bag (SEAB/DERAL-PR, PR mean Nov/25 to Oct/26) − cost R$ 4,453/ha (CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)) = R$ -63/ha (yield CV 34%; bad year, p20 of the same 10-year window = 15 bags/ha → R$ -1,780/ha).",
       "Irrigation: extra cost R$ 286/ha (mean depth 64 mm/year × R$ 4.50/mm/ha) = −R$ 286/ha.",
-      "Bonus on the following soybean: −1 bags/ha × R$ 120.14/bag = R$ -120/ha (straw/N and disease-cycle break; range −8 to 1.5 bags/ha; source: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi) + reference estimate — validate with an agronomist/Embrapa).",
+      "Bonus on the following soybean: −1 bags/ha × R$ 120.14/bag = R$ -120/ha (straw/N and disease-cycle break; range −8 to 1.5 bags/ha; source: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi)).",
       "Rotation total: R$ 2,517/ha/yr; 2nd-season incremental (without soybean, with the bonus): R$ -469/ha, on the scale S = R$ 1,110/ha (the same in all of Paraná: median soybean margin in Western Paraná); in a bad year (p20 yield): R$ 800/ha/yr.",
       "Water: in the critical phase (bean flowering/pod formation, sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, irrigado, AWC 84 mm).",
       "Irrigated: mean depth 64 mm/year, cost R$ 286/ha (R$ 4.50/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
@@ -7597,7 +7597,7 @@
       "origem": "dado: balanço hídrico diário com NASA POWER e CAD do solo"
      },
      "comparado_com": "soja__milho_safrinha",
-     "fonte": "following soybean: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi) + reference estimate — validate with an agronomist/Embrapa (SEAB/DERAL soybean price)",
+     "fonte": "following soybean: no trial with beans; in northern PR soybean after cowpea yielded up to 9 bags/ha less than after off-season corn (Doc. 476: nematodes and soil fungi) (SEAB/DERAL soybean price)",
      "margem_total": {
       "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte",
       "r_ha": -1634.0

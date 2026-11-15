@@ -277,26 +277,31 @@ def fmt_pam(rk: dict) -> str | None:
 # `milho`: it is corn (corn on corn, after summer corn, gets a pest penalty).
 SECOND = {
     "milho_safrinha": dict(nome="milho safrinha", tipo="grão", dias_descobertos=60, cobertura=0.6, n_fix=0.4, pragas=0.5, agua=0.7,
-        renda_itens=["milho_2safra"], ciclo_agua="safrinha", kc=0.85, bonus_sc=1.0, riscos=["geada_safrinha", "deficit_hidrico"],
+        renda_itens=["milho_2safra"], ciclo_agua="safrinha", kc=0.85, bonus_sc=1.0, bonus_sc_faixa=(-3.0, 3.5),
+        bonus_fonte="ensaios Embrapa Soja no PR: soja após milho safrinha empata com o pousio na média (Londrina 2016–2025, de −3 a +7 sc/ha; Palotina 2022/23, +1,4 sc/ha sem diferença estatística)", riscos=["geada_safrinha", "deficit_hidrico"],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=None, milho=True,
         irrigavel=True, req_maquinas=("plataforma_milho",), vende=("milho",),
         mercado_oeste_pr=dict(nivel="alto", texto="cooperativas e agroindústria de aves e suínos do Oeste do PR")),
     "milho_braquiaria": dict(nome="milho safrinha + braquiária", tipo="grão", dias_descobertos=30, cobertura=0.9, n_fix=0.4, pragas=0.65, agua=0.75,
-        renda_itens=["milho_2safra", "braquiaria_consorcio"], ciclo_agua="safrinha", kc=0.90, bonus_sc=3.0,
+        renda_itens=["milho_2safra", "braquiaria_consorcio"], ciclo_agua="safrinha", kc=0.90, bonus_sc=5.0, bonus_sc_faixa=(1.0, 9.0),
+        bonus_fonte="ensaios Embrapa Soja no Oeste do PR: +7 sc/ha sobre o milho solteiro em Cafelândia (3 safras, Doc. 459) e +1 sc/ha em Palotina (1 safra)",
         riscos=["geada_safrinha", "deficit_hidrico"], soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=None, milho=True,
         irrigavel=True, req_maquinas=("plataforma_milho", "semeadora_consorcio"), vende=("milho",),
         mercado_oeste_pr=dict(nivel="alto", texto="milho com a mesma demanda de cooperativas e agroindústria; semente de braquiária em revendas")),
     "trigo": dict(nome="trigo", tipo="grão", dias_descobertos=70, cobertura=0.6, n_fix=0.3, pragas=0.6, agua=0.6,
-        renda_itens=["trigo"], ciclo_agua="trigo", kc=0.75, bonus_sc=1.0, riscos=["geada_trigo"],
+        renda_itens=["trigo"], ciclo_agua="trigo", kc=0.75, bonus_sc=3.0, bonus_sc_faixa=(0.0, 6.5),
+        bonus_fonte="ensaios Embrapa Soja no PR: de −1 a +5,5 sc/ha sobre o milho safrinha, conforme o ensaio (Docs. 459 e 476, Garbelini et al. 2022, Palotina 2022/23)", riscos=["geada_trigo"],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=False, janela=None, milho=False,
         irrigavel=True, req_maquinas=(), vende=("trigo",),
         mercado_oeste_pr=dict(nivel="médio", texto="cooperativas e moinhos, com liquidez menor que a do milho")),
     "aveia": dict(nome="aveia (cobertura/palha)", tipo="cobertura", dias_descobertos=40, cobertura=0.8, n_fix=0.3, pragas=0.6, agua=0.3,
-        renda_itens=["aveia"], ciclo_agua="trigo", kc=0.70, bonus_sc=2.0, riscos=[],
+        renda_itens=["aveia"], ciclo_agua="trigo", kc=0.70, bonus_sc=3.0, bonus_sc_faixa=(1.0, 8.0),
+        bonus_fonte="ensaios Embrapa Soja no Oeste do PR: +7 sc/ha sobre o milho safrinha em Cafelândia (Doc. 459); mix aveia/nabo/centeio +1 sc/ha em Palotina", riscos=[],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=False, janela=None, milho=False,
         irrigavel=False, req_maquinas=(), vende=(), mercado_oeste_pr=None),
     "milheto_crotalaria": dict(nome="milheto/crotalária (cobertura)", tipo="cobertura", dias_descobertos=35, cobertura=0.85, n_fix=0.8, pragas=0.7, agua=0.3,
-        renda_itens=["milheto_crotalaria"], ciclo_agua="safrinha", kc=0.65, bonus_sc=3.0, riscos=[],
+        renda_itens=["milheto_crotalaria"], ciclo_agua="safrinha", kc=0.65, bonus_sc=2.0, bonus_sc_faixa=(0.0, 5.0),
+        bonus_fonte="sem ensaio do consórcio no Oeste do PR; em Londrina milheto + crotalária não mudou a soja e a crotalária solteira não diferiu do pousio (estimativa conservadora)", riscos=[],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=None, milho=False,
         irrigavel=False, req_maquinas=(), vende=(), mercado_oeste_pr=None),
     # dias_descobertos: off-season corn (60) + the difference measured from space around field 72638, single- vs double-crop
@@ -315,31 +320,35 @@ SECOND = {
     # Grain sorghum: a grass without the corn leafhopper, drought tolerant (no water deficit in the risk); window 15/01–15/03 and ~125 d cycle
     # (FAO-56 table 11); harvested with the adapted soybean/grain header.
     "sorgo": dict(nome="sorgo", tipo="grão", dias_descobertos=55, cobertura=0.7, n_fix=0.3, pragas=0.55, agua=0.5,
-        renda_itens=["sorgo"], ciclo_agua="safrinha", kc=0.77, bonus_sc=1.0, riscos=["geada_safrinha"],
+        renda_itens=["sorgo"], ciclo_agua="safrinha", kc=0.77, bonus_sc=1.0, bonus_sc_faixa=(-2.0, 2.0),
+        bonus_fonte="ensaio Embrapa em Palotina 2022/23: soja após sorgo igual à soja após milho safrinha", riscos=["geada_safrinha"],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=("15/01", "15/03"), milho=False,
         irrigavel=True, req_maquinas=(), vende=("sorgo",),
         mercado_oeste_pr=dict(nivel="médio", texto="ração animal e cooperativas, com demanda menor que a do milho")),
     # 2nd-season beans ("das secas"): short cycle (~90 d), little straw and a host of white mold, which also attacks soybean (low pests,
     # no bonus); window 15/01–28/02 (estimate from ZARC/IDR-PR; frost and water deficit weigh in).
     "feijao_safrinha": dict(nome="feijão safrinha", tipo="grão", dias_descobertos=75, cobertura=0.4, n_fix=0.4, pragas=0.3, agua=0.7,
-        renda_itens=["feijao_2safra"], ciclo_agua="safrinha", kc=0.84, bonus_sc=0.0, riscos=["geada_safrinha", "deficit_hidrico"],
+        renda_itens=["feijao_2safra"], ciclo_agua="safrinha", kc=0.84, bonus_sc=-1.0, bonus_sc_faixa=(-8.0, 1.5),
+        bonus_fonte="sem ensaio com feijão; no norte do PR a soja após feijão-caupi rendeu até 9 sc/ha menos que após milho safrinha (Doc. 476: nematoides e fungos de solo)", riscos=["geada_safrinha", "deficit_hidrico"],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=True, janela=("15/01", "28/02"), milho=False,
         irrigavel=True, req_maquinas=(), vende=("feijao",),
         mercado_oeste_pr=dict(nivel="médio", texto="cerealistas e cooperativas, com preço volátil e menos compradores que milho e soja")),
     # Forage radish: nutrient cycling and suppression of weeds/nematodes, but a host of white mold; fast-decomposing
     # straw; sown on 01/04, no grain sale.
     "nabo_forrageiro": dict(nome="nabo forrageiro (cobertura)", tipo="cobertura", dias_descobertos=35, cobertura=0.65, n_fix=0.1, pragas=0.6, agua=0.3,
-        renda_itens=["nabo_forrageiro"], ciclo_agua="trigo", kc=0.90, bonus_sc=2.0, riscos=[],
+        renda_itens=["nabo_forrageiro"], ciclo_agua="trigo", kc=0.90, bonus_sc=2.0, bonus_sc_faixa=(0.0, 4.0),
+        bonus_fonte="sem ensaio isolado; mix aveia/nabo/centeio +1 sc/ha sobre o milho em Palotina 2022/23 (estimativa)", riscos=[],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=False, janela=None, milho=False,
         irrigavel=False, req_maquinas=(), vende=(), mercado_oeste_pr=None),
     # Oat + radish mix: long-lasting oat straw plus radish nutrient cycling.
     "aveia_nabo": dict(nome="aveia + nabo forrageiro (cobertura)", tipo="cobertura", dias_descobertos=35, cobertura=0.85, n_fix=0.2, pragas=0.65, agua=0.3,
-        renda_itens=["aveia_nabo"], ciclo_agua="trigo", kc=0.85, bonus_sc=2.5, riscos=[],
+        renda_itens=["aveia_nabo"], ciclo_agua="trigo", kc=0.85, bonus_sc=2.5, bonus_sc_faixa=(1.0, 6.0),
+        bonus_fonte="ensaios Embrapa no Oeste do PR: mix aveia/nabo/centeio +1 sc/ha (Palotina) e aveia +7 sc/ha (Cafelândia) sobre o milho safrinha", riscos=[],
         soja_viva_vazio=False, ano_soja_2=False, segue_semeadura=False, janela=None, milho=False,
         irrigavel=False, req_maquinas=(), vende=(), mercado_oeste_pr=None),
 }
 # `bonus_sc_faixa` (min, max) and `bonus_fonte`: range and source of the bonus (`bonus_sc` is the central value used in the score and margin).
-# For now range = central value; the literature survey will replace it with the real numbers (declare them in the entry itself).
+# Values from the literature survey (docs/pesquisa_ganho_soja_seguinte.md): baseline = fallow; entries without a range keep the default.
 DEFAULT_BONUS_SOURCE = "estimativa de referência — validar com agrônomo/Embrapa"
 for _e in SECOND.values():
     _e.setdefault("bonus_sc_faixa", (_e["bonus_sc"], _e["bonus_sc"]))
@@ -358,7 +367,9 @@ SUMMER = {
     "soja": dict(nome="Soja", descricao="Soja no verão: a cultura mais comum do Oeste do PR; semeadura de 01/09 a 31/12.",
                  item_renda="soja", colheita="10/01", bonus_sc=0.0, req_maquinas=(), vende=()),
     "milho_verao": dict(nome="Milho verão", descricao="Milho de 1ª safra no lugar da soja: quebra ciclo de doença e nematoide e deixa mais palhada.",
-                        item_renda="milho_1safra", colheita="05/02", bonus_sc=3.0, req_maquinas=("plataforma_milho",), vende=("milho",)),
+                        item_renda="milho_1safra", colheita="05/02", bonus_sc=3.0, bonus_sc_faixa=(0.0, 4.5),
+                        bonus_fonte="Garbelini et al. 2022 (Embrapa Soja, Londrina, 8 safras): rotação com milho verão e nabo, de 0 a +4,5 sc/ha na soja (efeitos não separados)",
+                        req_maquinas=("plataforma_milho",), vende=("milho",)),
 }
 for _e in SUMMER.values():
     _e.setdefault("bonus_sc_faixa", (_e["bonus_sc"], _e["bonus_sc"]))
@@ -386,7 +397,7 @@ def _combination(summer: str, second: str) -> dict:
         item_renda_verao=v["item_renda"], colheita_verao=v["colheita"], bonus_verao_sc=v["bonus_sc"],
         bonus_sc=s["bonus_sc"] + v["bonus_sc"], plantio_soja="10-15",
         bonus_sc_faixa=(s["bonus_sc_faixa"][0] + v["bonus_sc_faixa"][0], s["bonus_sc_faixa"][1] + v["bonus_sc_faixa"][1]),
-        bonus_fonte=" + ".join(dict.fromkeys([s["bonus_fonte"], v["bonus_fonte"]])),
+        bonus_fonte=Join(dict.fromkeys([s["bonus_fonte"]] + ([v["bonus_fonte"]] if v["bonus_sc"] else [])), " + "),
         req_maquinas_verao=v["req_maquinas"], vende=tuple(dict.fromkeys(s["vende"] + v["vende"])), milho_sobre_milho=on_corn,
         pragas=max(0.0, s["pragas"] - (CORN_ON_CORN_PENALTY if on_corn else 0.0)), pragas_base=s["pragas"])
     return c
@@ -702,8 +713,13 @@ def local_rend(risks: dict, key: str) -> str:
     return risks.get("rend_local") or region
 
 
-def fmt_margin(m: dict, risks: dict) -> list[str]:
-    """Breakdown of the rotation margin (card evidence lines)."""
+def _sc(x: float) -> str:
+    """Bags/ha in pt-BR style: decimal comma, typographic minus (e.g. −1,5)."""
+    return f"{x:g}".replace("-", "−").replace(".", ",")
+
+
+def fmt_margin(m: dict, risks: dict, c: dict | None = None) -> list[str]:
+    """Breakdown of the rotation margin (card evidence lines). `c`: catalog entry, for the range and source of the soybean bonus."""
     lines = []
     for i in m["itens"]:
         local = local_rend(risks, i["chave"])
@@ -735,8 +751,14 @@ def fmt_margin(m: dict, risks: dict) -> list[str]:
             lines.append(f"{i['rotulo']}: sem venda, custo de implantação R$ {_r(i['custo'])}/ha ({cost_source(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha.")
     bonus_detail = (f" ({m['bonus_verao_sc']:g} sc/ha do milho verão no lugar da soja + {m['bonus_sc'] - m['bonus_verao_sc']:g} da 2ª cultura)"
                      if m["bonus_verao_sc"] else "")
-    lines.append(f"Bônus na soja seguinte: {m['bonus_sc']:g} sc/ha × R$ {m['preco_soja']:.2f}/sc = R$ {_r(m['bonus'])}/ha{bonus_detail} "
-                  f"(palhada/N e quebra de ciclo de doença, estimativa de referência).")
+    if c is None:
+        lines.append(f"Bônus na soja seguinte: {m['bonus_sc']:g} sc/ha × R$ {m['preco_soja']:.2f}/sc = R$ {_r(m['bonus'])}/ha{bonus_detail} "
+                      f"(palhada/N e quebra de ciclo de doença, estimativa de referência).")
+    else:
+        lo, hi = c["bonus_sc_faixa"]
+        lines.append(Msg("Bônus na soja seguinte: {0} sc/ha × R$ {1}/sc = R$ {2}/ha{3} (palhada/N e quebra de ciclo de doença; "
+                         "faixa de {4} a {5} sc/ha; fonte: {6}).", _sc(m["bonus_sc"]), f"{m['preco_soja']:.2f}", _r(m["bonus"]),
+                         bonus_detail, _sc(lo), _sc(hi), c["bonus_fonte"]))
     if m.get("base_renda") == "historico":
         head = Msg("Total da rotação: R$ {0}/ha/ano; incremental da 2ª safra (sem a soja, com o bônus) para a nota: R$ {1}/ha, "
                    "com a 2ª safra pela média realizada das últimas safras no município ({2} sc de soja/ha × R$ {3}/sc; "
@@ -835,7 +857,7 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
         ev.append(f"NDVI observado (NASA HLS): ~{ndvi_bare_soil_days:.0f} dias/ano com NDVI<{SOIL_THRESHOLD}.")
     hist = None
     if margin is not None:
-        ev += fmt_margin(margin, risks)
+        ev += fmt_margin(margin, risks, c)
         # 5-season track record of the second crop (in the income score unless the farmer gave own data; docs/validation.md §6.2)
         hist = income_history.track_record((risks.get("municipio") or {}).get("cod_ibge"), c["segunda"])
         if (h_txt := income_history.text(hist, in_score=margin.get("base_renda") == "historico")):
@@ -872,7 +894,7 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
     if c["cobertura"] >= 0.8: ben.append("Boa cobertura/palha: protege o solo e reduz erosão.")
     if c["n_fix"] >= 0.7: ben.append("Fixação de nitrogênio relevante para a próxima soja.")
     if c["pragas"] >= 0.6: ben.append("Ajuda a quebrar ciclo de pragas e doenças.")
-    if c["bonus_sc"] >= 2: ben.append(f"Palhada/N elevam a soja seguinte (~+{c['bonus_sc']:g} sc/ha, estimativa).")
+    if c["bonus_sc"] >= 2: ben.append(f"Palhada/N elevam a soja seguinte (~+{c['bonus_sc']:g} sc/ha; faixa de {_sc(c['bonus_sc_faixa'][0])} a {_sc(c['bonus_sc_faixa'][1])} sc/ha).")
     if c["bonus_verao_sc"]:
         ben.append(f"{c['nome_verao']} no lugar da soja de verão quebra ciclo de doença e nematoide e deixa mais palhada "
                    f"(~+{c['bonus_verao_sc']:g} sc/ha na soja seguinte, estimativa a validar com agrônomo/Embrapa).")

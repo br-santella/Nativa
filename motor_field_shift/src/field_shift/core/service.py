@@ -851,7 +851,7 @@ def _gain_vs_current(res: dict, nome: str, current_name: str) -> dict | None:
         comparado_com=E.ID_DE[current_name],
         soja_seguinte_sc=round(sc, 1), soja_seguinte_sc_faixa=[round(range_[0], 1), round(range_[1], 1)],
         soja_seguinte_rs=float(round(sc * m["preco_soja"])), preco_soja_r_sc=round(m["preco_soja"], 2),
-        fonte=f"soja seguinte: {c['bonus_fonte']} (preço da soja SEAB/DERAL)",
+        fonte=Msg("soja seguinte: {0} (preço da soja SEAB/DERAL)", c["bonus_fonte"]),
         renda_2a_safra=dict(r_ha=float(round(income_2nd)), origem=_INCOME_SOURCE),
         margem_total=dict(r_ha=float(round(m["total"] - ma["total"])), origem=_INCOME_SOURCE + "; inclui o bônus na soja seguinte"),
         solo=dict(dias_descobertos=c["dias_descobertos"] - ca["dias_descobertos"],
