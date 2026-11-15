@@ -1,12 +1,12 @@
 import { t as __text, t, locale, useLanguage, LanguageProvider, LanguageSwitcher } from "./i18n";
-import React, { useState, useEffect, useRef, } from "react";
+import React, { useState, useEffect, useMemo, useRef, } from "react";
 import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
-import { months, initialFarm, initialCrops, series, profiles, info, } from "./data";
+import { months, initialFarm, initialCrops, series, info, } from "./data";
 import type { Farm, Crop } from "./data";
 import "./styles.css";
-import EngineScenarios from "./EngineScenarios";
+import RotationStrategies from "./RotationStrategies";
 import SeasonOverview from "./SeasonOverview";
 import PropertyIcon from "./PropertyIcon";
 import FarmMap from "./FarmMap";
@@ -48,7 +48,7 @@ function CoverageNotice() {
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(saved?.weights ?? profiles.soil), [applied, setApplied] = useState<number[]>(saved?.weights ?? profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
     const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
@@ -79,12 +79,16 @@ function App() {
     }, [menu]);
     const [mapView, setMapView] = useState(initialMapView);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
+    // Weights live in setupInputs.pesos (0–10). Settings and the saved state still use the four % values
+    // (water, soil, income, climate risk), derived here so they always match the Rotation page.
+    // Memoised: SeasonOverview re-runs the engine when this array changes.
+    const weights = useMemo(() => setupInputs ? [setupInputs.pesos.agua, setupInputs.pesos.solo, setupInputs.pesos.renda, setupInputs.pesos.risco].map((w) => w * 10) : [50, 50, 50, 50], [setupInputs]);
     // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
     const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
     useEffect(() => {
         if (persisted)
-            setSavedAt(persist({ farm, setupInputs, weights: applied, crops, settings }));
-    }, [persisted, farm, setupInputs, applied, crops, settings]);
+            setSavedAt(persist({ farm, setupInputs, weights, crops, settings }));
+    }, [persisted, farm, setupInputs, crops, settings]);
     function forgetProperty() {
         clearSaved();
         setPersisted(false);
@@ -93,11 +97,8 @@ function App() {
         setDraft({ ...initialFarm });
         setCrops(initialCrops);
         setSetupInputs(undefined);
-        setWeights(profiles.soil);
-        setApplied(profiles.soil);
         toast("Dados da propriedade apagados deste navegador.");
     }
-    const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const reduced = useReducedMotion();
     useEffect(() => {
         if (page !== "landing" || reduced || carouselPaused || carouselFocused)
@@ -124,10 +125,6 @@ function App() {
         const t = setTimeout(() => setNotice(""), 4500);
         return () => clearTimeout(t);
     }, [notice]);
-    useEffect(() => () => {
-        if (timer.current)
-            clearTimeout(timer.current);
-    }, []);
     function go(p: Page) {
         const target = p === "farm" ? "settings" : p;
         location.hash = target;
@@ -139,18 +136,6 @@ function App() {
     }
     function toast(s: string) {
         setNotice(s);
-    }
-    function compare() {
-        if (!weights.some(Boolean)) {
-            toast("Defina pelo menos uma prioridade maior que zero.");
-            return;
-        }
-        setBusy(true);
-        timer.current = setTimeout(() => {
-            setApplied([...weights]);
-            setBusy(false);
-            toast("Comparação atualizada.");
-        }, 600);
     }
     const navItems: [
         Page,
@@ -316,7 +301,7 @@ function App() {
             {MetricCards()}
           </aside>
         </div>
-        <SeasonOverview onNavigate={go} farm={farm} crops={crops} weights={applied} setupInputs={setupInputs} />
+        <SeasonOverview onNavigate={go} farm={farm} crops={crops} weights={weights} setupInputs={setupInputs} />
         <section className="plan-banner">
           <div>
             <h2>{__text("Planeje sua pr\u00F3xima safra.")}</h2>
@@ -570,49 +555,7 @@ function App() {
             <p>{__text("Compare caminhos para a pr\u00F3xima safra, com as suas prioridades.")}</p>
           </div>
         </div>
-        <Demo />
-        <section className="panel priorities">
-          <h2>{__text("01 O que importa mais para a sua pr\u00F3xima safra?")}</h2>
-          <p>{__text("Ajuste os controles ou explore os tr\u00EAs perfis predefinidos de prioridade.")}</p>
-          <div className="sliders">
-            {__text([
-                "Economia de água",
-                "Saúde do solo",
-                "Rentabilidade",
-                "Resiliência climática",
-            ].map((label, i) => (<label key={label}>
-                <span>
-                  {__text(label)}
-                  <strong>{__text(weights[i])}{__text("%")}</strong>
-                </span>
-                <input type="range" min="0" max="100" value={weights[i]} aria-label={__text(label)} onChange={(e) => setWeights((prev) => prev.map((v, n) => (n === i ? +e.target.value : v)))}/>
-                <small>{__text("Menor")}<span>{__text("Maior")}</span>
-                </small>
-              </label>)))}
-          </div>
-          <div className="profile-buttons">
-            {__text(([
-                ["soil", "Solo equilibrado"],
-                ["water", "Água e clima"],
-                ["profit", "Rentabilidade"],
-            ] as const).map(([key, label]) => (<button key={key} className={weights.every((v, i) => v === profiles[key][i])
-                    ? "active"
-                    : ""} onClick={() => setWeights([...profiles[key]])}>
-                {__text(label)}
-              </button>)))}
-          </div>
-        </section>
-        <div className="section-heading scenarios-heading">
-          <div>
-            <h2>{__text("02 Compare os cen\u00E1rios")}</h2>
-            <p>{__text("Notas do motor (0\u2013100) ponderadas pelos objetivos acima, com dados reais da sua fazenda.")}</p>
-          </div>
-          <button className="button" onClick={compare} disabled={busy}>
-            {__text(busy ? "Comparando…" : "Comparar Estratégias")}
-          </button>
-        </div>
-        <EngineScenarios setupInputs={setupInputs} weights={applied} latitude={farm.latitude} longitude={farm.longitude} irrigation={farm.irrigation} crops={crops} onSources={() => open("sources")} />
-        <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
+        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} onPesosChange={(pesos) => setSetupInputs((current) => (current ? { ...current, pesos } : current))} onEditSetup={() => go("demo")} onSources={() => open("sources")} />
       </>);
     }
     function Settings() {
@@ -624,16 +567,14 @@ function App() {
           </div>
                   </div>
         <Demo />
-        <PropertySettings key={JSON.stringify([farm, setupInputs, applied])} farm={farm} inputs={setupInputs} weights={applied} savedAt={savedAt} report={report} onReport={(f) => {
+        <PropertySettings key={JSON.stringify([farm, setupInputs])} farm={farm} inputs={setupInputs} weights={weights} savedAt={savedAt} report={report} onReport={(f) => {
                 setReport(f);
                 if (f)
                     toast("Laudo selecionado localmente. Nenhum arquivo foi enviado.");
-            }} onSave={(nextFarm, inputs, nextWeights) => {
+            }} onSave={(nextFarm, inputs) => {
                 setFarm(nextFarm);
                 setDraft(nextFarm);
                 setSetupInputs(inputs);
-                setWeights(nextWeights);
-                setApplied(nextWeights);
                 setPersisted(true);
                 toast("Alterações salvas. Os cenários foram recalculados.");
             }} onRedo={() => go("demo")} onForget={forgetProperty}/>
@@ -779,9 +720,6 @@ function App() {
             setDraft(nextFarm);
             setSetupInputs(inputs);
             setPersisted(true);
-            const nextWeights = [inputs.pesos.agua * 10, inputs.pesos.solo * 10, inputs.pesos.renda * 10, inputs.pesos.risco * 10];
-            setWeights(nextWeights);
-            setApplied(nextWeights);
             go("overview");
         }} />;
     }

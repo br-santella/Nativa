@@ -49,25 +49,25 @@ Changes are kept in session memory. Reloading the page restores the example. Sig
 
 ## Data and backend
 
-Only the "Compare os cenários" section of `/#rotation` (`src/EngineScenarios.tsx`) talks to the engine API (`motor_field_shift`, contract in `motor_field_shift/api/README.md`). Every other screen still uses the demo data in `src/data.ts`.
+Only the Rotation strategies page (`/#rotation`, `src/RotationStrategies.tsx`) talks to the engine API (`motor_field_shift`, contract in `motor_field_shift/api/README.md`). Every other screen still uses the demo data in `src/data.ts`.
 
 The API address is `VITE_API_URL` (default `http://localhost:8000`), baked in at build time; it is the URL the browser uses (production value: `motor_field_shift/deploy/README.md`).
 
-Flow (`src/api.ts`): `GET /health`, then, if the status is `ok`, `POST /v1/recomendacao` with:
+Flow (`src/api.ts`): `GET /health`, then, if the status is `ok`, `POST /v1/recomendacao`. After the setup wizard (`/#demo`, `src/PropertyWizard.tsx`), the body is the wizard's answers (area, current rotation, stage or harvest, reference date, sowing date, known issues, soil analysis, prices, buyers, equipment, irrigation, number of alternatives) with the weights of the page. Without the wizard, the page builds it from the farm data:
 
 | Field | Source in the app |
 |---|---|
 | `area` | `{lat, lon}` from My Property (any point in Paraná); demo plot `{talhao_id: "72638"}` if the coordinates are invalid |
 | `rotacao_atual` | derived from the crop history (`src/rotacaoAtual.ts`); default `soja__milho_safrinha` |
 | `colheita_prevista` | harvest date (dd/mm) of the summer crop still in the field, when it is in the future; otherwise the engine uses the catalog assumption and says so in `avisos` |
-| `pesos` | the four sliders (0–100) divided by 10; `pragas` fixed at 3 |
+| `pesos` | the five weights (0–10) of the page, starting from the wizard profile; balanced profile (all 5) without the wizard |
 | `irrigacao` | "Disponibilidade de irrigação": Sim → `{disponivel: true}`, Não → `{disponivel: false}`, Não informado → omitted |
 
 Every call sends `?lang=pt-BR|en` following the app language switcher, so the engine texts (rotation names, cards, warnings, errors) come back in the same language as the interface; switching the language fetches again.
 
-The screen shows the current rotation and the two best alternatives of the `agora` block (same summer crop), the best option of the `proxima_safra` block (another summer crop), the 2nd-window sowing date the engine used, and the engine `avisos`.
+The page has three sections: the priorities (the four profiles of the wizard plus the five weights; a change re-runs the engine after 0.6 s), the alternatives of the `agora` block (same summer crop, as many as `n_alternativas`) next to the current rotation, and a side-by-side comparison of the current rotation with one alternative (criteria, second-crop income, yearly margin, the card's `por_que`, benefits and risks). It also shows the estimated harvest, the second-window sowing date the engine used and the engine `avisos`.
 
-Not sent yet: the soil fields of My Property (the engine's `analise_solo` needs clay + sand, AWC or a fertility field, which the form does not collect), `problemas_area`, `restricoes` and `ajustes`. Endpoints not used yet: `/v1/opcoes`, `/v1/diagnostico`, `/v1/clima`, `/v1/contexto`.
+Not sent: the soil fields of My Property (the soil analysis is sent only from the wizard). Endpoints not used: `/v1/opcoes`, `/v1/diagnostico`, `/v1/clima`, `/v1/contexto`.
 
 Sign-up, the contact form and the soil report upload are still demo-only (no account, message or upload).
 
