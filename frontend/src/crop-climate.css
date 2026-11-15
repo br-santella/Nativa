@@ -1,7 +1,7 @@
 /* Crop & Climate: surfaces and palette shared with Overview. */
 .crop-climate-page { color: #edf1e6; }
-.crop-climate-layout { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(260px, 1fr); gap: 24px; align-items: start; }
-.crop-climate-main { min-width: 0; display: grid; gap: 24px; }
+.crop-climate-layout { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(260px, 1fr); gap: 24px; align-items: stretch; }
+.crop-climate-main { min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 24px; }
 .crop-climate-main > * { min-width: 0; }
 .crop-climate-page .panel { background: #071719; border: 1px solid #263e43; border-radius: 12px; padding: 24px; }
 .crop-climate-page .section-heading { align-items: center; flex-wrap: wrap; gap: 16px; }
@@ -13,12 +13,12 @@
 .crop-climate-page .crop-records :is(td, th) { padding: 18px 12px; font-size: 12px; }
 .crop-climate-page .crop-records td:first-child { font-weight: 500; color: #edf1e6; }
 .crop-climate-page .table-scroll { margin: 20px -12px; }
-.crop-climate-page .timeline-panel { margin: 0; }
+.crop-climate-page .timeline-panel { margin: 0; flex: 1; min-width: 0; }
+.crop-calendar { display: flex; min-width: 0; }
 .crop-climate-page .timeline { min-width: 620px; }
-.crop-climate-page .crop-next-step { background: #0b2024; border: 1px solid #263e43; border-radius: 12px; margin: 0; padding: 24px; flex-wrap: wrap; gap: 16px; }
-.crop-climate-page .crop-climate-sidebar { padding: 24px; }
+.crop-climate-page .crop-climate-sidebar { padding: 24px; display: flex; flex-direction: column; }
 .crop-climate-sidebar header h2 { margin: 0 0 8px; }
-.crop-climate-indicators { display: grid; }
+.crop-climate-indicators { display: grid; flex: 1; grid-template-rows: repeat(4, 1fr); }
 .climate-mini { display: block; width: 100%; min-width: 0; text-align: left; background: transparent; border: 0; border-bottom: 1px solid #263e43; color: #edf1e6; padding: 16px 0; cursor: pointer; border-radius: 0; }
 .climate-mini-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
 .climate-mini-heading > span:last-child { color: #96b2a5; }
@@ -47,7 +47,7 @@
 }
 @media (max-width: 900px) {
   .crop-climate-layout { grid-template-columns: minmax(0, 1fr); }
-  .crop-climate-indicators { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+  .crop-climate-indicators { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; column-gap: 24px; }
 }
 @media (max-width: 540px) {
   .crop-climate-page .panel { padding: 16px; }
@@ -61,5 +61,25 @@
   .climate-detail .two-col { grid-template-columns: 1fr; }
 }
 
-.crop-context { display: flex; flex-wrap: wrap; gap: 12px 24px; color: #96b2a5; font-size: 12px; }
-.crop-context strong { color: #edf1e6; font-weight: 500; }
+
+.crop-climate-page .crop-plan-banner {
+  min-height: 290px;
+  margin: 24px 0 0;
+  padding: 40px 30px;
+  gap: 24px;
+  background: #112b22;
+  border: 1px solid #355047;
+  border-radius: 20px;
+}
+.crop-climate-page .crop-plan-banner > div:first-child { min-width: 0; }
+.crop-climate-page .crop-plan-banner h2 { font-size: 30px; font-weight: 600; line-height: 1.25; margin: 0 0 16px; }
+.crop-climate-page .crop-plan-banner p { font-size: 15px; line-height: 1.6; margin: 0 0 30px; color: #b7cdbd; }
+.crop-climate-page .crop-plan-banner .button { background: #ffbf22; color: #071719; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 500; }
+.crop-climate-page .crop-plan-banner .button:hover { background: #ffd066; }
+.crop-climate-page .crop-plan-banner .button:focus-visible { outline: 2px solid #edf1e6; outline-offset: 4px; }
+.crop-climate-page .crop-plan-banner .banner-art { display: block; width: 130px; height: 140px; }
+@media (max-width: 600px) {
+  .crop-climate-page .crop-plan-banner { padding: 28px 20px; min-height: 0; flex-wrap: wrap; }
+  .crop-climate-page .crop-plan-banner h2 { font-size: 25px; }
+  .crop-climate-page .crop-plan-banner .banner-art { display: none; }
+}

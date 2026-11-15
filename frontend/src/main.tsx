@@ -306,7 +306,7 @@ function App() {
             <h2>{__text("Uma vis\u00E3o de cada safra")}</h2>
             <p>{__text("Talh\u00E3o 01 \u2022")}{__text(farm.area)}{__text("ha \u2022 plantio, desenvolvimento e colheita")}</p>
           </div>
-          <select aria-label={__text("Ano do calend\u00E1rio")} value={year} onChange={(e) => setYear(e.target.value)}>
+          <select aria-label={__text("Ano do calend\u00E1rio")} value={year} onChange={(e) => { setYear(e.target.value); setPeriod("12"); }}>
             {__text(["2025", "2024", "2023"].map((y) => (<option key={y} value={y}>{__text(y)}</option>)))}
           </select>
         </div>
@@ -370,7 +370,6 @@ function App() {
           <Demo />
           <div className="crop-climate-layout">
             <div className="crop-climate-main">
-              <div className="crop-context"><span>{__text("Cultivo atual")}: <strong>{__text(farm.crop)}</strong></span><span>{crops.length} {__text("cultivos registrados")}</span><span>{farm.area} ha · {__text("Talhão 01")}</span></div>
         <section className="panel crop-records" aria-labelledby="crop-records-title">
           <div className="section-heading">
             <div><small>{__text("Histórico de Cultivo")}</small><h2 id="crop-records-title">{__text("Cultivos registrados")}</h2></div>
@@ -428,10 +427,7 @@ function App() {
           <small>{__text("* Data prevista, não observada.")} {crops.length} {__text("cultivos registrados")}</small>
         </section>
               <div className="crop-calendar"><Timeline /></div>
-              <section className="callout crop-next-step">
-                <div><h3>{__text("O próximo ciclo começa com o que você já aprendeu.")}</h3><p>{__text("Use seu histórico para explorar estratégias de rotação.")}</p></div>
-                <LinkButton onClick={() => go("rotation")}>{__text("Explorar estratégias →")}</LinkButton>
-              </section>
+
             </div>
             <aside className="panel crop-climate-sidebar" aria-labelledby="climate-summary-title">
               <header><small>{__text("Análise Climática")}</small><h2 id="climate-summary-title">{__text("Resumo climático")}</h2><p>{__text("Clique em um indicador para explorar os detalhes.")}</p></header>
@@ -439,7 +435,8 @@ function App() {
                 {(Object.keys(climateIndicators) as (keyof typeof series)[]).map(kind => {
                     const indicator = climateIndicators[kind];
                     const values = climateValues(kind);
-                    const min = Math.min(...values), max = Math.max(...values);
+                    const min = kind === "temperature" ? 15 : 0;
+                    const max = { temperature: 35, rain: 300, moisture: 60, ndvi: 1 }[kind];
                     const points = values.map((v, i) => `${i * 240 / (values.length - 1)},${52 - (v - min) / (max - min || 1) * 40}`).join(" ");
                     return <button type="button" className="climate-mini" key={kind} aria-haspopup="dialog" onClick={() => { setClimateIndicator(kind); open("climate-detail"); }}>
                       <span className="climate-mini-heading"><span>{__text(indicator.name)}</span><span aria-hidden="true">↗</span></span>
@@ -455,6 +452,16 @@ function App() {
               <LinkButton onClick={() => open("sources")}>{__text("Fontes e limitações →")}</LinkButton>
             </aside>
           </div>
+              <section className="plan-banner crop-plan-banner">
+                <div>
+                  <h2>{__text("Planeje sua próxima safra.")}</h2>
+                  <p>{__text("Compare estratégias de rotação considerando o clima, o solo e as prioridades da sua propriedade.")}</p>
+                  <button type="button" className="button" onClick={() => go("rotation")}>{__text("Comparar estratégias →")}</button>
+                </div>
+                <div className="banner-art" aria-hidden="true">
+                  {[A.imgRotation, A.imgFieldRows, A.imgSprout, A.imgWarmAccent].map((src, i) => <img key={src} className={"art-" + i} src={src} alt="" />)}
+                </div>
+              </section>
         </div>;
     }
     function ClimateDetail() {
