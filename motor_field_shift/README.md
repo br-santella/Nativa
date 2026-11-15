@@ -1,6 +1,6 @@
-# Rotation engine — Western Paraná
+# Rotation engine — Paraná
 
-Crop-rotation recommendation engine for Western Paraná (50 municipalities, IBGE 4106).
+Crop-rotation recommendation engine for the state of Paraná (399 municipalities, IBGE 41). Costs, prices and calendar rules are the Western Paraná (Oeste, 50 municipalities, IBGE 4106) references; outside it the response carries warnings.
 It is the project backend. Its API is contract C3 in [`../docs/contratos.md`](../docs/contratos.md).
 
 Documentation (in Portuguese):
@@ -26,5 +26,5 @@ uv run pytest                                                    # unit tests
 | `src/field_shift/motor/` | service layer: `diagnosticar()`, `recomendar()` |
 | `src/field_shift/app/` | hard rules, criteria, weighted score, cards (`engine.py`) + Streamlit app (`mvp.py`) |
 | `src/field_shift/{clima,regiao,solo,agua,pam,renda}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, FAO-56 water balance, IBGE PAM, prices/costs |
-| `ingest/` | scripts that download and pre-compute the region's data |
+| `ingest/` | scripts that download and pre-compute the data (only the `*_oeste_pr` versions; the whole-of-Paraná `*_pr` ingests are not versioned yet, see `docs/pendencias.md`) |
 | `api/` | FastAPI app, tests and real response examples |

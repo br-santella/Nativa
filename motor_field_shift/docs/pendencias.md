@@ -79,6 +79,24 @@ This file is the living list of open items for the project (crop-rotation engine
   Files: `docs/motor.md`, `docs/pesquisa_ganho_soja_seguinte_PARCIAL.md`.
   Status: pending
 
+## Paraná-wide coverage
+
+- **Ingest scripts of the `*_pr` data are not in the repo**: the engine now reads `data/raw/mapbiomas_pr`, `nasadem_pr`, `soilgrids_pr`, `regiao/{pr,municipios_pr}.geojson`, `clima_pr/` (raw), `processed/clima_pr/`, `processed/relevo_pr/` and `ibge/pam_pr.parquet` (399 municipalities), but `ingest/` only has the `*_oeste_pr` scripts. Confirm who generated the data, version the scripts, and document the commands.
+  Files: `ingest/`, `api/README.md`.
+  Status: pending
+
+- **SEAB/DERAL prices and costs by regional nucleus**: the values in `data/ref/precos_custos.json` are the Oeste/PR references. Outside the Oeste the response only warns (`avisos`) that they may differ; a per-nucleus table (SEAB/DERAL regional prices, CONAB sheet closest to the municipality) is missing.
+  Files: `data/ref/precos_custos.json`, `src/field_shift/renda/`, `src/field_shift/motor/servico.py` (`AVISOS_FORA_DO_OESTE`).
+  Status: pending
+
+- **ADAPAR calendar by region**: the soybean-free period (02/06–31/08) and sowing window (01/09–31/12) were researched for the Oeste. Elsewhere in Paraná they are kept and the response warns that the calendar may differ; check the current ADAPAR ordinance by region and the ZARC per municipality and make the rules region-dependent.
+  Files: `src/field_shift/app/engine.py`, `src/field_shift/calendario.py`, `src/field_shift/motor/servico.py`.
+  Status: pending
+
+- **PAM for sorghum and 2nd-season beans in all of Paraná**: `pam_extra_oeste_pr.parquet` only covers the 50 Oeste municipalities; there is no `pam_extra_pr`. Outside the Oeste these crops use the Oeste average (listed in `_regionais`, source text "Oeste do PR (média...)"). Extend `ingest/pam_culturas_extra.py` to the 399 municipalities.
+  Files: `ingest/pam_culturas_extra.py`, `src/field_shift/pam/produtividade.py`, `src/field_shift/renda/renda.py`.
+  Status: pending
+
 ## Future features
 
 - **Multi-year rotation plan**: the ranking evaluates one season at a time. A 2–3 year plan is missing (for example, soybean/corn → soybean/wheat → summer corn/oat).

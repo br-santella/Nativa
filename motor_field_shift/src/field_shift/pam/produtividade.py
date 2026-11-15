@@ -1,9 +1,9 @@
-"""Rendimento municipal (IBGE PAM, SIDRA 1612, 839 e 1002), lido de data/raw/ibge/pam_oeste_pr.parquet e, se existir,
+"""Rendimento municipal (IBGE PAM, SIDRA 1612, 839 e 1002), lido de data/raw/ibge/pam_pr.parquet e, se existir,
 de data/raw/ibge/pam_extra_oeste_pr.parquet (sorgo e feijão 2ª safra; ingest/pam_culturas_extra.py), mesmo esquema.
 
 produtividade(cod_ibge) -> {cultura: {...}}; culturas: soja, milho_total, milho_1safra, milho_2safra, trigo, aveia, sorgo, feijao_2safra.
-Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos 5 anos COM dado (até 2025, se existir).
-CV = desvio padrão / média dos últimos 10 anos. Tendência = inclinação (kg/ha/ano) da regressão linear dos últimos 10 anos.
+Saca = 60 kg (soja, milho, trigo, sorgo, feijão); aveia só em kg/ha. Últimos YIELD_WINDOW_YEARS (10) anos COM dado (até 2025, se existir): média, CV e tendência usam a mesma janela, a mesma do p20
+(ano ruim) em renda.py, para que o ano ruim nunca fique acima da média.
 """
 from __future__ import annotations
 
@@ -14,10 +14,11 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
-PAM = ROOT / "data/raw/ibge/pam_oeste_pr.parquet"
+PAM = ROOT / "data/raw/ibge/pam_pr.parquet"
 PAM_EXTRA = ROOT / "data/raw/ibge/pam_extra_oeste_pr.parquet"
 SACA_KG = {"soja": 60, "milho_total": 60, "milho_1safra": 60, "milho_2safra": 60, "trigo": 60, "sorgo": 60, "feijao_2safra": 60}
 ANO_MIN = {"sorgo": 2013, "feijao_2safra": 2013}  # séries antigas/interrompidas do sorgo e do feijão 2ª safra não representam o manejo atual
+YIELD_WINDOW_YEARS = 10  # single window for mean, CV, trend and the p20 "bad year" (renda._p20_sc)
 NOMES = {"soja": "soja", "milho_total": "milho", "milho_1safra": "milho 1ª safra", "milho_2safra": "milho 2ª safra",
          "trigo": "trigo", "aveia": "aveia", "sorgo": "sorgo", "feijao_2safra": "feijão 2ª safra"}
 
@@ -42,14 +43,14 @@ def serie(cod_ibge, cultura: str) -> pd.Series:
     return s[s.index >= ANO_MIN[cultura]] if cultura in ANO_MIN else s
 
 
-def produtividade(cod_ibge, n_anos: int = 5) -> dict:
+def produtividade(cod_ibge, n_anos: int = YIELD_WINDOW_YEARS) -> dict:
     out = {}
     for cult in NOMES:
         s = serie(cod_ibge, cult)
         if len(s) == 0:
             continue
         u = s.iloc[-n_anos:]
-        u10 = s.iloc[-10:]
+        u10 = u  # same window for mean, CV and trend
         tend = float(np.polyfit(u10.index.values, u10.values, 1)[0]) if len(u10) >= 4 else np.nan
         out[cult] = dict(
             kg_ha=float(u.mean()), sc_ha=float(u.mean() / SACA_KG[cult]) if cult in SACA_KG else None,

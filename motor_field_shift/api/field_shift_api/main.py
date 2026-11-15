@@ -18,11 +18,15 @@ log = logging.getLogger("field_shift_api")
 
 DESCRICAO = """
 API do **Field Shift**: apoio à decisão de **rotação de culturas** (safrinha / entressafra) para o
-**Oeste do Paraná** (50 municípios, código IBGE 4106). Dado um talhão (id demo), um polígono GeoJSON
+**Paraná inteiro** (399 municípios, código IBGE 41). Dado um talhão (id demo), um polígono GeoJSON
 ou um ponto lat/lon, devolve um diagnóstico da área e um ranking de rotações com nota, margem
 estimada (R$/ha) e um cartão explicativo por opção.
 
-Áreas fora do Oeste do PR retornam **422** (`fora_da_regiao`).
+Áreas fora do Paraná retornam **422** (`fora_da_regiao`).
+
+**Atenção:** fora do **Oeste do Paraná**, os custos e preços usados na renda e o calendário (vazio
+sanitário e janela de semeadura da soja) continuam sendo a referência do Oeste e podem diferir na
+região; a resposta traz um aviso nesse caso. Confirme a portaria vigente da ADAPAR e o ZARC do município.
 
 **Fontes de dados:** NASA POWER (clima), SoilGrids (solo), MapBiomas (uso e cobertura do solo),
 NASADEM (relevo), IBGE PAM (produtividade municipal), SEAB/DERAL (custos e preços regionais) e

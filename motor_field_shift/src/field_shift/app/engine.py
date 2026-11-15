@@ -156,7 +156,7 @@ def riscos_power(df: pd.DataFrame) -> dict:
                 semeadura=None, geada_tabela=None, diagnostico=None, celula=None, municipio=None, agua_anual=None)
 
 
-# Lookup pré-calculado (Oeste do PR): indicadores da CÉLULA (~50 km); município só como contexto.
+# Lookup pré-calculado (Paraná): indicadores da CÉLULA (~50 km); município só como contexto.
 
 
 def _ind(d: dict, nome: str) -> dict:
@@ -165,7 +165,7 @@ def _ind(d: dict, nome: str) -> dict:
 
 @lru_cache(maxsize=1)
 def _anuais() -> pd.DataFrame:
-    return pd.read_parquet(ROOT / "data/processed/clima/indicadores_anuais.parquet",
+    return pd.read_parquet(ROOT / "data/processed/clima_pr/indicadores_anuais.parquet",
                            columns=["ponto_id", "ano", "indicador", "valor"])
 
 
@@ -210,7 +210,7 @@ def clima_regiao(info: dict, semeadura: str = SEMEADURA_PADRAO) -> dict:
 
 
 def obter_clima(lat: float, lon: float, semeadura: str = SEMEADURA_PADRAO) -> tuple[dict, str]:
-    """Dentro do Oeste do PR usa o lookup pré-calculado; fora, cai no POWER ao vivo (modo reduzido)."""
+    """Dentro do Paraná usa o lookup pré-calculado; fora, cai no POWER ao vivo (modo reduzido)."""
     info = indicadores_para(lat, lon)
     if info is not None:
         return clima_regiao(info, semeadura), "lookup pré-calculado (NASA POWER, célula ~50 km)"
@@ -260,7 +260,7 @@ def fmt_pam(rk: dict) -> str | None:
 # a partir de dois catálogos pequenos: VERAO (soja, milho verão) e SEGUNDA (2ª janela). Atributos de SEGUNDA:
 # `renda_itens`: culturas/manejos da 2ª janela que entram na margem (field_shift.renda: rendimento PAM × preço SEAB − custo CONAB;
 # cobertura/pousio = − custo estimado). A cultura de verão entra sempre (`item_renda` de VERAO).
-# `agua` (0–1, demanda relativa) só é usado como FALLBACK fora do Oeste do PR (sem clima pré-calculado);
+# `agua` (0–1, demanda relativa) só é usado como FALLBACK fora do Paraná (sem clima pré-calculado);
 # na região o critério água vem do balanço hídrico diário com o solo do talhão (field_shift.agua; ver agua_atendida).
 # `ciclo_agua`: ciclo climático da 2ª cultura (usado só no fallback por ciclo, sem solo).
 # `kc`: coeficiente de cultura médio sazonal (média da curva do balanço hídrico; FAO-56, estimativa, validar).
@@ -627,7 +627,7 @@ def fmt_margem(m: dict, riscos: dict) -> list[str]:
         elif i["sc_ha"] is not None:
             linhas.append(f"{i['rotulo']}: {i['sc_ha']:.0f} sc/ha (PAM {local} {i['anos']}) × R$ {i['preco']:.2f}/sc ({fonte_preco(i)}) − custo "
                           f"R$ {_r(i['custo'])}/ha ({fonte_custo(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha "
-                          f"(CV do rendimento {i['cv']:.0%}; ano ruim, p20 de 10 anos = {i['sc_ha_ruim']:.0f} sc/ha → "
+                          f"(CV do rendimento {i['cv']:.0%}; ano ruim, p20 da mesma janela de 10 anos = {i['sc_ha_ruim']:.0f} sc/ha → "
                           f"R$ {_r(i['margem_ano_ruim'])}/ha).")
         else:
             linhas.append(f"{i['rotulo']}: sem venda, custo de implantação R$ {_r(i['custo'])}/ha ({fonte_custo(i, m['linha_custo'])}) = R$ {_r(i['margem'])}/ha.")
@@ -739,7 +739,7 @@ def montar_card(linha: pd.Series, atual: bool, riscos: dict, dias_solo_ndvi: flo
         ev.append(f"Água: chuva cobre em média {ag:.0%} da demanda ({nome_c}, Kc {c['kc']:.2f}; "
                   f"NASA POWER {riscos['periodo']}, FAO-56).")
     else:
-        ev.append(f"Água: estimativa fixa do catálogo ({ag:.0%}); sem clima pré-calculado fora do Oeste do PR.")
+        ev.append(f"Água: estimativa fixa do catálogo ({ag:.0%}); sem clima pré-calculado fora do Paraná.")
     if ir:
         ev.append(f"Irrigado: lâmina média {ir['lamina_media_mm']:.0f} mm/ano, custo R$ {_r(ir['custo_r_ha'])}/ha "
                   f"(R$ {ir['custo_r_mm_ha']:.2f}/mm/ha, lâmina máx. {ir['lamina_max_mm_dia']:g} mm/dia; o ganho de produtividade "
@@ -769,7 +769,7 @@ def montar_card(linha: pd.Series, atual: bool, riscos: dict, dias_solo_ndvi: flo
         lacuna_cad = "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais."
     ea = estado_area.card(c, riscos.get("estado_area"))
     ev += ea["evidencias"]
-    lacunas = ([] if riscos.get("solo") else ["Textura/CAD do solo (SoilGrids) não considerada (talhão fora do Oeste do PR)."]) + [
+    lacunas = ([] if riscos.get("solo") else ["Textura/CAD do solo (SoilGrids) não considerada (talhão fora do Paraná)."]) + [
                lacuna_cad,
                "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
                *([f"{c['nome_verao']} no verão: risco climático e balanço hídrico do verão não modelados (só a 2ª janela entra nesses critérios)."]
@@ -826,7 +826,7 @@ if __name__ == "__main__":
     rk = enriquecer(rk, t)
     print(f"Clima [{rk['modo']}]: {origem} · {rk['fonte']} · semeadura safrinha {rk['semeadura']}")
     if rk["modo"] == "reduzido":
-        print("AVISO: modo reduzido (fora do Oeste do PR; POWER ao vivo, sem diagnóstico nem tabela por data).")
+        print("AVISO: modo reduzido (fora do Paraná; POWER ao vivo, sem diagnóstico nem tabela por data).")
     else:
         m = rk["municipio"]
         print(f"Célula {rk['celula']['ponto_id']} (elev {rk['celula']['elev']:.0f} m); município (contexto): {m['nome']} ({m['cod_ibge']})")

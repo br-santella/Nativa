@@ -16,7 +16,7 @@ AVISO = ("Contexto informativo de fontes oficiais (NOAA, NASA, IDR-PR/ADAPAR). N
 
 
 def montar(lat: float, lon: float, semeadura: str = "01/02", cache_only: bool = False) -> dict[str, Any]:
-    """Contexto para um ponto (centroide do talhão) dentro do Oeste do PR. Nunca levanta exceção por falha de fonte."""
+    """Contexto para um ponto (centroide do talhão) dentro do Paraná. Nunca levanta exceção por falha de fonte."""
     from field_shift.clima.lookup import indicadores_para
 
     try:

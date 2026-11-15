@@ -57,7 +57,7 @@ Example (field 72638, soybean in `enchimento_graos`, `data_referencia` 2026-12-0
 
 | Input | Default | Effect |
 |---|---|---|
-| Field | Polygon in Western Paraná, point or demo ID (72638) | Defines the climate cell, soil, terrain and municipality (PAM) |
+| Field | Polygon in Paraná, point or demo ID (72638) | Defines the climate cell, soil, terrain and municipality (PAM) |
 | Current rotation (`rotacao_atual`) | **Required** | Defines the current summer crop (blocks `agora`/`proxima_safra`) and is the comparison baseline (`atual`, `ganho_vs_atual`) |
 | Stage of the summer crop (`estagio_verao`) and/or expected harvest (`colheita_prevista`), reference date (`data_referencia`) | None (catalog assumption, with a warning); `data_referencia` = today | Estimated harvest, from which the sowing of the second window is derived (section 2.1) |
 | Sowing date of the second crop ("safrinha") | Derived from the estimated harvest; without stage or harvest, 01/02 (options: 15/01, 01/02, 15/02, 01/03, 15/03) | Changes the frost risk and water for corn, sorghum, beans and millet/crotalaria, and applies in the calendar rules (section 5). If sent, it wins over the derived one but cannot be before the harvest |
@@ -294,13 +294,13 @@ Score = 13.84 / 17 = **0.814**. Income weighed most (4.89 / 17 = 0.29 of the sco
 
 Sowing late gives more water and much more frost. That is why off-season corn drops from 0.757 to 0.675 on 15/03 and the cover crops take the top.
 
-**Margins (PAM Toledo 2021–2025, SEAB prices, CONAB COE cost)**
+**Margins (PAM Toledo 2016–2025, SEAB prices, CONAB COE cost)**
 
 | Crop | Yield (bags/ha) | Price (BRL/bag) | Cost (BRL/ha) | Margin (BRL/ha) |
 |---|---|---|---|---|
-| Soybean | 49 | 120.14 | 4,824 | +1,083 |
-| 2nd-season corn | 103 | 53.89 | 4,678 | +873 |
-| Wheat | 37 | 68.44 | 4,334 | −1,824 |
+| Soybean | 53 | 120.14 | 4,824 | +1,503 |
+| 2nd-season corn | 101 | 53.89 | 4,678 | +767 |
+| Wheat | 40 | 68.44 | 4,334 | −1,573 |
 
 **PAM × climate evidence:** in years with frost in the window, off-season corn in Western Paraná yielded ~6.5% below trend (effective n ≈ 23 years).
 

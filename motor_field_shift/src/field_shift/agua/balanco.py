@@ -23,7 +23,7 @@ import pandas as pd
 from field_shift.clima.indicadores import et0_fao56
 
 ROOT = Path(__file__).resolve().parents[3]
-POWER = ROOT / "data/processed/clima/power_diario.parquet"
+POWER = ROOT / "data/processed/clima_pr/power_diario.parquet"
 ANOS = range(1991, 2025)
 P_DEPL = 0.55  # fração de depleção sem estresse — FAO-56 tabela 22 (milho/trigo ~0,55), validar
 SEMEADURA_TRIGO = "01/05"  # trigo e aveia: semeadura fixa em 01/05 — estimativa, validar com ZARC

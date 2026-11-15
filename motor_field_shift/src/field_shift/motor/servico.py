@@ -1,4 +1,4 @@
-"""Camada de serviço do motor Field Shift (sem FastAPI): aceita qualquer polígono do Oeste do PR.
+"""Camada de serviço do motor Field Shift (sem FastAPI): aceita qualquer polígono do Paraná.
 
 Funções públicas: opcoes(), diagnosticar(area, semeadura), recomendar(area, ...), aquecer().
 Exceções: ForaDaRegiao, EntradaInvalida, ErroConsultaExterna. Todas as saídas são JSON-serializáveis (NaN -> None).
@@ -30,7 +30,7 @@ from field_shift.app import estado_area as EA
 from field_shift.clima.lookup import indicadores_para
 from field_shift.pam import produtividade as pam_produtividade
 from field_shift.pam.produtividade import texto as pam_texto
-from field_shift.regiao import dentro_da_regiao, historico_mapbiomas, relevo
+from field_shift.regiao import dentro_da_regiao, dentro_do_oeste, historico_mapbiomas, relevo
 from field_shift.regiao.recorte import REGIAO
 from field_shift.renda import carregar_referencia, fonte_custo, fonte_preco, rendimentos
 from field_shift.solo.solo import FONTE_ANALISE, texto as solo_texto
@@ -41,8 +41,17 @@ PONTO_AREA_HA = 100.0
 CRS_M = 32722  # UTM 22S (m), para áreas e quadrado do ponto
 
 
+# Shown when the area centroid is in Paraná but outside the Oeste mesoregion (the reference region of costs, prices and calendar).
+AVISOS_FORA_DO_OESTE = [
+    "Área fora do Oeste do Paraná: os custos de produção e os preços usados na renda são a referência do Oeste do PR "
+    "(SEAB/DERAL e CONAB) e podem diferir na sua região.",
+    "Área fora do Oeste do Paraná: o calendário (vazio sanitário da soja 02/06–31/08 e semeadura da soja 01/09–31/12) foi "
+    "pesquisado para o Oeste e pode diferir por região; confirme a portaria vigente da ADAPAR e o ZARC do município.",
+]
+
+
 class ForaDaRegiao(Exception):
-    """Área (ou parte dela) fora do Oeste do PR."""
+    """Área (ou parte dela) fora do Paraná."""
 
 
 class EntradaInvalida(Exception):
@@ -135,8 +144,8 @@ def _num(v, nome: str, lo: float | None = None, hi: float | None = None) -> floa
 def _regiao_info() -> dict:
     r = gpd.read_file(REGIAO)
     b = [round(float(x), 4) for x in r.total_bounds]
-    mun = gpd.read_file(REGIAO.parent / "municipios_oeste_pr.geojson")
-    return dict(nome="Oeste do Paraná (IBGE 4106)", bbox=b, n_municipios=int(len(mun)))
+    mun = gpd.read_file(REGIAO.parent / "municipios_pr.geojson")
+    return dict(nome="Paraná (IBGE 41)", bbox=b, n_municipios=int(len(mun)))
 
 
 def _proj_para_m():
@@ -215,7 +224,7 @@ def _resolver_area(area: dict) -> dict:
             raise EntradaInvalida("Ponto exige 'lat' e 'lon'.")
         lat, lon = _num(area["lat"], "lat", -90, 90), _num(area["lon"], "lon", -180, 180)
         if not dentro_da_regiao(Point(lon, lat)):
-            raise ForaDaRegiao(f"O ponto (lat {lat:.5f}, lon {lon:.5f}) está fora do Oeste do Paraná; o motor só cobre essa região.")
+            raise ForaDaRegiao(f"O ponto (lat {lat:.5f}, lon {lon:.5f}) está fora do Paraná; o motor só cobre o estado.")
         t, inv = _transformers()
         x, y = t.transform(lon, lat)
         h = 500.0
@@ -231,7 +240,7 @@ def _resolver_area(area: dict) -> dict:
     if ha > AREA_MAX_HA:
         raise EntradaInvalida(f"Área de {ha:.0f} ha excede o limite de {AREA_MAX_HA:.0f} ha.")
     if not dentro_da_regiao(poly):
-        raise ForaDaRegiao("A área não está inteiramente dentro do Oeste do Paraná (confira a ordem [lon, lat] das coordenadas).")
+        raise ForaDaRegiao("A área não está inteiramente dentro do Paraná (confira a ordem [lon, lat] das coordenadas).")
     return dict(origem=origem, talhao_id=tid, poly=poly, area_ha=ha, lat=lat, lon=lon)
 
 
@@ -329,7 +338,7 @@ def _contexto(area: dict, semeadura: str, analise_solo: dict | None = None, fert
         ) from e
 
     if rk.get("modo") != "regiao":
-        raise ForaDaRegiao("Centroide sem indicadores climáticos pré-calculados (fora do Oeste do PR).")
+        raise ForaDaRegiao("Centroide sem indicadores climáticos pré-calculados (fora do Paraná).")
 
     try:
         rk = E.enriquecer(rk, dict(poly=poly), analise_solo)
@@ -348,6 +357,8 @@ def _contexto(area: dict, semeadura: str, analise_solo: dict | None = None, fert
 
     if analise_solo is None and fert is not None and rk["solo"] is not None:
         avisos.append("Análise de solo só com fertilidade (sem argila/areia nem CAD): textura e CAD seguem o SoilGrids.")
+    if not dentro_do_oeste(Point(a["lon"], a["lat"])):
+        avisos += AVISOS_FORA_DO_OESTE
     if a["origem"] == "ponto":
         avisos.append(f"Ponto convertido em quadrado de ~{PONTO_AREA_HA:.0f} ha centrado nele; relevo, histórico e solo "
                       "valem para esse quadrado, não para a lavoura real.")

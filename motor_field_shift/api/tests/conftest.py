@@ -120,7 +120,7 @@ OPCOES = {
     "criterios": ["renda", "solo", "agua", "pragas", "risco"],
     "pesos_padrao": {"renda": 5, "solo": 3, "agua": 3, "pragas": 3, "risco": 3},
     "renda_referencia": {},
-    "regiao": {"nome": "Oeste do PR"},
+    "regiao": {"nome": "Paraná"},
     "talhoes_demo": [{"talhao_id": "72638", "nome": "Talhão 72638"}],
 }
 

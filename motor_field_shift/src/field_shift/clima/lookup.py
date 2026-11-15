@@ -1,4 +1,4 @@
-"""Lookup de indicadores climáticos pré-calculados (Oeste do PR) por lat/lon + fallback NASA POWER.
+"""Lookup de indicadores climáticos pré-calculados (Paraná) por lat/lon + fallback NASA POWER.
 
 indicadores_para(lat, lon) -> dict | None. None se o ponto está fora da região.
 fallback_power(lat, lon)   -> dict | None. Consulta NASA POWER (1991-2025) ao vivo no mesmo formato.
@@ -20,8 +20,8 @@ from shapely.geometry import Point
 from field_shift.clima.indicadores import indicadores_ponto
 
 ROOT = Path(__file__).resolve().parents[3]
-PROC = ROOT / "data/processed/clima"
-MUN = ROOT / "data/raw/clima/municipios_oeste_pr.geojson"
+PROC = ROOT / "data/processed/clima_pr"
+MUN = ROOT / "data/raw/clima_pr/municipios_pr.geojson"
 DLAT, DLON = 0.5, 0.625
 STATS = ["n_anos", "media", "mediana", "p20", "p80", "media_1991_2020", "mediana_1991_2020",
          "p20_1991_2020", "p80_1991_2020"]

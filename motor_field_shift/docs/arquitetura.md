@@ -19,7 +19,7 @@ Pre-compute only what is expensive to compute. Anything that is just reading a p
 | Legal rules / ZARC | Local table | Small, static data |
 | FTW (field boundaries) | Outside the flow for now: the polygon comes from the client (drawn on the map / CAR) | FTW is only used for the demo tile (field 72638) |
 
-**Note:** for the hackathon, MapBiomas and NASADEM were downloaded clipped to the whole of Western Paraná, so the pitch works offline. In a production app they become on-demand reads.
+**Note:** for the hackathon, MapBiomas and NASADEM were downloaded clipped to the whole of Paraná, so the pitch works offline. In a production app they become on-demand reads.
 
 ## 3. Flow
 
@@ -51,7 +51,7 @@ src/field_shift/
 
 ## 5. Disk space (Western Paraná)
 
-Estimate; update with the real numbers after the downloads.
+Estimate for the Oeste pilot; update with the real numbers after the downloads. The engine now reads the whole-of-Paraná versions (`*_pr`, ~2 GB in `data/`, the largest being `slope_pct.tif` at 1.1 GB; see `api/README.md`).
 
 | Dataset | Estimated size |
 |---|---|

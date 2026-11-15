@@ -1,4 +1,4 @@
-"""Recorta MapBiomas (2000-2024) e relevo (NASADEM) da mesorregiao Oeste do PR por um poligono.
+"""Recorta MapBiomas (2000-2024) e relevo (NASADEM) do Parana por um poligono.
 
 Entrada: shapely Polygon/MultiPolygon em EPSG:4326, ou GeoJSON dict (Geometry, Feature ou FeatureCollection).
 """
@@ -18,10 +18,11 @@ from shapely.geometry import shape
 from shapely.ops import unary_union
 
 ROOT = Path(__file__).resolve().parents[3]
-MB = ROOT / "data/raw/mapbiomas_oeste_pr"
-DEM = ROOT / "data/raw/nasadem_oeste_pr/elev.tif"
-SLOPE = ROOT / "data/processed/relevo_oeste_pr/slope_pct.tif"
-REGIAO = ROOT / "data/raw/regiao/oeste_pr.geojson"
+MB = ROOT / "data/raw/mapbiomas_pr"
+DEM = ROOT / "data/raw/nasadem_pr/elev.tif"
+SLOPE = ROOT / "data/processed/relevo_pr/slope_pct.tif"
+REGIAO = ROOT / "data/raw/regiao/pr.geojson"  # whole state of Paraná
+OESTE = ROOT / "data/raw/regiao/oeste_pr.geojson"  # Oeste mesoregion: reference region for costs, prices and calendar
 LEGENDA = ROOT / "data/processed/ftw/mapbiomas_legend_c10.json"
 
 # classes Embrapa de declividade (limite superior %, nome)
@@ -50,8 +51,18 @@ def _legenda() -> dict[int, str]:
     return {int(k): v for k, v in json.loads(LEGENDA.read_text()).items()}
 
 
+@lru_cache(maxsize=1)
+def _oeste():
+    return gpd.read_file(OESTE).geometry.iloc[0]
+
+
+def dentro_do_oeste(poligono) -> bool:
+    """True if the geometry (point or polygon) lies inside the Oeste mesoregion (reference region of costs/calendar)."""
+    return bool(_oeste().buffer(1e-4).contains(_geom(poligono)))
+
+
 def dentro_da_regiao(poligono) -> bool:
-    """True se o poligono esta inteiramente dentro da mesorregiao Oeste (tolerancia ~10 m)."""
+    """True se o poligono esta inteiramente dentro do Parana (tolerancia ~10 m)."""
     g = _geom(poligono)
     return bool(_regiao().buffer(1e-4).contains(g))
 

@@ -19,8 +19,8 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "data/processed/pam"
-ANUAIS = ROOT / "data/processed/clima/indicadores_anuais.parquet"
-PAM = ROOT / "data/raw/ibge/pam_oeste_pr.parquet"
+ANUAIS = ROOT / "data/processed/clima_pr/indicadores_anuais.parquet"
+PAM = ROOT / "data/raw/ibge/pam_pr.parquet"
 TOLEDO = "4127700"
 IND = {"geada": "geada_safrinha_semeadura_1502_le3", "veranico": "veranico_safrinha_ge15"}
 

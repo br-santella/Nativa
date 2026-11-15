@@ -34,19 +34,41 @@ def test_recomendacao_talhao_demo(real):
     assert j["metodologia"]["formula"]
 
 
-def test_fora_da_regiao(real):
-    r = real.post("/v1/diagnostico", json={"area": {"lat": -23.55, "lon": -46.63}})
+def _square(lat: float, lon: float, d: float = 0.003) -> dict:
+    return {"type": "Polygon", "coordinates": [[[lon - d, lat - d], [lon + d, lat - d], [lon + d, lat + d],
+                                                [lon - d, lat + d], [lon - d, lat - d]]]}
+
+
+@pytest.mark.parametrize("lat,lon", [(-23.55, -46.63), (-27.60, -48.55)])  # São Paulo (SP), Florianópolis (SC)
+def test_fora_da_regiao(real, lat, lon):
+    r = real.post("/v1/diagnostico", json={"area": {"lat": lat, "lon": lon}})
     assert r.status_code == 422 and r.json()["erro"] == "fora_da_regiao"
+
+
+@pytest.mark.parametrize("lat,lon", [(-23.30, -51.30), (-25.10, -50.00)])  # soy fields near Londrina and Ponta Grossa
+def test_pr_fora_do_oeste_tem_aviso_de_regiao(real, lat, lon):
+    r = real.post("/v1/recomendacao", json={"area": {"geometry": _square(lat, lon)}, **RA})
+    assert r.status_code == 200, r.text
+    j = r.json()
+    assert j["ranking"]
+    avisos = " ".join(j["avisos"])
+    assert "fora do Oeste do Paraná" in avisos and "ADAPAR" in avisos and "custos" in avisos
+
+
+def test_oeste_sem_aviso_de_regiao(real):
+    r = real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA})
+    assert r.status_code == 200
+    assert not any("fora do Oeste do Paraná" in a for a in r.json()["avisos"])
 
 
 def test_notas_72638(real):
     r = real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "semeadura_safrinha": "01/02"})
     rk = r.json()["ranking"]
     notas = {i.get("id_legado"): i["nota"] for i in rk if "id_legado" in i}  # as 6 rotações antigas (soja no verão)
-    assert notas["milho_braquiaria"] == 0.814
-    assert notas["milho_safrinha"] == 0.757 and notas["milheto_crotalaria"] == 0.756
-    assert notas["aveia"] == 0.698 and notas["pousio"] == 0.547 and notas["trigo"] == 0.466
-    assert rk[0]["margem"]["incremental_r_ha"] == 1033 and rk[0]["margem"]["escala_S_r_ha"] == 1083
+    assert notas["milho_braquiaria"] == 0.764
+    assert notas["milho_safrinha"] == 0.709 and notas["milheto_crotalaria"] == 0.759
+    assert notas["aveia"] == 0.703 and notas["pousio"] == 0.555 and notas["trigo"] == 0.471
+    assert rk[0]["margem"]["incremental_r_ha"] == 928 and rk[0]["margem"]["escala_S_r_ha"] == 1503
     assert rk[0]["id"] == "soja__milho_braquiaria" and rk[0]["card"]["por_que"].startswith("Em relação à atual (milho safrinha)")
 
 

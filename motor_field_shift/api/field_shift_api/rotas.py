@@ -24,7 +24,7 @@ from .schemas import (
 
 ERROS = {
     400: {"model": ErroOut, "description": "Entrada inválida segundo o motor (`entrada_invalida`)."},
-    422: {"model": ErroOut, "description": "Fora do Oeste do PR (`fora_da_regiao`) ou erro de validação do corpo."},
+    422: {"model": ErroOut, "description": "Fora do Paraná (`fora_da_regiao`) ou erro de validação do corpo."},
     500: {"model": ErroOut, "description": "Erro interno (`interno`)."},
 }
 
