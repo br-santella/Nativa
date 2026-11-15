@@ -3808,25 +3808,16 @@ small.error.full {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
-.settings-checks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 24px;
-  margin-top: 20px;
-  font-size: 13px;
+/* Known issues: the setup wizard's check cards (yellow accent), not bare browser checkboxes. */
+.property-settings .settings-checks {
+  margin-top: 18px;
 }
 .settings-checks label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
+  font-size: 13px;
 }
 .settings-checks input {
-  width: 18px;
-  min-height: 18px;
-  height: 18px;
+  min-height: 16px;
   padding: 0;
-  accent-color: var(--green);
 }
 .settings-report {
   display: flex;
@@ -4562,7 +4553,8 @@ small.error.full {
 /* Settings dropdowns and inputs: same field look as the setup wizard (dark fill, border, custom chevron, yellow focus). */
 .property-settings select,
 .settings-section select:not(.language-switcher select),
-.property-settings .preferences input:not([type=range]):not([type=checkbox]) {
+.property-settings .preferences input:not([type=range]):not([type=checkbox]),
+.property-settings .field input:not([type=checkbox]):not([type=radio]):not([type=file]) {
   appearance: none;
   -webkit-appearance: none;
   width: 100%;
@@ -4588,7 +4580,8 @@ small.error.full {
 }
 .property-settings select:hover,
 .settings-section select:not(.language-switcher select):hover,
-.property-settings .preferences input:not([type=range]):not([type=checkbox]):hover {
+.property-settings .preferences input:not([type=range]):not([type=checkbox]):hover,
+.property-settings .field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([readonly]):hover {
   border-color: #ffbf2280;
 }
 .property-settings select:focus-visible,
@@ -4638,4 +4631,46 @@ small.error.full {
 }
 .property-settings .preferences dd:has(.wizard-segmented) {
   display: flex;
+}
+/* Calculated silt: read-only, like the wizard's "calculated" field. */
+.property-settings .field.is-calculated .settings-derived {
+  line-height: 1;
+}
+.property-settings .field.is-calculated input {
+  border-style: dashed;
+  color: var(--agro-muted);
+  cursor: default;
+}
+/* Prices: "reference" placeholder and R$/sc unit, as in the wizard. */
+.settings-unit-input {
+  position: relative;
+  display: block;
+}
+.property-settings .settings-unit-input input {
+  padding-right: 52px;
+}
+.settings-unit-input small {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--agro-muted);
+  font-size: 11px;
+  pointer-events: none;
+}
+.property-settings .settings-note {
+  margin-top: 12px;
+  color: var(--agro-muted);
+  font-size: 12px;
+}
+.property-settings .settings-count {
+  margin-top: 22px;
+}
+.settings-count legend {
+  font-size: 12px;
+  color: #c4d0c9;
+  margin-bottom: 8px;
+}
+.settings-count .settings-note {
+  margin-top: 6px;
 }

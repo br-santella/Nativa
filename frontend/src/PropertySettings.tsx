@@ -27,8 +27,8 @@ type Props = {
 type Mode = "demo" | "point" | "polygon";
 type Place = { label: string; lat: number; lon: number };
 
-/** Silt is only a helper for the wizard's texture fields; the engine does not receive it. */
-const SOIL_FIELDS = soilFields.filter(([id]) => id !== "silte_pct");
+/** Silt is not sent to the engine; as in the wizard it is shown, computed from clay and sand (the three add up to 100%). */
+const SOIL_FIELDS = soilFields;
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 const fixed = (n: number) => n.toFixed(6);
 
@@ -270,6 +270,7 @@ export default function PropertySettings({ farm, inputs, pesos, savedAt, report,
               <div><dt>{t("Município")}</dt><dd>{sample.municipio}, PR</dd></div>
               <div><dt>{t("Área")}</dt><dd>{sample.area_ha} ha</dd></div>
               <div><dt>{t("Coordenadas")}</dt><dd>{sample.lat.toFixed(4)}, {sample.lon.toFixed(4)}</dd></div>
+              <div><dt>{t("Origem")}</dt><dd>{t("Contorno real de lavoura, mapeado por satélite (Fields of The World)")}</dd></div>
             </div>
             <LocationMap mode="view" latitude={String(sample.lat)} longitude={String(sample.lon)} focus={sampleFocus} zoom={14}/>
           </div>) : (<div className="settings-map">
@@ -384,7 +385,7 @@ export default function PropertySettings({ farm, inputs, pesos, savedAt, report,
           <section className="panel">
             <h2>{t("Problemas conhecidos")}</h2>
             <p>{t("Pragas, doenças ou problemas de solo que já apareceram na área.")}</p>
-            <div className="settings-checks">
+            <div className="wizard-choices settings-checks">
               {PROBLEMS.map(([id, label]) => (<label key={id}>
                   <input type="checkbox" checked={draft.problemas_area.includes(id)} onChange={() => set({ problemas_area: draft.problemas_area.includes(id) ? draft.problemas_area.filter((x) => x !== id) : [...draft.problemas_area, id] })}/>
                   {t(label)}
@@ -413,11 +414,17 @@ export default function PropertySettings({ farm, inputs, pesos, savedAt, report,
           {draft ? (<>
               <p>{t("Em branco, usamos dados públicos de solo quando disponíveis.")}</p>
               <div className="fields-grid settings-fields">
-                {SOIL_FIELDS.map(([id, label]) => (<label key={id} className="field">
-                    <span>{t(label)}</span>
-                    <input type="number" step="any" min={id === "ph" ? 3 : 0} max={soilMax[id] ?? 100} value={draft.analise_solo?.[id] ?? ""} onChange={(e) => setSoil(id, e.target.value)}/>
-                  </label>))}
+                {SOIL_FIELDS.map(([id, label]) => id === "silte_pct"
+                    ? (<label key={id} className="field is-calculated">
+                        <span>{t(label)} <small className="settings-derived">{t("• calculado")}</small></span>
+                        <input type="number" readOnly tabIndex={-1} value={soilTest?.argila_pct !== undefined && soilTest?.areia_pct !== undefined ? Math.max(0, Math.round((100 - soilTest.argila_pct - soilTest.areia_pct) * 10) / 10) : ""}/>
+                      </label>)
+                    : (<label key={id} className="field">
+                        <span>{t(label)}</span>
+                        <input type="number" step="any" min={id === "ph" ? 3 : 0} max={soilMax[id] ?? 100} value={draft.analise_solo?.[id] ?? ""} onChange={(e) => setSoil(id, e.target.value)}/>
+                      </label>))}
               </div>
+              <p className="wizard-hint settings-note">{t("Argila, silte e areia somam 100%: preencha argila e areia e calculamos o silte.")}</p>
             </>) : (<div className="fields-grid settings-fields">
               <label className="field"><span>{t("pH")}</span><input type="number" min={0} max={14} step=".1" value={draftFarm.ph} onChange={(e) => field("ph", e.target.value)}/></label>
               <label className="field"><span>{t("Matéria orgânica (%)")}</span><input type="number" min={0} max={100} step=".1" value={draftFarm.organic} onChange={(e) => field("organic", e.target.value)}/></label>
@@ -441,15 +448,17 @@ export default function PropertySettings({ farm, inputs, pesos, savedAt, report,
             <div className="fields-grid settings-fields">
               {commodities.map(([id, label]) => (<label key={id} className="field">
                   <span>{t(label)}</span>
-                  <input type="number" min="0" step="any" value={draft.ajustes?.precos[id] ?? ""} onChange={(e) => setPrice(id, e.target.value)}/>
+                  <span className="settings-unit-input">
+                    <input type="number" min="0" step="any" placeholder={t("referência")} value={draft.ajustes?.precos[id] ?? ""} onChange={(e) => setPrice(id, e.target.value)}/>
+                    <small>R$/sc</small>
+                  </span>
                 </label>))}
-              <label className="field">
-                <span>{t("Alternativas à sua rotação atual")}</span>
-                <select value={draft.n_alternativas} onChange={(e) => set({ n_alternativas: Number(e.target.value) })}>
-                  {[1, 2, 3, 4, 5, 6].map((n) => (<option key={n} value={n}>{n}</option>))}
-                </select>
-              </label>
             </div>
+            <fieldset className="wizard-buyers settings-count">
+              <legend>{t("Alternativas à sua rotação atual")}</legend>
+              <div className="wizard-pills">{[1, 2, 3, 4, 5, 6].map((n) => (<label key={n}><input type="radio" name="settings-count" checked={draft.n_alternativas === n} onChange={() => set({ n_alternativas: n })}/><span>{n}</span></label>))}</div>
+              <p className="wizard-hint settings-note">{t("O motor mostra até esse número de opções, ordenadas pela nota. Mais opções deixam a comparação mais ampla.")}</p>
+            </fieldset>
           </section>)}
       </div>
 
