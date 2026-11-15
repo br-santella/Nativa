@@ -8,7 +8,9 @@ Subcomandos (idempotentes: pulam o que já existe; --force refaz):
              dos 50 municípios -> data/raw/ibge/pam_oeste_pr.parquet (formato longo).
   all        os dois.
 
-Uso: uv run python ingest/solo_pam_oeste_pr.py {soilgrids|pam|all} [--force]
+Uso: uv run python ingest/solo_pam_oeste_pr.py {soilgrids|pam|all} [--force] [--regiao oeste_pr|pr]
+  --regiao pr: Paraná inteiro (399 municípios; lê regiao/pr.geojson e municipios_pr.geojson, gerados por
+  ingest/mapbiomas_relevo_oeste_pr.py --regiao pr) -> data/raw/soilgrids_pr/ e data/raw/ibge/pam_pr.parquet.
 """
 import argparse
 import time
@@ -25,6 +27,7 @@ from rasterio.windows import from_bounds
 
 ROOT = Path(__file__).resolve().parents[1]
 REG = ROOT / "data/raw/regiao"
+SUF = "oeste_pr"
 SG = ROOT / "data/raw/soilgrids_oeste_pr"
 PAM = ROOT / "data/raw/ibge/pam_oeste_pr.parquet"
 VRT = "/vsicurl/https://files.isric.org/soilgrids/latest/data/{p}/{p}_{d}_mean.vrt"
@@ -41,8 +44,15 @@ RES = 0.0025  # graus
 ESCALAS = {"clay": 10.0, "sand": 10.0, "silt": 10.0, "soc": 10.0, "phh2o": 10.0, "bdod": 100.0}
 
 
+def configurar(regiao):
+    global SUF, SG, PAM
+    SUF = regiao
+    SG = ROOT / f"data/raw/soilgrids_{regiao}"
+    PAM = ROOT / f"data/raw/ibge/pam_{regiao}.parquet"
+
+
 def bbox():
-    b = gpd.read_file(REG / "oeste_pr.geojson").total_bounds
+    b = gpd.read_file(REG / f"{SUF}.geojson").total_bounds
     return b[0] - MARGEM, b[1] - MARGEM, b[2] + MARGEM, b[3] + MARGEM
 
 
@@ -119,7 +129,7 @@ def pam(force=False):
         print("já existe:", PAM)
         return
     PAM.parent.mkdir(parents=True, exist_ok=True)
-    munis = [str(int(c)) for c in gpd.read_file(REG / "municipios_oeste_pr.geojson")["cod_ibge"]]
+    munis = [str(int(c)) for c in gpd.read_file(REG / f"municipios_{SUF}.geojson")["cod_ibge"]]
     linhas = []
     for tabela, vars_, prods in [("1612", {**VARS, **VAR_VALOR}, PROD_1612), ("839", VARS, PROD_839)]:
         for i in range(0, len(munis), 10):
@@ -142,8 +152,10 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["soilgrids", "pam", "all"])
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--regiao", choices=["oeste_pr", "pr"], default="oeste_pr")
     ap.add_argument("--props", nargs="*", help="só estas propriedades do SoilGrids (permite rodar em paralelo)")
     a = ap.parse_args()
+    configurar(a.regiao)
     if a.cmd in ("soilgrids", "all"):
         soilgrids(a.force, a.props)
     if a.cmd in ("pam", "all"):

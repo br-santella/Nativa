@@ -7,3 +7,5 @@ data/processed/
 .netrc
 .env
 .venv-ftw/
+data/cache_contexto/
+data/logs/

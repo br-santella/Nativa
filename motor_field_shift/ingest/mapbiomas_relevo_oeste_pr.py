@@ -1,8 +1,13 @@
 """Ingestao regional (mesorregiao Oeste do PR, IBGE 4106): limite, MapBiomas C10 2000-2024, NASADEM + declividade.
 
-Idempotente: pula o que ja existe. Uso: uv run python ingest/mapbiomas_relevo_oeste_pr.py
+Idempotente: pula o que ja existe.
+Uso: uv run python ingest/mapbiomas_relevo_oeste_pr.py [--regiao oeste_pr|pr]
+  --regiao pr: Parana inteiro (UF 41, 399 municipios); grava em *_pr (regiao/pr.geojson, mapbiomas_pr/,
+  nasadem_pr/, relevo_pr/). Default oeste_pr = comportamento original.
 """
+import argparse
 import json
+import time
 from pathlib import Path
 
 import geopandas as gpd
@@ -10,10 +15,16 @@ import numpy as np
 import rasterio
 import requests
 from rasterio.warp import Resampling, calculate_default_transform, reproject
-from rasterio.windows import from_bounds
+from rasterio.windows import Window, from_bounds
 
 ROOT = Path(__file__).resolve().parents[1]
 REG = ROOT / "data/raw/regiao"
+REGIOES = {
+    # meso=None -> estado inteiro (UF 41); blocos=True -> processa em blocos (raster grande demais p/ a RAM)
+    "oeste_pr": dict(sufixo="oeste_pr", nome="Oeste Paranaense", meso=4106, n_mun=50, blocos=False),
+    "pr": dict(sufixo="pr", nome="Paraná", meso=None, n_mun=399, blocos=True),
+}
+CFG = REGIOES["oeste_pr"]
 MB = ROOT / "data/raw/mapbiomas_oeste_pr"
 DEM = ROOT / "data/raw/nasadem_oeste_pr/elev.tif"
 SLOPE = ROOT / "data/processed/relevo_oeste_pr/slope_pct.tif"
@@ -24,13 +35,24 @@ MARGEM = 0.05
 IBGE = "https://servicodados.ibge.gov.br"
 
 
+def configurar(regiao):
+    global CFG, MB, DEM, SLOPE
+    CFG = REGIOES[regiao]
+    suf = CFG["sufixo"]
+    MB = ROOT / f"data/raw/mapbiomas_{suf}"
+    DEM = ROOT / f"data/raw/nasadem_{suf}/elev.tif"
+    SLOPE = ROOT / f"data/processed/relevo_{suf}/slope_pct.tif"
+
+
 def limite():
-    uniao, muni = REG / "oeste_pr.geojson", REG / "municipios_oeste_pr.geojson"
+    suf, meso = CFG["sufixo"], CFG["meso"]
+    uniao, muni = REG / f"{suf}.geojson", REG / f"municipios_{suf}.geojson"
     if not (uniao.exists() and muni.exists()):
         REG.mkdir(parents=True, exist_ok=True)
+        loc, malha = (f"mesorregioes/{meso}", f"mesorregioes/{meso}") if meso else ("estados/41", "estados/41")
         nomes = {int(m["id"]): m["nome"] for m in requests.get(
-            f"{IBGE}/api/v1/localidades/mesorregioes/4106/municipios", timeout=60).json()}
-        r = requests.get(f"{IBGE}/api/v3/malhas/mesorregioes/4106", timeout=180, params=dict(
+            f"{IBGE}/api/v1/localidades/{loc}/municipios", timeout=60).json()}
+        r = requests.get(f"{IBGE}/api/v3/malhas/{malha}", timeout=600, params=dict(
             formato="application/vnd.geo+json", intrarregiao="municipio", qualidade="maxima"))
         r.raise_for_status()
         tmp = REG / "_tmp.geojson"
@@ -40,10 +62,10 @@ def limite():
         g["cod_ibge"] = g["codarea"].astype(int)
         g["nome"] = g["cod_ibge"].map(nomes)
         g = g[["cod_ibge", "nome", "geometry"]]
-        assert len(g) == len(nomes) == 50, (len(g), len(nomes))
+        assert len(g) == len(nomes) == CFG["n_mun"], (len(g), len(nomes))
         g.to_file(muni, driver="GeoJSON")
-        gpd.GeoDataFrame({"nome": ["Oeste Paranaense"], "cod_meso": [4106]},
-                         geometry=[g.union_all()], crs=4326).to_file(uniao, driver="GeoJSON")
+        info = {"nome": [CFG["nome"]], "cod_meso": [meso]} if meso else {"nome": [CFG["nome"]], "cod_uf": [41]}
+        gpd.GeoDataFrame(info, geometry=[g.union_all()], crs=4326).to_file(uniao, driver="GeoJSON")
         print("limite salvo,", len(g), "municipios")
     b = gpd.read_file(uniao).total_bounds
     return (b[0] - MARGEM, b[1] - MARGEM, b[2] + MARGEM, b[3] + MARGEM)
@@ -63,18 +85,108 @@ def mapbiomas(bounds):
             continue
         with src:
             win = from_bounds(*bounds, transform=src.transform).round_offsets().round_lengths()
-            data = src.read(1, window=win).astype("uint8")
-            prof = dict(driver="GTiff", height=win.height, width=win.width, count=1, dtype="uint8",
+            prof = dict(height=win.height, width=win.width, count=1, dtype="uint8",
                         crs=src.crs, transform=src.window_transform(win), nodata=0,
                         compress="deflate", predictor=2, tiled=True, blockxsize=512, blockysize=512)
-        tmp = dst.with_suffix(".tmp")
-        with rasterio.open(tmp, "w", driver="GTiff", **{k: v for k, v in prof.items() if k != "driver"}) as o:
-            o.write(data, 1)
+            tmp = dst.with_suffix(".tmp")
+            # leitura em faixas de linhas: o PR inteiro nao cabe confortavelmente de uma vez na RAM
+            with rasterio.open(tmp, "w", driver="GTiff", **prof) as o:
+                for r0 in range(0, win.height, 4096):
+                    h = min(4096, win.height - r0)
+                    sub = Window(win.col_off, win.row_off + r0, win.width, h)
+                    o.write(src.read(1, window=sub).astype("uint8"), 1, window=Window(0, r0, win.width, h))
+            shape = (win.height, win.width)
         tmp.rename(dst)
-        print("mapbiomas", y, data.shape, flush=True)
+        print("mapbiomas", y, shape, flush=True)
+
+
+def _dem_blocos(bounds):
+    """NASADEM em blocos de BLOCO x BLOCO pixels (grade unica de 1 arcsec), gravados direto no GeoTIFF."""
+    import planetary_computer as pc
+    import pystac_client
+    from odc.geo.geobox import GeoBox
+    from odc.stac import load
+    DEM.parent.mkdir(parents=True, exist_ok=True)
+    cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1", modifier=pc.sign_inplace)
+    items = list(cat.search(collections=["nasadem"], bbox=list(bounds)).items())
+    print("itens NASADEM:", len(items), flush=True)
+    # grade alinhada a multiplos inteiros de 1 arcsec (mesma convencao do elev.tif do Oeste)
+    bounds = (np.floor(bounds[0] * 3600) / 3600, np.floor(bounds[1] * 3600) / 3600,
+              np.ceil(bounds[2] * 3600) / 3600, np.ceil(bounds[3] * 3600) / 3600)
+    gbox = GeoBox.from_bbox(bounds, "EPSG:4326", resolution=1 / 3600)
+    h, w = gbox.shape.y, gbox.shape.x
+    tr = rasterio.transform.from_origin(bounds[0], bounds[3], 1 / 3600, 1 / 3600)
+    prof = dict(driver="GTiff", height=h, width=w, count=1, dtype="float32", crs="EPSG:4326", transform=tr,
+                nodata=np.nan, compress="deflate", predictor=3, tiled=True, blockxsize=512, blockysize=512)
+    tmp = DEM.with_suffix(".tmp")
+    B = 3072
+    with rasterio.open(tmp, "w", **prof) as o:
+        for r0 in range(0, h, B):
+            for c0 in range(0, w, B):
+                r1, c1 = min(r0 + B, h), min(c0 + B, w)
+                for tent in range(4):
+                    try:
+                        ds = load(items, bands=["elevation"], geobox=gbox[r0:r1, c0:c1], chunks={},
+                                  groupby="solar_day")
+                        el = ds.elevation.max("time") if "time" in ds.elevation.dims else ds.elevation
+                        arr = el.compute().values.astype("float32")
+                        break
+                    except Exception as ex:  # noqa: BLE001 - rede instavel
+                        print("  retry bloco", r0, c0, type(ex).__name__, flush=True)
+                        time.sleep(10)
+                else:
+                    raise RuntimeError(f"NASADEM falhou no bloco {r0},{c0}")
+                arr = np.where(arr < -1000, np.nan, arr)
+                o.write(arr, 1, window=Window(c0, r0, c1 - c0, r1 - r0))
+            print(f"  NASADEM linha {r0}/{h}", flush=True)
+    tmp.rename(DEM)
+    print("elev.tif", (h, w), flush=True)
+
+
+def _declividade(dem, transform, crs):
+    """Declividade (%) de um array: reprojeta para UTM 22S (metros), gradiente, volta para a grade original."""
+    bounds = rasterio.transform.array_bounds(dem.shape[0], dem.shape[1], transform)
+    dst_crs = "EPSG:31982"
+    tr, w, h = calculate_default_transform(crs, dst_crs, dem.shape[1], dem.shape[0], *bounds, resolution=30)
+    utm = np.full((h, w), np.nan, "float32")
+    reproject(dem, utm, src_transform=transform, src_crs=crs, dst_transform=tr,
+              dst_crs=dst_crs, resampling=Resampling.bilinear, src_nodata=np.nan, dst_nodata=np.nan)
+    gy, gx = np.gradient(utm, 30.0)
+    sl = (np.hypot(gx, gy) * 100).astype("float32")
+    out = np.full(dem.shape, np.nan, "float32")
+    reproject(sl, out, src_transform=tr, src_crs=dst_crs, dst_transform=transform,
+              dst_crs=crs, resampling=Resampling.bilinear, src_nodata=np.nan, dst_nodata=np.nan)
+    out[np.isnan(dem)] = np.nan
+    return out
+
+
+def _slope_blocos():
+    """Declividade em blocos com halo (mesmo algoritmo do caso pequeno), para rasters que nao cabem na RAM."""
+    B, HALO = 3000, 48
+    with rasterio.open(DEM) as src:
+        prof = src.profile | dict(compress="deflate", predictor=3)
+        tmp = SLOPE.with_suffix(".tmp")
+        with rasterio.open(tmp, "w", **prof) as o:
+            for r0 in range(0, src.height, B):
+                for c0 in range(0, src.width, B):
+                    r1, c1 = min(r0 + B, src.height), min(c0 + B, src.width)
+                    ra, ca = max(r0 - HALO, 0), max(c0 - HALO, 0)
+                    rb, cb = min(r1 + HALO, src.height), min(c1 + HALO, src.width)
+                    win = Window(ca, ra, cb - ca, rb - ra)
+                    dem = src.read(1, window=win)
+                    if np.isnan(dem[r0 - ra:r1 - ra, c0 - ca:c1 - ca]).all():
+                        out = np.full(dem.shape, np.nan, "float32")
+                    else:
+                        out = _declividade(dem, src.window_transform(win), src.crs)
+                    o.write(out[r0 - ra:r1 - ra, c0 - ca:c1 - ca], 1, window=Window(c0, r0, c1 - c0, r1 - r0))
+                print(f"  slope linha {r0}/{src.height}", flush=True)
+    tmp.rename(SLOPE)
+    print("slope_pct.tif", (src.height, src.width), flush=True)
 
 
 def nasadem(bounds):
+    if not DEM.exists() and CFG["blocos"]:
+        _dem_blocos(bounds)
     if not DEM.exists():
         import planetary_computer as pc
         import pystac_client
@@ -102,6 +214,9 @@ def nasadem(bounds):
             o.write(arr.astype("float32"), 1)
         tmp.rename(DEM)
         print("elev.tif", arr.shape, flush=True)
+    if not SLOPE.exists() and CFG["blocos"]:
+        SLOPE.parent.mkdir(parents=True, exist_ok=True)
+        _slope_blocos()
     if not SLOPE.exists():
         SLOPE.parent.mkdir(parents=True, exist_ok=True)
         # declividade: reprojeta para UTM 22S (metros), gradiente, volta para 4326 na grade original
@@ -128,10 +243,19 @@ def nasadem(bounds):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--regiao", choices=sorted(REGIOES), default="oeste_pr")
+    ap.add_argument("--so", choices=["limite", "nasadem", "mapbiomas"], help="roda so uma etapa")
+    a = ap.parse_args()
+    configurar(a.regiao)
     b = limite()
     print("bbox", b)
-    nasadem(b)
-    mapbiomas(b)
+    if a.so == "limite":
+        return
+    if a.so in (None, "nasadem"):
+        nasadem(b)
+    if a.so in (None, "mapbiomas"):
+        mapbiomas(b)
 
 
 if __name__ == "__main__":

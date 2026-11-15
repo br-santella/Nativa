@@ -1,6 +1,8 @@
 """Ingestão de clima da mesorregião Oeste do Paraná (NASA POWER diário + INMET).
 
-Uso: uv run python ingest/clima_oeste_pr.py {area,power,inmet,indicadores,validacao,all}
+Uso: uv run python ingest/clima_oeste_pr.py {area,power,inmet,indicadores,validacao,all} [--regiao oeste_pr|pr]
+--regiao pr aplica a mesma lógica (células 0,5x0,625 + centroides de município) ao Paraná inteiro (UF 41),
+gravando em data/raw/clima_pr/ e data/processed/clima_pr/. Default: oeste_pr (comportamento original).
 Idempotente: pula o que já está em cache / já processado.
 """
 from __future__ import annotations
@@ -24,8 +26,15 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-RAW = ROOT / "data/raw/clima"
-PROC = ROOT / "data/processed/clima"
+REGIOES = {
+    # sufixo dos caminhos; mesorregião IBGE (None = estado inteiro); qualidade da malha
+    "oeste_pr": dict(raw="data/raw/clima", proc="data/processed/clima", meso=4106),
+    "pr": dict(raw="data/raw/clima_pr", proc="data/processed/clima_pr", meso=None),
+}
+RAW = ROOT / REGIOES["oeste_pr"]["raw"]
+PROC = ROOT / REGIOES["oeste_pr"]["proc"]
+MESO = REGIOES["oeste_pr"]["meso"]
+REGIAO = "oeste_pr"
 MUN_GEOJSON = RAW / "municipios_oeste_pr.geojson"
 POWER_DIR = RAW / "power"
 INMET_ZIPS = RAW / "inmet/zips"
@@ -38,11 +47,23 @@ UA = {"User-Agent": "field-shift-hackathon/0.1 (pesquisa academica)"}
 
 
 # ----------------------------------------------------------------------------- 1. Área
+def configurar(regiao: str):
+    """Aponta os caminhos globais para a região escolhida (default do módulo: oeste_pr)."""
+    global RAW, PROC, MESO, REGIAO, MUN_GEOJSON, POWER_DIR, INMET_ZIPS
+    c = REGIOES[regiao]
+    REGIAO, MESO = regiao, c["meso"]
+    RAW, PROC = ROOT / c["raw"], ROOT / c["proc"]
+    MUN_GEOJSON = RAW / f"municipios_{regiao}.geojson"
+    POWER_DIR = RAW / "power"
+    INMET_ZIPS = RAW / "inmet/zips"
+
+
 def cmd_area() -> gpd.GeoDataFrame:
     if MUN_GEOJSON.exists():
         return gpd.read_file(MUN_GEOJSON)
     RAW.mkdir(parents=True, exist_ok=True)
-    lista = requests.get("https://servicodados.ibge.gov.br/api/v1/localidades/mesorregioes/4106/municipios",
+    loc = f"mesorregioes/{MESO}" if MESO else "estados/41"
+    lista = requests.get(f"https://servicodados.ibge.gov.br/api/v1/localidades/{loc}/municipios",
                          timeout=60, headers=UA).json()
     nomes = {str(m["id"]): m["nome"] for m in lista}
     malha = requests.get("https://servicodados.ibge.gov.br/api/v3/malhas/estados/41",
@@ -177,7 +198,9 @@ def cmd_validacao():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["area", "power", "inmet", "indicadores", "validacao", "all"])
+    ap.add_argument("--regiao", choices=sorted(REGIOES), default="oeste_pr")
     a = ap.parse_args()
+    configurar(a.regiao)
     if a.cmd in ("area",):
         cmd_area()
     if a.cmd in ("power", "all"):
