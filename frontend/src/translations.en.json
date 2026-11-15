@@ -789,5 +789,19 @@
   "Desfazer exclusão": "Undo deletion",
   "Excluir cultivo": "Delete crop",
   "Nenhum cultivo registrado.": "No crops registered.",
-  "Ações": "Actions"
+  "Ações": "Actions",
+  "Histórico": "History",
+  "Acompanhe suas safras e as condições climáticas da propriedade.": "Follow your growing seasons and the climate conditions on your farm.",
+  "Resumo climático": "Climate summary",
+  "Clique em um indicador para explorar os detalhes.": "Select an indicator to explore its details.",
+  "Índice de vegetação (NDVI)": "Vegetation index (NDVI)",
+  "Jul–Dez": "Jul–Dec",
+  "Jan–Dez": "Jan–Dec",
+  "Séries demonstrativas, não medições da propriedade.": "Demonstration series, not measurements from your farm.",
+  "Ano": "Year",
+  "12 meses": "12 months",
+  "6 meses (Jul–Dez)": "6 months (Jul–Dec)",
+  "Interpretação e limitações": "Interpretation and limitations",
+  "As linhas tracejadas são ilustrativas; não representam uma previsão meteorológica.": "Dashed lines are illustrative; they do not represent a weather forecast.",
+  "* Data prevista, não observada.": "* Expected date, not observed."
 }

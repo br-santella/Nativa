@@ -1,0 +1,65 @@
+/* Crop & Climate: surfaces and palette shared with Overview. */
+.crop-climate-page { color: #edf1e6; }
+.crop-climate-layout { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(260px, 1fr); gap: 24px; align-items: start; }
+.crop-climate-main { min-width: 0; display: grid; gap: 24px; }
+.crop-climate-main > * { min-width: 0; }
+.crop-climate-page .panel { background: #071719; border: 1px solid #263e43; border-radius: 12px; padding: 24px; }
+.crop-climate-page .section-heading { align-items: center; flex-wrap: wrap; gap: 16px; }
+.crop-climate-page h2 { font-size: 21px; font-weight: 500; line-height: 1.4; }
+.crop-climate-page :is(.section-heading small, .crop-climate-sidebar header > small) { display: block; color: #96b2a5; font-size: 11px; margin-bottom: 6px; }
+.crop-climate-page .button { border-radius: 6px; font-size: 13px; }
+.crop-climate-page :is(.panel p, .panel > small) { color: #96b2a5; font-size: 12px; line-height: 1.7; }
+.crop-climate-page .crop-records table { width: 100%; min-width: 680px; }
+.crop-climate-page .crop-records :is(td, th) { padding: 18px 12px; font-size: 12px; }
+.crop-climate-page .crop-records td:first-child { font-weight: 500; color: #edf1e6; }
+.crop-climate-page .table-scroll { margin: 20px -12px; }
+.crop-climate-page .timeline-panel { margin: 0; }
+.crop-climate-page .timeline { min-width: 620px; }
+.crop-climate-page .crop-next-step { background: #0b2024; border: 1px solid #263e43; border-radius: 12px; margin: 0; padding: 24px; flex-wrap: wrap; gap: 16px; }
+.crop-climate-page .crop-climate-sidebar { padding: 24px; }
+.crop-climate-sidebar header h2 { margin: 0 0 8px; }
+.crop-climate-indicators { display: grid; }
+.climate-mini { display: block; width: 100%; min-width: 0; text-align: left; background: transparent; border: 0; border-bottom: 1px solid #263e43; color: #edf1e6; padding: 16px 0; cursor: pointer; border-radius: 0; }
+.climate-mini-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
+.climate-mini-heading > span:last-child { color: #96b2a5; }
+.climate-mini-value { display: block; font-size: 26px; font-weight: 500; margin-top: 8px; font-variant-numeric: tabular-nums; }
+.climate-mini-value small { font-size: 12px; }
+.climate-mini svg { width: 100%; height: 44px; display: block; margin: 8px 0; }
+.climate-mini-period { display: flex; justify-content: space-between; gap: 10px; color: #96b2a5; font-size: 10px; }
+.climate-mini-period > span { color: #62dca1; }
+.climate-mini:hover { background: #0b2024; }
+.climate-mini:focus-visible { outline: 2px solid #ffbf22; outline-offset: 4px; border-radius: 4px; }
+.crop-climate-page .climate-summary-note { margin-top: 20px; }
+.climate-detail { padding-top: 8px; }
+.climate-detail header > small { color: #96b2a5; font-size: 11px; }
+.climate-detail-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin: 24px 0; }
+.climate-detail-filters label { display: grid; gap: 8px; color: #96b2a5; font-size: 12px; }
+.climate-detail-filters select { min-height: 40px; }
+.climate-detail-filters > strong { margin-left: auto; font-size: 28px; font-variant-numeric: tabular-nums; }
+.climate-detail .chart { padding: 20px 0; }
+.climate-detail .chart svg { width: 100%; height: auto; max-height: 380px; }
+.climate-detail-explanation { border-top: 1px solid #263e43; padding-top: 16px; margin: 20px 0; }
+.climate-detail .two-col { gap: 20px; }
+.climate-detail .callout { flex-wrap: wrap; gap: 16px; margin-bottom: 0; }
+@media (max-width: 1100px) {
+  .crop-climate-layout { grid-template-columns: minmax(0, 1.9fr) minmax(240px, 1fr); gap: 16px; }
+  .crop-climate-page .panel { padding: 20px; }
+}
+@media (max-width: 900px) {
+  .crop-climate-layout { grid-template-columns: minmax(0, 1fr); }
+  .crop-climate-indicators { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+}
+@media (max-width: 540px) {
+  .crop-climate-page .panel { padding: 16px; }
+  .crop-climate-page .crop-records .section-heading { align-items: start; }
+  .crop-climate-page .crop-records .button { width: 100%; }
+  .crop-climate-indicators { gap: 0 16px; }
+  .climate-mini-heading { font-size: 12px; }
+  .climate-mini-value { font-size: 24px; }
+  .climate-mini-period { flex-direction: column; gap: 4px; }
+  .climate-detail-filters > strong { width: 100%; margin-left: 0; }
+  .climate-detail .two-col { grid-template-columns: 1fr; }
+}
+
+.crop-context { display: flex; flex-wrap: wrap; gap: 12px 24px; color: #96b2a5; font-size: 12px; }
+.crop-context strong { color: #edf1e6; font-weight: 500; }
