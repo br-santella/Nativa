@@ -1,7 +1,31 @@
-# Listas fechadas compartilhadas por catálogo, formulário da fazenda e frontend — frente 2.
-maquinas: []
-irrigacao: []
-mao_de_obra: []
-texturas: []
-finalidades: []
-criterios: []
+# Listas fechadas compartilhadas por catálogo, formulário da fazenda e frontend.
+maquinas:
+  - semeadora
+  - pulverizador
+  - colhedora
+
+irrigacao:
+  - sequeiro
+  - pivo_central
+  - aspersao
+  - gotejamento
+
+mao_de_obra:
+  - familiar
+  - contratada
+
+texturas:
+  - arenosa
+  - media
+  - argilosa
+
+finalidades:
+  - graos
+  - cobertura
+  - forragem
+
+criterios:
+  - risco_climatico
+  - cobertura_do_solo
+  - custo
+  - retornos
