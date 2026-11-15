@@ -9,8 +9,8 @@ TOLEDO, CURITIBA, FCO_BELTRAO_REGION = 4127700, 4106902, 4108403
 
 def test_every_parana_municipality_has_exactly_one_region():
     d = _load()
-    assert sorted(len(r["municipios"]) for r in d["ref"]["regioes"]) == [48, 84, 267]
-    codes = [c for r in d["ref"]["regioes"] for c in r["municipios"]]
+    assert sorted(len(r["municipalities"]) for r in d["ref"]["regions"]) == [48, 84, 267]
+    codes = [c for r in d["ref"]["regions"] for c in r["municipalities"]]
     assert len(codes) == len(set(codes)) == 399
 
 

@@ -5,8 +5,8 @@ from field_shift.income import cost_source
 from field_shift.income.income import _item, load_reference, yield_cost_factor
 
 REF = load_reference()
-SCALE = REF["custos"]["milho_1safra"]["escala_produtividade"]
-BASE_COST = REF["custos"]["milho_1safra"]["coe"]
+SCALE = REF["costs"]["milho_1safra"]["yield_scale"]
+BASE_COST = REF["costs"]["milho_1safra"]["coe"]
 
 
 def _yield(sc_ha, bad=None):
@@ -14,28 +14,28 @@ def _yield(sc_ha, bad=None):
 
 
 def test_scale_block_matches_the_conab_sheet():
-    assert SCALE["referencia_sc_ha"] == 200.0
-    assert SCALE["proporcional_r_ha"] == pytest.approx(sum(SCALE["componentes"].values()))
-    assert SCALE["proporcional_r_ha"] < BASE_COST  # the split never exceeds the whole variable cost
+    assert SCALE["reference_sc_ha"] == 200.0
+    assert SCALE["proportional_r_ha"] == pytest.approx(sum(SCALE["components"].values()))
+    assert SCALE["proportional_r_ha"] < BASE_COST  # the split never exceeds the whole variable cost
 
 
 def test_cost_at_reference_yield_is_unchanged():
-    item = _item(REF, {}, _yield(SCALE["referencia_sc_ha"]), "milho_1safra")
+    item = _item(REF, {}, _yield(SCALE["reference_sc_ha"]), "milho_1safra")
     assert item["custo"] == pytest.approx(BASE_COST)
     assert item["fator_escala_custo"] == pytest.approx(1.0)
 
 
 def test_lower_yield_removes_only_the_yield_driven_share():
     item = _item(REF, {}, _yield(140.0), "milho_1safra")
-    factor = 140.0 / SCALE["referencia_sc_ha"]
-    assert item["custo"] == pytest.approx(BASE_COST - SCALE["proporcional_r_ha"] * (1 - factor))
+    factor = 140.0 / SCALE["reference_sc_ha"]
+    assert item["custo"] == pytest.approx(BASE_COST - SCALE["proportional_r_ha"] * (1 - factor))
     assert item["custo_base"] == pytest.approx(BASE_COST)
     # the fixed share (seed, pesticides, machinery...) is untouched
-    assert item["custo"] > BASE_COST - SCALE["proporcional_r_ha"]
+    assert item["custo"] > BASE_COST - SCALE["proportional_r_ha"]
 
 
 def test_margin_is_far_less_negative_than_before():
-    old_margin = 140.0 * REF["precos"]["milho"]["valor"] - BASE_COST
+    old_margin = 140.0 * REF["prices"]["milho"]["value"] - BASE_COST
     new_margin = _item(REF, {}, _yield(140.0), "milho_1safra")["margem"]
     assert new_margin > old_margin + 1000
 
@@ -56,7 +56,7 @@ def test_farmer_cost_override_is_not_scaled():
 def test_crops_without_a_split_are_not_scaled():
     rend = {"soja": dict(sc_ha=60.0, cv=0.1, p20_sc_ha=50.0, anos="2016-2025")}
     item = _item(REF, {}, rend, "soja")
-    assert item["custo"] == pytest.approx(REF["custos"]["soja"]["coe"])
+    assert item["custo"] == pytest.approx(REF["costs"]["soja"]["coe"])
     assert item["fator_escala_custo"] is None
 
 

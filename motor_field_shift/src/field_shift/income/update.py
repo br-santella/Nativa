@@ -89,20 +89,20 @@ def prices() -> dict:
         v = pd.to_numeric(r[3:15], errors="coerce").dropna()  # 12 most recent months
         assert len(v) == 12, (product, len(v))
         out[key] = dict(
-            valor=round(float(v.mean()), 2), unidade="R$/sc 60 kg", estimativa=False,
-            fonte="SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; "
+            value=round(float(v.mean()), 2), unit="R$/sc 60 kg", estimate=False,
+            source="SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; "
                   "o regional Toledo/Cascavel só existe na série semanal da semana corrente)",
-            url=PRICES_URL, pagina=PRICES_PAGE_URL,
-            periodo=f"{cols[11].lower()} a {cols[0].lower()} (média de 12 meses)",
-            ultimo_mes=round(float(v.iloc[0]), 2))
-    out["feijao"]["fonte"] += (". Feijão = tipo preto: cerca de dois terços da área de 2ª safra do PR (estimativa do Deral reportada em 2026, data não confirmada); o feijão de cor tem preço bem maior (ex.: carioca/de cor R$ 360 contra preto R$ 320 em Apucarana na semana de 13/11/2026), então o resultado vale para o feijão preto")
+            url=PRICES_URL, page=PRICES_PAGE_URL,
+            period=f"{cols[11].lower()} a {cols[0].lower()} (média de 12 meses)",
+            last_month=round(float(v.iloc[0]), 2))
+    out["feijao"]["source"] += (". Feijão = tipo preto: cerca de dois terços da área de 2ª safra do PR (estimativa do Deral reportada em 2026, data não confirmada); o feijão de cor tem preço bem maior (ex.: carioca/de cor R$ 360 contra preto R$ 320 em Apucarana na semana de 13/11/2026), então o resultado vale para o feijão preto")
     m = out["milho"]
     out["sorgo"] = dict(
-        valor=round(m["valor"] * SORGHUM_CORN_RATIO, 2), unidade="R$/sc 60 kg", estimativa=True,
-        fonte=f"{ESTIMATED_TO_VALIDATE}: a SEAB/DERAL não publica preço do sorgo; usa {SORGHUM_CORN_RATIO:.0%} do preço do milho (média PR, mesmo período), "
+        value=round(m["value"] * SORGHUM_CORN_RATIO, 2), unit="R$/sc 60 kg", estimate=True,
+        source=f"{ESTIMATED_TO_VALIDATE}: a SEAB/DERAL não publica preço do sorgo; usa {SORGHUM_CORN_RATIO:.0%} do preço do milho (média PR, mesmo período), "
               f"razão dos preços mínimos, não de mercado: {SORGHUM_RATIO_SOURCE}",
-        razao_sobre_milho=SORGHUM_CORN_RATIO,
-        url=m["url"], pagina=m["pagina"], periodo=m["periodo"], ultimo_mes=round(m["ultimo_mes"] * SORGHUM_CORN_RATIO, 2))
+        ratio_to_corn=SORGHUM_CORN_RATIO,
+        url=m["url"], page=m["page"], period=m["period"], last_month=round(m["last_month"] * SORGHUM_CORN_RATIO, 2))
     return out
 
 
@@ -126,8 +126,8 @@ def yield_scaling(f: Path, tab: str) -> dict:
     parts = {}
     for label, pat in YIELD_DRIVEN_ITEMS.items():
         parts[label] = round(float(d[d[0].astype(str).str.contains(pat, regex=False)].iloc[0, 1]), 2)
-    return dict(referencia_sc_ha=round(ref_kg / 60, 2), proporcional_r_ha=round(sum(parts.values()), 2), componentes=parts,
-                premissa="estimativa — validar: só fertilizantes, transporte externo, armazenagem e CESSR escalam com a produtividade; "
+    return dict(reference_sc_ha=round(ref_kg / 60, 2), proportional_r_ha=round(sum(parts.values()), 2), components=parts,
+                assumption="estimativa — validar: só fertilizantes, transporte externo, armazenagem e CESSR escalam com a produtividade; "
                          "sementes, defensivos, máquinas, mão de obra, administração, assistência técnica e juros ficam fixos por hectare")
 
 
@@ -137,25 +137,25 @@ def costs() -> dict:
         f = _download(url, f"conab_{key}.xls")
         l = _rows(f, tab)
         out[key] = dict(
-            coe=round(l["coe"], 2), cot=round(l["cot"], 2), ct=round(l["ct"], 2), unidade="R$/ha", estimativa=key in PROXY_COST,
-            fonte=label + ". coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); "
+            coe=round(l["coe"], 2), cot=round(l["cot"], 2), ct=round(l["ct"], 2), unit="R$/ha", estimate=key in PROXY_COST,
+            source=label + ". coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); "
                   "cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
-            url=url, aba=tab, consulta=str(date.today()), curto=SHORT[key])
+            url=url, sheet=tab, queried_on=str(date.today()), short=SHORT[key])
         if key in YIELD_SCALED_CROPS:
-            out[key]["escala_produtividade"] = yield_scaling(f, tab)
+            out[key]["yield_scale"] = yield_scaling(f, tab)
     for key, (v, desc) in COVER_CROPS.items():
-        out[key] = dict(coe=v, cot=v, ct=v, unidade="R$/ha", estimativa=True,
-                          fonte=f"{ESTIMATED_TO_VALIDATE if key in ('nabo_forrageiro', 'aveia_nabo') else ESTIMATED}: {desc}", url=None,
-                          curto="estimativa de referência, validar")
+        out[key] = dict(coe=v, cot=v, ct=v, unit="R$/ha", estimate=True,
+                          source=f"{ESTIMATED_TO_VALIDATE if key in ('nabo_forrageiro', 'aveia_nabo') else ESTIMATED}: {desc}", url=None,
+                          short="estimativa de referência, validar")
     return out
 
 
 def main():
-    ref = dict(consulta=str(date.today()), linha_custo_padrao="coe", precos=prices(), custos=costs())
+    ref = dict(queried_on=str(date.today()), default_cost_line="coe", prices=prices(), costs=costs())
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(ref, ensure_ascii=False, indent=2))
     print("written", OUTPUT)
-    print(json.dumps({k: v["valor"] for k, v in ref["precos"].items()}), {k: (v["coe"], v["cot"]) for k, v in ref["custos"].items()})
+    print(json.dumps({k: v["value"] for k, v in ref["prices"].items()}), {k: (v["coe"], v["cot"]) for k, v in ref["costs"].items()})
 
 
 if __name__ == "__main__":

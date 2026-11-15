@@ -478,13 +478,13 @@ def _normalize_adjustments(aj) -> dict:
         raise InvalidInput(f"Chaves de ajustes desconhecidas: {sorted(unknown)}.")
     out: dict = {}
     for k, v in (aj.get("precos") or {}).items():
-        if k not in ref["precos"]:
-            raise InvalidInput(f"Preço desconhecido: {k!r}. Opções: {sorted(ref['precos'])}.")
+        if k not in ref["prices"]:
+            raise InvalidInput(f"Preço desconhecido: {k!r}. Opções: {sorted(ref['prices'])}.")
         out.setdefault("preco", {})[k] = _num(v, f"preço {k}", 0)
     for k, v in (aj.get("custos") or {}).items():
         kk = _COST_ALIAS.get(k, k)
-        if kk not in ref["custos"]:
-            raise InvalidInput(f"Custo desconhecido: {k!r}. Opções: {sorted(ref['custos']) + ['milho']}.")
+        if kk not in ref["costs"]:
+            raise InvalidInput(f"Custo desconhecido: {k!r}. Opções: {sorted(ref['costs']) + ['milho']}.")
         out.setdefault("custo", {})[kk] = _num(v, f"custo {k}", 0)
     prod = aj.get("produtividade")
     if prod is not None:
@@ -1031,10 +1031,10 @@ def options() -> dict:
     """Catalog to build the form: summer and 2nd-window crops, combinations (rotations), sowings, criteria, weights,
     income reference, region, demo fields."""
     ref = load_reference()
-    sources = [dict(item=f"preço {k}", fonte=v["fonte"], periodo=v.get("periodo"), estimativa=v.get("estimativa", False), url=v.get("url"))
-              for k, v in ref["precos"].items()]
-    sources += [dict(item=f"custo {k}", fonte=v["fonte"], estimativa=v.get("estimativa", False), url=v.get("url"))
-               for k, v in ref["custos"].items()]
+    sources = [dict(item=f"preço {k}", fonte=v["source"], periodo=v.get("period"), estimativa=v.get("estimate", False), url=v.get("url"))
+              for k, v in ref["prices"].items()]
+    sources += [dict(item=f"custo {k}", fonte=v["source"], estimativa=v.get("estimate", False), url=v.get("url"))
+               for k, v in ref["costs"].items()]
     return _clean(dict(
         culturas_verao=[dict(id=k, nome=v["nome"], tipo="grão", descricao_curta=v["descricao"],
                              estagios=[dict(id=e, nome=d["nome"], dias_ate_colheita=d["dias"]) for e, d in cal.STAGES[k].items()],
@@ -1049,9 +1049,9 @@ def options() -> dict:
         semeaduras=list(E.SOWINGS_2ND), semeadura_padrao=E.DEFAULT_SOWING,
         criterios=[dict(id=k, nome=v) for k, v in E.CRITERIA.items()], pesos_padrao=dict(E.DEFAULT_WEIGHTS),
         renda_referencia=dict(
-            precos={k: v["valor"] for k, v in ref["precos"].items()},
-            custos={k: {l: v[l] for l in ("coe", "cot", "ct") if l in v} for k, v in ref["custos"].items()},
-            linha_custo_padrao=ref["linha_custo_padrao"], fontes=sources),
+            precos={k: v["value"] for k, v in ref["prices"].items()},
+            custos={k: {l: v[l] for l in ("coe", "cot", "ct") if l in v} for k, v in ref["costs"].items()},
+            linha_custo_padrao=ref["default_cost_line"], fontes=sources),
         regiao=_region_info(), talhoes_demo=_demo_fields()))
 
 

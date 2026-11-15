@@ -166,8 +166,8 @@ def _cover_cost_bags() -> dict:
     bags across years (no historical series exists)."""
     from field_shift.income.income import load_reference
     ref = load_reference()
-    soy = ref["precos"]["soja"]["valor"]
-    return {k: ref["custos"][k]["coe"] / soy for k in ("aveia", "milheto_crotalaria", "pousio", "braquiaria_consorcio")}
+    soy = ref["prices"]["soja"]["value"]
+    return {k: ref["costs"][k]["coe"] / soy for k in ("aveia", "milheto_crotalaria", "pousio", "braquiaria_consorcio")}
 
 
 def decision_backtest(with_bonus: bool = False, expectation: str = "mean", price_years: int = 1) -> pd.DataFrame:

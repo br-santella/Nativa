@@ -1,23 +1,23 @@
 {
- "consulta": "2026-11-15",
- "safra": "2026/2027",
- "portaria": "Portaria SDA/MAPA nº 1.579, de 9 de abril de 2026",
- "url_portaria": "https://www.abrasem.com.br/wp-content/uploads/2025/10/Portaria-SDA-n-1.579-DE-9-DE-ABRIL-DE-2026-Estabelece-os-periodos-de-vazio-sanitario-e-de-calendario-de-semeadura-de-soja-em-nivel-nacional.pdf",
- "url_adapar": "https://www.adapar.pr.gov.br/Noticia/Periodos-do-vazio-sanitario-da-Soja-para-safra-de-20262027-comecam-em-junho",
- "observacao": "datas conferidas na página da ADAPAR (o quadro de datas da portaria é imagem no PDF); listas de municípios lidas do anexo da portaria. Muda a cada safra: atualizar todo ano em abril.",
- "regioes": [
+ "queried_on": "2026-11-15",
+ "season": "2026/2027",
+ "ordinance": "Portaria SDA/MAPA nº 1.579, de 9 de abril de 2026",
+ "ordinance_url": "https://www.abrasem.com.br/wp-content/uploads/2025/10/Portaria-SDA-n-1.579-DE-9-DE-ABRIL-DE-2026-Estabelece-os-periodos-de-vazio-sanitario-e-de-calendario-de-semeadura-de-soja-em-nivel-nacional.pdf",
+ "adapar_url": "https://www.adapar.pr.gov.br/Noticia/Periodos-do-vazio-sanitario-da-Soja-para-safra-de-20262027-comecam-em-junho",
+ "note": "datas conferidas na página da ADAPAR (o quadro de datas da portaria é imagem no PDF); listas de municípios lidas do anexo da portaria. Muda a cada safra: atualizar todo ano em abril.",
+ "regions": [
   {
-   "regiao": 1,
-   "nome": "Região 1 (Sul, Leste, Campos Gerais e Litoral)",
-   "vazio": [
+   "region": 1,
+   "name": "Região 1 (Sul, Leste, Campos Gerais e Litoral)",
+   "void": [
     "21/06",
     "19/09"
    ],
-   "semeadura": [
+   "sowing": [
     "20/09",
     "20/01"
    ],
-   "municipios": [
+   "municipalities": [
     4100202,
     4100301,
     4100400,
@@ -103,20 +103,20 @@
     4128534,
     4128633
    ],
-   "n_municipios": 84
+   "n_municipalities": 84
   },
   {
-   "regiao": 2,
-   "nome": "Região 2 (Norte, Noroeste, Centro-Oeste e Oeste)",
-   "vazio": [
+   "region": 2,
+   "name": "Região 2 (Norte, Noroeste, Centro-Oeste e Oeste)",
+   "void": [
     "02/06",
     "31/08"
    ],
-   "semeadura": [
+   "sowing": [
     "01/09",
     "31/12"
    ],
-   "municipios": [
+   "municipalities": [
     4100103,
     4100459,
     4100509,
@@ -385,20 +385,20 @@
     4128625,
     4128807
    ],
-   "n_municipios": 267
+   "n_municipalities": 267
   },
   {
-   "regiao": 3,
-   "nome": "Região 3 (Sudoeste)",
-   "vazio": [
+   "region": 3,
+   "name": "Região 3 (Sudoeste)",
+   "void": [
     "12/06",
     "10/09"
    ],
-   "semeadura": [
+   "sowing": [
     "11/09",
     "10/01"
    ],
-   "municipios": [
+   "municipalities": [
     4101002,
     4102604,
     4102752,
@@ -448,7 +448,7 @@
     4128658,
     4128708
    ],
-   "n_municipios": 48
+   "n_municipalities": 48
   }
  ]
 }

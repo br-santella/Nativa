@@ -151,15 +151,15 @@ def parameters() -> list[Param]:
     ps.append(Param("penalty.corn_on_corn", "penalty", "corn-on-corn pest penalty", E.CORN_ON_CORN_PENALTY,
                     patch=_corn_on_corn_patch))
     ref = load_reference()
-    line = ref.get("linha_custo_padrao", "coe")
-    for k, c in ref["custos"].items():
-        if c.get("estimativa"):
+    line = ref.get("default_cost_line", "coe")
+    for k, c in ref["costs"].items():
+        if c.get("estimate"):
             base = float(c[line])
             ps.append(Param(f"cost.{k}", "cost", f"cost of {k} (BRL/ha, estimate)", base,
                             adjust=lambda f, k=k, base=base: {"custo": {k: base * f}}))
-    for k, p in ref["precos"].items():
-        base = float(p["valor"])
-        tag = "estimate" if p.get("estimativa") else "market"
+    for k, p in ref["prices"].items():
+        base = float(p["value"])
+        tag = "estimate" if p.get("estimate") else "market"
         ps.append(Param(f"price.{k}", "price", f"price of {k} (BRL/sc, {tag})", base,
                         adjust=lambda f, k=k, base=base: {"preco": {k: base * f}}))
     return ps

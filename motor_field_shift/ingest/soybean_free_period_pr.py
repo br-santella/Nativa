@@ -29,9 +29,9 @@ ORDINANCE_URL = "https://www.abrasem.com.br/wp-content/uploads/2025/10/Portaria-
 URL_ADAPAR = "https://www.adapar.pr.gov.br/Noticia/Periodos-do-vazio-sanitario-da-Soja-para-safra-de-20262027-comecam-em-junho"
 # footnote number in the annex -> region; dates "dd/mm" (the sowing window may cross the new year)
 REGIONS = {
-    "11": dict(regiao=1, nome="Região 1 (Sul, Leste, Campos Gerais e Litoral)", vazio=("21/06", "19/09"), semeadura=("20/09", "20/01")),
-    "12": dict(regiao=2, nome="Região 2 (Norte, Noroeste, Centro-Oeste e Oeste)", vazio=("02/06", "31/08"), semeadura=("01/09", "31/12")),
-    "13": dict(regiao=3, nome="Região 3 (Sudoeste)", vazio=("12/06", "10/09"), semeadura=("11/09", "10/01")),
+    "11": dict(region=1, name="Região 1 (Sul, Leste, Campos Gerais e Litoral)", void=("21/06", "19/09"), sowing=("20/09", "20/01")),
+    "12": dict(region=2, name="Região 2 (Norte, Noroeste, Centro-Oeste e Oeste)", void=("02/06", "31/08"), sowing=("01/09", "31/12")),
+    "13": dict(region=3, name="Região 3 (Sudoeste)", void=("12/06", "10/09"), sowing=("11/09", "10/01")),
 }
 FOOTER = re.compile(r"ASSOCIAÇÃO BRASILEIRA DE SEMENTES E MUDAS|SGCV Sul Lote|Fones/Fax")
 
@@ -65,22 +65,22 @@ def main(pdf: Path) -> None:
         names = lists[score]
         missing_items = [n for n in names if norm(n) not in by_name]
         if missing_items:
-            raise SystemExit(f"ordinance municipalities with no IBGE match (region {info['regiao']}): {missing_items}")
+            raise SystemExit(f"ordinance municipalities with no IBGE match (region {info['region']}): {missing_items}")
         codes = sorted(by_name[norm(n)] for n in names)
         for c in codes:
             if c in assigned:
                 raise SystemExit(f"municipality {c} appears in two regions")
-            assigned[c] = info["regiao"]
-        regions.append(dict(info, municipios=codes, n_municipios=len(codes)))
+            assigned[c] = info["region"]
+        regions.append(dict(info, municipalities=codes, n_municipalities=len(codes)))
     no_region = sorted(set(by_name.values()) - set(assigned))
     if no_region:
         raise SystemExit(f"IBGE municipalities outside the 3 ordinance lists: {no_region}")
-    ref = dict(consulta=str(date.today()), safra=SEASON, portaria=ORDINANCE, url_portaria=ORDINANCE_URL, url_adapar=URL_ADAPAR,
-               observacao="datas conferidas na página da ADAPAR (o quadro de datas da portaria é imagem no PDF); listas de municípios "
+    ref = dict(queried_on=str(date.today()), season=SEASON, ordinance=ORDINANCE, ordinance_url=ORDINANCE_URL, adapar_url=URL_ADAPAR,
+               note="datas conferidas na página da ADAPAR (o quadro de datas da portaria é imagem no PDF); listas de municípios "
                           "lidas do anexo da portaria. Muda a cada safra: atualizar todo ano em abril.",
-               regioes=regions)
+               regions=regions)
     OUTPUT.write_text(json.dumps(ref, ensure_ascii=False, indent=1))
-    print("written", OUTPUT, {r["regiao"]: r["n_municipios"] for r in regions}, "total", len(assigned))
+    print("written", OUTPUT, {r["region"]: r["n_municipalities"] for r in regions}, "total", len(assigned))
 
 
 if __name__ == "__main__":

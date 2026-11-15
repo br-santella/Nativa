@@ -1,11 +1,11 @@
 {
- "fonte": "SEAB/DERAL-PR, preços médios semanais recebidos pelos agricultores, por núcleo regional (planilha 'Recebido (semanal)')",
+ "source": "SEAB/DERAL-PR, preços médios semanais recebidos pelos agricultores, por núcleo regional (planilha 'Recebido (semanal)')",
  "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/prp.xls",
- "pagina": "https://www.agricultura.pr.gov.br/deral/Precos",
- "semana": "planilha salva em 13/11/2026 (semana corrente; a SEAB não publica série semanal por núcleo)",
- "unidade": "R$/sc 60 kg",
- "observacao": "retrato de UMA semana, só para medir a dispersão regional; não é usado pelo motor (falta o mapeamento município -> núcleo regional)",
- "precos": {
+ "page": "https://www.agricultura.pr.gov.br/deral/Precos",
+ "week": "planilha salva em 13/11/2026 (semana corrente; a SEAB não publica série semanal por núcleo)",
+ "unit": "R$/sc 60 kg",
+ "note": "retrato de UMA semana, só para medir a dispersão regional; não é usado pelo motor (falta o mapeamento município -> núcleo regional)",
+ "prices": {
   "soja": {
    "Apucarana": 134.0,
    "Campo Mourão": 133.6,

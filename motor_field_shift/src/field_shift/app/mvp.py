@@ -148,17 +148,17 @@ REF = load_reference()
 st.subheader("Renda: preços e custos (valores de referência editáveis)")
 line = st.radio("Linha de custo CONAB (soja, milho, trigo)", ["coe", "cot"], horizontal=True,
                  format_func=lambda k: {"coe": "Custo variável (≈COE: desembolso)", "cot": "COT (inclui depreciação e custos fixos)"}[k],
-                 index=["coe", "cot"].index(REF["linha_custo_padrao"]),
+                 index=["coe", "cot"].index(REF["default_cost_line"]),
                  help="O custo operacional total (COT) inclui depreciação e custos fixos que o produtor não decide por cultura.")
 cp, cc = st.columns(2)
 adjustments = {"linha_custo": line, "preco": {}, "custo": {}}
 for k, nome in [("soja", "soja"), ("milho", "milho"), ("trigo", "trigo")]:
-    ref_v = REF["precos"][k]["valor"]
+    ref_v = REF["prices"][k]["value"]
     v = cp.number_input(f"Preço {nome} (R$/saca 60 kg)", min_value=0.0, value=float(ref_v), step=1.0, key=f"preco_{k}")
     if abs(v - ref_v) > 1e-9:
         adjustments["preco"][k] = v
-for k in REF["custos"]:
-    ref_v = REF["custos"][k][line]
+for k in REF["costs"]:
+    ref_v = REF["costs"][k][line]
     v = cc.number_input(f"Custo {LABEL[k]} (R$/ha)", min_value=0.0, value=float(ref_v), step=50.0, key=f"custo_{k}_{line}")
     if abs(v - ref_v) > 1e-9:
         adjustments["custo"][k] = v
@@ -195,7 +195,7 @@ _any = next(iter(_seen.values()))[0]
 if rk["rend"]["_origem"].startswith("média"):
     st.warning("Sem município/PAM para este talhão: usando " + rk["rend"]["_origem"] + ".")
 st.caption(f"Rendimento: {rk['rend']['_origem']}, média dos últimos 10 anos ({_any['anos']}); CV e p20 (ano ruim) usam a mesma janela. "
-           f"Preços consultados em {REF['consulta']}. Margem = rendimento × preço − custo; cobertura/pousio = − custo (estimativa de referência, validar). "
+           f"Preços consultados em {REF['queried_on']}. Margem = rendimento × preço − custo; cobertura/pousio = − custo (estimativa de referência, validar). "
            "(CONAB não cobre o Oeste do PR em empresarial: custo de Londrina/Ponta Grossa).")
 if res["eliminadas"]:
     st.subheader("Eliminadas")

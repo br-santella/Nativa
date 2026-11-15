@@ -87,7 +87,7 @@ def _extra_cost_bags(nome: str) -> float:
         return 0.0
     from field_shift.income.income import load_reference
     ref = load_reference()
-    return ref["custos"]["braquiaria_consorcio"]["coe"] / ref["precos"]["soja"]["valor"]
+    return ref["costs"]["braquiaria_consorcio"]["coe"] / ref["prices"]["soja"]["value"]
 
 
 @lru_cache(maxsize=512)

@@ -17,8 +17,8 @@ DEFAULT_REGION = 2  # Norte, Noroeste, Centro-Oeste e Oeste: the window the engi
 @lru_cache(maxsize=1)
 def _load() -> dict:
     ref = json.loads(REF.read_text())
-    by_code = {c: r for r in ref["regioes"] for c in r["municipios"]}
-    return dict(ref=ref, by_code=by_code, by_region={r["regiao"]: r for r in ref["regioes"]})
+    by_code = {c: r for r in ref["regions"] for c in r["municipalities"]}
+    return dict(ref=ref, by_code=by_code, by_region={r["region"]: r for r in ref["regions"]})
 
 
 def _dm(ddmm: str) -> tuple[int, int]:
@@ -42,5 +42,5 @@ def soy_calendar(cod_ibge: int | str | None) -> dict:
     default = reg is None
     reg = reg or d["by_region"][DEFAULT_REGION]
     ref = d["ref"]
-    return dict(regiao=reg["regiao"], nome=reg["nome"], vazio=tuple(reg["vazio"]), semeadura=tuple(reg["semeadura"]),
-                safra=ref["safra"], portaria=ref["portaria"], url=ref["url_adapar"], padrao=default)
+    return dict(regiao=reg["region"], nome=reg["name"], vazio=tuple(reg["void"]), semeadura=tuple(reg["sowing"]),
+                safra=ref["season"], portaria=ref["ordinance"], url=ref["adapar_url"], padrao=default)

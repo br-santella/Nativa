@@ -106,14 +106,14 @@ def yields(cod_ibge: str | None) -> dict:
     return out
 
 
-def _price(ref, aj, k): return float((aj.get("preco") or {}).get(k, ref["precos"][k]["valor"]))
+def _price(ref, aj, k): return float((aj.get("preco") or {}).get(k, ref["prices"][k]["value"]))
 
 
 def _cost(ref, aj, k):
     ov = (aj.get("custo") or {})
     if k in ov:
         return float(ov[k])
-    return float(ref["custos"][k][aj.get("linha_custo") or ref.get("linha_custo_padrao", "coe")])
+    return float(ref["costs"][k][aj.get("linha_custo") or ref.get("default_cost_line", "coe")])
 
 
 def _effective_yield(rend: dict, aj: dict) -> dict:
@@ -139,10 +139,10 @@ def yield_cost_factor(ref: dict, aj: dict, k: str, sc_ha: float) -> float | None
 
     None when the crop has no split or the farmer typed their own cost (their number is used as given).
     """
-    scale = ref["custos"][k].get("escala_produtividade")
+    scale = ref["costs"][k].get("yield_scale")
     if scale is None or k in (aj.get("custo") or {}):
         return None
-    return sc_ha / scale["referencia_sc_ha"]
+    return sc_ha / scale["reference_sc_ha"]
 
 
 def _scaled_cost(ref: dict, k: str, cost: float, factor: float | None) -> float:
@@ -150,7 +150,7 @@ def _scaled_cost(ref: dict, k: str, cost: float, factor: float | None) -> float:
     the fixed lines `cot`/`ct` only add costs that do not depend on yield)."""
     if factor is None:
         return cost
-    return cost - ref["custos"][k]["escala_produtividade"]["proporcional_r_ha"] * (1 - factor)
+    return cost - ref["costs"][k]["yield_scale"]["proportional_r_ha"] * (1 - factor)
 
 
 def _item(ref, aj, rend, k, yield_="sc_ha") -> dict:
@@ -202,7 +202,7 @@ def compute_margins(catalog: dict, rend: dict, adjustments: dict | None = None, 
         incremental = total - soy["margem"]
         scale = max(soy["margem"], INCOME_SCALE_MIN)
         bad = [i["margem_ano_ruim"] for i in items]
-        out[nome] = dict(linha_custo=aj.get("linha_custo") or ref.get("linha_custo_padrao", "coe"), itens=items, bonus_sc=c["bonus_sc"],
+        out[nome] = dict(linha_custo=aj.get("linha_custo") or ref.get("default_cost_line", "coe"), itens=items, bonus_sc=c["bonus_sc"],
                          bonus_verao_sc=c.get("bonus_verao_sc", 0.0), preco_soja=soy_price, bonus=bonus, total=total,
                          incremental=incremental, escala_S=scale,
                          total_ano_ruim=None if None in bad else sum(bad) + bonus)
@@ -222,11 +222,11 @@ def cost_source(i: dict, line: str) -> str:
         return i["detalhe"]
     if i["custo_usuario"]:
         return "informado pelo usuário"
-    c = load_reference()["custos"][i["chave"]]
-    text = c["curto"] if c["estimativa"] else f"{c['curto']}, {COST_LINE_NAME[line]}"
+    c = load_reference()["costs"][i["chave"]]
+    text = c["short"] if c["estimate"] else f"{c['short']}, {COST_LINE_NAME[line]}"
     f = i.get("fator_escala_custo")
     if f is not None:
-        ref_sc = c["escala_produtividade"]["referencia_sc_ha"]
+        ref_sc = c["yield_scale"]["reference_sc_ha"]
         text += (f"; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local "
                   f"({i['sc_ha']:.0f} sc/ha contra {ref_sc:.0f} sc/ha da referência CONAB) — estimativa, validar")
     return text
@@ -237,7 +237,7 @@ def price_source(i: dict) -> str:
         return "-"
     if i["preco_usuario"]:
         return "informado pelo usuário"
-    p = load_reference()["precos"][CASH_CROPS[i["chave"]]]
-    if p.get("estimativa"):
-        return f"estimativa — validar: {p.get('razao_sobre_milho', 0.8):.0%} do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)"
-    return f"SEAB/DERAL-PR, média PR {p['periodo'].split(' (')[0]}"
+    p = load_reference()["prices"][CASH_CROPS[i["chave"]]]
+    if p.get("estimate"):
+        return f"estimativa — validar: {p.get('ratio_to_corn', 0.8):.0%} do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)"
+    return f"SEAB/DERAL-PR, média PR {p['period'].split(' (')[0]}"
