@@ -1,5 +1,7 @@
+@import "./dashboard-theme.css";
+
 /* "Estratégias de Rotação" page. Same palette as the setup wizard (property-wizard.css). */
-.rs { --rs-yellow: #ffbf22; --rs-panel: #10271f; --rs-deep: #0b211c; --rs-line: #365046; --rs-soft-line: #2d443a; --rs-text: #e7ecdf; --rs-muted: #a9bbaa; --rs-faint: #94a99b; --rs-up: #9ad3a4; --rs-down: #ffb59a;
+.rs { --rs-yellow: var(--agro-yellow); --rs-panel: var(--agro-panel); --rs-deep: var(--agro-deep); --rs-line: var(--agro-line); --rs-soft-line: var(--agro-soft-line); --rs-text: var(--agro-text); --rs-muted: var(--agro-muted); --rs-faint: var(--agro-faint); --rs-up: var(--agro-up); --rs-down: var(--agro-down);
   display: grid; gap: 34px; color: var(--rs-text); margin-top: 8px; font-size: 14px; }
 .rs h2, .rs h3, .rs h4, .rs p { margin: 0; }
 .rs-link-button { justify-self: start; border: 0; padding: 0; background: transparent; color: #edca73; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
