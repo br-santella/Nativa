@@ -452,7 +452,8 @@ def _round(o, digits: int):
 
 def _round_ranking(item: dict) -> dict:
     """score, criteria and contributions with 3 decimals; R$ values with 0 decimals; yields/prices/probabilities 3 decimals."""
-    r0 = lambda x: None if x is None else float(round(x))
+    def r0(x):
+        return None if x is None else float(round(x))
     item["nota"] = _round(item["nota"], 3)
     item["criterios"] = _round(item["criterios"], 3)
     item["contribuicoes"] = _round(item["contribuicoes"], 3)
@@ -996,12 +997,12 @@ def recommend(area: dict, sowing_second: str | None = None, pesos: dict | None =
                                area_problems)
     if isinstance(n_alternatives, bool) or not isinstance(n_alternatives, int) or not 1 <= n_alternatives <= 6:
         raise InvalidInput("n_alternativas deve ser um inteiro entre 1 e 6.")
-    pesos_n, aj_n, solo_n, soil_phys, fert_n = inp["pesos_n"], inp["aj_n"], inp["solo_n"], inp["solo_fis"], inp["fert_n"]
+    pesos_n, aj_n, solo_n, soil_phys = inp["pesos_n"], inp["aj_n"], inp["solo_n"], inp["solo_fis"]
     probs_n, restr_n, irr_n, sel = inp["probs_n"], inp["restr_n"], inp["irr_n"], inp["sel"]
     current_rotation, current_name, current_summer = inp["rotacao_atual"], inp["nome_atual"], inp["verao_atual"]
     base = _timeline_and_context(area, inp, sowing_second, summer_stage, expected_harvest, reference_date)
-    cron, harvest, days_until, sow_2nd, sow_origin = base["cron"], base["colheita"], base["dias_ate"], base["sem_2a"], base["sem_origem"]
-    data_ref, ctx, rk, diag, warnings, days = base["data_ref"], base["ctx"], base["rk"], base["diag"], base["avisos"], base["dias"]
+    harvest, days_until, sow_2nd, sow_origin = base["colheita"], base["dias_ate"], base["sem_2a"], base["sem_origem"]
+    data_ref, rk, diag, warnings, days = base["data_ref"], base["rk"], base["diag"], base["avisos"], base["dias"]
     # the current rotation is always evaluated (for ganho_vs_atual), even outside `rotations`; it only shows up if it is in `rotations`
     evaluate = None if sel is None else list(dict.fromkeys([ROTATIONS[i] for i in sel] + [current_name]))
     try:
@@ -1148,7 +1149,7 @@ def options() -> dict:
         criterios=[dict(id=k, nome=v) for k, v in E.CRITERIA.items()], pesos_padrao=dict(E.DEFAULT_WEIGHTS),
         renda_referencia=dict(
             precos={k: v["value"] for k, v in ref["prices"].items()},
-            custos={k: {l: v[l] for l in ("coe", "cot", "ct") if l in v} for k, v in ref["costs"].items()},
+            custos={k: {line: v[line] for line in ("coe", "cot", "ct") if line in v} for k, v in ref["costs"].items()},
             linha_custo_padrao=ref["default_cost_line"], fontes=sources),
         regiao=_region_info(), talhoes_demo=_demo_fields()))
 

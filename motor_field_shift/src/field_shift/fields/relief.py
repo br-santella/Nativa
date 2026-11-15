@@ -44,7 +44,6 @@ def main():
     for name, a in [("nasadem_elev", arr), ("nasadem_slope_pct", slope)]:
         with rasterio.open(OUT / f"{name}.tif", "w", **prof) as o:
             o.write(a.astype("float32"), 1)
-    ids = c4[["id"]].reset_index(drop=True)
     # the raster needs per-polygon statistics
     def stats(layer, ops, geoms):
         g = gpd.GeoDataFrame({"id": c4["id"].values}, geometry=geoms, crs=4326)

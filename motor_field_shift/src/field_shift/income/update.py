@@ -108,7 +108,8 @@ def prices() -> dict:
 
 def _rows(f: Path, tab: str) -> dict:
     d = pd.read_excel(f, sheet_name=tab, header=None).dropna(how="all").dropna(how="all", axis=1)
-    g = lambda pat: float(d[d[0].astype(str).str.contains(pat, regex=False)].iloc[0, 1])
+    def g(pat):
+        return float(d[d[0].astype(str).str.contains(pat, regex=False)].iloc[0, 1])
     return dict(coe=g("CUSTO VARIÁVEL"), cot=g("CUSTO OPERACIONAL"), ct=g("CUSTO TOTAL"))
 
 
@@ -135,9 +136,9 @@ def costs() -> dict:
     out = {}
     for key, (url, tab, label) in {**COSTS, **PROXY_COST}.items():
         f = _download(url, f"conab_{key}.xls")
-        l = _rows(f, tab)
+        rows = _rows(f, tab)
         out[key] = dict(
-            coe=round(l["coe"], 2), cot=round(l["cot"], 2), ct=round(l["ct"], 2), unit="R$/ha", estimate=key in PROXY_COST,
+            coe=round(rows["coe"], 2), cot=round(rows["cot"], 2), ct=round(rows["ct"], 2), unit="R$/ha", estimate=key in PROXY_COST,
             source=label + ". coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); "
                   "cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
             url=url, sheet=tab, queried_on=str(date.today()), short=SHORT[key])

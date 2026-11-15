@@ -48,7 +48,6 @@ def main():
         ok = ds.SCL.isin([4, 5, 6]) & (ds.B04 > 0)
         ndvi = ndvi.where(ok)
         mon = ndvi.groupby("time.month").median("time", skipna=True).compute()
-        cnt = ok.groupby("time.month").sum("time").compute()  # valid observations per pixel (sum)
         print(y, "itens", len(items), "dias", len(days), f"{time.time()-t0:.0f}s", flush=True)
         # zonal stats per month
         xs = ds.x.values

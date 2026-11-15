@@ -185,7 +185,6 @@ def main():
     scn.drop(columns='item').sort_values('data').to_csv(f'{os_}/cenas_s2_{a.id}.csv', index=False)
     print('S2 cenas avaliadas:', len(scn))
     # selection per 10-day window
-    grid = pd.date_range(start, end, freq='10D')
     scn['jan'] = ((scn.data - pd.Timestamp(start)).dt.days // 10)
     good = scn[scn.frac_clear >= a.min_clear_s2]
     sel = good.sort_values(['frac_clear', 'data'], ascending=[False, True]).groupby('jan').head(1).sort_values('data').reset_index(drop=True)

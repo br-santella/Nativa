@@ -192,7 +192,8 @@ def cell_annual_water(point_id: str) -> dict[str, dict[str, np.ndarray]]:
 def region_climate(info: dict, sowing: str = DEFAULT_SOWING) -> dict:
     """Build the risks dict (same format as power_risks) from the lookup, plus diagnosis and frost table."""
     ddmm = sowing.replace("/", "")
-    g = lambda s: _ind(info, f"geada_safrinha_semeadura_{s.replace('/', '')}_le3")
+    def g(s):
+        return _ind(info, f"geada_safrinha_semeadura_{s.replace('/', '')}_le3")
     n = int(_ind(info, f"geada_safrinha_semeadura_{ddmm}_le3")["n_anos"])
     table = [dict(semeadura=s, prob=g(s)["media"], anos=round(g(s)["media"] * g(s)["n_anos"]), n_anos=int(g(s)["n_anos"]),
                    prob_1991_2020=g(s)["media_1991_2020"]) for s in SOWINGS_2ND]
@@ -942,7 +943,8 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
 
 def fmt_diagnosis(d: dict) -> list[str]:
     """Climate diagnosis text lines (display only; not part of the score)."""
-    b = lambda x: f"mediana {x['mediana']:.0f} mm, p20 {x['p20']:.0f} mm"
+    def b(x):
+        return f"mediana {x['mediana']:.0f} mm, p20 {x['p20']:.0f} mm"
     return [
         f"Início das chuvas (a partir de 01/09): mediana {d['inicio_chuvas_mediana']}, p80 {d['inicio_chuvas_p80']} (1 em 5 anos atrasa até lá).",
         f"Calor na soja: mediana {d['calor_soja_mediana']:.1f} dias/ciclo acima do limiar (média {d['calor_soja_media']:.1f}; p80 {d['calor_soja_p80']:.1f}).",
@@ -994,7 +996,7 @@ if __name__ == "__main__":
     print("Yield:", rk["rend"]["_origem"])
     for n, m in res["margens"].items():
         print(f"\n{n}:")
-        for l in fmt_margin(m, rk):
-            print("  -", l)
+        for line in fmt_margin(m, rk):
+            print("  -", line)
     for n, m in res["eliminadas"].items():
         print("ELIMINATED:", n, m)

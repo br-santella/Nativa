@@ -45,7 +45,7 @@ def parse_lists(text: str) -> dict[str, list[str]]:
     """{footnote: [municipality names]} for the Paraná footnotes (11, 12, 13), cut between 'Adrianópolis' and the next state."""
     start = text.index("11Adrianópolis")
     end = text.index("14Barras")
-    lines = [l.strip() for l in text[start:end].splitlines() if l.strip() and not FOOTER.search(l)]
+    lines = [ln.strip() for ln in text[start:end].splitlines() if ln.strip() and not FOOTER.search(ln)]
     body = " ".join(lines)
     out = {}
     for m in re.finditer(r"(?<![\wÀ-ú])(1[123])(?=[A-ZÀ-Ú])(.*?)(?=(?<![\wÀ-ú])1[0-9](?=[A-ZÀ-Ú])|$)", body):
