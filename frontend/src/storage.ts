@@ -1,11 +1,15 @@
 import type { Crop, Farm } from "./data";
+import type { Pesos } from "./api";
 import type { SetupInputs } from "./PropertyWizard";
 
 /** Everything the user enters about the property, kept in the browser between visits. */
 export type SavedState = {
     farm: Farm;
     setupInputs?: SetupInputs;
+    /** Legacy four % sliders (water, soil, income, climate risk); `pesos` is the source of truth. */
     weights: number[];
+    /** Engine weights (five criteria, 0–10) used before the setup is done; with a setup they live in setupInputs.pesos. */
+    pesos?: Pesos;
     crops: Crop[];
     settings: { temperature: string };
     savedAt: string;

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Farm } from './data';
+import { initialFarm, textureFromSoil } from './data';
 import type { Area, Pesos } from './api';
 import { LanguageSwitcher, t, useLanguage } from './i18n';
 import options from './setup-options.json';
@@ -184,7 +185,14 @@ export default function PropertyWizard({ initial, brand, onHome, onComplete }: {
      if (step < LAST) { setStep(step + 1); return; }
      const selected = options.talhoes_demo.find(x => x.id === demo)!;
      const { silte_pct: _silt, ...soilForEngine } = soil;
-     const completed = { ...farm, irrigation: irrigation ? 'Sim' : 'Não', crop: rotation.startsWith('soja__') ? 'Soja' : 'Milho', ...(mode === 'demo' ? {latitude: String(selected.lat), longitude: String(selected.lon), area: String(selected.area_ha), city: `${selected.municipio}, PR`} : mode === 'point' ? {area: pointHa} : mode === 'polygon' ? {latitude: (vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length).toFixed(6), longitude: (vertices.reduce((s, [, lon]) => s + lon, 0) / vertices.length).toFixed(6), area: hectares(vertices).toFixed(1)} : {}), ...(soil.ph ? {ph: soil.ph} : {}), ...(soil.materia_organica_pct ? {organic: soil.materia_organica_pct} : {}) };
+     // Fields the setup does not ask keep what the user already entered; the sample values of the demo farm are cleared
+     // so they never show up as the user's data. Soil values come from the soil test when one is given.
+     const own = (key: keyof Farm, fallback: string) => farm[key] !== initialFarm[key] ? farm[key] : fallback;
+     const completed = { ...farm, irrigation: irrigation ? 'Sim' : 'Não', crop: rotation.startsWith('soja__') ? 'Soja' : 'Milho',
+       irrigationType: irrigation ? own('irrigationType', 'Não informado') : 'Não se aplica', drainage: own('drainage', 'Não informado'), waterRestriction: own('waterRestriction', ''),
+       texture: soil.argila_pct && soil.areia_pct ? textureFromSoil(Number(soil.argila_pct), Number(soil.areia_pct)) : own('texture', 'Não informado'),
+       ph: soil.ph || own('ph', ''), organic: soil.materia_organica_pct || own('organic', ''),
+       ...(mode === 'demo' ? {latitude: String(selected.lat), longitude: String(selected.lon), area: String(selected.area_ha), city: `${selected.municipio}, PR`} : mode === 'point' ? {area: pointHa} : mode === 'polygon' ? {latitude: (vertices.reduce((s, [lat]) => s + lat, 0) / vertices.length).toFixed(6), longitude: (vertices.reduce((s, [, lon]) => s + lon, 0) / vertices.length).toFixed(6), area: hectares(vertices).toFixed(1)} : {}) };
      onComplete(completed, { area: area(), rotacao_atual: rotation, pesos: weights, n_alternativas: count,
        ...(stage ? {estagio_verao: stage} : {}), ...(harvest ? {colheita_prevista: `${harvest.slice(8, 10)}/${harvest.slice(5, 7)}`} : {}), data_referencia: date,
        ...(sowingDate ? {semeadura_safrinha: engineSowing(sowingDate, options.semeaduras)} : {}), problemas_area: problems,

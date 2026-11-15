@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { Farm } from "./data";
-import type { Area } from "./api";
+import { textureFromSoil } from "./data";
+import type { Area, Pesos } from "./api";
+import PriorityPicker from "./PriorityPicker";
 import type { SetupInputs } from "./PropertyWizard";
 import { PROBLEMS, commodities, hectares, soilFields, soilMax, square } from "./PropertyWizard";
 import LocationMap from "./LocationMap";
@@ -13,19 +15,18 @@ import options from "./setup-options.json";
 type Props = {
     farm: Farm;
     inputs?: SetupInputs;
-    /** Dashboard priority sliders (0–100): water, soil, income, climate resilience. */
-    weights: number[];
+    /** Engine weights (five criteria, 0–10), the same ones Rotation Strategies edits. */
+    pesos: Pesos;
     savedAt: string | null;
     report: File | null;
     onReport: (file: File | null) => void;
-    onSave: (farm: Farm, inputs: SetupInputs | undefined, weights: number[]) => void;
+    onSave: (farm: Farm, inputs: SetupInputs | undefined, pesos: Pesos) => void;
     onRedo: () => void;
     onForget: () => void;
 };
 type Mode = "demo" | "point" | "polygon";
 type Place = { label: string; lat: number; lon: number };
 
-const WEIGHT_LABELS = ["Economia de água", "Saúde do solo", "Rentabilidade", "Resiliência climática"];
 /** Silt is only a helper for the wizard's texture fields; the engine does not receive it. */
 const SOIL_FIELDS = soilFields.filter(([id]) => id !== "silte_pct");
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
@@ -64,22 +65,30 @@ function Select({ label, value, values, onChange }: { label: string; value: stri
     </Row>);
 }
 
+/** Yes / No pill switch, the same control as the setup wizard. */
+function YesNoSwitch({ name, label, value, onChange }: { name: string; label: string; value: boolean; onChange: (v: boolean) => void }) {
+    return (<span className="wizard-segmented is-compact" role="radiogroup" aria-label={label}>
+      <label><input type="radio" name={`settings-yn-${name}`} checked={value} onChange={() => onChange(true)}/><span>{t("Sim")}</span></label>
+      <label><input type="radio" name={`settings-yn-${name}`} checked={!value} onChange={() => onChange(false)}/><span>{t("Não")}</span></label>
+    </span>);
+}
+
 function YesNo({ label, value, onChange }: { label: string; value: boolean; onChange: (v: boolean) => void }) {
-    return (<Row label={label}>
-      <select aria-label={t(label)} value={value ? "yes" : "no"} onChange={(e) => onChange(e.target.value === "yes")}>
-        <option value="yes">{t("Sim")}</option>
-        <option value="no">{t("Não")}</option>
-      </select>
-    </Row>);
+    return (<Row label={label}><YesNoSwitch name={label} label={t(label)} value={value} onChange={onChange}/></Row>);
+}
+
+/** A question row as in the setup wizard: label on the left, Yes / No switch on the right. */
+function YesNoRow({ name, label, value, onChange }: { name: string; label: string; value: boolean; onChange: (v: boolean) => void }) {
+    return (<div className="wizard-buyer-row"><span>{label}</span><YesNoSwitch name={name} label={label} value={value} onChange={onChange}/></div>);
 }
 
 /** Settings view of the property and of everything entered in the setup; saving re-runs the engine with the new values. */
-export default function PropertySettings({ farm, inputs, weights, savedAt, report, onReport, onSave, onRedo, onForget }: Props) {
+export default function PropertySettings({ farm, inputs, pesos, savedAt, report, onReport, onSave, onRedo, onForget }: Props) {
     useLanguage();
     const initialArea = useMemo(() => areaState(inputs, farm), [inputs, farm]);
     const [draftFarm, setDraftFarm] = useState<Farm>(farm);
     const [draft, setDraft] = useState<SetupInputs | undefined>(inputs);
-    const [draftWeights, setDraftWeights] = useState<number[]>(weights);
+    const [draftPesos, setDraftPesos] = useState<Pesos>(pesos);
     const [mode, setMode] = useState<Mode>(initialArea.mode);
     const [demo, setDemo] = useState(initialArea.demo);
     const [vertices, setVertices] = useState<LatLon[]>(initialArea.vertices);
@@ -101,8 +110,10 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
         : mode === "polygon" ? vertices : [];
     const outsideCoverage = markedPoints.some(([lat, lon]) => !insideParana(lat, lon));
     const areaChanged = !same({ mode, demo, vertices, pointHa }, initialArea);
-    const dirty = areaChanged || !same(draftFarm, farm) || !same(draft, inputs) || !same(draftWeights, weights);
+    const dirty = areaChanged || !same(draftFarm, farm) || !same(draft, inputs) || !same(draftPesos, pesos);
     const rotation = options.combinacoes.find((c) => c.id === draft?.rotacao_atual);
+    const soilTest = draft?.analise_solo;
+    const testedTexture = soilTest?.argila_pct !== undefined && soilTest?.areia_pct !== undefined ? textureFromSoil(soilTest.argila_pct, soilTest.areia_pct) : null;
     const summer = options.culturas_verao.find((c) => c.id === rotation?.verao);
 
     /** Moves the map (and, when marking a point, the pin) to a city or an address. */
@@ -185,23 +196,25 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
         setError("");
         try {
             if (!draftFarm.name.trim()) throw Error(t("Informe o nome da propriedade."));
-            if (!draftWeights.some(Boolean)) throw Error(t("Defina pelo menos uma prioridade maior que zero."));
+            if (!Object.values(draftPesos).some(Boolean)) throw Error(t("Defina pelo menos uma prioridade maior que zero."));
             const soil = draft?.analise_solo ?? {};
             if (("argila_pct" in soil) !== ("areia_pct" in soil)) throw Error(t("Para informar a textura, preencha argila e areia juntas."));
             if ((soil.argila_pct ?? 0) + (soil.areia_pct ?? 0) > 100) throw Error(t("Argila e areia devem somar no máximo 100%."));
             const built = builtArea();
-            if (!draft) return onSave({ ...draftFarm, ...built.farm }, undefined, draftWeights);
-            const [agua, solo, renda, risco] = draftWeights.map((w) => Math.round(w) / 10);
+            if (!draft) return onSave({ ...draftFarm, ...built.farm, ...(draftFarm.irrigation === "Não" ? { irrigationType: "Não se aplica" } : {}) }, undefined, draftPesos);
             // Keep the farm fields other pages read (irrigation, soil, crop) in step with the setup answers.
+            // With a setup, the soil test is the only pH / organic matter input, so the farm fields follow it (also when cleared).
             const nextFarm: Farm = {
                 ...draftFarm,
                 ...built.farm,
                 irrigation: draft.irrigacao.disponivel ? "Sim" : "Não",
+                irrigationType: draft.irrigacao.disponivel ? (draftFarm.irrigationType === "Não se aplica" ? "Não informado" : draftFarm.irrigationType) : "Não se aplica",
                 crop: draft.rotacao_atual.startsWith("soja__") ? "Soja" : "Milho",
-                ...(soil.ph !== undefined ? { ph: String(soil.ph) } : {}),
-                ...(soil.materia_organica_pct !== undefined ? { organic: String(soil.materia_organica_pct) } : {}),
+                ...(testedTexture ? { texture: testedTexture } : {}),
+                ph: soil.ph !== undefined ? String(soil.ph) : "",
+                organic: soil.materia_organica_pct !== undefined ? String(soil.materia_organica_pct) : "",
             };
-            onSave(nextFarm, { ...draft, area: built.area, pesos: { ...draft.pesos, agua, solo, renda, risco } }, draftWeights);
+            onSave(nextFarm, { ...draft, area: built.area, pesos: draftPesos }, draftPesos);
         } catch (e) {
             setError((e as Error).message);
         }
@@ -209,14 +222,15 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
     function discard() {
         setDraftFarm(farm);
         setDraft(inputs);
-        setDraftWeights(weights);
+        setDraftPesos(pesos);
         setMode(initialArea.mode); setDemo(initialArea.demo); setVertices(initialArea.vertices); setPointHa(initialArea.pointHa);
         setCityQuery(farm.city.replace(/,\s*PR$/i, "")); setAddress(farm.address ?? ""); setPlaces([]); setSearchNote("");
         setError("");
     }
 
     return (<section className="property-settings">
-      <div className="section-heading">
+      <header className="settings-heading">
+        <span className="settings-step" aria-hidden="true">01</span>
         <div>
           <h2>{t("Minha Propriedade")}</h2>
           <p>{t(savedAt
@@ -224,7 +238,7 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
             : "Ainda não salvos: conclua o cadastro ou salve as alterações para guardá-los.")}
             {savedAt && <> {t("Último salvamento:")} {new Date(savedAt).toLocaleString(locale())}.</>}</p>
         </div>
-      </div>
+      </header>
 
       <section className="panel settings-area">
         <h2>{t("Sua área")}</h2>
@@ -344,12 +358,16 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
         <section className="panel">
           <h2>{t("Solo e água")}</h2>
           <dl className="preferences">
-            <Select label="Textura do solo" value={draftFarm.texture} values={["Argiloso", "Arenoso", "Franco", "Siltoso", "Não informado"]} onChange={(v) => field("texture", v)}/>
+            {testedTexture
+                ? <Row label="Textura do solo"><span>{t(testedTexture)} <small className="settings-derived">{t("• pela análise de solo (argila e areia)")}</small></span></Row>
+                : <Select label="Textura do solo" value={draftFarm.texture} values={["Argiloso", "Arenoso", "Franco", "Siltoso", "Não informado"]} onChange={(v) => field("texture", v)}/>}
             <Select label="Drenagem" value={draftFarm.drainage} values={["Moderada", "Boa", "Baixa", "Não informado"]} onChange={(v) => field("drainage", v)}/>
             {draft
                 ? <YesNo label="Irrigação" value={draft.irrigacao.disponivel} onChange={(v) => set({ irrigacao: { disponivel: v } })}/>
                 : <Select label="Disponibilidade de irrigação" value={draftFarm.irrigation} values={["Sim", "Não", "Não informado"]} onChange={(v) => field("irrigation", v)}/>}
-            <Select label="Tipo de irrigação" value={draftFarm.irrigationType} values={["Pivô central", "Gotejamento", "Aspersão", "Não se aplica", "Outro"]} onChange={(v) => field("irrigationType", v)}/>
+            {(draft ? draft.irrigacao.disponivel : draftFarm.irrigation === "Sim")
+                ? <Select label="Tipo de irrigação" value={draftFarm.irrigationType === "Não se aplica" ? "Não informado" : draftFarm.irrigationType} values={["Pivô central", "Gotejamento", "Aspersão", "Outro", "Não informado"]} onChange={(v) => field("irrigationType", v)}/>
+                : <Row label="Tipo de irrigação"><span className="settings-derived-value">{t("Não se aplica")} <small className="settings-derived">{t("• sem irrigação")}</small></span></Row>}
             <Row label="Restrições de água">
               <input aria-label={t("Restrições de água")} value={draftFarm.waterRestriction} onChange={(e) => field("waterRestriction", e.target.value)}/>
             </Row>
@@ -358,14 +376,8 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
 
         <section className="panel settings-wide">
           <h2>{t("Prioridades")}</h2>
-          <p>{t("O peso de cada objetivo na nota dos cenários.")}</p>
-          <div className="sliders">
-            {WEIGHT_LABELS.map((label, i) => (<label key={label}>
-                <span>{t(label)}<strong>{draftWeights[i]}%</strong></span>
-                <input type="range" min="0" max="100" step="10" value={draftWeights[i]} aria-label={t(label)} onChange={(e) => setDraftWeights((w) => w.map((v, n) => (n === i ? +e.target.value : v)))}/>
-                <small>{t("Menor")}<span>{t("Maior")}</span></small>
-              </label>))}
-          </div>
+          <p>{t("O peso de cada objetivo na nota dos cenários. São as mesmas de Estratégias de Rotação.")}</p>
+          <PriorityPicker pesos={draftPesos} onChange={setDraftPesos}/>
         </section>
 
         {draft && (<>
@@ -380,13 +392,19 @@ export default function PropertySettings({ farm, inputs, weights, savedAt, repor
             </div>
           </section>
 
-          <section className="panel">
+          <section className="panel settings-operation">
             <h2>{t("Operação")}</h2>
-            <dl className="preferences">
-              {commodities.filter(([id]) => id !== "soja").map(([id, label]) => (<YesNo key={id} label={`${t("Comprador para")} ${t(label).toLocaleLowerCase(locale())}`} value={!draft.restricoes.sem_comprador.includes(id)} onChange={(has) => set({ restricoes: { ...draft.restricoes, sem_comprador: has ? draft.restricoes.sem_comprador.filter((x) => x !== id) : [...draft.restricoes.sem_comprador, id] } })}/>))}
-              <YesNo label="Plataforma de milho" value={draft.restricoes.maquinas.plataforma_milho} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, plataforma_milho: v } } })}/>
-              <YesNo label="Semeadora de consórcio" value={draft.restricoes.maquinas.semeadora_consorcio} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, semeadora_consorcio: v } } })}/>
-            </dl>
+            <p>{t("O que limita as rotações sugeridas. São as mesmas perguntas do cadastro.")}</p>
+            <fieldset className="wizard-buyers">
+              <legend>{t("Você tem comprador para…")}</legend>
+              {commodities.filter(([id]) => id !== "soja").map(([id, label]) => (<YesNoRow key={id} name={`buyer-${id}`} label={t(label)} value={!draft.restricoes.sem_comprador.includes(id)} onChange={(has) => set({ restricoes: { ...draft.restricoes, sem_comprador: has ? draft.restricoes.sem_comprador.filter((x) => x !== id) : [...draft.restricoes.sem_comprador, id] } })}/>))}
+              <p className="wizard-hint">{t("Culturas marcadas com “Não” saem das sugestões.")}</p>
+            </fieldset>
+            <fieldset className="wizard-buyers">
+              <legend>{t("Você tem…")}</legend>
+              <YesNoRow name="header" label={t("Plataforma de milho")} value={draft.restricoes.maquinas.plataforma_milho} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, plataforma_milho: v } } })}/>
+              <YesNoRow name="seeder" label={t("Semeadora de consórcio")} value={draft.restricoes.maquinas.semeadora_consorcio} onChange={(v) => set({ restricoes: { ...draft.restricoes, maquinas: { ...draft.restricoes.maquinas, semeadora_consorcio: v } } })}/>
+            </fieldset>
           </section>
         </>)}
 

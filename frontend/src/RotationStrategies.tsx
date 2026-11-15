@@ -8,10 +8,11 @@ import type { SetupInputs } from "./PropertyWizard";
 import type { Farm } from "./data";
 import { useLanguage } from "./i18n";
 import { rotacaoDoHistorico } from "./rotacaoAtual";
-import { CRITERIA, PRIORITIES, THEMES, levelLabel, matchPriority } from "./priorities";
+import { CRITERIA, PRIORITIES, THEMES, levelLabel } from "./priorities";
+import PriorityPicker from "./PriorityPicker";
 import { rotationCalendar } from "./rotationCalendar";
 import type { MonthUse } from "./rotationCalendar";
-import type { CriterionId, PriorityId } from "./priorities";
+import type { CriterionId } from "./priorities";
 import "./rotation-strategies.css";
 
 const DEMO_FIELD = "72638";
@@ -26,6 +27,8 @@ type Props = {
   inputs?: SetupInputs;
   farm: Farm;
   crops: Crop[];
+  /** App weights used when there is no setup yet (the same ones the Overview sends to the engine). */
+  pesos?: Pesos;
   /** Persists edited weights in the app state, so they survive leaving the page. */
   onPesosChange?: (pesos: Pesos) => void;
   /** Persists the number of options shown. */
@@ -34,14 +37,14 @@ type Props = {
 };
 
 /** Inputs used when the user reaches this page without going through the setup wizard. */
-function fallbackInputs(farm: Farm, crops: Crop[]): SetupInputs {
+function fallbackInputs(farm: Farm, crops: Crop[], pesos: Pesos = PRIORITIES[0].pesos): SetupInputs {
   const lat = Number(farm.latitude), lon = Number(farm.longitude);
   const valid = farm.latitude.trim() !== "" && farm.longitude.trim() !== "" && Number.isFinite(lat) && Number.isFinite(lon);
   const current = rotacaoDoHistorico(crops);
   return {
     area: valid ? { lat, lon } : { talhao_id: DEMO_FIELD },
     rotacao_atual: current.id,
-    pesos: PRIORITIES[0].pesos,
+    pesos,
     n_alternativas: 3,
     data_referencia: new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" }),
     problemas_area: [],
@@ -54,7 +57,7 @@ function fallbackInputs(farm: Farm, crops: Crop[]): SetupInputs {
 
 const score = (v: number | null | undefined) => (v == null ? null : Math.round(v * 100));
 
-export default function RotationStrategies({ inputs, farm, crops, onPesosChange, onCountChange, onSources }: Props) {
+export default function RotationStrategies({ inputs, farm, crops, pesos: appPesos, onPesosChange, onCountChange, onSources }: Props) {
   const { language } = useLanguage();
   const en = language === "en";
   const lang: Lang = en ? "en" : "pt-BR";
@@ -63,11 +66,10 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
   const money = (v: number) => `${v < 0 ? "−" : ""}R$ ${Math.abs(Math.round(v)).toLocaleString(en ? "en-US" : "pt-BR")}`;
   const signedMoney = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${money(Math.abs(v))}`;
 
-  const base = useMemo(() => inputs ?? fallbackInputs(farm, crops), [inputs, farm, crops]);
+  const base = useMemo(() => inputs ?? fallbackInputs(farm, crops, appPesos), [inputs, farm, crops, appPesos]);
 
   // 01 · priorities: edits apply automatically after a short pause.
   const [pesos, setPesos] = useState<Pesos>(base.pesos);
-  const [priority, setPriority] = useState<PriorityId | "custom">(() => matchPriority(base.pesos));
   const [committed, setCommitted] = useState<Pesos>(base.pesos);
   const persist = useRef(onPesosChange);
   persist.current = onPesosChange;
@@ -88,8 +90,6 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
   }, [pesos]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => () => save(latest.current), []);
-  const chooseProfile = (id: PriorityId) => { setPriority(id); setPesos(PRIORITIES.find(p => p.id === id)!.pesos); };
-  const setWeight = (id: keyof Pesos, value: number) => { setPriority("custom"); setPesos(current => ({ ...current, [id]: value })); };
   const pending = JSON.stringify(pesos) !== JSON.stringify(committed);
 
   // Engine call: one request per distinct body (weights, setup and language).
@@ -177,21 +177,7 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
     {/* 01 · priorities */}
     <section className="rs-section rs-priorities">
      <header className="rs-heading"><span className="rs-step">01</span><div><h2>{say("O que mais importa na sua safra", "What matters most this season")}</h2><p>{say("Veio do seu cadastro. Se mudar aqui, os resultados se atualizam sozinhos.", "This comes from your setup. Change it here and the results update on their own.")}</p></div></header>
-     <div className="rs-profiles">
-      {PRIORITIES.map(p => <button key={p.id} type="button" className={"rs-profile" + (priority === p.id ? " is-selected" : "")} aria-pressed={priority === p.id} onClick={() => chooseProfile(p.id)}>
-       <span className="rs-profile-icon" aria-hidden="true">{p.icon}</span><span><strong>{tx(p.title)}</strong><small>{tx(p.description)}</small></span>
-      </button>)}
-     </div>
-     <details className="rs-adjust" open={priority === "custom"}>
-      <summary>{priority === "custom" ? say("Ajuste do seu jeito · em uso", "Your own balance · in use") : say("Ajuste do seu jeito", "Make it your own")}</summary>
-      <div className="rs-sliders">
-       {CRITERIA.map(c => <label key={c.id} className="rs-slider">
-        <span><strong>{tx(c.name)}</strong><output>{pesos[c.id]}<small>/10</small></output></span>
-        <input type="range" min="0" max="10" value={pesos[c.id]} onChange={e => setWeight(c.id, Number(e.target.value))}/>
-        <small>{tx(c.hint)}</small>
-       </label>)}
-      </div>
-     </details>
+     <PriorityPicker pesos={pesos} onChange={setPesos}/>
     </section>
    </div>
 

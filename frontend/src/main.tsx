@@ -3,7 +3,10 @@ import React, { useState, useEffect, useMemo, useRef, } from "react";
 import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
-import { months, initialFarm, initialCrops, series, info, } from "./data";
+import { months, initialFarm, initialCrops, series, info, dataSources, } from "./data";
+import { health } from "./api";
+import { rotacaoDoHistorico } from "./rotacaoAtual";
+import setupOptions from "./setup-options.json";
 /** Number in the active language (decimal comma in pt-BR, point in English). */
 const num = (n: number, digits = 1) => n.toLocaleString(locale(), { minimumFractionDigits: digits, maximumFractionDigits: digits });
 /** Area in hectares as typed or saved (always with a point), shown in the active language. */
@@ -25,6 +28,8 @@ import PropertySettings from "./PropertySettings";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
 import { loadSaved, persist, clearSaved } from "./storage";
+import { PRIORITIES } from "./priorities";
+import type { Pesos } from "./api";
 const saved = loadSaved();
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
@@ -48,6 +53,22 @@ function currentPage(): Page {
     if (p === "farm") return "settings";
     return pages.includes(p) ? p : "landing";
 }
+// The app models a single plot per property.
+const PLOT_NAME = "Talhão 01";
+type CropStatus = "Planejado" | "Em crescimento" | "Concluído";
+const asDate = (s: string) => new Date(s + "T12:00:00");
+/** Status from the planting and harvest dates, so it never goes stale. */
+function cropStatus(c: Crop, today = new Date()): CropStatus {
+    if (asDate(c.plant) > today)
+        return "Planejado";
+    return asDate(c.harvest) >= today ? "Em crescimento" : "Concluído";
+}
+/** Summer crops (planted Sep–Dec) span two years, as in "2025/26"; second-window crops use a single year. */
+function seasonOf(plant: string) {
+    const d = asDate(plant), y = d.getFullYear();
+    return d.getMonth() >= 8 ? `${y}/${String(y + 1).slice(2)}` : String(y);
+}
+const byPlantDesc = (crops: Crop[]) => [...crops].sort((a, b) => b.plant.localeCompare(a.plant));
 function CoverageNotice() {
     return (<p className="coverage-notice" role="note">
       <strong>{__text("Cobertura: somente Paran\u00E1 (PR).")}</strong>{" "}
@@ -56,7 +77,7 @@ function CoverageNotice() {
 }
 function App() {
     useLanguage();
-    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [timelineYear, setTimelineYear] = useState("2026"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [calendarYear, setCalendarYear] = useState(""), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
     const [deletedCrops, setDeletedCrops] = useState<{ crop: Crop; nextId?: number }[]>([]);
@@ -106,16 +127,19 @@ function App() {
     }, [menu]);
     const [mapView, setMapView] = useState(initialMapView);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
-    // Weights live in setupInputs.pesos (0–10). Settings and the saved state still use the four % values
-    // (water, soil, income, climate risk), derived here so they always match the Rotation page.
-    // Memoised: SeasonOverview re-runs the engine when this array changes.
-    const weights = useMemo(() => setupInputs ? [setupInputs.pesos.agua, setupInputs.pesos.solo, setupInputs.pesos.renda, setupInputs.pesos.risco].map((w) => w * 10) : [50, 50, 50, 50], [setupInputs]);
+    // One set of engine weights (five criteria, 0–10) for Overview, Rotation Strategies and Settings:
+    // the setup's weights, or the app's own ones before the setup is done.
+    const [freePesos, setFreePesos] = useState<Pesos>(saved?.pesos ?? PRIORITIES[0].pesos);
+    const pesos = setupInputs?.pesos ?? freePesos;
+    const updatePesos = (next: Pesos) => (setupInputs ? setSetupInputs((current) => (current ? { ...current, pesos: next } : current)) : setFreePesos(next));
+    // Legacy four % values (water, soil, income, climate risk) kept in the saved state for older readers.
+    const weights = useMemo(() => [pesos.agua, pesos.solo, pesos.renda, pesos.risco].map((w) => w * 10), [pesos]);
     // Saving starts once the user completes the setup or saves the property; from then on every change is kept in this browser.
     const [persisted, setPersisted] = useState(saved !== null), [savedAt, setSavedAt] = useState<string | null>(saved?.savedAt ?? null);
     useEffect(() => {
         if (persisted)
-            setSavedAt(persist({ farm, setupInputs, weights, crops, settings }));
-    }, [persisted, farm, setupInputs, crops, settings]);
+            setSavedAt(persist({ farm, setupInputs, weights, pesos, crops, settings }));
+    }, [persisted, farm, setupInputs, pesos, crops, settings]);
     function forgetProperty() {
         clearSaved();
         setPersisted(false);
@@ -125,8 +149,20 @@ function App() {
         setCrops(initialCrops);
         setDeletedCrops([]);
         setSetupInputs(undefined);
+        setFreePesos(PRIORITIES[0].pesos);
         toast("Dados da propriedade apagados deste navegador.");
     }
+    const fahrenheit = settings.temperature.startsWith("Graus Fahrenheit");
+    const tempUnit = fahrenheit ? "°F" : "°C";
+    const toUnit = (celsius: number) => (fahrenheit ? celsius * 9 / 5 + 32 : celsius);
+    const fmtDate = (s: string) => asDate(s).toLocaleDateString(locale(), { day: "numeric", month: "short", year: "numeric" });
+    const sortedCrops = byPlantDesc(crops);
+    // Latest history record of the current crop (farm.crop is kept in step with the setup's current rotation).
+    const currentRecord = sortedCrops.find((c) => c.crop === farm.crop && cropStatus(c) !== "Planejado");
+    // Same rule as Rotation Strategies: the setup's rotation when there is one, else the one derived from the history.
+    const currentRotation = setupInputs
+        ? (setupOptions.combinacoes.find((c) => c.id === setupInputs.rotacao_atual)?.nome ?? setupInputs.rotacao_atual)
+        : rotacaoDoHistorico(crops).rotulo;
     const reduced = useReducedMotion();
     useEffect(() => {
         if (page !== "landing" || reduced || carouselPaused || carouselFocused)
@@ -190,7 +226,7 @@ function App() {
     }
     function Demo() {
         return (<p className="demo">{__text("DADOS DEMONSTRATIVOS")}{__text(" ")}
-        <span>{__text("\u2022 Propriedade fict\u00EDcia. Valores ilustrativos, n\u00E3o s\u00E3o medi\u00E7\u00F5es reais nem recomenda\u00E7\u00F5es validadas.")}</span>
+        <span>{__text("\u2022 S\u00E9ries de clima desta p\u00E1gina e cultivos de exemplo s\u00E3o ilustrativos, n\u00E3o medi\u00E7\u00F5es da sua propriedade nem recomenda\u00E7\u00F5es validadas.")}</span>
       </p>);
     }
     function Btn({ children, onClick, secondary = false, type = "button", }: {
@@ -217,15 +253,16 @@ function App() {
     }) {
         const vals = series[kind]
             .slice(period === "6" ? 6 : 0)
-            .map((x) => year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x);
+            .map((x) => year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x)
+            .map((x) => (kind === "temperature" ? toUnit(x) : x));
         const color = {
             temperature: "#efae38",
             rain: "#8ebdc6",
             moisture: "#a8c9a3",
             ndvi: "#8ca53b",
         }[kind];
-        const max = { temperature: 35, rain: 300, moisture: 60, ndvi: 1 }[kind];
-        const minimum = kind === "temperature" ? 15 : 0;
+        const max = { temperature: toUnit(35), rain: 300, moisture: 60, ndvi: 1 }[kind];
+        const minimum = kind === "temperature" ? toUnit(15) : 0;
         const plotY = (v: number) => 125 - ((v - minimum) / (max - minimum)) * 110;
         const positions = vals
             .map((v, i) => `${(i / (vals.length - 1)) * 300},${plotY(v)}`)
@@ -237,7 +274,7 @@ function App() {
                 <line x1="0" x2="306" y1={y} y2={y} stroke="#28464b"/>
                 <text x="-12" y={y + 3} textAnchor="end">
                   {__text(kind === "temperature"
-                    ? [35, 25, 15][i]
+                    ? num(toUnit([35, 25, 15][i]), 0)
                     : i === 2
                         ? "0"
                         : (max * (1 - i * 0.5)).toLocaleString(locale()))}
@@ -288,7 +325,7 @@ function App() {
             <MonitoringCards farm={farm} area={setupInputs?.area} fahrenheit={settings.temperature.startsWith("Graus Fahrenheit")} view={mapView} onChange={setMapView} />
           </aside>
         </div>
-        <SeasonOverview onNavigate={go} farm={farm} crops={crops} weights={weights} setupInputs={setupInputs} />
+        <SeasonOverview onNavigate={go} farm={farm} crops={crops} pesos={pesos} setupInputs={setupInputs} />
         <section className="plan-banner">
           <div>
             <h2>{__text("Planeje sua pr\u00F3xima safra.")}</h2>
@@ -302,14 +339,51 @@ function App() {
       </div>);
     }
     function Timeline() {
+        // Calendar built from the crop history: one row per crop that overlaps the chosen year.
+        const years = Array.from(new Set(crops.flatMap((c) => {
+            const from = asDate(c.plant).getFullYear(), to = asDate(c.harvest).getFullYear();
+            return Array.from({ length: Math.max(0, to - from) + 1 }, (_, i) => String(from + i));
+        }))).sort().reverse();
+        const thisYear = String(new Date().getFullYear());
+        const shown = years.includes(calendarYear) ? calendarYear : years.includes(thisYear) ? thisYear : years[0] ?? thisYear;
+        const y = Number(shown);
+        const covered = new Array(12).fill(false);
+        const rows = [...sortedCrops].reverse().flatMap((c) => {
+            const plant = asDate(c.plant), harvest = asDate(c.harvest);
+            if (plant.getFullYear() > y || harvest.getFullYear() < y)
+                return [];
+            const plantedNow = plant.getFullYear() === y, harvestedNow = harvest.getFullYear() === y;
+            const first = plantedNow ? plant.getMonth() : 0, last = harvestedNow ? harvest.getMonth() : 11;
+            for (let m = first; m <= last; m++)
+                covered[m] = true;
+            const spans: [string, number, number, string][] = [];
+            if (plantedNow)
+                spans.push(["Plantio", first, first, ""]);
+            const devStart = plantedNow ? first + 1 : first, devEnd = harvestedNow ? last - 1 : last;
+            if (devStart <= devEnd)
+                spans.push(["Desenvolvimento", devStart, devEnd, ""]);
+            if (harvestedNow && !(plantedNow && first === last))
+                spans.push(["Colheita", last, last, "harvest"]);
+            return [{ id: c.id, label: `${t(c.crop)} ${seasonOf(c.plant)}`, spans }];
+        });
+        const bare: [number, number][] = [];
+        covered.forEach((isCovered, m) => {
+            if (isCovered)
+                return;
+            const prev = bare[bare.length - 1];
+            if (prev && prev[1] === m - 1)
+                prev[1] = m;
+            else
+                bare.push([m, m]);
+        });
         return (<section className="panel timeline-panel">
         <div className="section-heading">
           <div>
             <h2>{__text("Uma vis\u00E3o de cada safra")}</h2>
-            <p>{__text("Talh\u00E3o 01")} • {ha(farm.area)} ha • {__text("plantio, desenvolvimento e colheita")}</p>
+            <p>{__text(PLOT_NAME)} • {ha(farm.area)} ha • {__text("plantio, desenvolvimento e colheita do hist\u00F3rico de cultivo")}</p>
           </div>
-          <select aria-label={__text("Ano do calend\u00E1rio")} value={timelineYear} onChange={(e) => setTimelineYear(e.target.value)}>
-            {["2026", "2025", "2024"].map((y) => (<option key={y} value={y}>{y}</option>))}
+          <select aria-label={__text("Ano do calend\u00E1rio")} value={shown} onChange={(e) => setCalendarYear(e.target.value)}>
+            {years.map((option) => (<option key={option} value={option}>{option}</option>))}
           </select>
         </div>
         <div className="timeline-scroll">
@@ -318,23 +392,18 @@ function App() {
               <span />
               {__text(months.map((m) => (<span key={m}>{__text(m)}</span>)))}
             </div>
-            <div className="timeline-row">
-              <strong>{__text("Soja")} {Number(timelineYear) - 1}/{timelineYear.slice(2)}</strong>
-              <div className="timeline-track">
-                <span className="harvest" style={{ gridColumn: "1/2" }}>{__text("Colheita")}</span>
-                <span style={{ gridColumn: "9/10" }}>{__text("Plantio")}</span>
-                <span style={{ gridColumn: "10/13" }}>{__text("Soja")} {timelineYear}/{String(Number(timelineYear) + 1).slice(2)}</span>
-              </div>
-            </div>
-            <div className="timeline-row">
-              <strong>{__text("Milho safrinha")}</strong>
-              <div className="timeline-track">
-                <span style={{ gridColumn: "2/3" }}>{__text("Plantio")}</span>
-                <span style={{ gridColumn: "3/6" }}>{__text("Desenvolvimento")}</span>
-                <span className="harvest" style={{ gridColumn: "6/7" }}>{__text("Colheita")}</span>
-                <span className="bare" style={{ gridColumn: "7/9" }}>{__text("Solo descoberto")}</span>
-              </div>
-            </div>
+            {rows.map((row) => (<div className="timeline-row" key={row.id}>
+                <strong>{row.label}</strong>
+                <div className="timeline-track">
+                  {row.spans.map(([label, from, to, kind]) => (<span key={label} className={kind} style={{ gridColumn: `${from + 1}/${to + 2}` }}>{__text(label)}</span>))}
+                </div>
+              </div>))}
+            {bare.length > 0 && (<div className="timeline-row">
+                <strong>{__text("Sem cultivo")}</strong>
+                <div className="timeline-track">
+                  {bare.map(([from, to]) => (<span key={from} className="bare" style={{ gridColumn: `${from + 1}/${to + 2}` }}>{__text("Solo descoberto")}</span>))}
+                </div>
+              </div>)}
           </div>
         </div>
         <div className="legend">
@@ -346,10 +415,10 @@ function App() {
       </section>);
     }
     function History() {
-        const fmt = (s: string) => new Date(s + "T12:00:00").toLocaleDateString(locale());
-        const fmtLong = (s: string) => new Date(s + "T12:00:00").toLocaleDateString(locale(), { day: "numeric", month: "short", year: "numeric" });
-        // The crop still in the field (latest planting not yet harvested), if any.
-        const current = crops.filter((c) => c.status !== "Concluído").sort((a, b) => b.plant.localeCompare(a.plant))[0];
+        const fmt = (s: string) => asDate(s).toLocaleDateString(locale());
+        const plantYears = new Set(crops.map((c) => asDate(c.plant).getFullYear())).size;
+        const perYear = plantYears ? crops.length / plantYears : 0;
+        const status = currentRecord ? cropStatus(currentRecord) : null;
         return (<>
         <div className="page-heading">
           <div>
@@ -363,10 +432,13 @@ function App() {
           <section className="panel current-crop">
             <small>{__text("CULTIVO ATUAL \u2022 TALH\u00C3O 01")}</small>
             <div>
-              <h2>{__text(current?.crop ?? farm.crop)}</h2>
-              <span>{__text(current?.status ?? "Em crescimento")}</span>
+              <h2>{__text(farm.crop)}</h2>
+              {status && <span>{__text(status)}</span>}
             </div>
-            {current && <p>{__text("Plantio:")} {fmtLong(current.plant)} → {__text("Colheita prevista:")} {fmtLong(current.harvest)}</p>}
+            <p>{currentRecord
+                ? <>{__text("Plantio")}: {fmtDate(currentRecord.plant)} → {__text(status === "Concluído" ? "Colheita" : "Colheita prevista")}: {fmtDate(currentRecord.harvest)}</>
+                : __text("Sem registro deste cultivo no hist\u00F3rico.")}</p>
+            <p>{__text("Rota\u00E7\u00E3o atual")}: {__text(currentRotation)}</p>
           </section>
           <section className="panel">
             <h2>{__text("Seu hist\u00F3rico em n\u00FAmeros")}</h2>
@@ -376,11 +448,11 @@ function App() {
                 <small>{__text("cultivos registrados")}</small>
               </div>
               <div>
-                <strong>{__text("3")}</strong>
+                <strong>{plantYears}</strong>
                 <small>{__text("anos de hist\u00F3rico")}</small>
               </div>
               <div>
-                <strong>{__text("2")}</strong>
+                <strong>{num(perYear, Number.isInteger(perYear) ? 0 : 1)}</strong>
                 <small>{__text("cultivos por ano")}</small>
               </div>
             </div>
@@ -391,7 +463,7 @@ function App() {
           <h2>{__text("Cultivos registrados")}</h2>
           <div className="crop-delete-feedback" role="status" aria-live="polite">
             {deletedCrops.length > 0 && <>
-              <span>{__text("Cultivo excluído.")} {__text(deletedCrops.at(-1)!.crop.crop)} · {deletedCrops.at(-1)!.crop.season}</span>
+              <span>{__text("Cultivo excluído.")} {__text(deletedCrops.at(-1)!.crop.crop)} · {seasonOf(deletedCrops.at(-1)!.crop.plant)}</span>
               <button type="button" onClick={undoDeleteCrop}>{__text("Desfazer exclusão")}</button>
             </>}
           </div>
@@ -412,33 +484,36 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {__text(crops.map((c) => (<tr key={c.id}>
+                {sortedCrops.map((c) => {
+                    const cStatus = cropStatus(c);
+                    return (<tr key={c.id}>
                     <td>
-                      {__text(c.crop)} • {c.season}
+                      {__text(c.crop)} • {seasonOf(c.plant)}
                     </td>
-                    <td>{__text(fmt(c.plant))}</td>
+                    <td>{fmt(c.plant)}</td>
                     <td>
-                      {__text(fmt(c.harvest))}
-                      {__text(c.status !== "Concluído" ? "*" : "")}
+                      {fmt(c.harvest)}
+                      {cStatus !== "Concluído" ? "*" : ""}
                     </td>
                     <td>{ha(c.area)} ha</td>
                     <td>
-                      {__text(c.yield ? c.yield + " sc/ha" : "Ainda não colhida")}
+                      {c.yield ? c.yield + " sc/ha" : __text(cStatus === "Concluído" ? "Não informada" : "Ainda não colhida")}
                     </td>
                     <td>
-                      <span className="status">{__text(c.status)}</span>
+                      <span className="status">{__text(cStatus)}</span>
                     </td>
                     <td>
                       <button type="button" className="crop-delete-button"
-                        aria-label={`${__text("Excluir cultivo")}: ${__text(c.crop)} ${c.season}`}
+                        aria-label={`${__text("Excluir cultivo")}: ${__text(c.crop)} ${seasonOf(c.plant)}`}
                         title={__text("Excluir cultivo")} onClick={() => deleteCrop(c.id)}>×</button>
                     </td>
-                  </tr>)))}
+                  </tr>);
+                })}
                 {crops.length === 0 && <tr><td colSpan={7}>{__text("Nenhum cultivo registrado.")}</td></tr>}
               </tbody>
             </table>
           </div>
-          <small>{__text("* Data prevista, n\u00E3o observada.")}</small>
+          <small>{__text("* Data prevista, n\u00E3o observada. Situa\u00E7\u00E3o calculada pelas datas de plantio e colheita.")}</small>
         </section>
         <section className="callout">
           <div>
@@ -488,7 +563,7 @@ function App() {
                   </div>
                   <strong className={"climate-number n" + i}>
                     {__text([
-                    `${num(year === "2025" ? 24.8 : year === "2024" ? 23.1 : 25.8)} °C`,
+                    `${num(toUnit(year === "2025" ? 24.8 : year === "2024" ? 23.1 : 25.8))} ${tempUnit}`,
                     year === "2025"
                         ? "121 mm"
                         : year === "2024"
@@ -550,7 +625,7 @@ function App() {
             <p>{__text("Compare caminhos para a pr\u00F3xima safra, com as suas prioridades.")}</p>
           </div>
         </div>
-        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} onPesosChange={(pesos) => setSetupInputs((current) => (current ? { ...current, pesos } : current))} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onSources={() => open("sources")} />
+        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} pesos={pesos} onPesosChange={updatePesos} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onSources={() => open("sources")} />
       </>);
     }
     function Settings() {
@@ -560,24 +635,30 @@ function App() {
             <h1>{__text("Configura\u00E7\u00F5es")}</h1>
             <p>{__text("Sua propriedade, suas prefer\u00EAncias e a origem dos dados.")}</p>
           </div>
-                  </div>
-        <Demo />
-        <PropertySettings key={JSON.stringify([farm, setupInputs])} farm={farm} inputs={setupInputs} weights={weights} savedAt={savedAt} report={report} onReport={(f) => {
+        </div>
+        <PropertySettings key={JSON.stringify([farm, setupInputs, freePesos])} farm={farm} inputs={setupInputs} pesos={pesos} savedAt={savedAt} report={report} onReport={(f) => {
                 setReport(f);
                 if (f)
                     toast("Laudo selecionado localmente. Nenhum arquivo foi enviado.");
-            }} onSave={(nextFarm, inputs) => {
+            }} onSave={(nextFarm, inputs, nextPesos) => {
                 setFarm(nextFarm);
                 setDraft(nextFarm);
                 setCrops((p) => p.map((c) => SAMPLE_CROP_IDS.has(c.id) ? { ...c, area: nextFarm.area } : c));
                 setSetupInputs(inputs);
+                setFreePesos(nextPesos);
                 setPersisted(true);
                 toast("Alterações salvas. Os cenários foram recalculados.");
             }} onRedo={() => go("demo")} onForget={forgetProperty}/>
-        <div className="two-col">
-          <div className="stack">
+        <section className="settings-section" aria-labelledby="settings-reading-title">
+          <header className="settings-heading">
+            <span className="settings-step" aria-hidden="true">02</span>
+            <div>
+              <h2 id="settings-reading-title">{__text("Prefer\u00EAncias de leitura")}</h2>
+              <p>{__text("Valem para todas as abas e s\u00E3o aplicadas na hora.")}</p>
+            </div>
+          </header>
+          <div className="two-col">
             <section className="panel">
-              <h2>{__text("Prefer\u00EAncias de leitura")}</h2>
               <dl className="preferences">
                 <div>
                   <dt>{__text("Idioma")}</dt>
@@ -603,42 +684,63 @@ function App() {
                   <dt>{__text("Precipita\u00E7\u00E3o")}</dt>
                   <dd>{__text("Mil\u00EDmetros (mm)")}</dd>
                 </div>
-              </dl>
-            </section>
-            <section className="panel">
-              <h2>{__text("Fontes de refer\u00EAncia")}</h2>
-              <p className="warm">{__text("Nenhuma fonte est\u00E1 conectada nesta vers\u00E3o.")}</p>
-              <dl className="source-list">
                 <div>
-                  <dt>{__text("NASA POWER")}</dt>
-                  <dd>{__text("Clima \u2022 temperatura e precipita\u00E7\u00E3o")}</dd>
-                </div>
-                <div>
-                  <dt>{__text("NASA SMAP")}</dt>
-                  <dd>{__text("Umidade superficial do solo")}</dd>
-                </div>
-                <div>
-                  <dt>{__text("NASA MODIS")}</dt>
-                  <dd>{__text("Vegeta\u00E7\u00E3o \u2022 exemplo de \u00EDndice NDVI")}</dd>
+                  <dt>{__text("Umidade do solo")}</dt>
+                  <dd>{__text("Percentual (%)")}</dd>
                 </div>
               </dl>
-              <LinkButton onClick={() => open("sources")}>{__text("Consultar documenta\u00E7\u00E3o e limita\u00E7\u00F5es \u2192")}</LinkButton>
             </section>
+            <aside className="panel green-panel settings-storage">
+              <h2>{__text("Onde seus dados ficam")}</h2>
+              <dl>
+                <div>
+                  <dt>{__text("Propriedade, cultivos e prefer\u00EAncias")}</dt>
+                  <dd>{__text(persisted ? "Neste navegador. Apague em \u201CApagar dados salvos\u201D, acima." : "Ainda n\u00E3o salvos: conclua o cadastro ou salve a propriedade.")}</dd>
+                </div>
+                <div>
+                  <dt>{__text("Laudo de solo")}</dt>
+                  <dd>{__text("S\u00F3 enquanto a p\u00E1gina est\u00E1 aberta. N\u00E3o \u00E9 enviado nem analisado.")}</dd>
+                </div>
+                <div>
+                  <dt>{__text("API da NATIVA")}</dt>
+                  <dd>{__text("Recebe a \u00E1rea, a rota\u00E7\u00E3o, as prioridades, a an\u00E1lise de solo e os pre\u00E7os para calcular indicadores e cen\u00E1rios.")}</dd>
+                </div>
+                <div>
+                  <dt>{__text("Busca de endere\u00E7o")}</dt>
+                  <dd>{__text("O texto buscado vai ao OpenStreetMap (Nominatim).")}</dd>
+                </div>
+              </dl>
+              <small>{__text("Sem conta, sincroniza\u00E7\u00E3o ou envio de documentos.")}</small>
+            </aside>
           </div>
-          <aside className="stack">
-            <section className="panel green-panel">
-              <h2>{__text("Voc\u00EA est\u00E1 no controle")}</h2>
-              <p>{__text("Este \u00E9 um ambiente demonstrativo. A fazenda, os cultivos, os indicadores e os cen\u00E1rios s\u00E3o fict\u00EDcios.")}</p>
-              <p>{__text("Os dados da propriedade ficam salvos apenas neste navegador. N\u00E3o h\u00E1 conta real, sincroniza\u00E7\u00E3o ou envio de documentos.")}</p>
-              <small>{__text("NASA Space Apps Challenge 2026")}<br />{__text("Projeto NATIVA")}</small>
-            </section>
-            <section className="panel">
-              <h2>{__text("Come\u00E7ar de novo")}</h2>
-              <p>{__text("Volte \u00E0 vis\u00E3o geral para explorar o fluxo.")}</p>
-              <LinkButton onClick={() => go("overview")}>{__text("Voltar \u00E0 vis\u00E3o geral \u2192")}</LinkButton>
-            </section>
-          </aside>
-        </div>
+        </section>
+        <section className="settings-section" aria-labelledby="settings-sources-title">
+          <header className="settings-heading">
+            <span className="settings-step" aria-hidden="true">03</span>
+            <div>
+              <h2 id="settings-sources-title">{__text("Fontes de dados")}</h2>
+              <p>{__text("Onde cada fonte aparece na NATIVA.")}</p>
+            </div>
+          </header>
+          <div className="settings-sources">
+            {([
+                ["engine", "Motor de rota\u00E7\u00E3o", "Estrat\u00E9gias de Rota\u00E7\u00E3o e Safra anual \u2022 para a \u00E1rea cadastrada", true],
+                ["indicators", "Indicadores e mapa", "Vis\u00E3o Geral \u2022 no ponto de refer\u00EAncia da propriedade", true],
+                ["illustrative", "Ilustrativas", "An\u00E1lise Clim\u00E1tica \u2022 s\u00E9ries de exemplo", false],
+            ] as const).map(([key, title, where, live]) => (<section className="panel" key={key}>
+                <h3 className={live ? "" : "warm"}>{__text(title)}</h3>
+                <p>{__text(where)}</p>
+                {key === "engine" && <EngineStatus />}
+                <dl className="source-list">
+                  {dataSources[key].map(([name, use]) => (<div key={name}>
+                      <dt>{__text(name)}</dt>
+                      <dd>{__text(use)}</dd>
+                    </div>))}
+                </dl>
+              </section>))}
+          </div>
+          <LinkButton onClick={() => open("sources")}>{__text("Consultar premissas e limita\u00E7\u00F5es \u2192")}</LinkButton>
+        </section>
       </>);
     }
     function Landing() {
@@ -735,17 +837,14 @@ function App() {
                     setError("A colheita deve ocorrer após o plantio.");
                     return;
                 }
-                setCrops((p) => [
-                    {
-                        ...value,
-                        id: Date.now(),
-                        season: value.plant.slice(0, 4),
-                        status: value.yield ? "Concluído" : "Planejado",
-                    },
-                    ...p,
-                ]);
+                if (Number(value.area) > Number(farm.area)) {
+                    setError("A área cultivada não pode ser maior que a área da propriedade.");
+                    return;
+                }
+                const added = { ...value, id: Date.now(), season: seasonOf(value.plant), status: "" };
+                setCrops((p) => [{ ...added, status: cropStatus(added) }, ...p]);
                 setModal(null);
-                toast("Cultivo adicionado.");
+                toast("Cultivo adicionado ao histórico.");
             }}>
         <h2>{__text("Adicionar cultivo")}</h2>
         <p>{__text("Registre um exemplo para explorar o hist\u00F3rico da propriedade.")}</p>
@@ -766,7 +865,7 @@ function App() {
           <label className="field">
             <span>{__text("Talh\u00E3o")}</span>
             <select>
-              <option value={"Talh\u00E3o 01"}>{__text("Talh\u00E3o 01")}</option>
+              <option value={PLOT_NAME}>{__text(PLOT_NAME)}</option>
             </select>
           </label>
           {__text((["plant", "harvest", "area", "yield"] as const).map((key, i) => (<label className="field" key={key}>
@@ -778,7 +877,7 @@ function App() {
                     "Produtividade (sc/ha) • opcional",
                 ][i])}
               </span>
-              <input type={i < 2 ? "date" : "number"} min={i > 1 ? 0 : undefined} step={i > 1 ? "any" : undefined} value={value[key]} required={key !== "yield"} onChange={(e) => setValue((v) => ({ ...v, [key]: e.target.value }))}/>
+              <input type={i < 2 ? "date" : "number"} min={i > 1 ? 0 : undefined} max={key === "area" ? farm.area : undefined} step={i > 1 ? "any" : undefined} value={value[key]} required={key !== "yield"} onChange={(e) => setValue((v) => ({ ...v, [key]: e.target.value }))}/>
             </label>)))}
         </div>
         {__text(error && (<p className="error" role="alert">
@@ -786,7 +885,7 @@ function App() {
           </p>))}
         <p>{__text("As datas podem coexistir com outros cultivos no mesmo ano.")}</p>
         <button type="submit" className="button">{__text("Salvar cultivo")}</button>
-        <small>{__text(persisted ? "Fica salvo neste navegador, junto com a propriedade." : "Dados mantidos somente nesta sess\u00E3o.")}</small>
+        <small>{__text(persisted ? "Fica salvo neste navegador, junto com a propriedade." : "Conclua o cadastro para salvar o hist\u00F3rico neste navegador.")}</small>
       </form>);
     }
     function ModalContent() {
@@ -902,6 +1001,17 @@ function App() {
         </div>))}
       {__text(inDashboard && <span className="sr-only">{__text("Demonstra\u00E7\u00E3o NATIVA")}</span>)}
     </>);
+}
+/** Live status of the NATIVA API, shown next to the engine data sources. */
+function EngineStatus() {
+    const [status, setStatus] = useState<"checking" | "ok" | "degraded" | "offline">("checking");
+    useEffect(() => {
+        let active = true;
+        health(locale() === "en-US" ? "en" : "pt-BR").then((h) => active && setStatus(h.status === "ok" ? "ok" : "degraded")).catch(() => active && setStatus("offline"));
+        return () => { active = false; };
+    }, []);
+    const label = { checking: "verificando…", ok: "conectada", degraded: "degradada", offline: "indisponível" }[status];
+    return (<small className={"engine-status " + status}>● {__text("API")}: {__text(label)}</small>);
 }
 function Dialog({ children, onClose, wide, }: {
     children: React.ReactNode;
