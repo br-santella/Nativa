@@ -1,5 +1,6 @@
 """Summer-crop stage -> estimated harvest -> 2nd-window sowing; `agora`/`proxima_safra` blocks; `ganho_vs_atual`.
 Uses the real service and the data in data/ (run: uv run pytest tests/test_crop_calendar.py)."""
+from local_data import needs_data
 from datetime import date
 
 import pytest
@@ -69,6 +70,7 @@ def test_invalid_expected_harvest(x):
 
 
 # Exemplo principal
+@needs_data
 def test_soy_grain_fill_field_72638():
     r = _rec(summer_stage="enchimento_graos", reference_date=REF)
     assert r["cultura_atual"] == {"id": "soja", "nome": "Soja"}
@@ -90,6 +92,7 @@ def test_soy_grain_fill_field_72638():
     assert any("colheita de milho verão" in m for m in _eliminated(r["proxima_safra"])["milho_verao__milho_safrinha"])
 
 
+@needs_data
 def test_gain_vs_current():
     r = _rec(summer_stage="enchimento_graos", reference_date=REF)
     by_id = {x["id"]: x for x in r["agora"]["ranking"] + r["proxima_safra"]["ranking"]}
@@ -112,6 +115,7 @@ def test_gain_vs_current():
     assert all(x["ganho_vs_atual"] for x in r["proxima_safra"]["ranking"])
 
 
+@needs_data
 def test_current_summer_corn_uses_farmer_harvest():
     base = _rec(current_rotation="milho_verao__milho_safrinha", sowing_second="01/02")  # premissa: colheita 05/02 > 01/02
     assert any("05/02" in m for m in _eliminated(base["agora"])["milho_verao__milho_safrinha"])
@@ -124,6 +128,7 @@ def test_current_summer_corn_uses_farmer_harvest():
 
 
 # Colheita tarde demais
+@needs_data
 def test_too_late_harvest_eliminates_only_sowing_followers():
     r = _rec(summer_stage="vegetativo", reference_date="2026-12-20")  # colheita ~20/03
     assert r["colheita_estimada"] == {"data": "20/03", "origem": "estagio"} and r["semeadura_2a"] is None
@@ -137,6 +142,7 @@ def test_too_late_harvest_eliminates_only_sowing_followers():
 
 
 # Precedence and inputs
+@needs_data
 def test_expected_harvest_beats_stage_and_sowing_beats_derived():
     r = _rec(summer_stage="vegetativo", expected_harvest="20/01", reference_date=REF)
     assert r["colheita_estimada"] == {"data": "20/01", "origem": "informada"} and r["dias_ate_colheita"] == 50
@@ -147,6 +153,7 @@ def test_expected_harvest_beats_stage_and_sowing_beats_derived():
     assert r["entrada"]["semeadura_safrinha"] == "01/03" and any("01/03 informada" in a for a in r["avisos"])
 
 
+@needs_data
 def test_no_stage_nor_harvest_uses_assumption_and_warns():
     r = _rec()
     assert r["colheita_estimada"] == {"data": "10/01", "origem": "premissa"} and r["dias_ate_colheita"] is None
@@ -172,6 +179,7 @@ def test_invalid_inputs():
 
 
 # `rotacoes` split into the blocks
+@needs_data
 def test_rotations_land_in_the_right_block():
     requested = [{"verao": "soja", "segunda": "milho_safrinha"}, {"verao": "soja", "segunda": "aveia"}, {"verao": "soja", "segunda": "soja_safrinha"},
                {"verao": "milho_verao", "segunda": "aveia_nabo"}, {"verao": "milho_verao", "segunda": "milho_safrinha"}]
@@ -186,6 +194,7 @@ def test_rotations_land_in_the_right_block():
 
 
 # /v1/opcoes
+@needs_data
 def test_options_stages():
     o = {c["id"]: c for c in options()["culturas_verao"]}
     assert [(e["id"], e["dias_ate_colheita"]) for e in o["soja"]["estagios"]] == [

@@ -146,7 +146,7 @@ Details: [`frontend/README.md`](frontend/README.md#data-and-backend).
 
 ```bash
 cd motor_field_shift
-uv run pytest                  # unit tests (the API tests use a fake service; the engine tests read the local data)
+uv run pytest                  # unit tests (engine tests that read the local data are skipped without it)
 uv run pytest -m integration    # integration tests (real service, requires the local data)
 
 cd ../frontend

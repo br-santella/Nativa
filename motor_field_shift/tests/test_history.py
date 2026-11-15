@@ -1,10 +1,12 @@
 """Track record of the second crop (field_shift.income.history). Run: uv run pytest tests/test_history.py"""
+from local_data import needs_data
 from field_shift.core import recommend
 from field_shift.income import history as H
 
 TOLEDO = "4127700"
 
 
+@needs_data
 def test_track_record_has_last_five_seasons_in_soy_bags():
     tr = H.track_record(TOLEDO, "milho_safrinha")
     assert tr is not None and len(tr["safras"]) == 5
@@ -25,6 +27,7 @@ def _by_id(r):
     return {x["id"]: x for x in r["ranking"]}
 
 
+@needs_data
 def test_track_record_drives_income_of_grain_second_crops(monkeypatch):
     a = _by_id(recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False, n_alternatives=6))
     m = a["soja__milho_safrinha"]["margem"]
@@ -46,6 +49,7 @@ def test_track_record_drives_income_of_grain_second_crops(monkeypatch):
     assert b["soja__milho_safrinha"]["margem"]["incremental_r_ha"] == m["incremental_preco_atual_r_ha"]
 
 
+@needs_data
 def test_farmer_data_keeps_current_price_basis():
     r = _by_id(recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False, n_alternatives=6,
                           adjustments={"precos": {"milho": 70.0}}))
@@ -66,6 +70,7 @@ def test_income_score_is_strictly_increasing_and_matches_old_slope_at_zero():
     assert abs((income_score(10, s) - 0.5) - 10 / (2 * s)) < 1e-6   # same slope as the old linear score near zero
 
 
+@needs_data
 def test_uncertainty_block_in_the_response():
     r = recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False, n_alternatives=6)
     a = _by_id(r["agora"])
@@ -85,6 +90,7 @@ def test_uncertainty_block_in_the_response():
     assert sum(p["safras"] for p in st["primeiro"]) == len(st["safras"]) == 5
 
 
+@needs_data
 def test_current_price_basis_reports_bad_year_only():
     r = recommend({"talhao_id": "72638"}, current_rotation="soja__milho_safrinha", include_diagnosis=False, n_alternatives=6,
                    adjustments={"precos": {"milho": 70.0}})

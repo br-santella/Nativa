@@ -2,6 +2,7 @@
 
 See docs/validation.md, section 1. Run: uv run pytest tests/test_invariants.py
 """
+from local_data import needs_data
 from functools import lru_cache
 
 import numpy as np
@@ -39,11 +40,13 @@ def _by_id(tab):
 # Structure
 
 
+@needs_data
 def test_deterministic():
     a, b = rank(base()), rank(base())
     assert list(a["id"]) == list(b["id"]) and np.allclose(a["nota"], b["nota"])
 
 
+@needs_data
 def test_scores_and_criteria_in_unit_interval_and_sorted():
     for c in (base(), ctx(current="milho_verao__milho_safrinha", stage="grao_leitoso"), ctx(harvest="25/02")):
         tab = rank(c)
@@ -53,12 +56,14 @@ def test_scores_and_criteria_in_unit_interval_and_sorted():
         assert tab["nota"].is_monotonic_decreasing
 
 
+@needs_data
 def test_eliminated_always_have_a_reason_and_soy_on_soy_is_out():
     res = E.score_rotation(base().weights, base().rk, {}, None)
     assert res["eliminadas"] and all(m for m in res["eliminadas"].values())
     assert E.NOME_DE["soja__soja_safrinha"] in res["eliminadas"]
 
 
+@needs_data
 def test_current_rotation_always_reported():
     for cur in ("soja__milho_safrinha", "soja__pousio", "soja__soja_safrinha", "milho_verao__trigo"):
         r = recommend({"talhao_id": "72638"}, current_rotation=cur, reference_date="2026-12-01")
@@ -68,6 +73,7 @@ def test_current_rotation_always_reported():
 # Weights
 
 
+@needs_data
 def test_scaling_all_weights_keeps_ranking():
     w = dict(E.DEFAULT_WEIGHTS)
     a = rank(base(), weights=w)
@@ -76,6 +82,7 @@ def test_scaling_all_weights_keeps_ranking():
 
 
 @pytest.mark.parametrize("criterion", CRITERIA)
+@needs_data
 def test_more_weight_never_demotes_the_best_on_that_criterion(criterion):
     for c in (base(), ctx(harvest="25/02")):
         before = rank(c)
@@ -86,6 +93,7 @@ def test_more_weight_never_demotes_the_best_on_that_criterion(criterion):
             assert list(rank(c, weights=w)["id"]).index(best) <= pos0, (criterion, v)
 
 
+@needs_data
 def test_subset_keeps_relative_order():
     """Absolute 0–1 scales: ranking a subset gives the same relative order (no min-max coupling between candidates)."""
     full = list(rank(base())["id"])
@@ -97,6 +105,7 @@ def test_subset_keeps_relative_order():
 # Income
 
 
+@needs_data
 def test_higher_corn_price_helps_corn_and_leaves_corn_free_unchanged():
     a = _by_id(rank(base()))
     b = _by_id(rank(base(), adjustments={"preco": {"milho": 80.0}}))
@@ -111,12 +120,14 @@ def test_higher_corn_price_helps_corn_and_leaves_corn_free_unchanged():
 
 
 @pytest.mark.parametrize("cost_key", ["milho_2safra", "trigo", "aveia", "milheto_crotalaria", "aveia_nabo", "pousio"])
+@needs_data
 def test_higher_cost_never_raises_income(cost_key):
     a = _by_id(rank(base()))
     b = _by_id(rank(base(), adjustments={"custo": {cost_key: 1e4}}))
     assert (b["renda"] <= a["renda"].reindex(b.index) + 1e-12).all()
 
 
+@needs_data
 def test_higher_bonus_never_lowers_income():
     a = _by_id(rank(base()))
 
@@ -136,6 +147,7 @@ def _criteria(c, rid, k):
 
 
 @pytest.mark.parametrize("rid", ["soja__milho_safrinha", "soja__sorgo"])
+@needs_data
 def test_later_sowing_never_lowers_frost_exposure(rid):
     """Later 2nd-season sowing pushes grain filling into June–July: the climate-risk criterion must not improve."""
     risk = [_criteria(ctx(sowing=s, reference_date=None), rid, "risco") for s in SOWINGS
@@ -144,6 +156,7 @@ def test_later_sowing_never_lowers_frost_exposure(rid):
     assert all(b <= a + 1e-9 for a, b in zip(risk, risk[1:])), risk
 
 
+@needs_data
 def test_irrigation_never_lowers_water_or_risk():
     dry = _by_id(rank(base()))
     wet = _by_id(rank(ctx(stage="enchimento_graos", irrigation=(("disponivel", True),))))
@@ -153,11 +166,13 @@ def test_irrigation_never_lowers_water_or_risk():
     assert wet.at["soja__milho_safrinha", "agua"] > dry.at["soja__milho_safrinha", "agua"]
 
 
+@needs_data
 def test_too_late_harvest_leaves_only_fixed_date_crops():
     tab = rank(ctx(harvest="25/03"))
     assert all(not E.CATALOG[E.NOME_DE[i]]["segue_semeadura"] for i in tab["id"])
 
 
+@needs_data
 def test_cover_crops_have_no_climate_risk():
     tab = _by_id(rank(base()))
     for rid in tab.index:

@@ -150,7 +150,7 @@ def test_pair_without_source_is_neutral_and_listed():
     e = EA.adjustment(c, {"problemas": ["mofo_branco"], "fert": None})
     assert e["pragas"] == pytest.approx(-X)  # only the summer soybean; the radish mix itself is neutral
     assert not any("nabo" in x["motivo"] for x in e["efeitos"])
-    assert any("sem fonte confirmada" in l and "aveia" in l for l in EA.card(c, {"problemas": ["mofo_branco"], "fert": None})["lacunas"])
+    assert any("sem fonte confirmada" in line and "aveia" in line for line in EA.card(c, {"problemas": ["mofo_branco"], "fert": None})["lacunas"])
     # a pair that is in neither table is neutral and silent
     assert _delta("Soja → trigo", "cigarrinha", "pragas") == 0.0 and _delta("Soja → trigo", "compactacao", "solo") == 0.0
 
@@ -172,7 +172,7 @@ def test_nematode_levels():
     # species-dependent cells stay neutral (brachiaria and corn host P. brachyurus but not the others)
     assert _delta("Milho verão → milho safrinha + braquiária", "nematoide", "pragas") == 0.0
     c = _cand_crops("Soja → milho safrinha + braquiária")
-    assert any("espécie" in l and "neutro" in l for l in EA.card(c, {"problemas": ["nematoide"], "fert": None})["lacunas"])
+    assert any("espécie" in line and "neutro" in line for line in EA.card(c, {"problemas": ["nematoide"], "fert": None})["lacunas"])
 
 
 def test_leafhopper_and_compaction_levels():
@@ -329,8 +329,8 @@ def test_area_problems_move_the_ranking_in_the_expected_direction(base):
     assert "Fertilidade não considerada (não informada)." in r["metodologia"]["ajustes_aplicados"]
     assert any("fontes lidas" in a or "fonte lida" in a for a in r["metodologia"]["ajustes_aplicados"])
     assert any("mofo-branco" in e and "feijão" in e and "Brandão" in e for e in x["soja__feijao_safrinha"]["card"]["evidencias"])
-    assert any("Problemas da área considerados: mofo-branco" in l for l in x["soja__feijao_safrinha"]["card"]["lacunas"])
-    assert any("sem fonte confirmada" in l for l in x["soja__aveia_nabo"]["card"]["lacunas"])  # neutral cell is flagged
+    assert any("Problemas da área considerados: mofo-branco" in line for line in x["soja__feijao_safrinha"]["card"]["lacunas"])
+    assert any("sem fonte confirmada" in line for line in x["soja__aveia_nabo"]["card"]["lacunas"])  # neutral cell is flagged
 
     n = _rk(_rec(area_problems=["nematoide"]))  # soybean -X in all; crotalaria +X on top; brachiaria and corn species-dependent -> neutral
     assert n["soja__milheto_crotalaria"]["criterios"]["pragas"] == pytest.approx(b["soja__milheto_crotalaria"]["criterios"]["pragas"])
@@ -372,7 +372,7 @@ def test_poor_and_acid_fertility(base):
     assert "Solo (P ou K baixos): favorece" in ev_b and "Solo (solo ácido): penaliza" in ev_b
     for i in ("soja__aveia_nabo", "soja__milheto_crotalaria"):  # no source for these mixes on P/K: neutral, and flagged
         assert x[i]["criterios"]["solo"] == b[i]["criterios"]["solo"]
-        assert any("sem fonte confirmada" in l for l in x[i]["card"]["lacunas"])
+        assert any("sem fonte confirmada" in line for line in x[i]["card"]["lacunas"])
     assert x["soja__soja_safrinha"]["criterios"]["solo"] < b["soja__soja_safrinha"]["criterios"]["solo"] if "soja__soja_safrinha" in x else True
     # recovery cost: on every candidate, liming in full (not diluted), income given up against the top-income option
     rec = {k: v["recuperacao_solo"] for k, v in x.items()}

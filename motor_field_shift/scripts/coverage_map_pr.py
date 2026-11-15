@@ -53,7 +53,8 @@ mp = mun.to_crs(5880)
 for n in poles:
     r = mun[mun["nome"].str.lower() == n.lower()]
     if r.empty:
-        print("sem polo:", n); continue
+        print("sem polo:", n)
+        continue
     p = mp[mp["nome"].str.lower() == n.lower()].geometry.iloc[0].representative_point()
     p = gpd.GeoSeries([p], crs=5880).to_crs(4326).iloc[0]
     ax.plot(p.x, p.y, "o", ms=3, c="black", zorder=5)
@@ -61,9 +62,11 @@ for n in poles:
     ax.annotate(n, (p.x, p.y), xytext=off, ha="right" if n == "Assis Chateaubriand" else "left", textcoords="offset points", fontsize=7.5, zorder=9,
                 path_effects=[__import__("matplotlib.patheffects", fromlist=["x"]).withStroke(linewidth=2.2, foreground="white")])
 
-ax.set_xlim(-54.9, -48.0); ax.set_ylim(-26.85, -22.4)
+ax.set_xlim(-54.9, -48.0)
+ax.set_ylim(-26.85, -22.4)
 ax.set_aspect(1 / 0.92)
-ax.set_xlabel("Longitude"); ax.set_ylabel("Latitude")
+ax.set_xlabel("Longitude")
+ax.set_ylabel("Latitude")
 ax.grid(ls=":", lw=.3, alpha=.5)
 ax.set_title("Field Shift — Cobertura da API no Paraná", fontsize=16, fontweight="bold", pad=12)
 

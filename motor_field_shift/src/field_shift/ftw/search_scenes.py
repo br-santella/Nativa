@@ -1,6 +1,5 @@
 """List low-cloud Sentinel-2 L2A scenes (Planetary Computer) over a bbox."""
 import sys
-import planetary_computer as pc
 from pystac_client import Client
 
 bbox = [float(x) for x in sys.argv[1].split(",")]
