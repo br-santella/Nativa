@@ -1,0 +1,55 @@
+[project]
+name = "field-shift"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "LucasCordeiro", email = "lucas.cordeiro@embeddo.io" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "earthaccess>=0.19.0",
+    "exactextract>=0.3.0",
+    "fastapi>=0.163.0",
+    "geopandas>=1.2.0",
+    "h5netcdf>=1.8.3",
+    "h5py>=3.16.0",
+    "ipykernel>=7.4.0",
+    "jupyterlab>=4.6.6",
+    "matplotlib>=3.11.2",
+    "netcdf4>=1.7.5.1.post1",
+    "numpy>=2.5.4",
+    "odc-stac>=0.5.3",
+    "pandas>=3.1.1",
+    "planetary-computer>=1.0.0",
+    "plotly>=7.1.0",
+    "pyarrow>=26.0.1",
+    "pystac-client>=0.9.1",
+    "requests>=2.34.2",
+    "rioxarray>=0.23.0",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.18.1",
+    "shapely>=2.2.0",
+    "streamlit>=1.67.0",
+    "uvicorn>=0.54.0",
+    "xarray>=2026.9.0",
+    "xlrd>=2.0.2",
+]
+
+[project.scripts]
+field-shift = "field_shift:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.2.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["api"]
+testpaths = ["api/tests"]
+markers = ["integracao: usa o serviço real e os dados em data/ (lento)"]
+addopts = "-m 'not integracao'"

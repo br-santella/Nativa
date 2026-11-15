@@ -1,0 +1,1 @@
+{"detail":[{"type":"greater_than_equal","loc":["body","ajustes","custos","milho"],"msg":"Input should be greater than or equal to 0","input":-1,"ctx":{"ge":0.0}}]}
