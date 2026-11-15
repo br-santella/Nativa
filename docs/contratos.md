@@ -27,10 +27,13 @@ external sources at request time.
 - `catalog/vocabulario.yaml`: closed lists for the catalog, the farm form and the frontend (machinery,
   irrigation, labor, soil textures).
 
-The engine does not read `catalog/crops.yaml`. It uses its internal crop list, exposed by `/v1/opcoes`.
-From `vocabulario.yaml` it reads only the `problemas_area` list (with a built-in copy when `catalog/` is absent,
-as in the Docker image); `scripts/i18n_extract.py` also extracts its texts for the English catalog. The valid
-ids for the API are the ones returned by `/v1/opcoes`.
+The engine's crop list and parameters (FAO-56 Kc and stages, costs, risks) stay internal, exposed by `/v1/opcoes`; the valid
+ids for the API are the ones returned there. `crops.yaml` is read by `field_shift.crop_sheets` for two informative uses that never
+change the score: the farmer's pH (`analise_solo.ph`) is compared with each crop's pH range on the card, and the sheets are served by
+`GET /v1/culturas/fichas` (each crop in `/v1/opcoes` carries its `ficha` id, or `null`). The Docker image has no `catalog/`, so it
+uses the identical copy `motor_field_shift/data/ref/crops.yaml` (a test keeps them equal). From `vocabulario.yaml` the engine reads
+only the `problemas_area` list (with a built-in copy when `catalog/` is absent); `scripts/i18n_extract.py` also extracts its texts
+for the English catalog.
 
 ## C3 — API
 
@@ -42,6 +45,7 @@ the client sends all the data with every request.
 | GET | `/health` | Service status and whether the data loaded (`ok` / `degradado`) |
 | GET | `/v1/opcoes` | Summer and second-window crops, valid combinations, sowing dates, criteria, default weights, income references, demo fields |
 | GET | `/v1/talhoes/demo` | Demo fields |
+| GET | `/v1/culturas/fichas` | Crop sheets of `catalog/crops.yaml` with sources, and the engine crop -> sheet map |
 | POST | `/v1/diagnostico` | Terrain, soil, MapBiomas history, detected rotation, climate and risks, yields |
 | POST | `/v1/recomendacao` | Ranking, current rotation, alternatives, eliminated rotations, cards |
 | GET | `/v1/clima` | Climate block only, for a point |

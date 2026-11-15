@@ -51,6 +51,7 @@ REQUESTS = {
     "clima_ponto": ("GET", "/v1/clima?lat=-24.95&lon=-53.45&semeadura_safrinha=01/02", None),
     "opcoes": ("GET", "/v1/opcoes", None),
     "talhoes_demo": ("GET", "/v1/talhoes/demo", None),
+    "fichas_culturas": ("GET", "/v1/culturas/fichas", None),
     "recomendacao_ponto_curitiba": rec(area={"lat": -25.43, "lon": -49.27}),  # outside the Oeste: Região 1 calendar and prices warning
     "erro_fora_da_regiao": ("POST", "/v1/recomendacao", dict(area={"lat": -23.55, "lon": -46.63}, rotacao_atual="soja__milho_safrinha", **STAGE)),  # São Paulo
     "erro_validacao": rec(area=FIELD, pesos={"renda": 11}),

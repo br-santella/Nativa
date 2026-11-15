@@ -6,7 +6,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query, Request
 
-from field_shift import i18n
+from field_shift import crop_sheets, i18n
 from field_shift.core import service
 
 from . import __version__
@@ -61,6 +61,16 @@ def options() -> dict[str, Any]:
 @router.get("/talhoes/demo", tags=["metadados"], summary="Talhões de demonstração", operation_id="talhoes_demo_v1_talhoes_demo_get")
 def demo_fields() -> Any:
     return i18n.localize(service.options().get("talhoes_demo", []))
+
+
+@router.get(
+    "/culturas/fichas",
+    tags=["metadados"],
+    summary="Fichas agronômicas das culturas (catalog/crops.yaml): faixas com unidade e fonte, e o mapa id do motor -> ficha",
+    operation_id="fichas_culturas_v1_culturas_fichas_get",
+)
+def crop_sheet_catalog() -> dict[str, Any]:
+    return i18n.localize(crop_sheets.public_sheets())
 
 
 @router.post(

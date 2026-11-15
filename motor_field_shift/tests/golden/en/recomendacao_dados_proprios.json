@@ -30,6 +30,8 @@
        "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
        "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
        "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -41,7 +43,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -283,6 +286,7 @@
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -294,7 +298,9 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "Soil pH provided, but pearl millet/sunn hemp (cover) has no sheet with a pH range in the catalog: not compared.",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -454,6 +460,8 @@
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -465,7 +473,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -690,6 +699,8 @@
        "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
        "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
        "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -701,7 +712,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -945,6 +957,8 @@
        "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
        "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 20% (100% of the soil classes; Port.393_de_26-08-2025).",
        "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
       ],
@@ -956,7 +970,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -1152,6 +1167,7 @@
        "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -1163,7 +1179,9 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "Soil pH provided, but pearl millet/sunn hemp (cover) has no sheet with a pH range in the catalog: not compared.",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -1325,6 +1343,8 @@
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -1336,7 +1356,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -1509,6 +1530,8 @@
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -1520,7 +1543,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -1692,6 +1716,7 @@
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -1703,7 +1728,9 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "Soil pH provided, but forage radish (cover) has no sheet with a pH range in the catalog: not compared.",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -1864,6 +1891,7 @@
        "Irrigated: mean depth 31 mm/year, cost R$ 141/ha (R$ 4.50/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
        "Frost at flowering/grain fill of sorghum sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season sorghum on 15/01: indicated, risk 20% (100% of the soil classes; Port.132_de_12-05-2025).",
        "Market in Western Paraná: medium; animal feed and cooperatives, with lower demand than corn (estimate to validate with local cooperatives/dealers)."
       ],
@@ -1876,7 +1904,9 @@
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
        "P2O5/K2O rates for sorghum: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa).",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "Soil pH provided, but sorghum has no sheet with a pH range in the catalog: not compared.",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -2067,6 +2097,7 @@
        "Frost at flowering/grain fill of second-season beans sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
        "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season beans on 15/01: indicated, risk 20% (100% of the soil classes; Port.250_de_30-05-2025).",
        "Market in Western Paraná: medium; grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean (estimate to validate with local cooperatives/dealers)."
       ],
@@ -2079,7 +2110,9 @@
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
        "P2O5/K2O rates for second-season beans: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa).",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "Soil pH provided, but second-season beans has no sheet with a pH range in the catalog: not compared.",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -2267,6 +2300,7 @@
        "Water: no crop, no water demand (score 1.00); the cost of fallow shows up in soil.",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no production in the 2nd window (estimate to validate with local cooperatives/dealers)."
       ],
@@ -2278,7 +2312,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -2451,6 +2486,8 @@
       "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
       "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+      "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
       "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -2462,7 +2499,8 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -2704,6 +2742,7 @@
       "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -2715,7 +2754,9 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "Soil pH provided, but pearl millet/sunn hemp (cover) has no sheet with a pH range in the catalog: not compared.",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -2875,6 +2916,8 @@
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+      "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -2886,7 +2929,8 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -3060,6 +3104,8 @@
      "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
      "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
      "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+     "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+     "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
      "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 20% (100% of the soil classes; Port.393_de_26-08-2025).",
      "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
     ],
@@ -3071,7 +3117,8 @@
      "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
      "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
      "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-     "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+     "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+     "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
     ],
     "mercado": {
      "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -4330,7 +4377,8 @@
     "Machinery the farmer does not have (semeadora_consorcio): the rotation is not eliminated, it gets a warning and an extra outsourcing cost (estimates, validate).",
     "Irrigation available (R$ 4.5/mm/ha, max. depth 6 mm/day): irrigates corn, corn+brachiaria, wheat, sorghum and beans when depletion exceeds p (0.55; beans 0.45); water goes up, water deficit does not count in the risk and the margin subtracts depth × cost. The yield gain from irrigation is not modeled; cover crops and fallow are not irrigated.",
     "Field problems not given: not considered.",
-    "Organic matter provided by the farmer: organic C class of the Manual PR (Table 4), class very high; low organic matter favours brachiaria and millet and penalizes fallow on the soil criterion (source read, size ±0.15, modelling choice). Without P, K, V%, Al and CEC: liming and fertilization do not enter."
+    "Organic matter provided by the farmer: organic C class of the Manual PR (Table 4), class very high; low organic matter favours brachiaria and millet and penalizes fallow on the soil criterion (source read, size ±0.15, modelling choice). Without P, K, V%, Al and CEC: liming and fertilization do not enter.",
+    "pH provided by the farmer compared with each crop's pH range in the catalog sheets (catalog/crops.yaml, Embrapa/FAO Ecocrop): shown only on the card, does not change the score."
    ],
    "criterios": {
     "agua": "Mean over 34 years (1991–2024) of ΣETa/ΣETc in the critical phase of the 2nd crop, by daily water balance (NASA POWER + polygon soil AWC, SoilGrids); depends on the sowing date. Fallow = 1.0.",
@@ -4367,6 +4415,8 @@
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -4379,7 +4429,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -4552,6 +4603,8 @@
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -4564,7 +4617,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -4735,6 +4789,7 @@
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -4747,7 +4802,9 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "Soil pH provided, but forage radish (cover) has no sheet with a pH range in the catalog: not compared.",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -5027,6 +5084,8 @@
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -5039,7 +5098,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -5215,6 +5275,8 @@
        "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -5227,7 +5289,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -5401,6 +5464,7 @@
        "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
       ],
@@ -5413,7 +5477,9 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "Soil pH provided, but forage radish (cover) has no sheet with a pH range in the catalog: not compared.",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -5579,6 +5645,8 @@
        "Irrigated: mean depth 9 mm/year, cost R$ 39/ha (R$ 4.50/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
        "Frost (≤ 3 °C) at wheat flowering (15/08–30/09): 14 of 34 years (41%), NASA POWER 1991–2024, ~50 km cell.",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
+       "Soil pH 5.4 (farmer's analysis) below the reference range for Wheat in the catalog sheet (6.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=2114; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025); wheat on 01/05: indicated, risk 20% (100% of the soil classes; Port.440_de_29-10-2025).",
        "Market in Western Paraná: medium; cooperatives and mills, with lower liquidity than corn (estimate to validate with local cooperatives/dealers)."
       ],
@@ -5591,7 +5659,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -5818,6 +5887,7 @@
        "Water: no crop, no water demand (score 1.00); the cost of fallow shows up in soil.",
        "No 2nd-season climate risk considered (cover species/fallow).",
        "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+       "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
        "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: 1st-season corn on 01/10: indicated, risk 20% (100% of the soil classes; Port.187_de_27-05-2025). The 2nd-window cover crop has no ZARC zoning.",
        "Market in Western Paraná: not applicable; no production in the 2nd window (estimate to validate with local cooperatives/dealers)."
       ],
@@ -5830,7 +5900,8 @@
        "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
        "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
        "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+       "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+       "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
       ],
       "mercado": {
        "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -6003,6 +6074,8 @@
       "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
       "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+      "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn + brachiaria on 15/01: indicated, risk 20% (100% of the soil classes; Port.407_de_28-08-2025).",
       "Market in Western Paraná: high; corn with the same demand from cooperatives and agro-industry; brachiaria seed at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -6014,7 +6087,8 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -6258,6 +6332,8 @@
       "Frost at flowering/grain fill of corn sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell.",
       "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+      "Soil pH 5.4 (farmer's analysis) within the reference range for Grain corn in the catalog sheet (5.0–7.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season corn on 15/01: indicated, risk 20% (100% of the soil classes; Port.393_de_26-08-2025).",
       "Market in Western Paraná: high; cooperatives and the poultry and pork agro-industry of Western Paraná (estimate to validate with local cooperatives/dealers)."
      ],
@@ -6269,7 +6345,8 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -6465,6 +6542,7 @@
       "Water: in the critical phase (pearl millet/sunn hemp establishment (first 30 days), sowing on 15/01), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -6476,7 +6554,9 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "Soil pH provided, but pearl millet/sunn hemp (cover) has no sheet with a pH range in the catalog: not compared.",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -6638,6 +6718,8 @@
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 77 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+      "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -6649,7 +6731,8 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -6822,6 +6905,8 @@
       "Water: in the critical phase (oat establishment (first 30 days), sowing on 01/05), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 84 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
+      "Soil pH 5.4 (farmer's analysis) within the reference range for White oat in the catalog sheet (5.0–6.0, pH; source: https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481; the source does not state the measurement method and the report is pH in water); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); oat on 01/05: indicated, risk 20% (100% of the soil classes; Port.416_de_15-10-2025).",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -6833,7 +6918,8 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -7005,6 +7091,7 @@
       "Water: in the critical phase (forage radish establishment (first 30 days), sowing on 01/04), soil water met on average 100% of the demand; in 0 of 34 years it was below 70% (daily balance NASA POWER + farmer's soil analysis, AWC 70 mm).",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
       "Market in Western Paraná: not applicable; no grain sale; seed available at dealers (estimate to validate with local cooperatives/dealers)."
      ],
@@ -7016,7 +7103,9 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "Soil pH provided, but forage radish (cover) has no sheet with a pH range in the catalog: not compared.",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -7177,6 +7266,7 @@
       "Irrigated: mean depth 31 mm/year, cost R$ 141/ha (R$ 4.50/mm/ha, max. depth 6 mm/day; the yield gain from irrigation is not modeled, the expected yield does not change).",
       "Frost at flowering/grain fill of sorghum sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season sorghum on 15/01: indicated, risk 20% (100% of the soil classes; Port.132_de_12-05-2025).",
       "Market in Western Paraná: medium; animal feed and cooperatives, with lower demand than corn (estimate to validate with local cooperatives/dealers)."
      ],
@@ -7189,7 +7279,9 @@
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
       "P2O5/K2O rates for sorghum: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa).",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "Soil pH provided, but sorghum has no sheet with a pH range in the catalog: not compared.",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -7380,6 +7472,7 @@
       "Frost at flowering/grain fill of second-season beans sown on 15/01: 2 of 34 years (6%), NASA POWER 1991–2024, ~50 km cell (corn frost window used as an approximation).",
       "Water deficit does not count in the risk: the candidate is irrigated (frost still does).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025); 2nd-season beans on 15/01: indicated, risk 20% (100% of the soil classes; Port.250_de_30-05-2025).",
       "Market in Western Paraná: medium; grain merchants and cooperatives, with a volatile price and fewer buyers than corn and soybean (estimate to validate with local cooperatives/dealers)."
      ],
@@ -7392,7 +7485,9 @@
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
       "P2O5/K2O rates for second-season beans: no confirmed source (estimate, no confirmed source; validate with an agronomist/Embrapa).",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "Soil pH provided, but second-season beans has no sheet with a pH range in the catalog: not compared.",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",
@@ -7580,6 +7675,7 @@
       "Water: no crop, no water demand (score 1.00); the cost of fallow shows up in soil.",
       "No 2nd-season climate risk considered (cover species/fallow).",
       "Organic matter: organic C 20.3 g/dm³ (OM ~3.5%), class very high (Paraná Fertilization and Liming Manual (Pauletti & Motta 2019, via SENAR-AR/PR PR.0420), Table 4; OM = C × 1.72).",
+      "Soil pH 5.4 (farmer's analysis) below the reference range for Soybean in the catalog sheet (5.5–6.0, pH in water; source: https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf); informative, does not change the score.",
       "ZARC 2025/2026 (MAPA, risk table, rainfed), Toledo: soybean on 15/10: indicated, risk 20% (100% of the soil classes; Port.375_de_26-06-2025). The 2nd-window cover crop has no ZARC zoning.",
       "Market in Western Paraná: not applicable; no production in the 2nd window (estimate to validate with local cooperatives/dealers)."
      ],
@@ -7591,7 +7687,8 @@
       "Liming not computed: V% (or Ca+Mg+K+CEC) and CEC were not given; nothing was estimated.",
       "Organic C read in g/dm³ (the report unit) from g/kg or OM %, without density correction (assumption).",
       "Partial fertility: not given p_mg_dm3, k_cmolc_dm3, ca_cmolc_dm3, mg_cmolc_dm3, al_cmolc_dm3, v_pct, ctc_cmolc_dm3; these items are left out of the analysis.",
-      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block)."
+      "Fertility: classes and liming formula confirmed in the Manual PR; V2 of 60% (51–70% range of the Paraná Manual for corn, wheat, beans, sorghum and soybean: SENAR-AR/PR PR.0404; soybean 60% and wheat 60%: Embrapa Soja Doc. 417 and CBPTT 2020; Embrapa Soja also cites 70% for soybean in the 2013 'Tecnologias de Produção', so the exact value for corn, beans and sorghum is our choice within the range). Limestone price, dose cap and spreading of the liming cost: estimate, no confirmed source; validate with an agronomist/Embrapa. Effects on the soil criterion: the direction has a source, the size (±0.15, half for acidity of severity 1) is our modelling choice. Liming and fertilization of the summer crop do not enter (the same in every rotation of the block).",
+      "The pH ranges of the catalog sheets (Embrapa/FAO Ecocrop) are general optimal ranges, not a liming recommendation; liming follows the base saturation of the Manual PR."
      ],
      "mercado": {
       "estimativa": "estimate to validate with local cooperatives/dealers",

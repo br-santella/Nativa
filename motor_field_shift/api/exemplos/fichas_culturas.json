@@ -1,0 +1,517 @@
+{
+  "fichas": [
+    {
+      "id": "soja",
+      "nome": "Soja",
+      "nome_cientifico": "Glycine max",
+      "finalidade": "graos",
+      "ciclo_dias": {
+        "min": 100,
+        "max": 145,
+        "unidade": "dias",
+        "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/caracteristicas-da-soja"
+      },
+      "demanda_hidrica_mm_ciclo": {
+        "min": 450,
+        "max": 800,
+        "unidade": "mm/ciclo",
+        "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua"
+      },
+      "requisitos_solo": {
+        "texturas_adequadas": {
+          "valores": [
+            "media"
+          ],
+          "observacao": "Textura média é uma condição ótima de referência. A ficha também cita solos orgânicos.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1150"
+        },
+        "ph": {
+          "min": 5.5,
+          "max": 6.0,
+          "unidade": "pH em água",
+          "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf"
+        },
+        "nitrogenio": {
+          "demanda_por_tonelada_de_graos": {
+            "min": 80,
+            "max": 80,
+            "unidade": "kg N/t de grãos",
+            "fonte": "https://www.embrapa.br/web/agrobiologia/busca-de-solucoes-tecnologicas/-/produto-servico/3780/fixacao-biologica-de-nitrogenio-em-soja"
+          },
+          "observacao": "Valor aproximado de demanda da planta. A fixação biológica com Bradyrhizobium pode suprir essa demanda quando a simbiose é eficiente."
+        },
+        "compactacao": {
+          "observacao": "Preferir solo sem camadas compactadas que restrinjam o crescimento das raízes.",
+          "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf"
+        },
+        "umidade": {
+          "deplecao_sem_estresse": {
+            "min": 50,
+            "max": 50,
+            "unidade": "% da água disponível",
+            "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm"
+          },
+          "observacao": "Preferir solo bem drenado e evitar encharcamento.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1150"
+        }
+      },
+      "infraestrutura": {
+        "maquinas": {
+          "valores": [
+            "semeadora",
+            "colhedora"
+          ],
+          "observacao": "Semeadora para plantar e colhedora para colher os grãos no sistema mecanizado.",
+          "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf"
+        },
+        "irrigacao": {
+          "observacao": "Avaliar a necessidade de irrigação conforme a água disponível ao longo do ciclo.",
+          "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua"
+        },
+        "mao_de_obra": {
+          "observacao": "Prever operação da semeadora e da colhedora no sistema mecanizado.",
+          "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf"
+        }
+      },
+      "impactos_no_solo": [
+        {
+          "efeito": "diversificacao_da_rotacao",
+          "direcao": "positiva",
+          "descricao": "A soja pode compor uma rotação com gramíneas.",
+          "fonte": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/223209/1/SP-17-2020-online-1.pdf"
+        }
+      ],
+      "vulnerabilidades": [
+        {
+          "risco": "deficit_hidrico",
+          "fases": [
+            "florescimento",
+            "enchimento_de_graos"
+          ],
+          "observacao": "Seca nessas fases pode reduzir a formação de vagens e prejudicar o enchimento dos grãos.",
+          "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/soja/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/exigencias-climaticas/agua"
+        }
+      ]
+    },
+    {
+      "id": "milho",
+      "nome": "Milho para grãos",
+      "nome_cientifico": "Zea mays",
+      "finalidade": "graos",
+      "ciclo_dias": {
+        "min": 100,
+        "max": 150,
+        "unidade": "dias",
+        "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/relacoes-com-o-clima"
+      },
+      "demanda_hidrica_mm_ciclo": {
+        "min": 400,
+        "max": 700,
+        "unidade": "mm/ciclo",
+        "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo"
+      },
+      "requisitos_solo": {
+        "texturas_adequadas": {
+          "valores": [
+            "media"
+          ],
+          "observacao": "Textura média é uma condição ótima de referência. A ficha também cita solos orgânicos.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663"
+        },
+        "ph": {
+          "min": 5.0,
+          "max": 7.0,
+          "unidade": "pH",
+          "observacao": "Faixa ótima geral. Método de medição não especificado na fonte.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663"
+        },
+        "nitrogenio": {
+          "dose_adubacao_cobertura": {
+            "min": 45,
+            "max": 60,
+            "unidade": "kg N/ha",
+            "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1127262/1/LV-RecomendacaoSolo-2020-257-260.pdf"
+          },
+          "observacao": "Referência de adubação em cobertura para milho de segunda safra após soja, no contexto do manual citado."
+        },
+        "compactacao": {
+          "observacao": "Preferir solo sem camadas compactadas que restrinjam o crescimento das raízes.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf"
+        },
+        "umidade": {
+          "deplecao_sem_estresse": {
+            "min": 55,
+            "max": 55,
+            "unidade": "% da água disponível",
+            "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm"
+          },
+          "observacao": "Preferir solo bem drenado.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=238663"
+        }
+      },
+      "infraestrutura": {
+        "maquinas": {
+          "valores": [
+            "semeadora",
+            "colhedora"
+          ],
+          "observacao": "Semeadora para plantar e colhedora para colher os grãos no sistema mecanizado.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf"
+        },
+        "irrigacao": {
+          "observacao": "Avaliar a necessidade de irrigação conforme a água disponível ao longo do ciclo.",
+          "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo"
+        },
+        "mao_de_obra": {
+          "observacao": "Prever operação da semeadora e da colhedora no sistema mecanizado.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf"
+        }
+      },
+      "impactos_no_solo": [
+        {
+          "efeito": "cobertura_por_palhada",
+          "direcao": "positiva",
+          "descricao": "Os resíduos do milho ajudam a cobrir o solo quando permanecem na superfície.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1076514/1/Sistema-de-Producao-de-Milho-para-a-Zona-da-Mata-e-Agreste-Nordestinos.pdf"
+        }
+      ],
+      "vulnerabilidades": [
+        {
+          "risco": "deficit_hidrico",
+          "fases": [
+            "florescimento",
+            "enchimento_de_graos"
+          ],
+          "observacao": "Seca nessas fases pode reduzir a formação e o enchimento dos grãos.",
+          "fonte": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/irrigacao/manejo"
+        }
+      ]
+    },
+    {
+      "id": "trigo",
+      "nome": "Trigo",
+      "nome_cientifico": "Triticum aestivum L.",
+      "finalidade": "graos",
+      "ciclo_dias": {
+        "min": 120,
+        "max": 150,
+        "unidade": "dias",
+        "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm"
+      },
+      "demanda_hidrica_mm_ciclo": {
+        "min": 450,
+        "max": 650,
+        "unidade": "mm/ciclo",
+        "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm"
+      },
+      "requisitos_solo": {
+        "texturas_adequadas": {
+          "valores": [
+            "media"
+          ],
+          "observacao": "Textura média é uma condição ótima de referência. A ficha também cita solos orgânicos.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=2114"
+        },
+        "ph": {
+          "min": 6.0,
+          "max": 7.0,
+          "unidade": "pH",
+          "observacao": "Faixa ótima geral do ECOCROP.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=2114"
+        },
+        "nitrogenio": {
+          "dose_adubacao_semeadura": {
+            "min": 10,
+            "max": 30,
+            "unidade": "kg N/ha",
+            "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1155370/1/Cultivo-de-Trigo.pdf"
+          },
+          "dose_adubacao_cobertura": {
+            "min": 30,
+            "max": 60,
+            "unidade": "kg N/ha",
+            "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1155370/1/Cultivo-de-Trigo.pdf"
+          },
+          "observacao": "Faixas da tabela 6 para trigo após soja no Paraná."
+        },
+        "compactacao": {
+          "observacao": "Avaliar restrições físicas ao crescimento das raízes antes da implantação.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1153536"
+        },
+        "umidade": {
+          "deplecao_sem_estresse": {
+            "min": 55,
+            "max": 55,
+            "unidade": "% da água disponível",
+            "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm"
+          },
+          "observacao": "Evitar semeadura em solo encharcado e avaliar a drenagem.",
+          "fonte": "https://www.embrapa.br/busca-de-noticias/-/noticia/90345214/cuidados-na-semeadura-do-trigo-na-regiao-sul"
+        }
+      },
+      "infraestrutura": {
+        "maquinas": {
+          "valores": [
+            "semeadora",
+            "colhedora"
+          ],
+          "observacao": "Equipamentos básicos do cenário mecanizado de produção de grãos.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1153536"
+        }
+      },
+      "vulnerabilidades": [
+        {
+          "risco": "mosaico",
+          "observacao": "Considerar o histórico da doença ao escolher o talhão e a cultivar.",
+          "fonte": "https://www.embrapa.br/busca-de-noticias/-/noticia/90345214/cuidados-na-semeadura-do-trigo-na-regiao-sul"
+        },
+        {
+          "risco": "geada",
+          "fases": [
+            "espigamento"
+          ],
+          "observacao": "Geada no espigamento pode causar perdas de produtividade.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/466677/1/trigo2005.pdf"
+        }
+      ]
+    },
+    {
+      "id": "aveia_branca",
+      "nome": "Aveia-branca",
+      "nome_cientifico": "Avena sativa L.",
+      "finalidade": "graos",
+      "ciclo_dias": {
+        "min": 120,
+        "max": 150,
+        "unidade": "dias",
+        "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm"
+      },
+      "demanda_hidrica_mm_ciclo": {
+        "min": 450,
+        "max": 650,
+        "unidade": "mm/ciclo",
+        "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm"
+      },
+      "requisitos_solo": {
+        "texturas_adequadas": {
+          "valores": [
+            "arenosa",
+            "media",
+            "argilosa"
+          ],
+          "observacao": "O ECOCROP lista texturas leve, média e pesada como condições ótimas gerais.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481"
+        },
+        "ph": {
+          "min": 5.0,
+          "max": 6.0,
+          "unidade": "pH",
+          "observacao": "Faixa ótima geral do ECOCROP.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481"
+        },
+        "nitrogenio": {
+          "dose_experimental_cobertura": {
+            "min": 0,
+            "max": 80,
+            "unidade": "kg N/ha",
+            "fonte": "https://doi.org/10.1590/S0103-84782004000600009"
+          },
+          "observacao": "Intervalo de doses testadas em aveia-branca para grãos após milho, em Botucatu (SP). Dado experimental."
+        },
+        "compactacao": {
+          "observacao": "Avaliar as condições físicas do solo na escolha da área e no preparo para semeadura.",
+          "fonte": "https://www.bdpa.cnptia.embrapa.br/consulta/busca?b=ad&id=46408"
+        },
+        "umidade": {
+          "deplecao_sem_estresse": {
+            "min": 55,
+            "max": 55,
+            "unidade": "% da água disponível",
+            "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm"
+          },
+          "observacao": "Preferir solo bem drenado.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=481"
+        }
+      },
+      "infraestrutura": {
+        "maquinas": {
+          "valores": [
+            "semeadora",
+            "colhedora"
+          ],
+          "observacao": "Equipamentos básicos do cenário mecanizado de produção de grãos.",
+          "fonte": "https://www.bdpa.cnptia.embrapa.br/consulta/busca?b=ad&id=46408"
+        }
+      },
+      "vulnerabilidades": [
+        {
+          "risco": "ferrugem_da_folha",
+          "observacao": "Monitorar ferrugem da folha e considerar a suscetibilidade da cultivar.",
+          "fonte": "https://www.bdpa.cnptia.embrapa.br/consulta/busca?b=ad&id=46408"
+        }
+      ]
+    },
+    {
+      "id": "cevada",
+      "nome": "Cevada",
+      "nome_cientifico": "Hordeum vulgare L.",
+      "finalidade": "graos",
+      "ciclo_dias": {
+        "min": 120,
+        "max": 150,
+        "unidade": "dias",
+        "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm"
+      },
+      "demanda_hidrica_mm_ciclo": {
+        "min": 450,
+        "max": 650,
+        "unidade": "mm/ciclo",
+        "fonte": "https://www.fao.org/4/s2022e/s2022e02.htm"
+      },
+      "requisitos_solo": {
+        "texturas_adequadas": {
+          "valores": [
+            "media"
+          ],
+          "observacao": "Textura média é a condição ótima de referência do ECOCROP.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1232"
+        },
+        "ph": {
+          "min": 6.5,
+          "max": 7.5,
+          "unidade": "pH",
+          "observacao": "Faixa ótima geral do ECOCROP. A correção da acidez depende da análise de solo e da recomendação local.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=1232"
+        },
+        "nitrogenio": {
+          "dose_adubacao_total": {
+            "min": 41,
+            "max": 60,
+            "unidade": "kg N/ha",
+            "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1179171/1/Indicacoes-Cevada-2025-e-2026-CGPE.pdf"
+          },
+          "produtividade_referencia": {
+            "min": 3.5,
+            "max": 4.5,
+            "unidade": "t de grãos/ha",
+            "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1179171/1/Indicacoes-Cevada-2025-e-2026-CGPE.pdf"
+          },
+          "observacao": "Cenário da tabela 6.4 para cevada após leguminosa no Paraná."
+        },
+        "compactacao": {
+          "observacao": "Priorizar solo profundo e descompactado.",
+          "fonte": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cevada/pre-producao/planejamento"
+        },
+        "umidade": {
+          "deplecao_sem_estresse": {
+            "min": 55,
+            "max": 55,
+            "unidade": "% da água disponível",
+            "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm"
+          },
+          "observacao": "Priorizar solo bem drenado.",
+          "fonte": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cevada/pre-producao/planejamento"
+        }
+      },
+      "infraestrutura": {
+        "maquinas": {
+          "valores": [
+            "semeadora",
+            "colhedora"
+          ],
+          "observacao": "Equipamentos básicos do cenário mecanizado de produção de grãos.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1179171/1/Indicacoes-Cevada-2025-e-2026-CGPE.pdf"
+        }
+      },
+      "vulnerabilidades": [
+        {
+          "risco": "doencas_fungicas",
+          "observacao": "Monitorar doenças como ferrugem da folha, mancha reticular e giberela.",
+          "fonte": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1028626/1/ID43343BRSsampa.pdf"
+        }
+      ]
+    },
+    {
+      "id": "azevem_anual",
+      "nome": "Azevém anual",
+      "nome_cientifico": "Lolium multiflorum Lam.",
+      "finalidade": "cobertura",
+      "florescimento_dias": {
+        "min": 100,
+        "max": 120,
+        "unidade": "dias",
+        "fonte": "https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf"
+      },
+      "janela_plantio": {
+        "observacao": "Março a junho como referência geral para cobertura. Validar região, cultivar e finalidade.",
+        "fonte": "https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf"
+      },
+      "requisitos_solo": {
+        "texturas_adequadas": {
+          "valores": [
+            "media"
+          ],
+          "observacao": "Textura média é a condição ótima de referência. A ficha também registra tolerância a texturas leves e pesadas.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=7389"
+        },
+        "ph": {
+          "min": 5.0,
+          "max": 7.5,
+          "unidade": "pH",
+          "observacao": "Faixa ótima geral do ECOCROP.",
+          "fonte": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=7389"
+        },
+        "nitrogenio": {
+          "dose_adubacao_total": null,
+          "observacao": "Dose de N para azevém anual usado exclusivamente como cobertura ainda pendente de referência."
+        },
+        "compactacao": {
+          "observacao": "No cenário de implantação, avaliar se há camada compactada que dificulte o estabelecimento.",
+          "status": "criterio_de_avaliacao_do_talhao"
+        },
+        "umidade": {
+          "deplecao_sem_estresse": {
+            "min": 60,
+            "max": 60,
+            "unidade": "% da água disponível",
+            "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm"
+          },
+          "observacao": "O valor da FAO-56 é para azevém manejado para feno. Referência aproximada para o cenário de cobertura.",
+          "fonte": "https://www.fao.org/4/x0490e/x0490e0e.htm"
+        }
+      },
+      "infraestrutura": {
+        "maquinas": {
+          "valores": [
+            "semeadora"
+          ],
+          "observacao": "Equipamento previsto no cenário de implantação mecanizada em linha.",
+          "fonte": "https://repositorio-dspace.agricultura.gov.br/bitstream/1/300/1/cartilha_adubos_verdes_informacoes_tecnicas.pdf"
+        }
+      },
+      "vulnerabilidades": [
+        {
+          "risco": "deficit_hidrico",
+          "observacao": "A ficha de plantas de cobertura indica tolerância relativa à seca. Usar essa informação como descrição qualitativa.",
+          "fonte": "https://www.esalq.usp.br/biblioteca/pdf/Livro_Plantas_de_Cobertura_completo.pdf"
+        }
+      ]
+    }
+  ],
+  "mapeamento": {
+    "soja": "soja",
+    "milho_verao": "milho",
+    "milho_safrinha": "milho",
+    "milho_braquiaria": "milho",
+    "soja_safrinha": "soja",
+    "trigo": "trigo",
+    "aveia": "aveia_branca",
+    "aveia_nabo": "aveia_branca",
+    "milheto_crotalaria": null,
+    "sorgo": null,
+    "feijao_safrinha": null,
+    "nabo_forrageiro": null,
+    "pousio": null
+  },
+  "fonte": "catalog/crops.yaml: faixas com unidade e fonte (Embrapa, FAO Ecocrop, FAO-56); informativo, não entra na nota"
+}

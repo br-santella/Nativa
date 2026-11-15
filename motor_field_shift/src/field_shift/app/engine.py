@@ -18,7 +18,7 @@ from field_shift import crop_calendar as cal
 from field_shift.app import field_state
 from field_shift.water import critical_phase_water
 from field_shift.water.balance import DEFICIT_THRESHOLD, WHEAT_SOWING
-from field_shift import zarc
+from field_shift import crop_sheets, zarc
 from field_shift.i18n import Join, Msg
 from field_shift.income import history as income_history
 from field_shift.crop_calendar import PREP_DAYS_2ND, DEFAULT_SOWING, SOWINGS_2ND
@@ -886,6 +886,8 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
         lacuna_cad = "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais."
     ea = field_state.card(c, risks.get("estado_area"))
     ev += ea["evidencias"]
+    ph_lines = crop_sheets.ph_card(c, risks.get("ph_produtor"))  # informative: never changes the score
+    ev += ph_lines["evidencias"]
     if margin is not None and margin.get("recuperacao"):
         ev.append(margin["recuperacao"]["texto"])
     lacunas = ([] if risks.get("solo") else ["Textura/CAD do solo (SoilGrids) não considerada (talhão fora do Paraná)."]) + [
@@ -894,7 +896,7 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
                *([f"{c['nome_verao']} no verão: risco climático e balanço hídrico do verão não modelados (só a 2ª janela entra nesses critérios)."]
                  if c["verao"] != "soja" else []),
                "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); "
-               "custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.", *ea["lacunas"]]
+               "custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.", *ea["lacunas"], *ph_lines["lacunas"]]
     # ZARC: informative only (never changes the score). Without the table, keep the generic warning.
     mun = risks.get("municipio") or {}
     zs = zarc.rotation_status(c, mun.get("cod_ibge"), risks.get("semeadura"), WHEAT_SOWING)

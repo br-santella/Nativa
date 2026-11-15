@@ -5,7 +5,7 @@
 
 A template is a Portuguese string literal or f-string of the API code path, with every `{expression}` replaced by a
 positional placeholder `{0}`, `{1}`... (the value is translated recursively at runtime). Data texts (data/ref JSON,
-catalog/vocabulario.yaml) are extracted too. tests/test_i18n.py fails when a template has no English translation.
+catalog/vocabulario.yaml, catalog/crops.yaml) are extracted too. tests/test_i18n.py fails when a template has no English translation.
 """
 from __future__ import annotations
 
@@ -22,7 +22,8 @@ CATALOG = ROOT / "src/field_shift/i18n/en.json"
 CODE = [ROOT / "src/field_shift", ROOT / "api/field_shift_api"]
 SKIP = {"app/mvp.py", "income/update.py", "i18n/__init__.py"}  # Streamlit UI, data producer, the translator itself
 SKIP_DIRS = {"validation", "ftw", "mapbiomas", "fields"}  # offline analysis scripts, not on the API path
-DATA = [ROOT / "data/ref/precos_custos.json", ROOT / "data/ref/vazio_sanitario_pr.json", ROOT.parent / "catalog/vocabulario.yaml"]
+DATA = [ROOT / "data/ref/precos_custos.json", ROOT / "data/ref/vazio_sanitario_pr.json", ROOT.parent / "catalog/vocabulario.yaml",
+        ROOT.parent / "catalog/crops.yaml"]
 PT = re.compile(r"[ãõçáéíóúâêôàÁÉÍÓÚÃÕÇ]|\b(de|da|do|das|dos|para|com|sem|não|que|em|por|uma|um|se|ou|no|na|é|ao|aos|mais|já|só|cada|"
                 r"soja|milho|trigo|aveia|sorgo|feijão|pousio|safrinha|verão|nota|renda|solo|água|pragas|risco|colheita|semeadura|"
                 r"estimativa|validar|fonte|ano|anos|dias|safra|região|média|cultura|janela|informado|informada|informados|ressalva|calagem|"
@@ -118,7 +119,9 @@ EXTRA = ["melhora", "piora", "atende melhor", "atende pior", "quebra melhor", "q
          "muito baixo", "muito alto", *[f"{n} {c}" for n in ("P", "K", "V", "AL")
            for c in ("muito baixo", "baixo", "medio", "alto", "muito alto")],
          "P {0} ({1} kg P2O5/ha)", "K {0} ({1} kg K2O/ha)", "V% {0} derivada de (Ca+Mg+K)/CTC",
-         "Região 1", "Região 2", "Região 3"]
+         "Região 1", "Região 2", "Região 3",
+         # one-word crop names of catalog/crops.yaml (data strings need a space to be extracted)
+         "Cevada", "Aveia-branca"]
 
 
 def extract() -> dict[str, str]:

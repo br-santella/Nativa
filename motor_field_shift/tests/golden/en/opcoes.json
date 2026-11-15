@@ -338,66 +338,77 @@
   "culturas_segunda": [
    {
     "descricao_curta": "Corn in the second season, after soybean; the most common rotation in Western Paraná.",
+    "ficha": "milho",
     "id": "milho_safrinha",
     "nome": "Second-season corn",
     "tipo": "grain"
    },
    {
     "descricao_curta": "Second-season corn intercropped with brachiaria: grain plus straw for no-till.",
+    "ficha": "milho",
     "id": "milho_braquiaria",
     "nome": "Second-season corn + brachiaria",
     "tipo": "grain"
    },
    {
     "descricao_curta": "Winter wheat after soybean; sensitive to frost at flowering.",
+    "ficha": "trigo",
     "id": "trigo",
     "nome": "Wheat",
     "tipo": "grain"
    },
    {
     "descricao_curta": "Oat for cover/straw (and occasional grain) in winter.",
+    "ficha": "aveia_branca",
     "id": "aveia",
     "nome": "Oat (cover/straw)",
     "tipo": "cobertura"
    },
    {
     "descricao_curta": "Pearl millet and sunn hemp cover: straw and nitrogen fixation, no grain sale.",
+    "ficha": null,
     "id": "milheto_crotalaria",
     "nome": "Pearl millet/sunn hemp (cover)",
     "tipo": "cobertura"
    },
    {
     "descricao_curta": "No crop in the second window; exposed soil and no extra income.",
+    "ficha": null,
     "id": "pousio",
     "nome": "Fallow",
     "tipo": "pousio"
    },
    {
     "descricao_curta": "Soybean on soybean in the same crop year; prohibited by regulation (always eliminated).",
+    "ficha": "soja",
     "id": "soja_safrinha",
     "nome": "Second-season soybean",
     "tipo": "grain"
    },
    {
     "descricao_curta": "Grain sorghum in the second season: drought tolerant, no corn leafhopper; uses the grain machinery and sales channel.",
+    "ficha": null,
     "id": "sorgo",
     "nome": "Sorghum",
     "tipo": "grain"
    },
    {
     "descricao_curta": "2nd-season beans: short cycle and good income in a good year, but sensitive to frost and water deficit and a host of white mold.",
+    "ficha": null,
     "id": "feijao_safrinha",
     "nome": "Second-season beans",
     "tipo": "grain"
    },
    {
     "descricao_curta": "Forage radish cover: nutrient cycling and weed suppression, fast-decomposing straw; no grain sale.",
+    "ficha": null,
     "id": "nabo_forrageiro",
     "nome": "Forage radish (cover)",
     "tipo": "cobertura"
    },
    {
     "descricao_curta": "Oat + forage radish cover mix: long-lasting straw and nutrient cycling, no grain sale.",
+    "ficha": "aveia_branca",
     "id": "aveia_nabo",
     "nome": "Oat + forage radish (cover)",
     "tipo": "cobertura"
@@ -439,6 +450,7 @@
       "nome": "Already harvested"
      }
     ],
+    "ficha": "soja",
     "id": "soja",
     "nome": "Soybean",
     "tipo": "grain"
@@ -478,6 +490,7 @@
       "nome": "Already harvested"
      }
     ],
+    "ficha": "milho",
     "id": "milho_verao",
     "nome": "Summer corn",
     "tipo": "grain"

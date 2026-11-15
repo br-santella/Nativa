@@ -277,6 +277,15 @@ This file is the living list of open items for the project (crop-rotation engine
   Depends on an agronomist: confirm that liming should be charged to every rotation (and not only to the crop that "needs" it), and the V2 used for covers.
   Status: done
 
+- **Crop sheets (`catalog/crops.yaml`) in the engine**: the catalog was not read by the engine.
+  Done (15/11/2026): `field_shift.crop_sheets` reads it, informative only (never the score). (1) With `analise_solo.ph`, each card
+  compares the pH with the range of its crops' sheets (below/within/above, with source) and lists crops without a sheet in `lacunas`.
+  (2) `GET /v1/culturas/fichas` serves the sheets and the engine -> sheet map; `/v1/opcoes` crops carry `ficha`. Tests: `tests/test_crop_sheets.py`.
+  Open: sheets missing for millet/crotalaria, sorghum, beans, forage radish and brachiaria (5 of the 11 second-window options);
+  barley and annual ryegrass have sheets but are not engine options; the Ecocrop pH ranges (corn, wheat, oat) do not state the
+  measurement method and wheat's 6.0–7.0 is above usual Paraná practice (agronomist to confirm or replace with Manual PR/Embrapa);
+  `/v1/diagnostico` does not show the pH comparison yet (only the recommendation cards).
+
 ## Research
 
 - **Resume the literature research on the gain on the following soybean**: the survey is paused and the partial results are in [`pesquisa_ganho_soja_seguinte_PARCIAL.md`](pesquisa_ganho_soja_seguinte_PARCIAL.md), with a table of open sources and the "still to research" section. Resume from there (Embrapa Soja, IDR-PR, Fundação ABC) for off-season corn, corn+brachiaria, wheat, oat, millet/crotalaria, sorghum, beans, radish, oat+radish and summer corn, plus corn after corn, beans/white mold, brachiaria/nematodes and NDVI × yield.

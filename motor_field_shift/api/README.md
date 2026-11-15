@@ -73,6 +73,7 @@ without it returns 422); the only live fallback is the SoilGrids REST API, for a
 | GET | `/health` | Service status and whether the data loaded |
 | GET | `/v1/opcoes` | Summer and second-window crops, combinations (rotations), sowing dates, criteria, default weights, income references, region, demo fields |
 | GET | `/v1/talhoes/demo` | List of demo fields |
+| GET | `/v1/culturas/fichas` | Agronomic crop sheets of `catalog/crops.yaml` (ranges with unit and source) and the engine crop -> sheet map |
 | POST | `/v1/diagnostico` | Full diagnosis of the area |
 | POST | `/v1/recomendacao` | Ranking of rotations (and, optionally, the diagnosis) |
 | GET | `/v1/clima` | Shortcut: only the diagnosis `clima` block for a point |
@@ -134,7 +135,7 @@ Output: `status` (`ok`/`degradado`), `dados_carregados` (bool), `versao`, `detal
 
 No inputs. `/opcoes` returns:
 
-- `culturas_verao[]` and `culturas_segunda[]`: `id`, `nome`, `tipo` (`grão`, `cobertura` or `pousio`) and `descricao_curta`. These are the closed enums of `rotacoes`. Each summer crop also carries `estagios[]` (`id`, `nome`, `dias_ate_colheita`: the valid values of `estagio_verao`, with the typical days to harvest) and `colheita_catalogo` (dd/mm assumed when no stage or harvest is sent).
+- `culturas_verao[]` and `culturas_segunda[]`: `id`, `nome`, `tipo` (`grão`, `cobertura` or `pousio`), `descricao_curta` and `ficha` (id of the crop sheet in `GET /v1/culturas/fichas`, or `null` when the catalog has no sheet for that crop). These are the closed enums of `rotacoes`. Each summer crop also carries `estagios[]` (`id`, `nome`, `dias_ate_colheita`: the valid values of `estagio_verao`, with the typical days to harvest) and `colheita_catalogo` (dd/mm assumed when no stage or harvest is sent).
 - `estagios_fonte` (source and caveat of the stage estimates) and `dias_preparo_2a` (minimum days between the summer harvest and the second sowing; 0, no-till).
 - `combinacoes[]`: every pair (22), with `id` (`"<verao>__<segunda>"`, e.g. `soja__milho_safrinha`), `id_legado` (old slug, only for the original 7),
   `nome`, `verao`, `segunda`, `valida` (false if the pair is always eliminated, such as soybean in the second window), `semeaduras_validas[]` (sowing dates
@@ -143,6 +144,19 @@ No inputs. `/opcoes` returns:
   `renda_referencia` (prices, costs and `fontes[]`, with `estimativa` flagged), `regiao`, `talhoes_demo`.
 
 `/talhoes/demo` returns only the `talhoes_demo` list.
+
+### `GET /v1/culturas/fichas`
+
+No inputs. Returns the agronomic crop sheets of `catalog/crops.yaml` (soybean, corn, wheat, white oat, barley, annual ryegrass), for
+the frontend to show where each number comes from. Informative only: nothing here enters the score.
+
+- `fichas[]`: one per crop, as in the catalog, plus `id`: `nome`, `nome_cientifico`, `finalidade`, `ciclo_dias`, `demanda_hidrica_mm_ciclo`,
+  `requisitos_solo` (`texturas_adequadas`, `ph`, `nitrogenio`, `compactacao`, `umidade`), `infraestrutura`, `impactos_no_solo[]`,
+  `vulnerabilidades[]`. Every numeric item is `{min, max, unidade, fonte}` (`fonte` is a URL: Embrapa, FAO Ecocrop, FAO-56); slugs
+  (`valores`, `fases`, `efeito`, `risco`, `direcao`) stay as ids, free texts are translated with `?lang=en`.
+- `mapeamento`: engine crop id -> sheet id (`null` = no sheet: millet/crotalaria, sorghum, beans, forage radish, fallow). Corn + brachiaria and
+  oat + radish map to the corn and oat sheets (the sheet covers only that species).
+- `fonte`: what the catalog is.
 
 ### `POST /v1/diagnostico`
 
@@ -180,7 +194,7 @@ Output:
 | `ajustes.custos` | `{cultura: BRL/ha}`, keys: `soja`, `milho` (alias of `milho_2safra`), `milho_2safra`, `milho_verao` (alias of `milho_1safra`), `milho_1safra`, `trigo`, `feijao` (alias of `feijao_2safra`), `feijao_2safra`, `sorgo`, `aveia`, `milheto_crotalaria`, `braquiaria_consorcio`, `pousio`, `nabo_forrageiro`, `aveia_nabo`; values >= 0 | no | reference | Own costs (an unknown key is rejected) |
 | `ajustes.linha_custo` | `coe`, `cot` or `ct` | no | from the service | Effective operating cost, total operating cost or total cost |
 | `ajustes.produtividade` | `{soja, milho, milho_2safra, milho_verao, trigo, feijao, sorgo}` in bags/ha (> 0; `milho` is an alias of `milho_2safra`; `milho_verao` = 1st-season corn) | no | municipal PAM | Own yield: replaces the PAM yield in the margin; the bad year scales proportionally (own × PAM p20/average); the scale S does not change (fixed statewide). Source in the items: "provided by the farmer" |
-| `analise_solo` | `{argila_pct, areia_pct, materia_organica_pct` or `carbono_organico_g_kg, ph, cad_mm_cm, profundidade_cm}` | no | SoilGrids | Farmer's soil analysis. Requires clay+sand (sum <= 100) or `cad_mm_cm`. Ranges: percentages 0 to 100, pH 3 to 9, available water capacity 0.3 to 3 mm/cm. With `cad_mm_cm`, that capacity is used directly; otherwise, Saxton & Rawls with the provided values (without organic matter in the analysis, SoilGrids' is used, with a warning). `profundidade_cm` (default 20) only describes the sample, taken as representative of the profile. Replaces SoilGrids in `solo` and in the water balance; `solo.fonte` = "farmer's soil analysis" |
+| `analise_solo` | `{argila_pct, areia_pct, materia_organica_pct` or `carbono_organico_g_kg, ph, cad_mm_cm, profundidade_cm}` | no | SoilGrids | Farmer's soil analysis. Requires clay+sand (sum <= 100) or `cad_mm_cm`. Ranges: percentages 0 to 100, pH 3 to 9, available water capacity 0.3 to 3 mm/cm. With `cad_mm_cm`, that capacity is used directly; otherwise, Saxton & Rawls with the provided values (without organic matter in the analysis, SoilGrids' is used, with a warning). `profundidade_cm` (default 20) only describes the sample, taken as representative of the profile. Replaces SoilGrids in `solo` and in the water balance; `solo.fonte` = "farmer's soil analysis". With `ph`, each card also compares it with the pH range of its crops in the catalog sheets (`evidencias`: below/within/above, with the source; `lacunas`: crops without a sheet). Informative only, it does not change the score (acidity enters the score through V%/Al, see the fertility fields) |
 | `analise_solo` fertility fields | any subset of `p_mg_dm3` (Mehlich-1), `k_cmolc_dm3`, `ca_cmolc_dm3`, `mg_cmolc_dm3`, `al_cmolc_dm3`, `v_pct`, `ctc_cmolc_dm3` (inside `analise_solo`, which may carry only these) | no | not considered | Optional fertility. Interpreted with the Manual de Adubação e Calagem do Paraná classes: **P by clay band** (`argila_pct`, < 250, 250-400, > 400 g/kg; without clay the most demanding band is used and the card says so), K, V% and Al. Adds liming cost (base saturation, NC = (V2 − V1) × CEC / PRNT; needs V% and CEC; V% is only derived from Ca+Mg+K+CEC) and P/K fertilizer cost to the margin, sourced effects on `solo` (acid soil penalises acid-sensitive crops; low P/K favours brachiaria and radish; low organic matter, by the Manual PR carbon classes of `materia_organica_pct`/`carbono_organico_g_kg`, favours brachiaria and millet and penalises fallow; ±0.15, added without saturating) and a `recuperacao_solo` block per item (full liming, extra P/K, income given up against the top-income option). Doses: Manual PR (corn) and CBPTT 2020 (wheat); beans and sorghum doses, lime price and the effect size carry **no confirmed source** and the card says so. Not informed: nothing is estimated. Sources: `docs/fontes_estado_area.md` |
 | `problemas_area` | list of `nematoide`, `mofo_branco`, `cigarrinha`, `compactacao` | no | not considered | Area problems known to the farmer. Each (problem, crop) cell has one of three levels, `favorece` / `neutro` / `penaliza`, with ONE declared magnitude (±0.15 on `pragas` or `solo`; the direction comes from the literature, the magnitude is our modelling choice). Only cells with a source we read are non-neutral; the card shows the source and caveat (e.g. species of nematode), and flags the plausible cells without source as `efeito sem fonte confirmada` (treated as neutral). Unknown value is a 422 |
 | `restricoes.culturas_excluidas` | list of ids `"<verao>__<segunda>"` or old slugs (= soybean in summer) | no | none | Go to `eliminadas` with the reason "Excluded by the farmer." |
