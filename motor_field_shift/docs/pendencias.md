@@ -138,6 +138,24 @@ This file is the living list of open items for the project (crop-rotation engine
   Files: `src/field_shift/climate/indicators.py`, `src/field_shift/app/engine.py`.
   Status: assessed, no engine change (`docs/validation.md` §6.1). Heat at flowering, rain at harvest and establishment temperature were tested with leave-one-season-out and past-only validation: in-sample BSS +0.13 but out of sample −0.09 / −0.32 (overfitting with ~23 seasons); the engine flags have BSS ≈ 0 out of sample and failures do not differ between Oeste municipalities beyond chance (p = 0.66). The API now reports the risk confidence (`incerteza.risco_climatico.confianca`). Reopen only with field-level yield data or a pest (leafhopper) series.
 
+- **Stale `__all__` after the English migration** (found in the docs review, 15/11/2026): the `__init__.py` of `core`, `income`, `pam`,
+  `region`, `soil` and `water` still list the old Portuguese names (`CULTURAS_VENDA`, `ErroConsultaExterna`, `agua_fase_critica`, `solo`...),
+  so `from field_shift.<package> import *` raises `AttributeError`. Fix: list the English names; enable ruff F822 so it cannot come back.
+  Files: `src/field_shift/{core,income,pam,region,soil,water}/__init__.py`, `pyproject.toml`.
+  Status: open
+
+- **Unit tests that need the local data**: without `data/raw` and `data/processed`, 75 tests of the default `uv run pytest` fail
+  (`test_service.py`, `test_rotations.py`, `test_statewide.py`, `test_crop_calendar.py`...); with the data all 362 pass. Mark them
+  `integration` (or skip when the data is missing) so the default run works on a fresh clone.
+  Files: `tests/`, `pyproject.toml`.
+  Status: open
+
+- **Live NASA POWER fallback is dead code in the API**: `engine.get_climate` fetches POWER live when the pre-computed table has no cell,
+  but `service._context` then raises `OutOfRegion` (422) for any mode other than `regiao`, so the fetch is wasted. The docs now describe
+  the real behaviour (SoilGrids is the only live fallback). Decide: remove the fetch, or accept its reduced-mode result.
+  Files: `src/field_shift/app/engine.py`, `src/field_shift/core/service.py`.
+  Status: open
+
 ## Data/infra
 
 - **Connect the API to the whole of Paraná**: the data is already downloaded in `data/**/*_pr` (about 2.0 GB). What remains is switching the region and the paths read by the clipping, climate, soil, yield and water-balance modules.
