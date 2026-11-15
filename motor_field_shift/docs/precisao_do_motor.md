@@ -168,7 +168,7 @@ O motor roda nos 399 municípios. Repetimos as validações de renda e de risco 
 - **Renda:** o histórico de 5 safras ganha do estimador anterior em todas as mesorregiões. No Paraná, a decisão por renda passa de 3,61 para 5,15 sacas de soja/ha/ano (intervalo de 90 %: +0,72 a +2,50; melhor em 12 de 16 safras).
 - **Cobertura vs milho:** na renda realizada, milheto/crotalária perde do milho safrinha em todas as mesorregiões (−8,7 sc/ha/ano no Paraná); só ganha em 17 % dos casos.
 - **Risco:** a perda prevista bate com a quebra observada no norte e no oeste. No sul (Centro-Sul, Sudeste, Sudoeste, Centro Oriental) o motor prevê 37–52 % de perda contra 17–26 % observados, então penaliza demais o milho lá.
-- **Ranking completo:** com os pesos padrão, o motor põe milheto/crotalária em 1º em 86 % dos municípios (42 % no Oeste, onde é quase empate). Isso vai contra a renda observada: é o peso de solo e pragas, que é estimativa de catálogo, decidindo onde a vantagem de renda do milho é menor. Não mexemos no motor; é uma decisão de produto (está nas pendências).
+- **Ranking completo:** com os pesos padrão, o motor põe milheto/crotalária em 1º em 86 % dos municípios (42 % no Oeste, onde é quase empate). Isso vai contra a renda observada: é o peso de solo e pragas, que é estimativa de catálogo, decidindo onde a vantagem de renda do milho é menor. Não mexemos nos pesos; fora do Oeste a resposta agora avisa disso. A decisão está nas pendências.
 
 ## Limites conhecidos e próximos passos
 
