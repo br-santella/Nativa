@@ -125,8 +125,8 @@ They eliminate the candidate before scoring. An eliminated candidate appears in 
 
 | Rule | Effect |
 |---|---|
-| Soybean-free period 02/06–31/08 with no live soybean (ADAPAR) | Eliminates |
-| Soybean sowing only from 01/09 to 31/12 | Eliminates |
+| Soybean-free period with no live soybean (ADAPAR, by region: Região 1 21/06–19/09, Região 2 02/06–31/08, Região 3 12/06–10/09) | Eliminates |
+| Soybean sowing only inside the region's window (Região 1 20/09–20/01, Região 2 01/09–31/12, Região 3 11/09–10/01) | Eliminates |
 | Soybean after soybean in the same agricultural year is prohibited (Ordinance SDA/MAPA 1.124/2024) | Eliminates |
 | Sowing of the second crop before the harvest of the current summer crop (estimated from the stage or the expected date; without them, soybean ~10/01, summer corn ~05/02; applies to the crops that follow the chosen date) | Eliminates |
 | Harvest after the last sowing date considered (15/03): too late | Eliminates the crops that follow the sowing date; wheat, oat, radish and fallow stay |
@@ -138,6 +138,8 @@ In practice, soybean in the second window is **always eliminated**, even after s
 When the current crop is soybean harvested around 02/01, the derived sowing is 15/01 and the summer-corn candidates (in `proxima_safra`) fall under the limitation described in section 10. With sowing on 01/02 (catalog assumption), summer corn followed by off-season corn, corn + brachiaria, millet/crotalaria, sorghum or beans is also eliminated by the summer harvest; from 15/02 (beans) or 01/03 (the others) it comes back into the ranking.
 
 **Corn after corn:** summer corn keeps a continuous host for the corn leafhopper (*Dalbulus maidis*) and corn stunt, the fall armyworm and leaf diseases. The rotation remains valid, but the pest criterion loses 0.25 points (catalog value, reference estimate to be validated) and the text goes into `card.riscos` and `card.evidencias`. Current alerts are in `/v1/contexto`.
+
+**Regional calendar:** the three windows come from Portaria SDA/MAPA 1.579/2026 (crop 2026/2027); each of the 399 municipalities belongs to one region (annex lists), stored in `data/ref/vazio_sanitario_pr.json`. All 50 Oeste municipalities are in Região 2, so the Oeste behaviour is unchanged. Without a municipality the engine uses Região 2. The dates are per crop year: refresh the file every April (`ingest/vazio_sanitario_pr.py`).
 
 **Note:** check the ordinances and dates with ADAPAR/MAPA before the pitch.
 

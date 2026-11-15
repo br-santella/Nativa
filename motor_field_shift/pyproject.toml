@@ -50,6 +50,6 @@ dev = [
 
 [tool.pytest.ini_options]
 pythonpath = ["api"]
-testpaths = ["api/tests"]
+testpaths = ["api/tests", "tests"]
 markers = ["integracao: usa o serviço real e os dados em data/ (lento)"]
 addopts = "-m 'not integracao'"

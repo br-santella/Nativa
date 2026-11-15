@@ -23,6 +23,7 @@ from field_shift.pam import produtividade as pam_produtividade
 from field_shift.pam.produtividade import texto as pam_texto
 from field_shift.renda import RENDA_ESCALA_MIN, calcular_margens, fonte_custo, fonte_preco, rendimentos
 from field_shift.regiao import dentro_da_regiao, relevo
+from field_shift.regiao.vazio_sanitario import calendario_soja, in_window
 from field_shift.solo import solo as solo_poligono
 from field_shift.solo.solo import solo_de_analise, texto as solo_texto
 
@@ -223,6 +224,7 @@ def enriquecer(rk: dict, t: dict, analise_solo: dict | None = None) -> dict:
     Fora da região (modo reduzido) devolve rk sem solo/PAM -> o critério água usa o fallback do catálogo."""
     out = {**rk, "solo": None, "pam": None, "agua_ctx": None}
     cod0 = rk["municipio"]["cod_ibge"] if rk.get("modo") == "regiao" else None
+    out["calendario_soja"] = calendario_soja(cod0)  # ADAPAR region of the municipality (default region without one)
     out["rend"] = rendimentos(None if cod0 is None else str(cod0))  # sem município: média do Oeste do PR (com aviso)
     out["rend_local"] = rk["municipio"]["nome"] if cod0 is not None else "Oeste do PR (média)"
     if rk.get("modo") != "regiao":
@@ -509,10 +511,12 @@ def checar_regras(c: dict, riscos: dict | None = None) -> list[str]:
     ativa as regras de calendário: colheita do verão e janela de semeadura da 2ª cultura."""
     motivos = []
     sem = (riscos or {}).get("semeadura")
+    cs = (riscos or {}).get("calendario_soja") or calendario_soja(None)  # ADAPAR window of the area's municipality
+    sow = f"{cs['semeadura'][0]}–{cs['semeadura'][1]}"
     if c["ano_soja_2"]:
         if c["verao"] == "soja":
             motivos.append("Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024).")
-        motivos.append(f"Soja na 2ª janela{f' (semeadura em {sem})' if sem else ''} fica fora da janela legal de semeadura da soja (01/09–31/12).")
+        motivos.append(f"Soja na 2ª janela{f' (semeadura em {sem})' if sem else ''} fica fora da janela legal de semeadura da soja ({sow}, {cs['nome'].split(' (')[0]}).")
     if sem and c["segue_semeadura"] and not c["ano_soja_2"]:
         # colheita do verão: a do produtor (estágio/colheita prevista), se for da mesma cultura de verão; senão a do catálogo
         prod = (riscos or {}).get("colheita_produtor")
@@ -530,10 +534,10 @@ def checar_regras(c: dict, riscos: dict | None = None) -> list[str]:
             motivos.append(f"Semeadura em {sem} fora da janela de {c['nome_segunda']} no Oeste do PR "
                            f"({c['janela'][0]}–{c['janela'][1]}; estimativa de referência com base no ZARC/IDR-PR, validar).")
     if c["soja_viva_vazio"]:
-        motivos.append("Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08).")
+        motivos.append(f"Há soja viva durante o vazio sanitário da soja ({cs['vazio'][0]}–{cs['vazio'][1]}, {cs['nome'].split(' (')[0]} do PR).")
     mes, dia = map(int, c["plantio_soja"].split("-"))
-    if not ((9, 1) <= (mes, dia) <= (12, 31)):
-        motivos.append(f"Semeadura de soja em {dia:02d}/{mes:02d} fora da janela 01/09–31/12.")
+    if not in_window(f"{dia:02d}/{mes:02d}", *cs["semeadura"]):
+        motivos.append(f"Semeadura de soja em {dia:02d}/{mes:02d} fora da janela {sow} ({cs['nome'].split(' (')[0]}).")
     return motivos
 
 

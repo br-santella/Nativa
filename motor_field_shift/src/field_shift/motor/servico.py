@@ -41,13 +41,18 @@ PONTO_AREA_HA = 100.0
 CRS_M = 32722  # UTM 22S (m), para áreas e quadrado do ponto
 
 
-# Shown when the area centroid is in Paraná but outside the Oeste mesoregion (the reference region of costs, prices and calendar).
+# Shown when the area centroid is in Paraná but outside the Oeste mesoregion (the reference region of costs and prices).
 AVISOS_FORA_DO_OESTE = [
     "Área fora do Oeste do Paraná: os custos de produção e os preços usados na renda são a referência do Oeste do PR "
     "(SEAB/DERAL e CONAB) e podem diferir na sua região.",
-    "Área fora do Oeste do Paraná: o calendário (vazio sanitário da soja 02/06–31/08 e semeadura da soja 01/09–31/12) foi "
-    "pesquisado para o Oeste e pode diferir por região; confirme a portaria vigente da ADAPAR e o ZARC do município.",
 ]
+
+
+def aviso_calendario_soja(cs: dict) -> str:
+    """Warning with the soybean window of the area's ADAPAR region (the calendar is regional and changes every crop year)."""
+    return (f"Calendário da soja desta área: {cs['nome']}, vazio sanitário {cs['vazio'][0]}–{cs['vazio'][1]} e semeadura "
+            f"{cs['semeadura'][0]}–{cs['semeadura'][1]} (safra {cs['safra']}, {cs['portaria']}); confirme a portaria vigente da ADAPAR "
+            "e o ZARC do município.")
 
 
 class ForaDaRegiao(Exception):
@@ -358,7 +363,7 @@ def _contexto(area: dict, semeadura: str, analise_solo: dict | None = None, fert
     if analise_solo is None and fert is not None and rk["solo"] is not None:
         avisos.append("Análise de solo só com fertilidade (sem argila/areia nem CAD): textura e CAD seguem o SoilGrids.")
     if not dentro_do_oeste(Point(a["lon"], a["lat"])):
-        avisos += AVISOS_FORA_DO_OESTE
+        avisos += AVISOS_FORA_DO_OESTE + [aviso_calendario_soja(rk["calendario_soja"])]
     if a["origem"] == "ponto":
         avisos.append(f"Ponto convertido em quadrado de ~{PONTO_AREA_HA:.0f} ha centrado nele; relevo, histórico e solo "
                       "valem para esse quadrado, não para a lavoura real.")
