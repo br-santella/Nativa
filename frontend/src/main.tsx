@@ -6,6 +6,7 @@ import assets from "./assets.json";
 import { months, initialFarm, initialCrops, series, scenarios, profiles, score, info, } from "./data";
 import type { Farm, Crop } from "./data";
 import "./styles.css";
+import MotorPanel from "./MotorPanel";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
 const A = assets.overview, L = assets["13:16"];
@@ -878,6 +879,7 @@ function App() {
             <LinkButton onClick={() => open("sources")}>{__text("Ver premissas e limita\u00E7\u00F5es \u2192")}</LinkButton>
           </section>
         </div>
+        <MotorPanel weights={applied} />
         <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
       </>);
     }
