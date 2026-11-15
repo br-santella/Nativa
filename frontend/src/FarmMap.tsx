@@ -224,7 +224,7 @@ export default function FarmMap({ id, farm, area, expanded = false, view, onView
     </div>
     <div className="map-farm">
       <strong>{farm.name}</strong>
-      <small>{farm.area} ha · {en ? "Registered location" : "Localização cadastrada"}</small>
+      <small>{Number.isFinite(Number(farm.area)) ? Number(farm.area).toLocaleString(en ? "en-US" : "pt-BR", { maximumFractionDigits: 2 }) : farm.area} ha · {en ? "Registered location" : "Localização cadastrada"}</small>
     </div>
     <button type="button" className="map-fullscreen" aria-label={t(expanded ? "Fechar mapa ampliado" : "Ampliar mapa")} onClick={onExpand}><MapControlIcon kind={expanded ? "collapse" : "expand"} /></button>
   </div>;

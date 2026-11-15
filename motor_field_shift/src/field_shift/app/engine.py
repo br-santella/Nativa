@@ -527,7 +527,7 @@ def _risk_text(r: str, risks: dict, crop: str = "milho", nome: str | None = None
     if r == "geada_trigo":
         return f"Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): {k} de {n} anos ({p:.0%}), {source_c}."
     return f"Veranico ≥ 15 dias em mar–abr: {k} de {n} anos ({p:.0%}), {source_c}."
-ZARC_WARNING = "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata)."
+ZARC_WARNING = "ZARC não verificado para esta área: sem zoneamento, crédito e seguro rural ficam comprometidos (não elimina a candidata)."
 
 
 def _dm(ddmm: str) -> tuple[int, int]:
@@ -764,6 +764,11 @@ def _c2(x: float) -> str:
     return f"{x:.2f}".replace(".", ",")
 
 
+def _score100(x: float) -> str:
+    """Overall score (0–1) on the 0–100 scale the app shows next to it."""
+    return str(round(x * 100))
+
+
 def _short_name(n: str) -> str:
     return n.replace("Soja → ", "")
 
@@ -806,11 +811,11 @@ def why_compared(res: dict, nome: str, current: str | None) -> str | None:
         pos, n = names.index(current) + 1, len(names)
         if pos == 1:
             o = tab.iloc[1]
-            return Msg("É a rotação atual; ficou em 1º lugar entre {0} opções válidas. A 2ª melhor ({1}) tem nota {2}.",
-                       str(n), _short_name(o["candidata"]), _c2(o["nota"]))
+            return Msg("É a rotação atual; ficou em 1º lugar entre {0} opções válidas. A 2ª melhor, {1}, tem nota {2}/100.",
+                       str(n), _short_name(o["candidata"]), _score100(o["nota"]))
         b = tab.iloc[0]
-        return Msg("É a rotação atual; ficou em {0}º lugar entre {1} opções válidas. A melhor alternativa ({2}) tem nota {3}.",
-                   str(pos), str(n), _short_name(b["candidata"]), _c2(b["nota"]))
+        return Msg("É a rotação atual; ficou em {0}º lugar entre {1} opções válidas. A melhor alternativa, {2}, tem nota {3}/100.",
+                   str(pos), str(n), _short_name(b["candidata"]), _score100(b["nota"]))
     t = tab.set_index("candidata")
     w = res["pesos_norm"]
     diff_ = {k: w[k] * (t.loc[nome, k] - t.loc[current, k]) for k in CRITERIA}

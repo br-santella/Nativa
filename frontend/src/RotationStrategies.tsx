@@ -63,7 +63,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
   const lang: Lang = en ? "en" : "pt-BR";
   const say = (pt: string, english: string) => (en ? english : pt);
   const tx = (text: { pt: string; en: string }) => (en ? text.en : text.pt);
-  const money = (v: number) => `R$ ${Math.round(v).toLocaleString(en ? "en-US" : "pt-BR")}`;
+  const money = (v: number) => `${v < 0 ? "−" : ""}R$ ${Math.abs(Math.round(v)).toLocaleString(en ? "en-US" : "pt-BR")}`;
   const signedMoney = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${money(Math.abs(v))}`;
 
   const base = useMemo(() => inputs ?? fallbackInputs(farm, crops, appPesos), [inputs, farm, crops, appPesos]);

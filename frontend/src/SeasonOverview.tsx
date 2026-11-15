@@ -6,9 +6,12 @@ import type { Pesos } from "./api";
 import type { Area, Recomendacao } from "./api";
 import { rotacaoDoHistorico } from "./rotacaoAtual";
 import options from "./setup-options.json";
-import { t, useLanguage } from "./i18n";
+import { locale, t, useLanguage } from "./i18n";
 
 type Props = { farm: Farm; crops: Crop[]; pesos: Pesos; setupInputs?: SetupInputs; onNavigate: (page: "farm" | "history" | "rotation") => void };
+
+/** Saved numbers use a point; show them with the active language's decimal separator. */
+const localNumber = (v: string) => Number.isFinite(Number(v)) ? Number(v).toLocaleString(locale(), { maximumFractionDigits: 2 }) : v;
 
 export default function SeasonOverview({ farm, crops, pesos, setupInputs, onNavigate }: Props) {
   const { language } = useLanguage();
@@ -72,8 +75,8 @@ export default function SeasonOverview({ farm, crops, pesos, setupInputs, onNavi
         <div className="season-card-ribbon">{say("Seus dados · ponto de partida", "Your data · starting point")}</div>
         <h3>{say("Saúde do solo", "Soil health")}</h3>
         <dl>
-          <div><dt>pH</dt><dd>{farm.ph || "—"}</dd></div>
-          <div><dt>{say("Matéria orgânica", "Organic matter")}</dt><dd>{farm.organic ? `${farm.organic}%` : "—"}</dd></div>
+          <div><dt>pH</dt><dd>{farm.ph ? localNumber(farm.ph) : "—"}</dd></div>
+          <div><dt>{say("Matéria orgânica", "Organic matter")}</dt><dd>{farm.organic ? `${localNumber(farm.organic)}%` : "—"}</dd></div>
           <div><dt>{say("Textura", "Texture")}</dt><dd>{t(farm.texture || "Não informado")}</dd></div>
         </dl>
         {soil != null && <div className="season-soil-score"><div><span>{say("Critério solo da rotação", "Rotation soil criterion")}</span><strong>{soil}/100</strong></div><progress value={soil} max="100" /></div>}

@@ -7,6 +7,12 @@ import { months, initialFarm, initialCrops, series, info, dataSources, } from ".
 import { health } from "./api";
 import { rotacaoDoHistorico } from "./rotacaoAtual";
 import setupOptions from "./setup-options.json";
+/** Number in the active language (decimal comma in pt-BR, point in English). */
+const num = (n: number, digits = 1) => n.toLocaleString(locale(), { minimumFractionDigits: digits, maximumFractionDigits: digits });
+/** Area in hectares as typed or saved (always with a point), shown in the active language. */
+const ha = (v: string | number) => Number.isFinite(Number(v)) && String(v).trim() !== "" ? Number(v).toLocaleString(locale(), { maximumFractionDigits: 2 }) : String(v);
+/** Ids of the sample crops: their area follows the property when it changes. */
+const SAMPLE_CROP_IDS = new Set(initialCrops.map((c) => c.id));
 import type { Farm, Crop } from "./data";
 import "./styles.css";
 import "./overview-theme.css";
@@ -149,7 +155,6 @@ function App() {
     const fahrenheit = settings.temperature.startsWith("Graus Fahrenheit");
     const tempUnit = fahrenheit ? "°F" : "°C";
     const toUnit = (celsius: number) => (fahrenheit ? celsius * 9 / 5 + 32 : celsius);
-    const fmtNum = (v: number, digits = 1) => v.toLocaleString(locale(), { minimumFractionDigits: digits, maximumFractionDigits: digits });
     const fmtDate = (s: string) => asDate(s).toLocaleDateString(locale(), { day: "numeric", month: "short", year: "numeric" });
     const sortedCrops = byPlantDesc(crops);
     // Latest history record of the current crop (farm.crop is kept in step with the setup's current rotation).
@@ -269,7 +274,7 @@ function App() {
                 <line x1="0" x2="306" y1={y} y2={y} stroke="#28464b"/>
                 <text x="-12" y={y + 3} textAnchor="end">
                   {__text(kind === "temperature"
-                    ? fmtNum(toUnit([35, 25, 15][i]), 0)
+                    ? num(toUnit([35, 25, 15][i]), 0)
                     : i === 2
                         ? "0"
                         : (max * (1 - i * 0.5)).toLocaleString(locale()))}
@@ -295,8 +300,7 @@ function App() {
               </text>)))}
           </g>
         </svg>
-        <small>{__text("\u25CF NASA")}{__text(" ")}
-          {__text(kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER")}{__text("\u00B7 s\u00E9rie fict\u00EDcia")}</small>
+        <small>{`● NASA ${kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} · `}{__text("s\u00E9rie fict\u00EDcia")}</small>
       </div>);
     }
     function Overview() {
@@ -312,7 +316,7 @@ function App() {
           <dl>
             <div><dt><PropertyIcon kind="crop" />{__text("CULTIVO ATUAL")}</dt><dd>{__text(farm.crop)}</dd></div>
             <div><dt><PropertyIcon kind="location" />{__text("Localização")}</dt><dd>{farm.city} · {__text(farm.country)}</dd></div>
-            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{farm.area} ha</dd></div>
+            <div><dt><PropertyIcon kind="area" />{__text("Área total")}</dt><dd>{ha(farm.area)} ha</dd></div>
           </dl>
         </section>
         <div className="overview-map">
@@ -376,7 +380,7 @@ function App() {
         <div className="section-heading">
           <div>
             <h2>{__text("Uma vis\u00E3o de cada safra")}</h2>
-            <p>{__text(PLOT_NAME)} • {farm.area} ha • {__text("plantio, desenvolvimento e colheita do hist\u00F3rico de cultivo")}</p>
+            <p>{__text(PLOT_NAME)} • {ha(farm.area)} ha • {__text("plantio, desenvolvimento e colheita do hist\u00F3rico de cultivo")}</p>
           </div>
           <select aria-label={__text("Ano do calend\u00E1rio")} value={shown} onChange={(e) => setCalendarYear(e.target.value)}>
             {years.map((option) => (<option key={option} value={option}>{option}</option>))}
@@ -448,7 +452,7 @@ function App() {
                 <small>{__text("anos de hist\u00F3rico")}</small>
               </div>
               <div>
-                <strong>{fmtNum(perYear, Number.isInteger(perYear) ? 0 : 1)}</strong>
+                <strong>{num(perYear, Number.isInteger(perYear) ? 0 : 1)}</strong>
                 <small>{__text("cultivos por ano")}</small>
               </div>
             </div>
@@ -491,7 +495,7 @@ function App() {
                       {fmt(c.harvest)}
                       {cStatus !== "Concluído" ? "*" : ""}
                     </td>
-                    <td>{c.area} ha</td>
+                    <td>{ha(c.area)} ha</td>
                     <td>
                       {c.yield ? c.yield + " sc/ha" : __text(cStatus === "Concluído" ? "Não informada" : "Ainda não colhida")}
                     </td>
@@ -550,23 +554,23 @@ function App() {
                     <h2>
                       {__text([
                     "Temperatura média",
-                    "Precipitação acumulada",
+                    "Precipitação média mensal",
                     "Umidade do solo ⓘ",
                     "Vigor da vegetação ⓘ",
                 ][i])}
                     </h2>
-                    <p>{__text("NASA")}{__text(i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER")}{__text("\u2022 exemplo de s\u00E9rie hist\u00F3rica")}</p>
+                    <p>{`NASA ${i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER"} • `}{__text("exemplo de s\u00E9rie hist\u00F3rica")}</p>
                   </div>
                   <strong className={"climate-number n" + i}>
                     {__text([
-                    `${fmtNum(toUnit(year === "2025" ? 24.8 : year === "2024" ? 23.1 : 25.8))} ${tempUnit}`,
+                    `${num(toUnit(year === "2025" ? 24.8 : year === "2024" ? 23.1 : 25.8))} ${tempUnit}`,
                     year === "2025"
-                        ? "142 mm"
+                        ? "121 mm"
                         : year === "2024"
-                            ? "132 mm"
-                            : "148 mm",
+                            ? "113 mm"
+                            : "126 mm",
                     "32%",
-                    fmtNum(0.76, 2),
+                    num(0.76, 2),
                 ][i])}
                   </strong>
                 </div>
@@ -639,6 +643,7 @@ function App() {
             }} onSave={(nextFarm, inputs, nextPesos) => {
                 setFarm(nextFarm);
                 setDraft(nextFarm);
+                setCrops((p) => p.map((c) => SAMPLE_CROP_IDS.has(c.id) ? { ...c, area: nextFarm.area } : c));
                 setSetupInputs(inputs);
                 setFreePesos(nextPesos);
                 setPersisted(true);
@@ -780,7 +785,7 @@ function App() {
           </div>
           <div className="carousel-controls">
             <div>
-              {__text(heroImgs.map((_, i) => (<button key={i} aria-label={__text("Ir para imagem " + (i + 1))} aria-pressed={slide === i} className={slide === i ? "active" : ""} onClick={() => setSlide(i)}/>)))}
+              {__text(heroImgs.map((_, i) => (<button key={i} aria-label={`${__text("Ir para imagem")} ${i + 1}`} aria-pressed={slide === i} className={slide === i ? "active" : ""} onClick={() => setSlide(i)}/>)))}
               <small>{__text("0")}{__text(slide + 1)}{__text("/ 03")}</small>
             </div>
             <div>
@@ -811,6 +816,7 @@ function App() {
         return <PropertyWizard initial={draft} brand={<Logo />} onHome={() => go("landing")} onComplete={(nextFarm, inputs) => {
             setFarm(nextFarm);
             setDraft(nextFarm);
+            setCrops((p) => p.map((c) => SAMPLE_CROP_IDS.has(c.id) ? { ...c, area: nextFarm.area } : c));
             setSetupInputs(inputs);
             setPersisted(true);
             go("overview");
@@ -819,8 +825,8 @@ function App() {
     function AddCrop() {
         const [value, setValue] = useState({
             crop: "Milho",
-            plant: "2026-03-05",
-            harvest: "2026-07-28",
+            plant: "2027-02-01",
+            harvest: "2027-06-25",
             area: farm.area,
             yield: "",
         });
@@ -879,7 +885,7 @@ function App() {
           </p>))}
         <p>{__text("As datas podem coexistir com outros cultivos no mesmo ano.")}</p>
         <button type="submit" className="button">{__text("Salvar cultivo")}</button>
-        <small>{__text(persisted ? "Salvo neste navegador com a propriedade." : "Conclua o cadastro para salvar o hist\u00F3rico neste navegador.")}</small>
+        <small>{__text(persisted ? "Fica salvo neste navegador, junto com a propriedade." : "Conclua o cadastro para salvar o hist\u00F3rico neste navegador.")}</small>
       </form>);
     }
     function ModalContent() {
@@ -896,7 +902,7 @@ function App() {
           <button className="property-choice" onClick={() => open(null)}>
             <strong>{__text(farm.name)}{__text("\u2713")}</strong>
             <small>
-              {__text(farm.city)}{__text("\u2022")}{__text(farm.area)}{__text("ha")}</small>
+              {farm.city} • {ha(farm.area)} ha</small>
           </button>
           <p>{__text("Uma propriedade est\u00E1 dispon\u00EDvel nesta demonstra\u00E7\u00E3o.")}</p>
           <CoverageNotice />
@@ -949,7 +955,7 @@ function App() {
               <Logo toggleSidebar />
               <button className="sidebar-close" aria-label={__text("Fechar navegação")} onClick={() => setMenu(false)}><span aria-hidden="true">×</span></button>
             </div>
-            <small className="nav-section">{__text("PRINCIPAL")}</small>
+            <small className="nav-section">{__text("Principal")}</small>
             <nav id="dashboard-nav">
               {__text(navItems.map(([id, label, img]) => (<React.Fragment key={id}>
                   <button className={page === id ? "selected" : ""} aria-current={page === id ? "page" : undefined} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
