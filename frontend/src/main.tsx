@@ -51,6 +51,25 @@ function App() {
     const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [draft, setDraft] = useState<Farm>({ ...(saved?.farm ?? initialFarm) }), [crops, setCrops] = useState<Crop[]>(saved?.crops ?? initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [settings, setSettings] = useState(saved?.settings ?? {
         temperature: "Graus Celsius (°C)",
     });
+    const [deletedCrops, setDeletedCrops] = useState<{ crop: Crop; nextId?: number }[]>([]);
+    function deleteCrop(id: number) {
+        const index = crops.findIndex(crop => crop.id === id);
+        if (index < 0) return;
+        setDeletedCrops(previous => [...previous, { crop: crops[index], nextId: crops[index + 1]?.id }]);
+        setCrops(previous => previous.filter(crop => crop.id !== id));
+    }
+    function undoDeleteCrop() {
+        const deleted = deletedCrops.at(-1);
+        if (!deleted) return;
+        setCrops(previous => {
+            if (previous.some(crop => crop.id === deleted.crop.id)) return previous;
+            const index = previous.findIndex(crop => crop.id === deleted.nextId);
+            const restored = [...previous];
+            restored.splice(index < 0 ? restored.length : index, 0, deleted.crop);
+            return restored;
+        });
+        setDeletedCrops(previous => previous.slice(0, -1));
+    }
     const [sidebarPreference, setSidebarPreference] = useState<boolean | null>(null);
     const [compactViewport, setCompactViewport] = useState(() => window.matchMedia("(max-width: 1100px)").matches);
     const sidebarCollapsed = sidebarPreference ?? compactViewport;
@@ -96,6 +115,7 @@ function App() {
         setFarm({ ...initialFarm });
         setDraft({ ...initialFarm });
         setCrops(initialCrops);
+        setDeletedCrops([]);
         setSetupInputs(undefined);
         toast("Dados da propriedade apagados deste navegador.");
     }
@@ -402,6 +422,12 @@ function App() {
         <Timeline />
         <section className="panel">
           <h2>{__text("Cultivos registrados")}</h2>
+          <div className="crop-delete-feedback" role="status" aria-live="polite">
+            {deletedCrops.length > 0 && <>
+              <span>{__text("Cultivo excluído.")} {__text(deletedCrops.at(-1)!.crop.crop)} · {deletedCrops.at(-1)!.crop.season}</span>
+              <button type="button" onClick={undoDeleteCrop}>{__text("Desfazer exclusão")}</button>
+            </>}
+          </div>
           <p>{__text("Valores demonstrativos \u2022 produtividade informada em sacas de 60 kg por hectare")}</p>
           <div className="table-scroll">
             <table>
@@ -414,6 +440,7 @@ function App() {
                 "Área",
                 "Produtividade",
                 "Situação",
+                "Ações",
             ].map((t) => (<th key={t}>{__text(t)}</th>)))}
                 </tr>
               </thead>
@@ -434,7 +461,13 @@ function App() {
                     <td>
                       <span className="status">{__text(c.status)}</span>
                     </td>
+                    <td>
+                      <button type="button" className="crop-delete-button"
+                        aria-label={`${__text("Excluir cultivo")}: ${__text(c.crop)} ${c.season}`}
+                        title={__text("Excluir cultivo")} onClick={() => deleteCrop(c.id)}>×</button>
+                    </td>
                   </tr>)))}
+                {crops.length === 0 && <tr><td colSpan={7}>{__text("Nenhum cultivo registrado.")}</td></tr>}
               </tbody>
             </table>
           </div>
