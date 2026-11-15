@@ -43,7 +43,7 @@ This file is the living list of open items for the project (crop-rotation engine
   Files: `src/field_shift/pam/produtividade.py`.
   Status: pending
 
-- **Running API out of date**: the uvicorn on port 8000 started at 19:41 on 14/11, without `--reload`, and serves the old code. It needs a restart. The response changes shape and `rotacao_atual` becomes required.
+- **Running API out of date**: the uvicorn on port 8000 started at 19:41 on 14/11, without `--reload`, and serves the old code. It needs a restart. The response changes shape and `rotacao_atual` becomes required. Docs and examples already describe the new shape; the running process was not restarted by the docs task.
   Files: `api/field_shift_api/`.
   Status: pending
 
@@ -71,9 +71,9 @@ This file is the living list of open items for the project (crop-rotation engine
 
 ## Documentation
 
-- **Update docs and examples after the per-stage flow**: the code is done and the tests pass (`rotacao_atual` required, `estagio_verao`, `colheita_prevista`, `data_referencia`, `agora`/`proxima_safra` blocks and `ganho_vs_atual`). `api/README.md` and `docs/motor.md` still need updating, and `api/exemplos/*.json` (including `opcoes.json`) need regenerating. Main example: soybean at `enchimento_graos`, field 72638, `data_referencia` 2026-12-01.
+- **Update docs and examples after the per-stage flow**: the code is done and the tests pass (`rotacao_atual` required, `estagio_verao`, `colheita_prevista`, `data_referencia`, `agora`/`proxima_safra` blocks and `ganho_vs_atual`). `api/README.md` and `docs/motor.md` were updated (inputs, outputs, stages, `data_referencia`, `agora`/`proxima_safra` blocks, `ganho_vs_atual`, open decision on the `proxima_safra` sowing date as a known limitation), and `api/exemplos/*.json` (including `opcoes.json` and the error examples) were regenerated from the real API. Main example: soybean at `enchimento_graos`, field 72638, `data_referencia` 2026-12-01.
   Files: `api/README.md`, `docs/motor.md`, `api/exemplos/*.json`.
-  Status: pending
+  Status: done (15/11/2026)
 
 - **Integrate the literature research numbers**: include the gain on the following soybean (range + source) in the documentation and in the engine, once the table is validated.
   Files: `docs/motor.md`, `docs/pesquisa_ganho_soja_seguinte_PARCIAL.md`.
@@ -81,17 +81,21 @@ This file is the living list of open items for the project (crop-rotation engine
 
 ## Future features
 
-- **Multi-year rotation plan**: the ranking evaluates one season at a time. A 2–3 year plan is missing (for example, soybean/corn → soybean/wheat → summer corn/oat). Tracked only; do not implement without a request.
-  Files: `src/field_shift/motor/`.
-  Status: pending
+- **Multi-year rotation plan**: the ranking evaluates one season at a time. A 2–3 year plan (for example, soybean/corn → soybean/wheat → summer corn/oat).
+  Files: `src/field_shift/motor/plano.py` (draft, 337 lines), `POST /v1/plano` in `api/field_shift_api/rotas.py`, `PlanoIn`/`PlanoOut` in `schemas.py`.
+  Status: in progress (WIP, paused 15/11/2026 to save tokens). Draft of the module, route and schemas exists and the existing 89 tests still pass, but the plan is untested and unreviewed. Still to do: `api/tests/test_plano.py` (anos outside 2–3, no consecutive summer soybean, restrictions respected, `recomendar` unchanged, `problemas_area` effect, `ganho_vs_repetir_atual`); document `/v1/plano` in `api/README.md` and `docs/motor.md`; save the example generator as `scripts/generate_examples.py` and regenerate `api/exemplos/*.json` (they still carry the old "fertilidade do solo não usada" phrase and lack the new gap lines); new examples `plano_plurianual_talhao_72638.json`, `recomendacao_estado_area_mofo_nematoide.json`, `recomendacao_estado_area_fertilidade_pobre.json`; list the estimated parameters (transition penalties/bonuses, typical dates) as items to validate. Code in English (see CLAUDE.md).
 
 - **Field problems reported by the farmer**: a closed-list field, for example `problemas_area: ["nematoide", "mofo_branco", "cigarrinha", "compactacao"]`, that adjusts the pest and soil criteria (white mold hurts beans; nematodes favor brachiaria and penalize beans and soybean; leafhopper weighs on corn after corn; compaction favors radish and brachiaria). Optional: if not provided, it does not enter the analysis.
-  Files: `api/field_shift_api/schemas.py`, `src/field_shift/motor/servico.py`.
-  Status: pending
+  Files: `api/field_shift_api/schemas.py`, `src/field_shift/motor/servico.py`, `src/field_shift/app/estado_area.py`, `catalog/vocabulario.yaml`.
+  Done: `problemas_area` (closed list validated in the API and the engine; unknown value is a 422/400) adjusts `pragas` and `solo` per crop through the explicit table `EFEITOS_PROBLEMAS` (additive deltas on the existing 0–1 scale). The card and `metodologia.ajustes_aplicados` say what was and was not considered.
+  To validate with an agronomist/Embrapa: every delta in `EFEITOS_PROBLEMAS` is a catalog estimate (e.g. white mold −0.25 beans, −0.15 soybean and radish; nematodes +0.25 crotalaria/millet, +0.10 brachiaria, −0.25 beans, −0.15 soybean; leafhopper −0.05 corn and −0.15 extra on corn after corn; compaction +0.15 radish and brachiaria). Brachiaria and millet effects on nematodes depend on species/cultivar; the effect of the summer crop (soybean) hits all rotations of the block equally.
+  Status: done
 
 - **Fertility/minerals in `analise_solo`**: extend it with P, K, Ca, Mg, Al, base saturation (V%) and CEC, as optional farmer input. Uses: fertilizer and liming cost per crop, a penalty for demanding crops on poor or acidic soil, and a bonus for nutrient-cycling cover crops. If not provided, fertility does not enter the analysis, with no estimate or default value, and the card says it was not considered. Implement together with `problemas_area`.
-  Files: `api/field_shift_api/schemas.py`, `src/field_shift/solo/solo.py`, `src/field_shift/motor/servico.py`.
-  Status: pending
+  Files: `api/field_shift_api/schemas.py`, `src/field_shift/motor/servico.py`, `src/field_shift/app/estado_area.py`.
+  Done: `analise_solo` accepts `p_mg_dm3`, `k_cmolc_dm3`, `ca_cmolc_dm3`, `mg_cmolc_dm3`, `al_cmolc_dm3`, `v_pct`, `ctc_cmolc_dm3` (any subset; `analise_solo` may now carry only fertility). Not informed: nothing is estimated and the card says "Fertilidade não considerada (não informada)". Informed: liming cost by base saturation (NC = (V2 − V1)/100 × CTC / PRNT, in t/ha, cap 6 t/ha, diluted over 3 years; needs V% and CTC, V% is derived only from Ca+Mg+K+CTC), P/K fertilizer cost above/below the average-class dose already in the CONAB cost (saving on rich soil), a penalty on `solo` for acid-sensitive crops (high Al, low V%), and a bonus on `solo` for radish/brachiaria (low P or K) and crotalaria (poor soil). `POST /v1/diagnostico` also returns a `fertilidade` block with the classes.
+  To validate with an agronomist/Embrapa/IDR-PR: P classes (single scale; the Paraná manual varies by clay), K/V%/Al class limits (simplified), V2 per crop (70% corn, wheat, beans; 60% sorghum), PRNT 80%, lime price R$ 220/t, 3-year lime life, 6 t/ha cap, P2O5/K2O doses by class and prices (R$ 7.5 and 4.6/kg), crop demand and acid-sensitivity factors, and the penalty/bonus sizes. The summer crop's own liming/fertilizing is not modeled (equal across rotations of the block). The "/10" in the original liming formula only holds with CEC in mmolc/dm³; the code uses CEC in cmolc/dm³ (1 cmolc/dm³ = 1 t of CaCO3/ha in 0–20 cm).
+  Status: done
 
 ## Research
 

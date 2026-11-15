@@ -6,6 +6,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query, Request
 
+from field_shift.motor import plano as motor_plano
 from field_shift.motor import servico
 
 from . import __version__
@@ -17,6 +18,8 @@ from .schemas import (
     DiagnosticoOut,
     ErroOut,
     HealthOut,
+    PlanoIn,
+    PlanoOut,
     RecomendacaoIn,
     RecomendacaoOut,
     Semeadura,
@@ -100,6 +103,38 @@ def recomendacao(corpo: RecomendacaoIn) -> dict[str, Any]:
         analise_solo=_dump(corpo.analise_solo),
         restricoes=_dump(corpo.restricoes),
         irrigacao=_dump(corpo.irrigacao),
+        problemas_area=corpo.problemas_area or None,
+    )
+
+
+@router.post(
+    "/plano",
+    response_model=PlanoOut,
+    responses=ERROS,
+    tags=["motor"],
+    summary="Plano plurianual de rotação (2–3 safras seguintes ao verão atual)",
+)
+def plano(corpo: PlanoIn) -> dict[str, Any]:
+    """Sequências de 2 ou 3 safras (rotações do catálogo) com pontuação por safra mais termos de transição estimados (soja sobre soja
+    no verão, mesma cultura na 2ª janela, diversificação, cobertura). Mesmas entradas e erros de `POST /v1/recomendacao`."""
+    pesos = corpo.pesos.model_dump(exclude_none=True) if corpo.pesos else None
+    ajustes = corpo.ajustes.model_dump(exclude_none=True) if corpo.ajustes else None
+    return motor_plano.plano_plurianual(
+        corpo.area.para_servico(),
+        anos=corpo.anos,
+        n_planos=corpo.n_planos,
+        semeadura_safrinha=corpo.semeadura_safrinha,
+        pesos=pesos or None,
+        rotacao_atual=corpo.rotacao_atual,
+        estagio_verao=corpo.estagio_verao,
+        colheita_prevista=corpo.colheita_prevista,
+        data_referencia=corpo.data_referencia,
+        rotacoes=[r.model_dump() for r in corpo.rotacoes] if corpo.rotacoes else None,
+        ajustes=ajustes or None,
+        analise_solo=_dump(corpo.analise_solo),
+        restricoes=_dump(corpo.restricoes),
+        irrigacao=_dump(corpo.irrigacao),
+        problemas_area=corpo.problemas_area or None,
     )
 
 

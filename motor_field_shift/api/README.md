@@ -7,6 +7,12 @@ margin in BRL/ha and an explanation card per option. A rotation is a pair **(sum
 crop)**: summer `soja` or `milho_verao`; second window with 11 options (the original 7 + sorghum, off-season beans,
 forage radish and oat + radish).
 
+The recommendation follows a **per-stage flow**: the farmer says the current rotation (`rotacao_atual`, required) and, optionally, the
+stage of the summer crop (`estagio_verao`) or the expected harvest date (`colheita_prevista`). The engine estimates the harvest, derives the
+sowing date of the second window from it and answers two questions in two blocks: **`agora`** (what goes in after this summer harvest, same
+summer crop as the current rotation) and **`proxima_safra`** (what to change in the next season, other summer crop). Each item carries
+`ganho_vs_atual`, how it improves (or worsens) production against the current rotation.
+
 Field names, ids and error codes are in Portuguese, as defined in the code.
 
 **Scope:** Western Paraná (50 municipalities, IBGE code 4106). Any area outside it returns
@@ -88,7 +94,8 @@ Output: `status` (`ok`/`degradado`), `dados_carregados` (bool), `versao`, `detal
 
 No inputs. `/opcoes` returns:
 
-- `culturas_verao[]` and `culturas_segunda[]`: `id`, `nome`, `tipo` (`grão`, `cobertura` or `pousio`) and `descricao_curta`. These are the closed enums of `rotacoes`.
+- `culturas_verao[]` and `culturas_segunda[]`: `id`, `nome`, `tipo` (`grão`, `cobertura` or `pousio`) and `descricao_curta`. These are the closed enums of `rotacoes`. Each summer crop also carries `estagios[]` (`id`, `nome`, `dias_ate_colheita`: the valid values of `estagio_verao`, with the typical days to harvest) and `colheita_catalogo` (dd/mm assumed when no stage or harvest is sent).
+- `estagios_fonte` (source and caveat of the stage estimates) and `dias_preparo_2a` (minimum days between the summer harvest and the second sowing; 0, no-till).
 - `combinacoes[]`: every pair (22), with `id` (`"<verao>__<segunda>"`, e.g. `soja__milho_safrinha`), `id_legado` (old slug, only for the original 7),
   `nome`, `verao`, `segunda`, `valida` (false if the pair is always eliminated, such as soybean in the second window), `semeaduras_validas[]` (sowing dates
   of the second crop for which the pair passes the calendar rules) and `motivo_se_invalida`.
@@ -102,7 +109,7 @@ No inputs. `/opcoes` returns:
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `area` | object | yes | n/a | See above |
-| `semeadura_safrinha` | enum `15/01`, `01/02`, `15/02`, `01/03`, `15/03` | no | `01/02` | Off-season sowing date |
+| `semeadura_safrinha` | enum `15/01`, `01/02`, `15/02`, `01/03`, `15/03` | no | `01/02` | Off-season sowing date (the diagnosis does not use the per-stage flow) |
 
 Output:
 
@@ -122,10 +129,13 @@ Output:
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `area` | object | yes | n/a | See above |
-| `semeadura_safrinha` | enum (same as above) | no | `01/02` | Off-season sowing date |
+| `rotacao_atual` | id `"<verao>__<segunda>"` or old slug | **yes** | n/a | Rotation the farmer uses today. Its summer crop (`soja` or `milho_verao`) defines the `agora` block; combinations with the other summer crop go to `proxima_safra`. Old slug = soybean in summer (`milho_safrinha` = `soja__milho_safrinha`). Missing: 422 |
+| `estagio_verao` | enum of the current summer crop's stage | no | none | Stage of the summer crop today. Estimated harvest = `data_referencia` + typical days of the stage (estimate, to be validated with Embrapa). Soybean: `vegetativo` (90 d), `floracao` (65), `formacao_vagens` (48), `enchimento_graos` (32), `maturacao` (10), `colhida` (0). Summer corn: `vegetativo` (110), `pendoamento` (80), `grao_leitoso` (60), `grao_farinaceo` (40), `maturacao` (15), `colhida` (0). A stage of the other crop or an unknown one: 422 |
+| `colheita_prevista` | `dd/mm` | no | none | Expected harvest of the summer crop (next occurrence on or after `data_referencia`). If sent together with `estagio_verao`, it wins (warning in `avisos`) |
+| `data_referencia` | ISO date `YYYY-MM-DD` | no | today | "Today" for the farmer. Makes the stage calculation deterministic (used by the examples and the tests) |
+| `semeadura_safrinha` | enum `15/01`, `01/02`, `15/02`, `01/03`, `15/03` | no | derived | Sowing date of the second window. Without it, it is the first date of that list on or after the estimated harvest (`semeadura_2a.origem` = `derivada`). If sent, it wins over the derived one (`informada`) but cannot be before the estimated harvest (422). Without stage, harvest or sowing date: assumption (catalog harvest, soybean ~10/01, summer corn ~05/02, and `01/02`; `premissa`), with a warning |
 | `pesos` | object `renda, solo, agua, pragas, risco` (0 to 10 each) | no | income 5, others 3 | Importance of each criterion; omitted ones use the default; if all are 0, the engine uses equal weights |
-| `rotacoes` | list of `{"verao": <enum>, "segunda": <enum>}` | no | every catalog combination | If present, the engine evaluates and ranks **only these**. Closed enums (see `/v1/opcoes`); non-empty list without duplicates, otherwise 422. A combination eliminated by the rules comes back in `eliminadas` with the reason (not an error). The score of a rotation does not depend on the others evaluated |
-| `rotacao_atual` | id `"<verao>__<segunda>"` or old slug | no | detected/`soja__milho_safrinha` | Rotation used today, for comparison (`atual`). Old slug = soybean in summer (`milho_safrinha` = `soja__milho_safrinha`) |
+| `rotacoes` | list of `{"verao": <enum>, "segunda": <enum>}` | no | every catalog combination | If present, the engine evaluates and ranks **only these** (each pair lands in `agora` or `proxima_safra` by its summer crop; the current rotation is always evaluated for the comparison, but only shown if it is in the list). Closed enums (see `/v1/opcoes`); non-empty list without duplicates, otherwise 422. A combination eliminated by the rules comes back in `eliminadas` with the reason (not an error). The score of a rotation does not depend on the others evaluated |
 | `ajustes.precos` | `{soja, milho, trigo, feijao, sorgo}` in BRL/bag (>= 0) | no | reference | Own prices (`milho` applies to summer and off-season) |
 | `ajustes.custos` | `{cultura: BRL/ha}`, keys: `soja`, `milho` (alias of `milho_2safra`), `milho_2safra`, `milho_verao` (alias of `milho_1safra`), `milho_1safra`, `trigo`, `feijao` (alias of `feijao_2safra`), `feijao_2safra`, `sorgo`, `aveia`, `milheto_crotalaria`, `braquiaria_consorcio`, `pousio`, `nabo_forrageiro`, `aveia_nabo`; values >= 0 | no | reference | Own costs (an unknown key is rejected) |
 | `ajustes.linha_custo` | `coe`, `cot` or `ct` | no | from the service | Effective operating cost, total operating cost or total cost |
@@ -150,8 +160,11 @@ returns the old slug.
 - Soybean in the second window is always eliminated: soybean can only be sown from 01/09 to 31/12, there is a soybean-free period from 02/06 to 31/08 and,
   after soybean, it would be soybean after soybean (prohibited). This also applies after `milho_verao`.
 - The second crop that follows the chosen sowing date (off-season corn, corn+brachiaria, sorghum, beans, millet/crotalaria) can only be sown
-  after the summer harvest: soybean ~10/01, summer corn ~05/02 (estimates, to be validated). That is why, with `semeadura_safrinha` 01/02 or earlier,
-  summer corn followed by those crops is eliminated. Wheat, oat, radish and fallow have a fixed date and do not depend on the harvest.
+  after the summer harvest of the **current** summer crop. With `estagio_verao` or `colheita_prevista` that harvest is the estimated one; without them it is
+  the catalog assumption (soybean ~10/01, summer corn ~05/02; estimates, to be validated). A harvest after the last sowing date considered (15/03) is
+  "too late" (`semeadura_2a` null, warning in `avisos`): those crops are eliminated and only the fixed-date ones (wheat, oat, radish, fallow) stay.
+  The same estimated harvest applies to the summer crop of every candidate in the same response, which is why summer corn followed by those crops
+  is eliminated at an early sowing date (see the known limitation at the end). Wheat, oat, radish and fallow have a fixed date and do not depend on the harvest.
 - Off-season beans only accept sowing from 15/01 to 28/02, and sorghum from 15/01 to 15/03 (reference estimates based on ZARC/IDR-PR, to be validated).
 - **Corn after corn** (`milho_verao` + `milho_safrinha` or `milho_braquiaria`) **is not eliminated**: the `pragas` criterion loses 0.25 points
   (corn leafhopper/corn stunt, fall armyworm; estimate), and the text goes into `card.riscos` and `card.evidencias`.
@@ -168,14 +181,23 @@ Output:
 
 | Field | Description |
 |---|---|
-| `entrada` | Echo of the input actually used (weights, adjustments, sowing date, `rotacao_atual` as the new id and, if sent, `rotacoes`, `analise_solo`, `restricoes`, `irrigacao` with defaults filled in) |
+| `entrada` | Echo of the input actually used (weights, adjustments, the sowing date used, `rotacao_atual` as the new id, `estagio_verao`, `colheita_prevista`, `data_referencia` (ISO, today if omitted) and, if sent, `rotacoes`, `analise_solo`, `restricoes`, `irrigacao` with defaults filled in) |
+| `cultura_atual` | `{id, nome}` of the summer crop of the current rotation |
+| `estagio_verao` | Stage sent, with `id`, `nome`, `dias_tipicos_ate_colheita` and `fonte` (estimate). Absent if no stage was sent |
+| `colheita_estimada` | `{data (dd/mm), origem}`; `origem`: `estagio`, `informada` (from `colheita_prevista`) or `premissa` (catalog) |
+| `dias_ate_colheita` | Days from `data_referencia` to the estimated harvest (absent with `premissa`) |
+| `semeadura_2a` | `{data, origem}`: sowing date of the second window used; `origem`: `derivada`, `informada` or `premissa`. Absent if the harvest is too late |
 | `diagnostico` | Same as `/v1/diagnostico` (if `incluir_diagnostico`) |
-| `ranking[]` | `posicao`, `id` (`"<verao>__<segunda>"`), `id_legado`, `verao{id,nome}`, `segunda{id,nome}`, `rotacao`, `nota` (0 to 1), `atual`, `criterios{renda,solo,agua,pragas,risco}`, `contribuicoes{}`, `margem{total_r_ha, incremental_r_ha, escala_S_r_ha, itens[{cultura, rendimento_sc_ha, preco, custo, margem_r_ha, fonte}], ano_ruim_r_ha}`, `card{por_que, evidencias, beneficios, lacunas, riscos, avisos, mercado{nivel, texto, estimativa}}`, `irrigacao{lamina_media_mm_ano, custo_r_ha}` (only for irrigated candidates) |
-| `atual` | Item for the current rotation (when provided). If it is eliminated by a hard rule (soybean in the second window, summer corn before the harvest, etc.), it comes with null `posicao` and `nota`, `eliminada: true` and `motivos[]`, and does not appear in `ranking`/`alternativas`. With a `rotacoes` list that does not include it, it comes with `avaliada: false` (and `null` if it was neither provided nor detected). Without `rotacao_atual`, the engine detects it: only field 72638 has NDVI detection; the others assume `soja__milho_safrinha` with a warning |
-| `alternativas[]` | Items that are alternatives to the current rotation |
-| `eliminadas[]` | Rotations vetoed by a hard rule, the calendar or a restriction: `id`, `id_legado`, `verao`, `segunda`, `rotacao`, `motivos[]` |
+| `agora` | **Main block**: combinations with the **same summer crop** as the current rotation (what enters after this harvest). `{ranking[], alternativas[], eliminadas[]}` |
+| `proxima_safra` | Combinations with the **other summer crop** (decision for the next season), compared with the current rotation. Same sowing date of the second window as `agora` (see the known limitation). Same shape as `agora` |
+| `ranking[]` | `posicao`, `id` (`"<verao>__<segunda>"`), `id_legado`, `verao{id,nome}`, `segunda{id,nome}`, `rotacao`, `nota` (0 to 1), `atual`, `criterios{renda,solo,agua,pragas,risco}`, `contribuicoes{}`, `margem{total_r_ha, incremental_r_ha, escala_S_r_ha, itens[{cultura, rendimento_sc_ha, preco, custo, margem_r_ha, fonte}], ano_ruim_r_ha}`, `card{por_que, evidencias, beneficios, lacunas, riscos, avisos, mercado{nivel, texto, estimativa}}`, `irrigacao{lamina_media_mm_ano, custo_r_ha}` (only for irrigated candidates), `ganho_vs_atual` (see below). The top-level `ranking[]`, `alternativas[]` and `eliminadas[]` are kept for compatibility: the first two are aliases of `agora.ranking` and `agora.alternativas`; `eliminadas` is the union of both blocks. `posicao` restarts at 1 in each block |
+| `atual` | Item for the current rotation (when provided). If it is eliminated by a hard rule (soybean in the second window, summer corn before the harvest, etc.), it comes with null `posicao` and `nota`, `eliminada: true` and `motivos[]`, and does not appear in `ranking`/`alternativas`. With a `rotacoes` list that does not include it, it comes with `avaliada: false`. `rotacao_atual` is required, so there is no detection fallback in this endpoint |
+| `alternativas[]` | Alias of `agora.alternativas`: the best of the `agora` block without the current rotation (up to `n_alternativas`; the `proxima_safra` block has its own `alternativas[]`) |
+| `eliminadas[]` | Rotations vetoed by a hard rule, the calendar or a restriction (both blocks): `id`, `id_legado`, `verao`, `segunda`, `rotacao`, `motivos[]` |
 | `avisos[]` | General warnings |
 | `metodologia` | `formula`, `criterios{}`, `versao` and, if there are adjustments, `ajustes_aplicados[]` (one sentence per adjustment) |
+
+**`ganho_vs_atual`** (on every item except the current rotation itself; null if the current rotation was eliminated): how the candidate improves, or worsens, production against the current rotation. Positive = the candidate gains. Fields: `comparado_com` (id of the current rotation); the soybean that follows: `soja_seguinte_sc` (central, bags/ha), `soja_seguinte_sc_faixa` (`[min, max]`), `soja_seguinte_rs` (BRL/ha = bags × DERAL price, `preco_soja_r_sc`) and `fonte` (catalog estimate, to be validated with an agronomist/Embrapa); `renda_2a_safra` and `margem_total` (`{r_ha, origem}`, BRL/ha, data); `solo` (`dias_descobertos`, negative = less bare soil; `cobertura`; catalog estimate); `agua` and `risco_climatico` (`{criterio, origem}`: difference in criterion, data). Each number carries its `origem`, so the interface can tell data from estimate.
 
 Numbers are rounded (`nota`, `criterios` and `contribuicoes` with 3 decimals; BRL with no decimals; probabilities with 3 decimals); the ranking uses the unrounded score. `card.por_que` compares each alternative with the current rotation (up to 3 criteria with the largest weighted difference, with numbers); on the current rotation's item it states the position and the best alternative.
 
@@ -186,6 +208,9 @@ Example with the farmer's own data (real response in `api/exemplos/recomendacao_
 ```json
 {
   "area": {"talhao_id": "72638"},
+  "rotacao_atual": "soja__milho_safrinha",
+  "estagio_verao": "enchimento_graos",
+  "data_referencia": "2026-12-01",
   "ajustes": {"produtividade": {"soja": 65, "milho": 110, "trigo": 50}},
   "analise_solo": {"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "ph": 5.4, "cad_mm_cm": 1.4},
   "restricoes": {"culturas_excluidas": ["trigo"],
@@ -200,13 +225,15 @@ Example with the farmer's own data (real response in `api/exemplos/recomendacao_
 
 #### Rotations provided by the user (`rotacoes`)
 
-Request (real response in `api/exemplos/recomendacao_rotacoes.json`; with sowing on 01/03, the summer corn has already been harvested):
+Request (real response in `api/exemplos/recomendacao_rotacoes.json`; the sowing date `01/03` is sent explicitly, so it wins over the one derived from the stage):
 
 ```json
 {
   "area": {"talhao_id": "72638"},
   "semeadura_safrinha": "01/03",
   "rotacao_atual": "soja__milho_safrinha",
+  "estagio_verao": "enchimento_graos",
+  "data_referencia": "2026-12-01",
   "rotacoes": [
     {"verao": "soja", "segunda": "milho_safrinha"},
     {"verao": "soja", "segunda": "sorgo"},
@@ -217,23 +244,30 @@ Request (real response in `api/exemplos/recomendacao_rotacoes.json`; with sowing
 }
 ```
 
-Response (summarized): 4 rotations in the ranking and soybean in the second window in `eliminadas`, with no error.
+Response (summarized): 2 rotations in `agora` (same summer crop, soybean), 2 in `proxima_safra` (summer corn), and soybean in the second window in `eliminadas`, with no error.
 
 ```json
 {
-  "ranking": [
-    {"posicao": 1, "id": "soja__milho_safrinha", "id_legado": "milho_safrinha", "nota": 0.715, "atual": true},
-    {"posicao": 2, "id": "soja__sorgo", "id_legado": null, "nota": 0.596, "atual": false},
-    {"posicao": 3, "id": "milho_verao__aveia_nabo", "id_legado": null, "nota": 0.576, "atual": false},
-    {"posicao": 4, "id": "milho_verao__milho_safrinha", "id_legado": null, "nota": 0.389, "atual": false,
-     "criterios": {"pragas": 0.25},
-     "card": {"riscos": ["... Corn after corn (summer corn + off-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt ..."]}}
-  ],
-  "eliminadas": [
-    {"id": "milho_verao__soja_safrinha", "rotacao": "Summer corn → off-season soybean",
-     "motivos": ["Soybean in the second window (sowing on 01/03) falls outside the legal soybean sowing window (01/09–31/12).",
-                 "There is live soybean during the soybean-free period in Western Paraná (02/06–31/08)."]}
-  ]
+  "agora": {
+    "ranking": [
+      {"posicao": 1, "id": "soja__milho_safrinha", "id_legado": "milho_safrinha", "nota": 0.715, "atual": true},
+      {"posicao": 2, "id": "soja__sorgo", "id_legado": null, "nota": 0.596, "atual": false}
+    ],
+    "eliminadas": []
+  },
+  "proxima_safra": {
+    "ranking": [
+      {"posicao": 1, "id": "milho_verao__aveia_nabo", "id_legado": null, "nota": 0.576, "atual": false},
+      {"posicao": 2, "id": "milho_verao__milho_safrinha", "id_legado": null, "nota": 0.389, "atual": false,
+       "criterios": {"pragas": 0.25},
+       "card": {"riscos": ["... Corn after corn (summer corn + off-season corn): keeps a continuous host for the corn leafhopper (Dalbulus maidis) and corn stunt ..."]}}
+    ],
+    "eliminadas": [
+      {"id": "milho_verao__soja_safrinha", "rotacao": "Summer corn → off-season soybean",
+       "motivos": ["Soybean in the second window (sowing on 01/03) falls outside the legal soybean sowing window (01/09–31/12).",
+                   "There is live soybean during the soybean-free period in Western Paraná (02/06–31/08)."]}
+    ]
+  }
 }
 ```
 
@@ -294,48 +328,66 @@ remains the reference for rural credit.
 
 ## Examples
 
-### Demo field
+Every `POST /v1/recomendacao` needs `rotacao_atual`. The examples below add the stage of the summer crop (`estagio_verao`) and a fixed `data_referencia` so the response is reproducible.
+
+### Per-stage flow (demo field)
+
+Soybean in grain filling (R5–R6) on 2026-12-01: estimated harvest ~02/01 (32 days), second-window sowing derived as 15/01.
 
 ```bash
-curl -s localhost:8000/v1/recomendacao -H 'content-type: application/json' \
-  -d '{"area": {"talhao_id": "72638"}, "semeadura_safrinha": "01/02"}'
+curl -s localhost:8000/v1/recomendacao -H 'content-type: application/json' -d '{
+  "area": {"talhao_id": "72638"},
+  "rotacao_atual": "soja__milho_safrinha",
+  "estagio_verao": "enchimento_graos",
+  "data_referencia": "2026-12-01"}'
 ```
 
 ```python
 import httpx
-r = httpx.post("http://localhost:8000/v1/recomendacao",
-               json={"area": {"talhao_id": "72638"}}, timeout=120)
+corpo = {"area": {"talhao_id": "72638"}, "rotacao_atual": "soja__milho_safrinha",
+         "estagio_verao": "enchimento_graos", "data_referencia": "2026-12-01"}
+r = httpx.post("http://localhost:8000/v1/recomendacao", json=corpo, timeout=120)
 r.raise_for_status()
-for item in r.json()["ranking"]:
-    print(item["posicao"], item["rotacao"], item["nota"])
+j = r.json()
+print(j["colheita_estimada"], j["semeadura_2a"], j["dias_ate_colheita"])
+for bloco in ("agora", "proxima_safra"):
+    for item in j[bloco]["ranking"]:
+        print(bloco, item["posicao"], item["rotacao"], item["nota"])
 ```
+
+With the expected harvest date instead of the stage: `"colheita_prevista": "20/01"` (wins over `estagio_verao`).
 
 ### GeoJSON polygon
 
 ```bash
 curl -s localhost:8000/v1/recomendacao -H 'content-type: application/json' -d '{
-  "area": {"geometry": {"type": "Polygon", "coordinates": [[[-53.46,-24.96],[-53.45,-24.96],[-53.45,-24.95],[-53.46,-24.95],[-53.46,-24.96]]]}},
-  "semeadura_safrinha": "15/02"}'
+  "area": {"geometry": {"type": "Polygon", "coordinates": [[[-53.3045,-24.9045],[-53.3045,-24.8955],[-53.2955,-24.8955],[-53.2955,-24.9045],[-53.3045,-24.9045]]]}},
+  "rotacao_atual": "soja__milho_safrinha", "estagio_verao": "enchimento_graos",
+  "data_referencia": "2026-12-01", "semeadura_safrinha": "15/02"}'
 ```
 
 ```python
-poligono = {"type": "Polygon", "coordinates": [[[-53.46, -24.96], [-53.45, -24.96],
-            [-53.45, -24.95], [-53.46, -24.95], [-53.46, -24.96]]]}
+poligono = {"type": "Polygon", "coordinates": [[[-53.3045, -24.9045], [-53.3045, -24.8955],
+            [-53.2955, -24.8955], [-53.2955, -24.9045], [-53.3045, -24.9045]]]}
 r = httpx.post("http://localhost:8000/v1/recomendacao",
-               json={"area": {"geometry": poligono}, "semeadura_safrinha": "15/02"}, timeout=120)
+               json={"area": {"geometry": poligono}, "rotacao_atual": "soja__milho_safrinha",
+                     "estagio_verao": "enchimento_graos", "data_referencia": "2026-12-01",
+                     "semeadura_safrinha": "15/02"}, timeout=120)
 ```
 
 ### Lat/lon point
 
 ```bash
 curl -s localhost:8000/v1/recomendacao -H 'content-type: application/json' \
-  -d '{"area": {"lat": -24.95, "lon": -53.45}}'
+  -d '{"area": {"lat": -24.2, "lon": -54.2}, "rotacao_atual": "soja__milho_safrinha",
+       "estagio_verao": "enchimento_graos", "data_referencia": "2026-12-01"}'
 curl -s 'localhost:8000/v1/clima?lat=-24.95&lon=-53.45&semeadura_safrinha=01/03'
 ```
 
 ```python
 r = httpx.post("http://localhost:8000/v1/recomendacao",
-               json={"area": {"lat": -24.95, "lon": -53.45}}, timeout=120)
+               json={"area": {"lat": -24.2, "lon": -54.2}, "rotacao_atual": "soja__milho_safrinha",
+                     "estagio_verao": "enchimento_graos", "data_referencia": "2026-12-01"}, timeout=120)
 clima = httpx.get("http://localhost:8000/v1/clima",
                   params={"lat": -24.95, "lon": -53.45}).json()
 ```
@@ -346,13 +398,15 @@ clima = httpx.get("http://localhost:8000/v1/clima",
 curl -s localhost:8000/v1/recomendacao -H 'content-type: application/json' -d '{
   "area": {"talhao_id": "72638"},
   "pesos": {"renda": 9, "solo": 2, "agua": 3, "pragas": 4, "risco": 6},
-  "rotacao_atual": "milho_safrinha", "n_alternativas": 4}'
+  "rotacao_atual": "soja__milho_safrinha", "estagio_verao": "enchimento_graos",
+  "data_referencia": "2026-12-01", "n_alternativas": 4}'
 ```
 
 ```python
 corpo = {"area": {"talhao_id": "72638"},
          "pesos": {"renda": 9, "solo": 2, "agua": 3, "pragas": 4, "risco": 6},
-         "rotacao_atual": "milho_safrinha"}
+         "rotacao_atual": "soja__milho_safrinha", "estagio_verao": "enchimento_graos",
+         "data_referencia": "2026-12-01", "n_alternativas": 4}
 r = httpx.post("http://localhost:8000/v1/recomendacao", json=corpo, timeout=120)
 ```
 
@@ -360,12 +414,14 @@ r = httpx.post("http://localhost:8000/v1/recomendacao", json=corpo, timeout=120)
 
 ```bash
 curl -s localhost:8000/v1/recomendacao -H 'content-type: application/json' -d '{
-  "area": {"talhao_id": "72638"},
+  "area": {"talhao_id": "72638"}, "rotacao_atual": "soja__milho_safrinha",
+  "estagio_verao": "enchimento_graos", "data_referencia": "2026-12-01",
   "ajustes": {"precos": {"soja": 125, "milho": 58, "trigo": 82}, "linha_custo": "cot"}}'
 ```
 
 ```python
-corpo = {"area": {"talhao_id": "72638"},
+corpo = {"area": {"talhao_id": "72638"}, "rotacao_atual": "soja__milho_safrinha",
+         "estagio_verao": "enchimento_graos", "data_referencia": "2026-12-01",
          "ajustes": {"precos": {"soja": 125, "milho": 58, "trigo": 82},
                      "custos": {"milho": 3200}, "linha_custo": "cot"}}
 r = httpx.post("http://localhost:8000/v1/recomendacao", json=corpo, timeout=120)
@@ -373,115 +429,65 @@ r = httpx.post("http://localhost:8000/v1/recomendacao", json=corpo, timeout=120)
 
 ### Response example
 
-Excerpt of `POST /v1/recomendacao` for field 72638 (summarized: only the 1st in the ranking, 1 item per list; full response in `api/exemplos/recomendacao_talhao_72638.json`; other real responses in the same folder):
+Excerpt of `POST /v1/recomendacao` for the per-stage example above (field 72638; summarized: only the 1st of each block, a few lists; full response in `api/exemplos/recomendacao_talhao_72638.json`; other real responses in the same folder):
 
 ```json
 {
   "entrada": {
-    "semeadura_safrinha": "01/02",
-    "pesos": {
-      "renda": 5.0,
-      "solo": 3.0,
-      "agua": 3.0,
-      "pragas": 3.0,
-      "risco": 3.0
-    },
+    "semeadura_safrinha": "15/01",
+    "pesos": {"renda": 5, "solo": 3, "agua": 3, "pragas": 3, "risco": 3},
     "rotacao_atual": "soja__milho_safrinha",
+    "estagio_verao": "enchimento_graos",
+    "colheita_prevista": null,
+    "data_referencia": "2026-12-01",
     "ajustes": {},
     "n_alternativas": 3
   },
-  "ranking": [
-    {
-      "posicao": 1,
-      "id": "soja__milho_braquiaria",
-      "id_legado": "milho_braquiaria",
-      "verao": {"id": "soja", "nome": "Soybean"},
-      "segunda": {"id": "milho_braquiaria", "nome": "Off-season corn + brachiaria"},
-      "rotacao": "Soybean → off-season corn + brachiaria",
-      "nota": 0.814,
-      "atual": false,
-      "criterios": {
-        "renda": 0.977,
-        "solo": 0.711,
-        "agua": 0.844,
-        "pragas": 0.65,
-        "risco": 0.779
-      },
-      "contribuicoes": {
-        "renda": 0.287,
-        "solo": 0.125,
-        "agua": 0.149,
-        "pragas": 0.115,
-        "risco": 0.137
-      },
-      "margem": {
-        "total_r_ha": 2116.0,
-        "incremental_r_ha": 1033.0,
-        "escala_S_r_ha": 1083.0,
-        "itens": [
-          {
-            "cultura": "Soybean",
-            "rendimento_sc_ha": 49.2,
-            "preco": 120.14,
-            "custo": 4824.0,
-            "margem_r_ha": 1083.0,
-            "fonte": "yield IBGE PAM (Toledo, 2021–2025); price SEAB/DERAL-PR, PR average Nov/25 to Oct/26; cost CONAB Londrina-PR, 2026/27 season (est. Mar/2026), variable cost (≈COE)"
-          },
-          {
-            "cultura": "2nd-season corn",
-            "rendimento_sc_ha": 103.0,
-            "preco": 53.89,
-            "custo": 4678.0,
-            "margem_r_ha": 873.0,
-            "fonte": "yield IBGE PAM (Toledo, 2021–2025); price SEAB/DERAL-PR, PR average Nov/25 to Oct/26; cost CONAB Londrina-PR, 2nd season 2026 (est. Mar/2026), variable cost (≈COE)"
-          },
-          {
-            "cultura": "Intercropped brachiaria",
-            "rendimento_sc_ha": null,
-            "preco": null,
-            "custo": 200.0,
-            "margem_r_ha": -200.0,
-            "fonte": "reference cost estimate, to be validated (no sale)"
-          }
-        ],
-        "ano_ruim_r_ha": 1478.0,
-        "bonus_proxima_soja_r_ha": 360.0,
-        "linha_custo": "coe"
-      },
-      "card": {
-        "por_que": "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60), breaks the pest cycle better (0.65 vs 0.50) and adds BRL 1,033/ha vs BRL 993/ha in the second season (+4%). Same climate risk (some adverse event in 22% of years). Largest contributions to the score: Income (0.29) and Water (0.15).",
-        "evidencias": [
-          "Days of bare soil per year (catalog): ~30 days."
-        ],
-        "beneficios": [
-          "Good cover/straw: protects the soil and reduces erosion."
-        ],
-        "lacunas": [
-          "Available water capacity from pedotransfer (Saxton & Rawls), may be wrong in tropical Latosols; soil fertility not used."
-        ],
-        "riscos": [
-          "Being outside ZARC may compromise credit/insurance (does not eliminate the candidate)."
-        ],
-        "avisos": []
+  "cultura_atual": {"id": "soja", "nome": "Soja"},
+  "estagio_verao": {"id": "enchimento_graos", "nome": "Enchimento de grãos (R5–R6)", "dias_tipicos_ate_colheita": 32,
+                    "fonte": "estimativa (escala Fehr & Caviness / Ritchie), validar com Embrapa"},
+  "colheita_estimada": {"data": "02/01", "origem": "estagio"},
+  "semeadura_2a": {"data": "15/01", "origem": "derivada"},
+  "dias_ate_colheita": 32,
+  "agora": {
+    "ranking": [
+      {
+        "posicao": 1,
+        "id": "soja__milho_braquiaria",
+        "id_legado": "milho_braquiaria",
+        "verao": {"id": "soja", "nome": "Soja"},
+        "segunda": {"id": "milho_braquiaria", "nome": "Milho safrinha + braquiária"},
+        "rotacao": "Soja → milho safrinha + braquiária",
+        "nota": 0.817,
+        "atual": false,
+        "criterios": {"renda": 0.977, "solo": 0.711, "agua": 0.812, "pragas": 0.65, "risco": 0.83},
+        "margem": {"total_r_ha": 2116.0, "incremental_r_ha": 1033.0, "escala_S_r_ha": 1083.0},
+        "ganho_vs_atual": {
+          "comparado_com": "soja__milho_safrinha",
+          "soja_seguinte_sc": 2.0,
+          "soja_seguinte_rs": 240.0,
+          "renda_2a_safra": {"r_ha": -200.0, "origem": "dado: ..."},
+          "solo": {"dias_descobertos": -30, "cobertura": 0.3, "origem": "estimativa de catálogo, ..."},
+          "agua": {"criterio": -0.016, "origem": "dado: ..."},
+          "risco_climatico": {"criterio": 0.0, "origem": "dado: ..."}
+        }
       }
-    }
-  ],
-  "ranking_demais": [
-    [2, "soja__milho_safrinha", 0.757],
-    [3, "soja__milheto_crotalaria", 0.756],
-    [4, "soja__aveia_nabo", 0.709]
-  ],
-  "eliminadas": [
-    {
-      "id": "soja__soja_safrinha",
-      "id_legado": "soja_safrinha",
-      "rotacao": "Soybean → off-season soybean",
-      "motivos": [
-        "Soybean after soybean in the same agricultural year is prohibited (Ordinance SDA/MAPA 1.124/2024).",
-        "There is live soybean during the soybean-free period in Western Paraná (02/06–31/08)."
-      ]
-    }
-  ],
+    ],
+    "alternativas": ["... same items, without the current rotation ..."],
+    "eliminadas": [
+      {"id": "soja__soja_safrinha", "id_legado": "soja_safrinha", "rotacao": "Soja → soja safrinha",
+       "motivos": ["Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024).", "..."]}
+    ]
+  },
+  "proxima_safra": {
+    "ranking": [{"posicao": 1, "id": "milho_verao__aveia_nabo", "nota": 0.576, "atual": false, "ganho_vs_atual": {"...": "..."}}],
+    "alternativas": ["..."],
+    "eliminadas": [{"id": "milho_verao__milho_safrinha", "motivos": ["... sowing before the summer harvest ..."]}]
+  },
+  "atual": {"posicao": 2, "id": "soja__milho_safrinha", "nota": 0.761, "atual": true, "ganho_vs_atual": null},
+  "ranking": ["alias of agora.ranking"],
+  "alternativas": ["alias of agora.alternativas"],
+  "eliminadas": ["union of agora.eliminadas and proxima_safra.eliminadas"],
   "avisos": []
 }
 ```
@@ -492,6 +498,7 @@ Excerpt of `POST /v1/recomendacao` for field 72638 (summarized: only the 1st in 
 |---|---|---|
 | 200 | n/a | Success |
 | 400 | `entrada_invalida` | The engine rejected the input (invalid geometry, nonexistent field, area above 5000 ha, restrictions that eliminate every rotation, etc.) |
+| 422 | n/a (`detail[]`) | Per-stage flow: missing `rotacao_atual`; `estagio_verao` that does not belong to the current summer crop (e.g. a corn stage with soybean) or is unknown; malformed `colheita_prevista` or `data_referencia`; `semeadura_safrinha` before the estimated harvest |
 | 422 | n/a (`detail[]`) | An unknown key in `ajustes.custos`/`precos`/`produtividade`, a negative value, `analise_solo` out of range (sand + clay > 100, pH, available water capacity) or incomplete, `irrigacao` without `disponivel`, etc. are also rejected by validation |
 | 422 | `fora_da_regiao` | The area is outside Western Paraná |
 | 422 | n/a (FastAPI default format, `detail[]`) | Invalid body/parameters: out-of-enum sowing date, weight outside 0 to 10, unknown rotation, empty, duplicated or out-of-enum `rotacoes`, `n_alternativas` outside 1 to 6, an area with zero or more than one form |
@@ -512,3 +519,5 @@ Engine errors have the format `{"erro": "...", "mensagem": "..."}`.
 - Full example: `api/exemplos/recomendacao_dados_proprios.json` (field 72638 with yield, soil analysis, restrictions and irrigation).
 - Coverage of Western Paraná only; ZARC remains the reference for rural credit.
 - Endpoints are synchronous and the first call can be slow (loading rasters and data).
+- Stage durations (days to harvest per stage) and the catalog harvest dates are estimates, to be validated with Embrapa/an agronomist.
+- **Known limitation (open decision):** the `proxima_safra` block uses the same second-window sowing date as `agora` (derived from the current harvest). Summer corn in the next season would be harvested later (~05/02), so with that date summer corn followed by off-season corn, corn+brachiaria, millet/crotalaria, sorghum or beans is eliminated, and the block ends up with only the fixed-date crops (wheat, oat, radish, fallow). The alternative (computing the next season's sowing with the typical summer-corn harvest) was not decided yet; see `docs/pendencias.md`.

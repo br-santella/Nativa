@@ -15,6 +15,7 @@ import requests
 from scipy.signal import find_peaks
 
 from field_shift import calendario as cal
+from field_shift.app import estado_area
 from field_shift.agua import agua_fase_critica
 from field_shift.calendario import DIAS_PREPARO_2A, SEMEADURA_PADRAO, SEMEADURAS
 from field_shift.clima.lookup import indicadores_para
@@ -456,7 +457,7 @@ def extras_custo(nome: str, c: dict, riscos: dict) -> list[dict]:
     if ir:
         out.append(dict(chave="irrigacao", rotulo="Irrigação", custo=ir["custo_r_ha"],
                         detalhe=f"lâmina média {ir['lamina_media_mm']:.0f} mm/ano × R$ {ir['custo_r_mm_ha']:.2f}/mm/ha"))
-    return out
+    return out + estado_area.custos(c, riscos.get("estado_area"))  # fertilidade informada: calagem e adubação P/K (senão, nada)
 
 
 def agua_atendida(c: dict, riscos: dict, nome: str | None = None) -> tuple[float, bool]:
@@ -572,11 +573,18 @@ def pontuar(pesos: dict[str, float], riscos: dict, ajustes: dict | None = None, 
     renda = {n: float(np.clip(0.5 + m["incremental"] / (2 * m["escala_S"]), 0.0, 1.0)) for n, m in margens.items()}
     aviso_renda = (None if any(m["total"] > 0 for m in margens.values())
                    else "Nenhuma rotação válida tem margem total positiva com os preços e custos usados (informativo).")
+    # Estado da área informado pelo produtor (problemas_area, fertilidade): deltas aditivos em solo e pragas, limitados a [0, 1].
+    # Sem a informação, `riscos["estado_area"]` não existe e nada muda.
+    pragas = {n: c["pragas"] for n, c in validas.items()}
+    if riscos.get("estado_area"):
+        aj_ea = {n: estado_area.ajuste(c, riscos["estado_area"]) for n, c in validas.items()}
+        solo = {n: float(np.clip(solo[n] + aj_ea[n]["solo"], 0.0, 1.0)) for n in validas}
+        pragas = {n: float(np.clip(pragas[n] + aj_ea[n]["pragas"], 0.0, 1.0)) for n in validas}
     crit = {
         "renda": renda,
         "solo": solo,
         "agua": {n: agua_atendida(c, riscos, n)[0] for n, c in validas.items()},
-        "pragas": {n: c["pragas"] for n, c in validas.items()},
+        "pragas": pragas,
         "risco": risco_abs,
     }
     soma = sum(pesos.values()) or 1
@@ -607,7 +615,8 @@ def fmt_margem(m: dict, riscos: dict) -> list[str]:
     for i in m["itens"]:
         local = local_rend(riscos, i["chave"])
         if i.get("extra"):
-            linhas.append(f"{i['rotulo']}: custo extra R$ {_r(i['custo'])}/ha ({i['detalhe']}) = {_rs(i['margem'])}.")
+            nome_c = "custo extra" if i["custo"] >= 0 else "economia"
+            linhas.append(f"{i['rotulo']}: {nome_c} R$ {_r(abs(i['custo']))}/ha ({i['detalhe']}) = {_rs(i['margem'])}.")
         elif i["sc_ha"] is not None and i.get("prod_usuario"):
             rz = i.get("razao_p20")
             ruim = (f"ano ruim: rendimento próprio × p20/média da PAM ({rz:.2f}) = {i['sc_ha_ruim']:.0f} sc/ha → R$ {_r(i['margem_ano_ruim'])}/ha"
@@ -755,17 +764,19 @@ def montar_card(linha: pd.Series, atual: bool, riscos: dict, dias_solo_ndvi: flo
     solo_p = riscos.get("solo") or {}
     if solo_p.get("fonte") == "análise de solo do produtor":
         lacuna_cad = ("CAD vinda da análise do produtor (informada ou por Saxton & Rawls com a análise), "
-                      "tomada como representativa do perfil de 0–60 cm; fertilidade do solo não usada.")
+                      "tomada como representativa do perfil de 0–60 cm.")
     else:
-        lacuna_cad = "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada."
+        lacuna_cad = "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais."
+    ea = estado_area.card(c, riscos.get("estado_area"))
+    ev += ea["evidencias"]
     lacunas = ([] if riscos.get("solo") else ["Textura/CAD do solo (SoilGrids) não considerada (talhão fora do Oeste do PR)."]) + [
                lacuna_cad,
                "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
                *([f"{c['nome_verao']} no verão: risco climático e balanço hídrico do verão não modelados (só a 2ª janela entra nesses critérios)."]
                  if c["verao"] != "soja" else []),
                "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); "
-               "custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."]
-    revisar = [AVISO_ZARC, "Confirmar com o agrônomo calendário, cultivar e janela do ZARC."]
+               "custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.", *ea["lacunas"]]
+    revisar = [AVISO_ZARC, "Confirmar com o agrônomo calendário, cultivar e janela do ZARC.", *ea["revisar"]]
     if c["milho_sobre_milho"]:
         revisar.append(TEXTO_MILHO_SOBRE_MILHO)
         ev.append(f"Pragas: milho sobre milho, nota de catálogo {c['pragas_base']:.2f} − penalidade {PENALIDADE_MILHO_SOBRE_MILHO:.2f} "

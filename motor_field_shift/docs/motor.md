@@ -1,6 +1,6 @@
 # Field Shift — Rotation engine logic
 
-How the engine computes and ranks the rotation options. Date: 2026-11-14. Pilot: rotations (summer + second window) in Western Paraná; the worked example is field 72638. Code in `src/field_shift/app/engine.py` (catalog, rules, scoring), supported by `clima/`, `agua/`, `solo/` and `renda/`.
+How the engine computes and ranks the rotation options. Date: 2026-11-15. Pilot: rotations (summer + second window) in Western Paraná; the worked example is field 72638. Code in `src/field_shift/app/engine.py` (catalog, rules, scoring), supported by `clima/`, `agua/`, `solo/` and `renda/`.
 
 Units: 1 bag (sc) = 60 kg. Monetary values are in BRL.
 
@@ -8,31 +8,60 @@ Units: 1 bag (sc) = 60 kg. Monetary values are in BRL.
 
 The engine recommends through **rules + explainable scoring**, not end-to-end ML. There is no "rotation X was good on field Y" label to train a model on, and every score points to data the farmer can check.
 
-The output is always the **current rotation + the best alternatives** (3 by default), each with the why, evidence, benefits, gaps and risks.
+The output is always the **current rotation + the best alternatives** (3 by default), each with the why, evidence, benefits, gaps and risks, and how each one improves (or worsens) production against the current rotation (`ganho_vs_atual`).
 A rotation is a pair **(summer crop, second-window crop)**, with a stable id `"<verao>__<segunda>"` (e.g. `soja__milho_safrinha`).
+
+The flow is **per stage**: the farmer says the current rotation (required) and where the summer crop is today; the engine estimates the harvest, derives the second-window sowing and answers two questions in two blocks (section 2.1): what goes in **now** (`agora`) and what to change **next season** (`proxima_safra`).
 
 ## 2. Flow
 
 ```
 INPUT                         DIAGNOSIS                     DECISION
 polygon / point / demo ID     climate (POWER, 50 km cell)   hard rules
-off-season sowing date     ─► soil (SoilGrids)           ─► (eliminate, with reason)
-farmer weights                terrain (NASADEM)                 │
-current rotation              history (MapBiomas, NDVI)         ▼
+current rotation (required)─► soil (SoilGrids)           ─► (eliminate, with reason)
+summer stage / harvest date   terrain (NASADEM)                 │
+farmer weights                history (MapBiomas, NDVI)         ▼
 prices/costs (optional)       yield (IBGE PAM)              5 criteria, 0–1 scale
                                                                 │
-                                                                ▼
+estimated harvest ─► sowing of the 2nd window                   ▼
                                                       weighted score ─► ranking ─► cards
+                                                      (blocks `agora` and `proxima_safra`, with `ganho_vs_atual`)
 ```
+
+### 2.1 Per-stage flow: stages, harvest and blocks
+
+1. **Current rotation (`rotacao_atual`, required).** Its summer crop (`soja` or `milho_verao`) is the "current crop". It defines the two blocks.
+2. **Stage of the summer crop (`estagio_verao`, optional).** Estimated harvest = `data_referencia` + typical days of the stage. `data_referencia` is "today" for the farmer (ISO date; default: today); sending it makes the calculation deterministic. Typical days to harvest (estimates, scale of Fehr & Caviness / Ritchie, middle of the range, medium cycle, Western Paraná; **to be validated with Embrapa**; code in `src/field_shift/calendario.py`):
+
+| Stage | Soybean | Summer corn |
+|---|---|---|
+| `vegetativo` | 90 d | 110 d |
+| `floracao` (R1–R2) | 65 d | n/a |
+| `formacao_vagens` (R3–R4) | 48 d | n/a |
+| `enchimento_graos` (R5–R6) | 32 d | n/a |
+| `pendoamento` (VT–R1) | n/a | 80 d |
+| `grao_leitoso` (R2–R3) | n/a | 60 d |
+| `grao_farinaceo` (R4–R5) | n/a | 40 d |
+| `maturacao` (R7–R8 soybean; R6 corn) | 10 d | 15 d |
+| `colhida` | 0 | 0 |
+
+   A stage of the other crop (e.g. a corn stage when the current crop is soybean) or an unknown one is a validation error (422).
+3. **Expected harvest date (`colheita_prevista`, `dd/mm`, optional).** Overrides the stage (next occurrence on or after `data_referencia`; a warning says which one was used if both come).
+4. **Sowing of the second window.** Without `semeadura_safrinha`, it is the first date among 15/01, 01/02, 15/02, 01/03 and 15/03 on or after the estimated harvest (+ `DIAS_PREPARO_2A`, today 0 days, no-till). If the farmer sends the date, it wins but cannot be before the harvest (422). If the harvest is after 15/03, it is "too late" (`semeadura_2a` null, warning): the crops that follow the sowing date are eliminated and only wheat, oat, radish and fallow remain. With no stage, no harvest date and no sowing date, the engine falls back to the catalog assumption (soybean harvested ~10/01, summer corn ~05/02) and 01/02, with a warning asking for the stage.
+5. **Blocks.** `agora` = combinations with the **same summer crop** as the current rotation (what enters after this harvest). `proxima_safra` = combinations with the **other summer crop**, compared with the current one (decision for the next season). `posicao` restarts at 1 in each block; each block has `ranking`, `alternativas` (best ones without the current rotation, up to `n_alternativas`) and `eliminadas`. At the top level, `ranking`, `alternativas` and `eliminadas` are kept as compatibility aliases (`eliminadas` = union of both blocks). The response also brings `cultura_atual`, `estagio_verao`, `colheita_estimada` (`origem`: `estagio`, `informada` or `premissa`), `semeadura_2a` (`derivada`, `informada` or `premissa`) and `dias_ate_colheita`.
+6. **Gain against the current rotation (`ganho_vs_atual`).** On every item except the current rotation (null if the current rotation was eliminated): `soja_seguinte_sc` (+ `_faixa`) and `soja_seguinte_rs` (bonus on the following soybean × DERAL price; catalog estimate), `renda_2a_safra` and `margem_total` (BRL/ha; data), `solo` (bare days and cover; estimate; negative days = better), `agua` and `risco_climatico` (difference of criterion; data). Every number carries its `origem` so that data and estimate are told apart. The current rotation is always evaluated for the comparison, even if it is not in `rotacoes`.
+
+Example (field 72638, soybean in `enchimento_graos`, `data_referencia` 2026-12-01): harvest ~02/01 (32 days), sowing derived as 15/01. `agora` has 10 valid combinations with soybean (best: soybean → off-season corn + brachiaria, score 0.817; the current one, off-season corn, is 2nd) and soybean in the second window eliminated. `proxima_safra` shows only the fixed-date crops after summer corn (see the known limitation in section 10). Real response: `api/exemplos/recomendacao_talhao_72638.json`.
 
 ## 3. Inputs
 
 | Input | Default | Effect |
 |---|---|---|
 | Field | Polygon in Western Paraná, point or demo ID (72638) | Defines the climate cell, soil, terrain and municipality (PAM) |
-| Sowing date of the second crop ("safrinha") | 01/02 (options: 15/01, 01/02, 15/02, 01/03, 15/03) | Changes the frost risk and water for corn, sorghum, beans and millet/crotalaria, and applies in the calendar rules (section 5) |
+| Current rotation (`rotacao_atual`) | **Required** | Defines the current summer crop (blocks `agora`/`proxima_safra`) and is the comparison baseline (`atual`, `ganho_vs_atual`) |
+| Stage of the summer crop (`estagio_verao`) and/or expected harvest (`colheita_prevista`), reference date (`data_referencia`) | None (catalog assumption, with a warning); `data_referencia` = today | Estimated harvest, from which the sowing of the second window is derived (section 2.1) |
+| Sowing date of the second crop ("safrinha") | Derived from the estimated harvest; without stage or harvest, 01/02 (options: 15/01, 01/02, 15/02, 01/03, 15/03) | Changes the frost risk and water for corn, sorghum, beans and millet/crotalaria, and applies in the calendar rules (section 5). If sent, it wins over the derived one but cannot be before the harvest |
 | Weights 0–10 | income 5, soil 3, water 3, pests 3, risk 3 | Weight the 5 criteria in the final score |
-| Current rotation | Detected by NDVI on the demo fields; otherwise provided | Shown as the comparison baseline |
 | Rotations to evaluate (`rotacoes`) | All catalog combinations (22) | List of `{verao, segunda}` (closed enums): the engine evaluates and ranks only those; one eliminated by the rules comes back in `eliminadas`, with the reason. An empty, duplicated or out-of-enum list is a validation error (422) |
 | Prices/costs | Reference (SEAB/DERAL and CONAB) | Provided values override the reference in the income calculation |
 | Own yield (`ajustes.produtividade`) | Municipal PAM | **Income:** replaces the PAM yield in the margin (soybean, 2nd-season corn, summer corn, wheat, beans, sorghum); the bad year scales by own yield × p20/PAM average; the soybean value changes the scale S |
@@ -46,7 +75,7 @@ Each candidate is a pair (summer crop, second-window crop) in the same agricultu
 
 **Summer:** `soja` and `milho_verao`.
 
-| Summer | Estimated harvest | Bonus on the following soybean | Income |
+| Summer | Estimated harvest (catalog assumption, used when no stage or harvest date is sent) | Bonus on the following soybean | Income |
 |---|---|---|---|
 | Soybean | ~10/01 (early soybean; the assumption the engine already had) | 0 | PAM soybean × DERAL price − CONAB soybean cost |
 | Summer corn | ~05/02 (sowing 15/09–15/10, medium cycle) | +3 bags/ha (breaks the disease and nematode cycle, plus straw) | PAM 1st-season corn (SIDRA 839) × DERAL corn price − CONAB 1st-season corn cost |
@@ -99,13 +128,14 @@ They eliminate the candidate before scoring. An eliminated candidate appears in 
 | Soybean-free period 02/06–31/08 with no live soybean (ADAPAR) | Eliminates |
 | Soybean sowing only from 01/09 to 31/12 | Eliminates |
 | Soybean after soybean in the same agricultural year is prohibited (Ordinance SDA/MAPA 1.124/2024) | Eliminates |
-| Sowing of the second crop before the summer harvest (soybean ~10/01, summer corn ~05/02; applies to the crops that follow the chosen date) | Eliminates |
+| Sowing of the second crop before the harvest of the current summer crop (estimated from the stage or the expected date; without them, soybean ~10/01, summer corn ~05/02; applies to the crops that follow the chosen date) | Eliminates |
+| Harvest after the last sowing date considered (15/03): too late | Eliminates the crops that follow the sowing date; wheat, oat, radish and fallow stay |
 | Sowing outside the crop's window (beans 15/01–28/02, sorghum 15/01–15/03; estimate based on ZARC/IDR-PR) | Eliminates |
 | Corn after corn (summer corn + off-season corn or corn + brachiaria) | **Does not eliminate**: pest criterion −0.25 and a risk text (corn leafhopper/corn stunt) |
 | ZARC | Credit/insurance warning only; does not eliminate |
 
 In practice, soybean in the second window is **always eliminated**, even after summer corn (outside the legal soybean sowing window and the soybean-free period; after soybean, also soybean after soybean).
-With the default sowing date (01/02), summer corn followed by off-season corn, corn + brachiaria, millet/crotalaria, sorghum or beans is also eliminated by the summer harvest; from 15/02 (beans) or 01/03 (the others) it comes back into the ranking.
+When the current crop is soybean harvested around 02/01, the derived sowing is 15/01 and the summer-corn candidates (in `proxima_safra`) fall under the limitation described in section 10. With sowing on 01/02 (catalog assumption), summer corn followed by off-season corn, corn + brachiaria, millet/crotalaria, sorghum or beans is also eliminated by the summer harvest; from 15/02 (beans) or 01/03 (the others) it comes back into the ranking.
 
 **Corn after corn:** summer corn keeps a continuous host for the corn leafhopper (*Dalbulus maidis*) and corn stunt, the fall armyworm and leaf diseases. The rotation remains valid, but the pest criterion loses 0.25 points (catalog value, reference estimate to be validated) and the text goes into `card.riscos` and `card.evidencias`. Current alerts are in `/v1/contexto`.
 
@@ -186,7 +216,7 @@ Catalog attribute of the second crop, from 0 to 1 (estimate to be validated). Co
 
 ## 8. Worked example: field 72638
 
-Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights.
+Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights. The tables below fix the sowing date (`semeadura_safrinha` 01/02 or 15/03, sent explicitly) with the current rotation `soja__milho_safrinha`, and show the `agora` block (soybean in summer); with `estagio_verao` `enchimento_graos` and no sowing date, the sowing would be derived (15/01) and the numbers move slightly. The per-stage example is in section 2.1.
 
 **Sowing 01/02**
 
@@ -233,7 +263,7 @@ Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights.
 
 Score = 13.84 / 17 = **0.814**. Income weighed most (4.89 / 17 = 0.29 of the score).
 
-**Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60), breaks the pest cycle better (0.65 vs 0.50) and adds BRL 1,033/ha vs BRL 993/ha in the second season (+4%). Same climate risk (...)." For the current rotation: "This is the current rotation; it ranked 2nd among 15 valid options. The best alternative (off-season corn + brachiaria) scores 0.81." (15 valid = 22 combinations minus 7 eliminated with sowing on 01/02.)
+**Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60), breaks the pest cycle better (0.65 vs 0.50) and adds BRL 1,033/ha vs BRL 993/ha in the second season (+4%). Same climate risk (...)." For the current rotation: "This is the current rotation; it ranked 2nd among 10 valid options. The best alternative (off-season corn + brachiaria) scores 0.82." (The count is within the `agora` block: the 11 combinations with soybean in summer minus soybean in the second window.)
 
 **Corn sowing-date trade-off**
 
@@ -291,6 +321,8 @@ Sowing late gives more water and much more frost. That is why off-season corn dr
 - Machinery outsourcing, irrigation cost and market levels are estimates to be validated.
 - The summer crop (soybean or summer corn) does not enter the water and climate-risk criteria; only the second window does.
 - ZARC is not implemented yet.
+- Stage durations and the catalog harvest dates are estimates, to be validated with Embrapa/an agronomist.
+- **Known limitation (open decision): sowing date of the `proxima_safra` block.** The block uses the same second-window sowing date as `agora`, derived from the harvest of the *current* crop (e.g. 15/01 for soybean harvested ~02/01). Summer corn in the next season is harvested later (~05/02), so with that date summer corn followed by off-season corn, corn + brachiaria, millet/crotalaria, sorghum or beans is eliminated, and the block ends up with only wheat, oat, radish and fallow (the off-season crops all disappear). The alternative is to compute the next season's sowing with the typical summer-corn harvest, so those candidates can be evaluated; it has not been decided yet and the current behavior was left as is. Tracked in `docs/pendencias.md`.
 
 **Next steps:** ZARC; regional costs; validation with an agronomist; SMAP for the current season; PAM × climate regression in income.
 

@@ -602,7 +602,7 @@
     "classe_textura": "argiloso",
     "cad_metodo": "Saxton & Rawls (2006) com areia, argila e MO (SoilGrids); wv0033/wv1500 indisponíveis",
     "texto": "Argila 60%, areia 12%, C orgânico 24.6 g/kg, pH 5.3 (0–30 cm); CAD 0.95 mm/cm (56 mm em 60 cm).",
-    "fonte": "SoilGrids (ISRIC), média no polígono"
+    "fonte": "raster"
   },
   "historico": [
     {
@@ -749,6 +749,7 @@
         "mediana": 2.0
       }
     },
+    "cache_utilizado": false,
     "textos": [
       "Início das chuvas (a partir de 01/09): mediana 13/09, p80 30/09 (1 em 5 anos atrasa até lá).",
       "Calor na soja: mediana 0.5 dias/ciclo acima do limiar (média 3.5; p80 6.4).",
@@ -807,6 +808,22 @@
         "cv": 0.22605931100274076,
         "tendencia_kg_ha_ano": -26.060606060604634,
         "anos": "2021–2025",
+        "n": 5
+      },
+      "sorgo": {
+        "kg_ha": 3600.0,
+        "sc_ha": 60.0,
+        "cv": null,
+        "tendencia_kg_ha_ano": null,
+        "anos": "2022–2022",
+        "n": 1
+      },
+      "feijao_2safra": {
+        "kg_ha": 1513.4,
+        "sc_ha": 25.223333333333336,
+        "cv": 0.34484770000111303,
+        "tendencia_kg_ha_ano": 2.733333333338052,
+        "anos": "2017–2021",
         "n": 5
       }
     },
