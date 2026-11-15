@@ -461,17 +461,17 @@ Excerpt of `POST /v1/recomendacao` for the per-stage example above (field 72638;
         "verao": {"id": "soja", "nome": "Soja"},
         "segunda": {"id": "milho_braquiaria", "nome": "Milho safrinha + braquiária"},
         "rotacao": "Soja → milho safrinha + braquiária",
-        "nota": 0.817,
+        "nota": 0.768,
         "atual": false,
-        "criterios": {"renda": 0.977, "solo": 0.711, "agua": 0.812, "pragas": 0.65, "risco": 0.83},
-        "margem": {"total_r_ha": 2116.0, "incremental_r_ha": 1033.0, "escala_S_r_ha": 1083.0},
+        "criterios": {"renda": 0.809, "solo": 0.711, "agua": 0.811, "pragas": 0.65, "risco": 0.83},
+        "margem": {"total_r_ha": 2431.0, "incremental_r_ha": 928.0, "escala_S_r_ha": 1503.0},
         "ganho_vs_atual": {
           "comparado_com": "soja__milho_safrinha",
           "soja_seguinte_sc": 2.0,
           "soja_seguinte_rs": 240.0,
           "renda_2a_safra": {"r_ha": -200.0, "origem": "dado: ..."},
           "solo": {"dias_descobertos": -30, "cobertura": 0.3, "origem": "estimativa de catálogo, ..."},
-          "agua": {"criterio": -0.016, "origem": "dado: ..."},
+          "agua": {"criterio": -0.017, "origem": "dado: ..."},
           "risco_climatico": {"criterio": 0.0, "origem": "dado: ..."}
         }
       }
@@ -487,7 +487,7 @@ Excerpt of `POST /v1/recomendacao` for the per-stage example above (field 72638;
     "alternativas": ["..."],
     "eliminadas": [{"id": "milho_verao__milho_safrinha", "motivos": ["... sowing before the summer harvest ..."]}]
   },
-  "atual": {"posicao": 2, "id": "soja__milho_safrinha", "nota": 0.761, "atual": true, "ganho_vs_atual": null},
+  "atual": {"posicao": 4, "id": "soja__milho_safrinha", "nota": 0.713, "atual": true, "ganho_vs_atual": null},
   "ranking": ["alias of agora.ranking"],
   "alternativas": ["alias of agora.alternativas"],
   "eliminadas": ["union of agora.eliminadas and proxima_safra.eliminadas"],

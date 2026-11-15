@@ -55,9 +55,9 @@ Field Shift ranks crop rotations for a field in Western Paraná. A rotation is a
 
 | Rank | Rotation | Score | Margin (BRL/ha) | Income | Soil | Water | Pests | Risk |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | Soybean → corn + brachiaria | **0.814** | 2,116 | 0.98 | 0.71 | 0.84 | 0.65 | 0.78 |
-| 2 | Soybean → off-season corn *(current)* | 0.757 | 2,076 | 0.96 | 0.56 | 0.86 | 0.50 | 0.78 |
-| 3 | Soybean → millet / crotalaria (cover) | 0.756 | 994 | 0.46 | 0.82 | 1.00 | 0.70 | 1.00 |
+| 1 | Soybean → corn + brachiaria | **0.764** | 2,431 | 0.81 | 0.71 | 0.84 | 0.65 | 0.78 |
+| 2 | Soybean → millet / crotalaria (cover) | 0.759 | 1,414 | 0.47 | 0.82 | 1.00 | 0.70 | 1.00 |
+| 4 | Soybean → off-season corn *(current)* | 0.709 | 2,391 | 0.80 | 0.56 | 0.86 | 0.50 | 0.78 |
 
 Full response:
 [`motor_field_shift/api/exemplos/recomendacao_talhao_72638.json`](motor_field_shift/api/exemplos/recomendacao_talhao_72638.json).

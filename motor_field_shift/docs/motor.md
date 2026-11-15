@@ -244,48 +244,55 @@ Toledo, 103.9 ha, slope 6.9%, clay 60%. Default weights. The tables below fix th
 
 | Candidate | Score | Income | Soil | Water | Pests | Risk |
 |---|---|---|---|---|---|---|
-| Corn + brachiaria | 0.814 | 0.977 | 0.711 | 0.844 | 0.650 | 0.779 |
-| Off-season corn (current) | 0.757 | 0.958 | 0.556 | 0.859 | 0.500 | 0.779 |
-| Millet/crotalaria | 0.756 | 0.459 | 0.819 | 0.998 | 0.700 | 1.000 |
-| Oat | 0.698 | 0.438 | 0.626 | 1.000 | 0.600 | 1.000 |
-| Fallow | 0.547 | 0.408 | 0.122 | 1.000 | 0.300 | 1.000 |
-| Wheat | 0.466 | 0.000 | 0.504 | 0.949 | 0.600 | 0.588 |
+| Corn + brachiaria | 0.764 | 0.809 | 0.711 | 0.844 | 0.650 | 0.779 |
+| Millet/crotalaria | 0.759 | 0.470 | 0.819 | 0.998 | 0.700 | 1.000 |
+| Oat + radish | 0.713 | 0.467 | 0.619 | 0.994 | 0.650 | 1.000 |
+| Off-season corn (current) | 0.709 | 0.795 | 0.556 | 0.858 | 0.500 | 0.779 |
+| Oat | 0.703 | 0.455 | 0.626 | 1.000 | 0.600 | 1.000 |
+| Forage radish | 0.692 | 0.488 | 0.519 | 0.988 | 0.600 | 1.000 |
+| Sorghum | 0.633 | 0.427 | 0.565 | 0.878 | 0.550 | 0.882 |
+| Beans | 0.558 | 0.466 | 0.461 | 0.849 | 0.300 | 0.779 |
+| Fallow | 0.555 | 0.433 | 0.122 | 1.000 | 0.300 | 1.000 |
+| Wheat | 0.471 | 0.017 | 0.504 | 0.949 | 0.600 | 0.588 |
 | Off-season soybean | Eliminated | | | | | |
 
 **Sowing 15/03**
 
 | Candidate | Score |
 |---|---|
-| Millet/crotalaria | 0.756 |
-| Corn + brachiaria | 0.733 |
-| Oat | 0.698 |
-| Off-season corn (current) | 0.675 |
-| Fallow | 0.547 |
-| Wheat | 0.466 |
+| Millet/crotalaria | 0.759 |
+| Oat + radish | 0.713 |
+| Oat | 0.703 |
+| Forage radish | 0.692 |
+| Corn + brachiaria | 0.684 |
+| Off-season corn (current) | 0.627 |
+| Fallow | 0.555 |
+| Sorghum | 0.534 |
+| Wheat | 0.471 |
 
-**Income calculation (Toledo, S = BRL 1,083/ha, the soybean margin)**
+**Income calculation (Toledo, S = BRL 1,503/ha, the soybean margin)**
 
 | Candidate | Incremental (BRL/ha) | 0.5 + incremental / (2·S) | Income |
 |---|---|---|---|
-| Corn + brachiaria | +1,033 (873 − 200 + 360 bonus) | 0.5 + 1,033 / 2,166 | 0.977 |
-| Off-season corn | +993 | 0.5 + 993 / 2,166 | 0.958 |
-| Millet/crotalaria | −90 | 0.5 − 90 / 2,166 | 0.459 |
-| Wheat | −1,704 | 0.5 − 1,704 / 2,166 → clipped at 0 | 0.000 |
+| Corn + brachiaria | +928 (767 − 200 + 360 bonus) | 0.5 + 928 / 3,006 | 0.809 |
+| Off-season corn | +888 | 0.5 + 888 / 3,006 | 0.795 |
+| Millet/crotalaria | −90 | 0.5 − 90 / 3,006 | 0.470 |
+| Wheat | −1,453 | 0.5 − 1,453 / 3,006 | 0.017 |
 
 **Calculation for corn + brachiaria on 01/02**
 
 | Criterion | Weight | Value | Weight × value |
 |---|---|---|---|
-| Income | 5 | 0.98 | 4.89 |
+| Income | 5 | 0.81 | 4.04 |
 | Soil | 3 | 0.71 | 2.13 |
 | Water | 3 | 0.84 | 2.53 |
 | Pests | 3 | 0.65 | 1.95 |
 | Risk | 3 | 0.78 | 2.34 |
-| **Sum** | **17** | | **13.84** |
+| **Sum** | **17** | | **13.00** |
 
-Score = 13.84 / 17 = **0.814**. Income weighed most (4.89 / 17 = 0.29 of the score).
+Score = 13.00 / 17 = **0.764** (the criteria shown are rounded). Income weighed most (4.04 / 17 = 0.24 of the score).
 
-**Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60), breaks the pest cycle better (0.65 vs 0.50) and adds BRL 1,033/ha vs BRL 993/ha in the second season (+4%). Same climate risk (...)." For the current rotation: "This is the current rotation; it ranked 2nd among 10 valid options. The best alternative (off-season corn + brachiaria) scores 0.82." (The count is within the `agora` block: the 11 combinations with soybean in summer minus soybean in the second window.)
+**Example "why" (alternative, compared with the current rotation):** "Compared with the current rotation (off-season corn): improves soil health (0.71 vs 0.56; ~30 days of bare soil vs 60) and breaks the pest cycle better (0.65 vs 0.50). Same climate risk (some adverse event in 22% of years). Biggest contributions to the score: Income (0.24) and Water (0.15)." For the current rotation: "This is the current rotation; it ranked 4th among 10 valid options. The best alternative (off-season corn + brachiaria) scores 0.76." (The count is within the `agora` block: the 11 combinations with soybean in summer minus soybean in the second window.) Note that against the current rotation the second-season income gain is small (BRL 40/ha with the soybean bonus), so soil and pests carry the difference.
 
 **Corn sowing-date trade-off**
 
@@ -294,7 +301,7 @@ Score = 13.84 / 17 = **0.814**. Income weighed most (4.89 / 17 = 0.29 of the sco
 | 01/02 | 12% | 0.86 (7 of 34 years below 70%) |
 | 15/03 | 76% | 0.96 |
 
-Sowing late gives more water and much more frost. That is why off-season corn drops from 0.757 to 0.675 on 15/03 and the cover crops take the top.
+Sowing late gives more water and much more frost. That is why off-season corn drops from 0.709 to 0.627 on 15/03 and the cover crops take the top.
 
 **Margins (PAM Toledo 2016–2025, SEAB prices, CONAB COE cost)**
 

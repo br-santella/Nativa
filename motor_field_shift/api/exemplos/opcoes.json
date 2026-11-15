@@ -254,7 +254,7 @@
       "segunda": "soja_safrinha",
       "valida": false,
       "semeaduras_validas": [],
-      "motivo_se_invalida": "Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024). Soja na 2ª janela (semeadura em 01/02) fica fora da janela legal de semeadura da soja (01/09–31/12). Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+      "motivo_se_invalida": "Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024). Soja na 2ª janela (semeadura em 01/02) fica fora da janela legal de semeadura da soja (01/09–31/12, Região 2). Há soja viva durante o vazio sanitário da soja (02/06–31/08, Região 2 do PR)."
     },
     {
       "id": "soja__sorgo",
@@ -405,7 +405,7 @@
       "segunda": "soja_safrinha",
       "valida": false,
       "semeaduras_validas": [],
-      "motivo_se_invalida": "Soja na 2ª janela (semeadura em 01/02) fica fora da janela legal de semeadura da soja (01/09–31/12). Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+      "motivo_se_invalida": "Soja na 2ª janela (semeadura em 01/02) fica fora da janela legal de semeadura da soja (01/09–31/12, Região 2). Há soja viva durante o vazio sanitário da soja (02/06–31/08, Região 2 do PR)."
     },
     {
       "id": "milho_verao__sorgo",
@@ -624,7 +624,7 @@
       "milho": 53.89,
       "trigo": 68.44,
       "feijao": 174.3,
-      "sorgo": 43.11
+      "sorgo": 40.42
     },
     "custos": {
       "soja": {
@@ -713,14 +713,14 @@
       },
       {
         "item": "preço feijao",
-        "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente). Feijão = tipo preto (predominante no PR; o feijão de cor tem preço bem maior: validar o tipo)",
+        "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente). Feijão = tipo preto: cerca de dois terços da área de 2ª safra do PR (estimativa do Deral reportada em 2026, data não confirmada); o feijão de cor tem preço bem maior (ex.: carioca/de cor R$ 360 contra preto R$ 320 em Apucarana na semana de 13/11/2026), então o resultado vale para o feijão preto",
         "periodo": "nov/25 a out/26 (média de 12 meses)",
         "estimativa": false,
         "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
       },
       {
         "item": "preço sorgo",
-        "fonte": "estimativa — validar: a SEAB/DERAL não publica preço do sorgo; usa 80% do preço do milho (média PR, mesmo período)",
+        "fonte": "estimativa — validar: a SEAB/DERAL não publica preço do sorgo; usa 75% do preço do milho (média PR, mesmo período), razão dos preços mínimos, não de mercado: relação entre os preços mínimos CONAB/MAPA da safra 2026/27 para Sudeste e Paraná (sorgo R$ 40,19 / milho R$ 53,58)",
         "periodo": "nov/25 a out/26 (média de 12 meses)",
         "estimativa": true,
         "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
@@ -800,14 +800,14 @@
     ]
   },
   "regiao": {
-    "nome": "Oeste do Paraná (IBGE 4106)",
+    "nome": "Paraná (IBGE 41)",
     "bbox": [
       -54.6202,
-      -25.6971,
-      -52.5847,
-      -23.9814
+      -26.7171,
+      -48.0235,
+      -22.5163
     ],
-    "n_municipios": 50
+    "n_municipios": 399
   },
   "talhoes_demo": [
     {

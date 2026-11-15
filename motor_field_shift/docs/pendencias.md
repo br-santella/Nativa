@@ -139,7 +139,8 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Stale worked examples after the 10-year yield window**: the worked examples still quote the old scores and margins (0,814 / 0,757, S = R$ 1.083, incremental 1.033, renda 0,977, totals 2.116 / 2.076). Recompute them from the current `api/exemplos/` output.
   Files: `docs/motor.md` (~lines 245–295), `README.md` (root, lines 58–59), `api/README.md` (~line 466).
-  Status: pending
+  Done (15/11/2026): `api/exemplos/*.json` regenerated from the real API with `scripts/generate_examples.py`; the tables of `docs/motor.md` section 8, the root README table and the `api/README.md` response excerpt were rebuilt from that output (field 72638, S = BRL 1,503; corn + brachiaria 0.764 first, current off-season corn 0.709 in 4th). Also fixed the `erro_fora_da_regiao` example: it pointed at Curitiba, which is now inside the covered area and returned 200; it now uses São Paulo (422), and `recomendacao_ponto_curitiba` shows the Região 1 calendar.
+  Status: done
 
 - **Summer corn cost reference does not match local yield**: `milho_1safra` uses the CONAB Ponta Grossa cost (R$ 9.656/ha, reference 12 t/ha ≈ 200 sc/ha) against the PAM municipal yield (~140 sc/ha in Toledo); break-even is ~179 sc/ha, so every `milho_verao__*` candidate shows a large negative margin. Options: scale the variable cost by local/reference yield, or add an explicit card warning.
   Files: `data/ref/precos_custos.json`, `src/field_shift/renda/renda.py`.

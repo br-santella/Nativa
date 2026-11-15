@@ -1760,8 +1760,8 @@
           "risco": 0.166
         },
         "margem": {
-          "total_r_ha": -835.0,
-          "incremental_r_ha": -1051.0,
+          "total_r_ha": -999.0,
+          "incremental_r_ha": -1215.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
@@ -1775,24 +1775,24 @@
             {
               "cultura": "Sorgo",
               "rendimento_sc_ha": 61.0,
-              "preco": 43.11,
+              "preco": 40.42,
               "custo": 3807.0,
-              "margem_r_ha": -1176.0,
-              "fonte": "rendimento IBGE PAM (Oeste do PR (média, o município não tem PAM recente), 2023–2025); preço estimativa — validar: 80% do preço do milho SEAB/DERAL-PR; custo estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)"
+              "margem_r_ha": -1340.0,
+              "fonte": "rendimento IBGE PAM (Oeste do PR (média, o município não tem PAM recente), 2023–2025); preço estimativa — validar: 75% do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado); custo estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)"
             }
           ],
-          "ano_ruim_r_ha": -1235.0,
+          "ano_ruim_r_ha": -1390.0,
           "bonus_proxima_soja_r_ha": 125.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 819/ha na 2ª safra (−R$ 1.051/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 6% dos anos contra 17%) e quebra melhor o ciclo de pragas (0,55 contra 0,50). Maiores contribuições para a nota: Risco climático (0,17) e Água (0,15).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 983/ha na 2ª safra (−R$ 1.215/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 6% dos anos contra 17%) e quebra melhor o ciclo de pragas (0,55 contra 0,50). Maiores contribuições para a nota: Risco climático (0,17) e Água (0,15).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~55 dias.",
             "Soja: 53 sc/ha (PAM Toledo 2016–2025) × R$ 125.00/sc (informado pelo usuário) − custo R$ 6.367/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), COT) = R$ 216/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 51 sc/ha → R$ -29/ha).",
-            "Sorgo: 61 sc/ha (PAM Oeste do PR (média, o município não tem PAM recente) 2023–2025) × R$ 43.11/sc (estimativa — validar: 80% do preço do milho SEAB/DERAL-PR) − custo R$ 3.807/ha (estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)) = R$ -1.176/ha (CV do rendimento 19%; ano ruim, p20 da mesma janela de 10 anos = 57 sc/ha → R$ -1.331/ha).",
+            "Sorgo: 61 sc/ha (PAM Oeste do PR (média, o município não tem PAM recente) 2023–2025) × R$ 40.42/sc (estimativa — validar: 75% do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)) − custo R$ 3.807/ha (estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)) = R$ -1.340/ha (CV do rendimento 19%; ano ruim, p20 da mesma janela de 10 anos = 57 sc/ha → R$ -1.486/ha).",
             "Bônus na soja seguinte: 1 sc/ha × R$ 125.00/sc = R$ 125/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -835/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.051/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.235/ha/ano.",
+            "Total da rotação: R$ -999/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.215/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.390/ha/ano.",
             "Água: na fase crítica (emborrachamento/enchimento do sorgo, semeadura em 15/01), a água no solo atendeu em média 87% da demanda; em 6 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
             "Geada no florescimento/enchimento do sorgo semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
             "Mercado no Oeste do PR: médio; ração animal e cooperativas, com demanda menor que a do milho (estimativa a validar com cooperativas/revendas locais)."
@@ -1832,11 +1832,11 @@
           "preco_soja_r_sc": 125.0,
           "fonte": "soja seguinte: estimativa de referência — validar com agrônomo/Embrapa (preço da soja SEAB/DERAL)",
           "renda_2a_safra": {
-            "r_ha": -819.0,
+            "r_ha": -983.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -819.0,
+            "r_ha": -983.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -2495,8 +2495,8 @@
         "rotacao": "Soja → soja safrinha",
         "motivos": [
           "Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024).",
-          "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12).",
-          "Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+          "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12, Região 2).",
+          "Há soja viva durante o vazio sanitário da soja (02/06–31/08, Região 2 do PR)."
         ]
       }
     ]
@@ -2533,17 +2533,17 @@
           "risco": 0.176
         },
         "margem": {
-          "total_r_ha": -3293.0,
-          "incremental_r_ha": -3509.0,
+          "total_r_ha": -1938.0,
+          "incremental_r_ha": -2155.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Aveia + nabo (cobertura)",
@@ -2554,18 +2554,18 @@
               "fonte": "custo estimativa de referência, validar (sem venda)"
             }
           ],
-          "ano_ruim_r_ha": -3614.0,
+          "ano_ruim_r_ha": -2260.0,
           "bonus_proxima_soja_r_ha": 688.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.276/ha na 2ª safra (−R$ 3.509/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.922/ha na 2ª safra (−R$ 2.155/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~35 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
             "Bônus na soja seguinte: 5.5 sc/ha × R$ 125.00/sc = R$ 688/ha (3 sc/ha do milho verão no lugar da soja + 2.5 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -3.293/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.509/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.614/ha/ano.",
+            "Total da rotação: R$ -1.938/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.155/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.260/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
@@ -2614,7 +2614,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -3276.0,
+            "r_ha": -1922.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -2662,17 +2662,17 @@
           "risco": 0.176
         },
         "margem": {
-          "total_r_ha": -3330.0,
-          "incremental_r_ha": -3546.0,
+          "total_r_ha": -1976.0,
+          "incremental_r_ha": -2192.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Aveia (cobertura)",
@@ -2683,18 +2683,18 @@
               "fonte": "custo estimativa de referência, validar (sem venda)"
             }
           ],
-          "ano_ruim_r_ha": -3652.0,
+          "ano_ruim_r_ha": -2298.0,
           "bonus_proxima_soja_r_ha": 625.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.314/ha na 2ª safra (−R$ 3.546/ha contra −R$ 232/ha), atende melhor a demanda de água (1,00 contra 0,83) e reduz o risco climático (algum evento adverso em 0% dos anos contra 17%). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.960/ha na 2ª safra (−R$ 2.192/ha contra −R$ 232/ha), atende melhor a demanda de água (1,00 contra 0,83) e reduz o risco climático (algum evento adverso em 0% dos anos contra 17%). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~40 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 125.00/sc = R$ 625/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -3.330/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.546/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.652/ha/ano.",
+            "Total da rotação: R$ -1.976/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.192/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.298/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
@@ -2743,7 +2743,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -3314.0,
+            "r_ha": -1960.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -2791,17 +2791,17 @@
           "risco": 0.176
         },
         "margem": {
-          "total_r_ha": -3230.0,
-          "incremental_r_ha": -3446.0,
+          "total_r_ha": -1876.0,
+          "incremental_r_ha": -2092.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Nabo forrageiro (cobertura)",
@@ -2812,18 +2812,18 @@
               "fonte": "custo estimativa de referência, validar (sem venda)"
             }
           ],
-          "ano_ruim_r_ha": -3552.0,
+          "ano_ruim_r_ha": -2198.0,
           "bonus_proxima_soja_r_ha": 625.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.214/ha na 2ª safra (−R$ 3.446/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,17).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.860/ha na 2ª safra (−R$ 2.092/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,17).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~35 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 125.00/sc = R$ 625/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -3.230/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.446/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.552/ha/ano.",
+            "Total da rotação: R$ -1.876/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.092/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.198/ha/ano.",
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 47 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
@@ -2871,7 +2871,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -3214.0,
+            "r_ha": -1860.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -2919,17 +2919,17 @@
           "risco": 0.104
         },
         "margem": {
-          "total_r_ha": -4912.0,
-          "incremental_r_ha": -5128.0,
+          "total_r_ha": -3558.0,
+          "incremental_r_ha": -3774.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Trigo",
@@ -2940,18 +2940,18 @@
               "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), COT"
             }
           ],
-          "ano_ruim_r_ha": -6354.0,
+          "ano_ruim_r_ha": -5000.0,
           "bonus_proxima_soja_r_ha": 500.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 4.896/ha na 2ª safra (−R$ 5.128/ha contra −R$ 232/ha), aumenta o risco climático (algum evento adverso em 41% dos anos contra 17%) e atende melhor a demanda de água (0,95 contra 0,83). Maiores contribuições para a nota: Água (0,17) e Quebra de pragas (0,11).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.541/ha na 2ª safra (−R$ 3.774/ha contra −R$ 232/ha), aumenta o risco climático (algum evento adverso em 41% dos anos contra 17%) e atende melhor a demanda de água (0,95 contra 0,83). Maiores contribuições para a nota: Água (0,17) e Quebra de pragas (0,11).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~70 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Trigo: 40 sc/ha (PAM Toledo 2016–2025) × R$ 82.00/sc (informado pelo usuário) − custo R$ 5.139/ha (CONAB Ponta Grossa-PR, inverno 2025 (nov/2025), COT) = R$ -1.832/ha (CV do rendimento 36%; ano ruim, p20 da mesma janela de 10 anos = 27 sc/ha → R$ -2.952/ha).",
             "Bônus na soja seguinte: 4 sc/ha × R$ 125.00/sc = R$ 500/ha (3 sc/ha do milho verão no lugar da soja + 1 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -4.912/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -5.128/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -6.354/ha/ano.",
+            "Total da rotação: R$ -3.558/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.774/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -5.000/ha/ano.",
             "Água: na fase crítica (espigamento/enchimento do trigo, semeadura em 01/05), a água no solo atendeu em média 95% da demanda; em 1 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
             "Geada (≤ 3 °C) no florescimento do trigo (15/08–30/09): 14 de 34 anos (41%), NASA POWER 1991–2024, célula ~50 km.",
             "Mercado no Oeste do PR: médio; cooperativas e moinhos, com liquidez menor que a do milho (estimativa a validar com cooperativas/revendas locais)."
@@ -3000,7 +3000,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -4896.0,
+            "r_ha": -3541.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -3048,17 +3048,17 @@
           "risco": 0.176
         },
         "margem": {
-          "total_r_ha": -3405.0,
-          "incremental_r_ha": -3621.0,
+          "total_r_ha": -2051.0,
+          "incremental_r_ha": -2267.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Pousio (manejo)",
@@ -3069,18 +3069,18 @@
               "fonte": "custo estimativa de referência, validar (sem venda)"
             }
           ],
-          "ano_ruim_r_ha": -3727.0,
+          "ano_ruim_r_ha": -2373.0,
           "bonus_proxima_soja_r_ha": 375.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.389/ha na 2ª safra (−R$ 3.621/ha contra −R$ 232/ha), piora a saúde do solo (0,12 contra 0,56; ~150 dias de solo descoberto contra 60) e quebra menos o ciclo de pragas (0,30 contra 0,50). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 2.035/ha na 2ª safra (−R$ 2.267/ha contra −R$ 232/ha), piora a saúde do solo (0,12 contra 0,56; ~150 dias de solo descoberto contra 60) e quebra menos o ciclo de pragas (0,30 contra 0,50). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~150 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Pousio (manejo): sem venda, custo de implantação R$ 200/ha (estimativa de referência, validar) = R$ -200/ha.",
             "Bônus na soja seguinte: 3 sc/ha × R$ 125.00/sc = R$ 375/ha (3 sc/ha do milho verão no lugar da soja + 0 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -3.405/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.621/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.727/ha/ano.",
+            "Total da rotação: R$ -2.051/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.267/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.373/ha/ano.",
             "Água: sem cultura, sem demanda hídrica (nota 1,00); o custo do pousio aparece em solo.",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Mercado no Oeste do PR: não se aplica; sem produção na 2ª janela (estimativa a validar com cooperativas/revendas locais)."
@@ -3128,7 +3128,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -3389.0,
+            "r_ha": -2035.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -3177,17 +3177,17 @@
           "risco": 0.176
         },
         "margem": {
-          "total_r_ha": -3293.0,
-          "incremental_r_ha": -3509.0,
+          "total_r_ha": -1938.0,
+          "incremental_r_ha": -2155.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Aveia + nabo (cobertura)",
@@ -3198,18 +3198,18 @@
               "fonte": "custo estimativa de referência, validar (sem venda)"
             }
           ],
-          "ano_ruim_r_ha": -3614.0,
+          "ano_ruim_r_ha": -2260.0,
           "bonus_proxima_soja_r_ha": 688.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.276/ha na 2ª safra (−R$ 3.509/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.922/ha na 2ª safra (−R$ 2.155/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,18).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~35 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Aveia + nabo (cobertura): sem venda, custo de implantação R$ 400/ha (estimativa de referência, validar) = R$ -400/ha.",
             "Bônus na soja seguinte: 5.5 sc/ha × R$ 125.00/sc = R$ 688/ha (3 sc/ha do milho verão no lugar da soja + 2.5 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -3.293/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.509/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.614/ha/ano.",
+            "Total da rotação: R$ -1.938/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.155/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.260/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 52 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
@@ -3257,7 +3257,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -3276.0,
+            "r_ha": -1922.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -3304,17 +3304,17 @@
           "risco": 0.176
         },
         "margem": {
-          "total_r_ha": -3330.0,
-          "incremental_r_ha": -3546.0,
+          "total_r_ha": -1976.0,
+          "incremental_r_ha": -2192.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Aveia (cobertura)",
@@ -3325,18 +3325,18 @@
               "fonte": "custo estimativa de referência, validar (sem venda)"
             }
           ],
-          "ano_ruim_r_ha": -3652.0,
+          "ano_ruim_r_ha": -2298.0,
           "bonus_proxima_soja_r_ha": 625.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.314/ha na 2ª safra (−R$ 3.546/ha contra −R$ 232/ha), atende melhor a demanda de água (1,00 contra 0,83) e reduz o risco climático (algum evento adverso em 0% dos anos contra 17%). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.960/ha na 2ª safra (−R$ 2.192/ha contra −R$ 232/ha), atende melhor a demanda de água (1,00 contra 0,83) e reduz o risco climático (algum evento adverso em 0% dos anos contra 17%). Maiores contribuições para a nota: Água (0,18) e Risco climático (0,18).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~40 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Aveia (cobertura): sem venda, custo de implantação R$ 375/ha (estimativa de referência, validar) = R$ -375/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 125.00/sc = R$ 625/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -3.330/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.546/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.652/ha/ano.",
+            "Total da rotação: R$ -1.976/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.192/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.298/ha/ano.",
             "Água: na fase crítica (estabelecimento da aveia (30 primeiros dias), semeadura em 01/05), a água no solo atendeu em média 100% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 56 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
@@ -3384,7 +3384,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -3314.0,
+            "r_ha": -1960.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -3431,17 +3431,17 @@
           "risco": 0.176
         },
         "margem": {
-          "total_r_ha": -3230.0,
-          "incremental_r_ha": -3446.0,
+          "total_r_ha": -1876.0,
+          "incremental_r_ha": -2092.0,
           "escala_S_r_ha": 1000.0,
           "itens": [
             {
               "cultura": "Milho verão (1ª safra)",
               "rendimento_sc_ha": 141.5,
               "preco": 58.0,
-              "custo": 11788.0,
-              "margem_r_ha": -3580.0,
-              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT"
+              "custo": 10434.0,
+              "margem_r_ha": -2226.0,
+              "fonte": "rendimento IBGE PAM (Toledo, 2016–2025); preço informado pelo usuário; custo CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar"
             },
             {
               "cultura": "Nabo forrageiro (cobertura)",
@@ -3452,18 +3452,18 @@
               "fonte": "custo estimativa de referência, validar (sem venda)"
             }
           ],
-          "ano_ruim_r_ha": -3552.0,
+          "ano_ruim_r_ha": -2198.0,
           "bonus_proxima_soja_r_ha": 625.0,
           "linha_custo": "cot"
         },
         "card": {
-          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 3.214/ha na 2ª safra (−R$ 3.446/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,17).",
+          "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 1.860/ha na 2ª safra (−R$ 2.092/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 0% dos anos contra 17%) e atende melhor a demanda de água (0,99 contra 0,83). Maiores contribuições para a nota: Risco climático (0,18) e Água (0,17).",
           "evidencias": [
             "Dias de solo descoberto/ano (catálogo): ~35 dias.",
-            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 11.788/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT) = R$ -3.580/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -3.902/ha).",
+            "Milho verão (1ª safra): 142 sc/ha (PAM Toledo 2016–2025) × R$ 58.00/sc (informado pelo usuário) − custo R$ 10.434/ha (CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026), COT; fertilizantes, transporte, armazenagem e CESSR ajustados à produtividade local (142 sc/ha contra 200 sc/ha da referência CONAB) — estimativa, validar) = R$ -2.226/ha (CV do rendimento 25%; ano ruim, p20 da mesma janela de 10 anos = 136 sc/ha → R$ -2.548/ha).",
             "Nabo forrageiro (cobertura): sem venda, custo de implantação R$ 275/ha (estimativa de referência, validar) = R$ -275/ha.",
             "Bônus na soja seguinte: 5 sc/ha × R$ 125.00/sc = R$ 625/ha (3 sc/ha do milho verão no lugar da soja + 2 da 2ª cultura) (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-            "Total da rotação: R$ -3.230/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -3.446/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -3.552/ha/ano.",
+            "Total da rotação: R$ -1.876/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -2.092/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -2.198/ha/ano.",
             "Água: na fase crítica (estabelecimento do nabo forrageiro (30 primeiros dias), semeadura em 01/04), a água no solo atendeu em média 99% da demanda; em 0 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 47 mm).",
             "Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).",
             "Mercado no Oeste do PR: não se aplica; sem venda de grão; semente disponível em revendas (estimativa a validar com cooperativas/revendas locais)."
@@ -3510,7 +3510,7 @@
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
           },
           "margem_total": {
-            "r_ha": -3214.0,
+            "r_ha": -1860.0,
             "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
           },
           "solo": {
@@ -3591,8 +3591,8 @@
         },
         "rotacao": "Milho verão → soja safrinha",
         "motivos": [
-          "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12).",
-          "Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+          "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12, Região 2).",
+          "Há soja viva durante o vazio sanitário da soja (02/06–31/08, Região 2 do PR)."
         ]
       },
       {
@@ -4512,8 +4512,8 @@
         "risco": 0.166
       },
       "margem": {
-        "total_r_ha": -835.0,
-        "incremental_r_ha": -1051.0,
+        "total_r_ha": -999.0,
+        "incremental_r_ha": -1215.0,
         "escala_S_r_ha": 1000.0,
         "itens": [
           {
@@ -4527,24 +4527,24 @@
           {
             "cultura": "Sorgo",
             "rendimento_sc_ha": 61.0,
-            "preco": 43.11,
+            "preco": 40.42,
             "custo": 3807.0,
-            "margem_r_ha": -1176.0,
-            "fonte": "rendimento IBGE PAM (Oeste do PR (média, o município não tem PAM recente), 2023–2025); preço estimativa — validar: 80% do preço do milho SEAB/DERAL-PR; custo estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)"
+            "margem_r_ha": -1340.0,
+            "fonte": "rendimento IBGE PAM (Oeste do PR (média, o município não tem PAM recente), 2023–2025); preço estimativa — validar: 75% do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado); custo estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)"
           }
         ],
-        "ano_ruim_r_ha": -1235.0,
+        "ano_ruim_r_ha": -1390.0,
         "bonus_proxima_soja_r_ha": 125.0,
         "linha_custo": "cot"
       },
       "card": {
-        "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 819/ha na 2ª safra (−R$ 1.051/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 6% dos anos contra 17%) e quebra melhor o ciclo de pragas (0,55 contra 0,50). Maiores contribuições para a nota: Risco climático (0,17) e Água (0,15).",
+        "por_que": "Em relação à atual (milho safrinha): abre mão de R$ 983/ha na 2ª safra (−R$ 1.215/ha contra −R$ 232/ha), reduz o risco climático (algum evento adverso em 6% dos anos contra 17%) e quebra melhor o ciclo de pragas (0,55 contra 0,50). Maiores contribuições para a nota: Risco climático (0,17) e Água (0,15).",
         "evidencias": [
           "Dias de solo descoberto/ano (catálogo): ~55 dias.",
           "Soja: 53 sc/ha (PAM Toledo 2016–2025) × R$ 125.00/sc (informado pelo usuário) − custo R$ 6.367/ha (CONAB Londrina-PR, safra 2026/27 (est. mar/2026), COT) = R$ 216/ha (CV do rendimento 30%; ano ruim, p20 da mesma janela de 10 anos = 51 sc/ha → R$ -29/ha).",
-          "Sorgo: 61 sc/ha (PAM Oeste do PR (média, o município não tem PAM recente) 2023–2025) × R$ 43.11/sc (estimativa — validar: 80% do preço do milho SEAB/DERAL-PR) − custo R$ 3.807/ha (estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)) = R$ -1.176/ha (CV do rendimento 19%; ano ruim, p20 da mesma janela de 10 anos = 57 sc/ha → R$ -1.331/ha).",
+          "Sorgo: 61 sc/ha (PAM Oeste do PR (média, o município não tem PAM recente) 2023–2025) × R$ 40.42/sc (estimativa — validar: 75% do preço do milho SEAB/DERAL-PR (razão dos preços mínimos CONAB, não de mercado)) − custo R$ 3.807/ha (estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)) = R$ -1.340/ha (CV do rendimento 19%; ano ruim, p20 da mesma janela de 10 anos = 57 sc/ha → R$ -1.486/ha).",
           "Bônus na soja seguinte: 1 sc/ha × R$ 125.00/sc = R$ 125/ha (palhada/N e quebra de ciclo de doença, estimativa de referência).",
-          "Total da rotação: R$ -835/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.051/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.235/ha/ano.",
+          "Total da rotação: R$ -999/ha/ano; incremental da 2ª safra (sem a soja, com o bônus): R$ -1.215/ha, na escala S = R$ 1.000/ha (margem da soja do município, mín. 1.000); em ano ruim (rendimento p20): R$ -1.390/ha/ano.",
           "Água: na fase crítica (emborrachamento/enchimento do sorgo, semeadura em 15/01), a água no solo atendeu em média 87% da demanda; em 6 de 34 anos ficou abaixo de 70% (balanço diário NASA POWER + solo SoilGrids, CAD 75 mm).",
           "Geada no florescimento/enchimento do sorgo semeado em 15/01: 2 de 34 anos (6%), NASA POWER 1991–2024, célula ~50 km (janela de geada do milho usada como aproximação).",
           "Mercado no Oeste do PR: médio; ração animal e cooperativas, com demanda menor que a do milho (estimativa a validar com cooperativas/revendas locais)."
@@ -4584,11 +4584,11 @@
         "preco_soja_r_sc": 125.0,
         "fonte": "soja seguinte: estimativa de referência — validar com agrônomo/Embrapa (preço da soja SEAB/DERAL)",
         "renda_2a_safra": {
-          "r_ha": -819.0,
+          "r_ha": -983.0,
           "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor)"
         },
         "margem_total": {
-          "r_ha": -819.0,
+          "r_ha": -983.0,
           "origem": "dado: rendimento IBGE PAM × preço SEAB/DERAL − custo CONAB (ou os valores informados pelo produtor); inclui o bônus na soja seguinte"
         },
         "solo": {
@@ -5345,8 +5345,8 @@
       "rotacao": "Soja → soja safrinha",
       "motivos": [
         "Soja sobre soja no mesmo ano agrícola é proibida (Portaria SDA/MAPA 1.124/2024).",
-        "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12).",
-        "Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+        "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12, Região 2).",
+        "Há soja viva durante o vazio sanitário da soja (02/06–31/08, Região 2 do PR)."
       ]
     },
     {
@@ -5410,8 +5410,8 @@
       },
       "rotacao": "Milho verão → soja safrinha",
       "motivos": [
-        "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12).",
-        "Há soja viva durante o vazio sanitário do Oeste do PR (02/06–31/08)."
+        "Soja na 2ª janela (semeadura em 15/01) fica fora da janela legal de semeadura da soja (01/09–31/12, Região 2).",
+        "Há soja viva durante o vazio sanitário da soja (02/06–31/08, Região 2 do PR)."
       ]
     },
     {
