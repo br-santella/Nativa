@@ -803,13 +803,20 @@ function App() {
       </div>);
     }
     function AboutPage() {
-        const members = ["Fernanda", "Bruna", "Pedro", "Caio", "Lucas", "Enzo"];
+        const members = [
+            { name: "Fernanda Elias", photo: "fernanda", course: "Engenharia Mecânica · Unicamp", bio: "Reuniu a equipe e contribuiu principalmente no desenvolvimento do frontend, na preparação do pitch e na apresentação. Tem formação em Automação Industrial e experiência em robótica, visão computacional, inteligência artificial e otimização de processos. Nas horas livres: idiomas, mercado financeiro e novos projetos." },
+            { name: "Bruna", photo: "bruna", course: "", bio: "Apresentação em breve." },
+            { name: "Pedro Landgraf Pinto", photo: "pedro", course: "Engenharia de Controle e Automação", bio: "Estuda Engenharia de Controle e Automação desde 2024 e participou de projetos de análise de dados e desenvolvimento de produto, incluindo trabalhos ligados à indústria automotiva e a projeto mecânico. Interesses: tecnologia, engenharia automotiva de alto desempenho, ciência de dados e tecnologias emergentes. Nas horas livres: guitarra e atividade física." },
+            { name: "Caio Miyamura", photo: "caio", course: "Engenharia Elétrica · Unicamp", bio: "No quarto semestre, começou uma iniciação científica que aplica Machine Learning para prever a produção de cacau em diferentes regiões do Brasil a partir de séries históricas e variáveis climáticas. Passou por equipes de Fórmula SAE, com design de PCBs, sensoriamento, arquitetura elétrica do veículo e análise de desempenho." },
+            { name: "Lucas Cordeiro", photo: "lucas", course: "Física Computacional · UFF", bio: "Natural de Arrozal, distrito de Piraí (RJ), tem experiência profissional em sistemas embarcados, visão computacional e processamento de imagens. Na NATIVA, trabalhou com análise de dados e modelagem computacional aplicadas à agricultura. Fora do código: balé, dança contemporânea e projetos pessoais." },
+            { name: "Enzo Nantes Rodrigues", photo: "enzo", course: "Engenharia de Computação · Unicamp", bio: "No primeiro ano da graduação, quer construir uma carreira que una software e hardware. Na NATIVA, participou do processamento de dados, da documentação do projeto e da configuração e dos ajustes do motor de decisão." },
+        ];
         return <div className="landing about-page">
             <nav className="landing-nav"><LanguageSwitcher /><Logo /><div><button onClick={() => go("landing")}>{__text("Voltar ao início")}</button><button className="button yellow" onClick={enterDemo}>{__text(persisted ? "Continuar na demo →" : "Explore a demo →")}</button></div></nav>
             <main className="about-content">
                 <header className="about-intro"><span className="about-eyebrow">AGRO NAUTAS · NATIVA</span><h1>{__text("Seis pessoas. Uma missão em comum.")}</h1><p>{__text("Criamos a NATIVA para aproximar a observação da Terra das decisões no campo. Somos a equipe AgroNautas, participante do NASA Space Apps Challenge.")}</p></header>
                 <section className="about-team" aria-label={__text("Nossa equipe")}>
-                    {members.map((name, index) => <article className="about-member" key={name}><div className="about-avatar" aria-hidden="true">{name.slice(0, 1)}</div><span className="about-member-number">0{index + 1}</span><h2>{name}</h2><p>{__text("Apresentação em breve.")}</p></article>)}
+                    {members.map((m, index) => <article className="about-member" key={m.name}><img className="about-photo" src={path(`team/${m.photo}.webp`)} alt={__text(`Ilustração de ${m.name.split(" ")[0]}`)} width={480} height={480} loading="lazy" decoding="async"/><span className="about-member-number">0{index + 1}</span><h2>{m.name}</h2>{m.course && <span className="about-course">{__text(m.course)}</span>}<p>{__text(m.bio)}</p></article>)}
                 </section>
                 <footer className="about-footer"><p>{__text("Diferentes perspectivas para uma agricultura mais preparada.")}</p><button className="back-link" onClick={() => go("landing")}>{__text("Voltar ao início")} →</button></footer>
             </main>
