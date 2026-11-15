@@ -1,10 +1,19 @@
 {
-  "_instrucoes": "Arquivo curado À MÃO, versionado. Adicione um item em 'alertas' quando a ADAPAR/IDR-PR publicar boletim ou alerta. Campos: id, praga, cultura_afetada, nivel (baixo|moderado|alto), regiao (lista: 'Oeste do PR', 'PR' ou nomes de município), data (AAAA-MM-DD do boletim), validade_dias (padrão 30), fonte (órgão), url (boletim), resumo (frase do boletim, sem inventar números). Alertas vencidos (data + validade_dias) são ignorados. Não registrar perda nem probabilidade.",
+  "_instrucoes": "File curated BY HAND, versioned. Add an item to 'alertas' when ADAPAR/IDR-PR publish a bulletin or alert. Fields: id, praga, cultura_afetada, nivel (baixo|moderado|alto), regiao (list: 'Oeste do PR', 'PR' or municipality names), data (YYYY-MM-DD of the bulletin), validade_dias (default 30), fonte (agency), url (bulletin), resumo (sentence from the bulletin, without making up numbers). Expired alerts (data + validade_dias) are ignored. Do not record losses or probabilities.",
   "atualizado_em": "2026-11-14",
   "fontes_monitoramento": [
-    {"nome": "CigarrinhaWeb (mapa de armadilhas, atualização semanal; Seagri/IDR-PR/ADAPAR)", "url": "https://cigarrinhaweb.com.br/"},
-    {"nome": "ADAPAR — Rede de Monitoramento da Cigarrinha do Milho", "url": "https://www.adapar.pr.gov.br/Pagina/Rede-de-Monitoramento-da-Cigarrinha-do-Milho"},
-    {"nome": "ADAPAR — Sistema de Informação de Ocorrência de Pragas em Vegetais", "url": "https://www.adapar.pr.gov.br/Pagina/Sistema-de-Informacao-de-Ocorrencia-de-Pragas-em-Vegetais"}
+    {
+      "nome": "CigarrinhaWeb (mapa de armadilhas, atualização semanal; Seagri/IDR-PR/ADAPAR)",
+      "url": "https://cigarrinhaweb.com.br/"
+    },
+    {
+      "nome": "ADAPAR — Rede de Monitoramento da Cigarrinha do Milho",
+      "url": "https://www.adapar.pr.gov.br/Pagina/Rede-de-Monitoramento-da-Cigarrinha-do-Milho"
+    },
+    {
+      "nome": "ADAPAR — Sistema de Informação de Ocorrência de Pragas em Vegetais",
+      "url": "https://www.adapar.pr.gov.br/Pagina/Sistema-de-Informacao-de-Ocorrencia-de-Pragas-em-Vegetais"
+    }
   ],
   "alertas": []
 }

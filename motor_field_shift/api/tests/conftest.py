@@ -1,4 +1,4 @@
-"""Fixtures: serviço falso (monkeypatch) para testar a API sem dados em data/."""
+"""Fixtures: fake service (monkeypatch) to test the API without data in data/."""
 
 from __future__ import annotations
 
@@ -7,11 +7,11 @@ import types
 
 import pytest
 
-try:  # serviço real, se já existir
+try:  # real service, if it already exists
     from field_shift.motor import servico  # noqa: F401
 
     SERVICO_REAL = True
-except ImportError:  # registra um módulo mínimo para a API poder ser importada
+except ImportError:  # registers a minimal module so the API can be imported
     SERVICO_REAL = False
     import field_shift
 
@@ -23,7 +23,7 @@ except ImportError:  # registra um módulo mínimo para a API poder ser importad
 
     _mod.ForaDaRegiao = ForaDaRegiao
     _mod.EntradaInvalida = EntradaInvalida
-    _mod.ROTACOES = {"milho_safrinha": "Milho safrinha"}
+    _mod.ROTACOES = {"milho_safrinha": "Off-season corn"}
     for _n in ("opcoes", "diagnosticar", "recomendar", "aquecer"):
         setattr(_mod, _n, lambda *a, **k: None)
     _pkg = types.ModuleType("field_shift.motor")
@@ -65,7 +65,7 @@ DIAG = {
 _ITEM = {
             "posicao": 1,
             "id": "milho_verao__aveia",
-            "rotacao": "Milho verão → aveia",
+            "rotacao": "Summer corn → oat",
             "nota": 6.1,
             "atual": False,
             "criterios": {"renda": 5, "solo": 6, "agua": 7, "pragas": 7, "risco": 6},
@@ -77,7 +77,7 @@ _ITEM = {
 REC = {
     "entrada": {"semeadura_safrinha": "01/02"},
     "cultura_atual": {"id": "soja", "nome": "Soja"},
-    "estagio_verao": {"id": "enchimento_graos", "nome": "Enchimento de grãos (R5–R6)", "dias_tipicos_ate_colheita": 32},
+    "estagio_verao": {"id": "enchimento_graos", "nome": "Grain fill (R5–R6)", "dias_tipicos_ate_colheita": 32},
     "colheita_estimada": {"data": "02/01", "origem": "estagio"},
     "semeadura_2a": {"data": "15/01", "origem": "derivada"},
     "dias_ate_colheita": 32,
@@ -88,7 +88,7 @@ REC = {
             "posicao": 1,
             "id": "soja__milho_safrinha",
             "id_legado": "milho_safrinha",
-            "rotacao": "Milho safrinha",
+            "rotacao": "Off-season corn",
             "nota": 7.4,
             "atual": False,
             "criterios": {"renda": 8, "solo": 6, "agua": 7, "pragas": 7, "risco": 6},
@@ -105,23 +105,23 @@ REC = {
     ],
     "atual": None,
     "alternativas": [],
-    "eliminadas": [{"id": "soja__soja_safrinha", "rotacao": "Soja safrinha", "motivos": ["soja sobre soja"]}],
+    "eliminadas": [{"id": "soja__soja_safrinha", "rotacao": "Off-season soybean", "motivos": ["soybean after soybean"]}],
     "avisos": [],
-    "metodologia": {"formula": "soma ponderada", "criterios": {}, "versao": "0.1"},
+    "metodologia": {"formula": "weighted sum", "criterios": {}, "versao": "0.1"},
 }
 REC["agora"] = {"ranking": REC["ranking"], "alternativas": [], "eliminadas": REC["eliminadas"]}
 OPCOES = {
-    "rotacoes": [{"id": "soja__milho_safrinha", "nome": "Soja → milho safrinha"}],
-    "culturas_verao": [{"id": "soja", "nome": "Soja", "tipo": "grão"}],
-    "culturas_segunda": [{"id": "milho_safrinha", "nome": "Milho safrinha", "tipo": "grão"}],
+    "rotacoes": [{"id": "soja__milho_safrinha", "nome": "Soybean → off-season corn"}],
+    "culturas_verao": [{"id": "soja", "nome": "Soybean", "tipo": "grão"}],
+    "culturas_segunda": [{"id": "milho_safrinha", "nome": "Off-season corn", "tipo": "grão"}],
     "combinacoes": [{"id": "soja__milho_safrinha", "verao": "soja", "segunda": "milho_safrinha", "valida": True}],
     "semeaduras": ["15/01", "01/02", "15/02", "01/03", "15/03"],
     "semeadura_padrao": "01/02",
     "criterios": ["renda", "solo", "agua", "pragas", "risco"],
     "pesos_padrao": {"renda": 5, "solo": 3, "agua": 3, "pragas": 3, "risco": 3},
     "renda_referencia": {},
-    "regiao": {"nome": "Oeste do PR"},
-    "talhoes_demo": [{"talhao_id": "72638", "nome": "Talhão 72638"}],
+    "regiao": {"nome": "Western Paraná"},
+    "talhoes_demo": [{"talhao_id": "72638", "nome": "Field 72638"}],
 }
 
 

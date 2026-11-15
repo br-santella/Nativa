@@ -1,4 +1,4 @@
-"""Schemas Pydantic (entrada e saída) da API."""
+"""Pydantic schemas (input and output) of the API."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from field_shift import calendario
 
 Semeadura = Literal["15/01", "01/02", "15/02", "01/03", "15/03"]
-# Enums fechados do catálogo (espelham field_shift.app.engine; um teste confere). Rotação = par (verão, 2ª janela).
+# Closed catalog enums (mirror field_shift.app.engine; a test checks this). Rotation = pair (summer, second window).
 CulturaVerao = Literal["soja", "milho_verao"]
 CulturaSegunda = Literal[
     "milho_safrinha",
@@ -25,11 +25,11 @@ CulturaSegunda = Literal[
     "nabo_forrageiro",
     "aveia_nabo",
 ]
-# Slugs antigos da API (só soja no verão): milho_safrinha = soja__milho_safrinha.
+# Old API slugs (soybean in summer only): milho_safrinha = soja__milho_safrinha.
 SLUGS_LEGADOS = ("milho_safrinha", "milho_braquiaria", "trigo", "aveia", "milheto_crotalaria", "pousio", "soja_safrinha")
 IDS_ROTACAO = tuple(f"{v}__{s}" for v in CulturaVerao.__args__ for s in CulturaSegunda.__args__)
-RotacaoSlug = Literal[IDS_ROTACAO + SLUGS_LEGADOS]  # id novo "<verao>__<segunda>" ou slug antigo
-# Estágios da cultura de verão (espelham field_shift.calendario.ESTAGIOS; um teste confere). O estágio precisa combinar com o verão da rotação atual.
+RotacaoSlug = Literal[IDS_ROTACAO + SLUGS_LEGADOS]  # new id "<verao>__<segunda>" or old slug
+# Summer-crop stages (mirror field_shift.calendario.ESTAGIOS; a test checks this). The stage must match the current rotation's summer crop.
 EstagioVerao = Literal[
     "vegetativo", "floracao", "formacao_vagens", "enchimento_graos", "maturacao", "colhida", "pendoamento", "grao_leitoso", "grao_farinaceo"
 ]
@@ -69,18 +69,18 @@ POLIGONO_EXEMPLO: dict[str, Any] = {
 
 
 # --------------------------------------------------------------------------
-# Entrada
+# Input
 # --------------------------------------------------------------------------
 class Area(BaseModel):
-    """Área de análise. Informe EXATAMENTE UMA das formas: `geometry`, `lat`+`lon` ou `talhao_id`."""
+    """Area to analyze. Provide EXACTLY ONE of the forms: `geometry`, `lat`+`lon` or `talhao_id`."""
 
     geometry: dict[str, Any] | None = Field(
         None,
-        description="GeoJSON Polygon, MultiPolygon ou Feature em EPSG:4326 (lon, lat). Máx. 5000 ha.",
+        description="GeoJSON Polygon, MultiPolygon or Feature in EPSG:4326 (lon, lat). Max. 5000 ha.",
     )
-    lat: float | None = Field(None, ge=-90, le=90, description="Latitude (vira um quadrado de ~100 ha).")
-    lon: float | None = Field(None, ge=-180, le=180, description="Longitude (vira um quadrado de ~100 ha).")
-    talhao_id: str | None = Field(None, description="Id de um talhão demo (ver GET /v1/talhoes/demo).")
+    lat: float | None = Field(None, ge=-90, le=90, description="Latitude (becomes a ~100 ha square).")
+    lon: float | None = Field(None, ge=-180, le=180, description="Longitude (becomes a ~100 ha square).")
+    talhao_id: str | None = Field(None, description="Id of a demo field (see GET /v1/talhoes/demo).")
 
     model_config = ConfigDict(
         extra="forbid",
@@ -91,10 +91,10 @@ class Area(BaseModel):
     def _uma_forma(self) -> "Area":
         ponto = self.lat is not None or self.lon is not None
         if ponto and (self.lat is None or self.lon is None):
-            raise ValueError("para ponto, informe 'lat' e 'lon' juntos")
+            raise ValueError("for a point, provide 'lat' and 'lon' together")
         formas = sum([self.geometry is not None, ponto, self.talhao_id is not None])
         if formas != 1:
-            raise ValueError("informe exatamente uma forma de área: 'geometry', 'lat'+'lon' ou 'talhao_id'")
+            raise ValueError("provide exactly one area form: 'geometry', 'lat'+'lon' or 'talhao_id'")
         return self
 
     def para_servico(self) -> dict[str, Any]:
@@ -102,28 +102,28 @@ class Area(BaseModel):
 
 
 class Ajustes(BaseModel):
-    """Preços e custos próprios do produtor (sobrescrevem os valores de referência)."""
+    """The farmer's own prices and costs (they override the reference values)."""
 
     precos: dict[Literal["soja", "milho", "trigo", "feijao", "sorgo"], Annotated[float, Field(ge=0)]] | None = Field(
-        None, description="Preço em R$/saca (60 kg). 'milho' vale para o milho verão e o safrinha."
+        None, description="Price in BRL per 60 kg bag. 'milho' applies to summer and off-season corn."
     )
     custos: dict[CulturaCusto, Annotated[float, Field(ge=0)]] | None = Field(
         None,
         description=(
-            "Custo por cultura em R$/ha ('milho' é alias de 'milho_2safra'; 'milho_verao' de 'milho_1safra'; 'feijao' de "
+            "Cost per crop in BRL/ha ('milho' is an alias of 'milho_2safra'; 'milho_verao' of 'milho_1safra'; 'feijao' of "
             "'feijao_2safra')."
         ),
     )
     linha_custo: Literal["coe", "cot", "ct"] | None = Field(
-        None, description="'coe' (operacional efetivo), 'cot' (operacional total) ou 'ct' (custo total)."
+        None, description="'coe' (effective operating cost), 'cot' (total operating cost) or 'ct' (total cost)."
     )
 
     produtividade: dict[CulturaProdutividade, Annotated[float, Field(gt=0, le=500)]] | None = Field(
         None,
         description=(
-            "Produtividade própria em sc/ha (soja, milho = 2ª safra, milho_verao = 1ª safra, trigo, feijao, sorgo); 'milho' é alias "
-            "de 'milho_2safra'. Substitui o rendimento da PAM do município na margem; o cenário de ano ruim escala "
-            "proporcionalmente (próprio × p20/média da PAM). A soja informada também muda a escala S da renda."
+            "Own yield in bags/ha (soja, milho = 2nd season, milho_verao = 1st season, trigo, feijao, sorgo); 'milho' is an alias "
+            "of 'milho_2safra'. Replaces the municipal PAM yield in the margin; the bad-year scenario scales "
+            "proportionally (own × PAM p20/average). The soybean value also changes the income scale S."
         ),
     )
 
@@ -139,19 +139,19 @@ class Ajustes(BaseModel):
 
 
 class AnaliseSolo(BaseModel):
-    """Análise de solo do produtor. Substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico.
-    Informe argila_pct e areia_pct (juntos), ou cad_mm_cm."""
+    """The farmer's soil analysis. Replaces SoilGrids in the diagnosis and in the water-balance available water capacity.
+    Provide argila_pct and areia_pct (together), or cad_mm_cm."""
 
-    argila_pct: float | None = Field(None, ge=0, le=100, description="Argila (%).")
-    areia_pct: float | None = Field(None, ge=0, le=100, description="Areia (%). Areia + argila ≤ 100.")
-    materia_organica_pct: float | None = Field(None, ge=0, le=100, description="Matéria orgânica (%). Alternativa a carbono_organico_g_kg.")
-    carbono_organico_g_kg: float | None = Field(None, ge=0, le=580, description="Carbono orgânico (g/kg). Alternativa a materia_organica_pct.")
-    ph: float | None = Field(None, ge=3, le=9, description="pH em água (3 a 9).")
+    argila_pct: float | None = Field(None, ge=0, le=100, description="Clay (%).")
+    areia_pct: float | None = Field(None, ge=0, le=100, description="Sand (%). Sand + clay ≤ 100.")
+    materia_organica_pct: float | None = Field(None, ge=0, le=100, description="Organic matter (%). Alternative to carbono_organico_g_kg.")
+    carbono_organico_g_kg: float | None = Field(None, ge=0, le=580, description="Organic carbon (g/kg). Alternative to materia_organica_pct.")
+    ph: float | None = Field(None, ge=3, le=9, description="pH in water (3 to 9).")
     cad_mm_cm: float | None = Field(
-        None, ge=0.3, le=3, description="Capacidade de água disponível (mm de água por cm de solo, 0,3 a 3). Se vier, é usada direto na CAD."
+        None, ge=0.3, le=3, description="Available water capacity (mm of water per cm of soil, 0.3 to 3). If present, it is used directly."
     )
     profundidade_cm: float | None = Field(
-        None, ge=1, le=200, description="Profundidade da amostra (cm; padrão 20, ou seja, 0–20 cm). A amostra é tomada como representativa do perfil."
+        None, ge=1, le=200, description="Sample depth (cm; default 20, i.e. 0–20 cm). The sample is taken as representative of the profile."
     )
 
     model_config = ConfigDict(
@@ -167,44 +167,44 @@ class AnaliseSolo(BaseModel):
     @model_validator(mode="after")
     def _minimo(self) -> "AnaliseSolo":
         if (self.argila_pct is None) != (self.areia_pct is None):
-            raise ValueError("informe 'argila_pct' e 'areia_pct' juntos")
+            raise ValueError("provide 'argila_pct' and 'areia_pct' together")
         if self.argila_pct is None and self.cad_mm_cm is None:
-            raise ValueError("informe 'argila_pct' e 'areia_pct', ou 'cad_mm_cm'")
+            raise ValueError("provide 'argila_pct' and 'areia_pct', or 'cad_mm_cm'")
         if self.argila_pct is not None and self.argila_pct + self.areia_pct > 100:
-            raise ValueError("argila_pct + areia_pct não pode passar de 100")
+            raise ValueError("argila_pct + areia_pct cannot exceed 100")
         if self.materia_organica_pct is not None and self.carbono_organico_g_kg is not None:
-            raise ValueError("informe 'materia_organica_pct' OU 'carbono_organico_g_kg', não os dois")
+            raise ValueError("provide 'materia_organica_pct' OR 'carbono_organico_g_kg', not both")
         return self
 
 
 class Maquinas(BaseModel):
-    """Máquinas que o produtor tem. Omitido = tem. `false` não elimina a rotação: gera aviso e custo extra de terceirização."""
+    """Machines the farmer has. Omitted = has it. `false` does not eliminate the rotation: it adds a warning and an extra outsourcing cost."""
 
     plataforma_milho: bool | None = Field(
-        None, description="Plataforma de colheita de milho (exigida por milho verão, milho safrinha e milho+braquiária; um custo por colheita)."
+        None, description="Corn harvest header (required by summer corn, off-season corn and corn+brachiaria; one cost per harvest)."
     )
-    semeadora_consorcio: bool | None = Field(None, description="Semeadora de consórcio/caixa extra (exigida por milho+braquiária).")
+    semeadora_consorcio: bool | None = Field(None, description="Intercrop seeder/extra seed box (required by corn+brachiaria).")
 
     model_config = ConfigDict(extra="forbid")
 
 
 class Restricoes(BaseModel):
-    """Restrições de execução e de mercado do produtor."""
+    """The farmer's execution and market restrictions."""
 
     culturas_excluidas: list[RotacaoSlug] | None = Field(
         None,
         description=(
-            "Rotações que o produtor não quer/pode fazer (id '<verao>__<segunda>' ou slug antigo, que vale para soja no verão); "
-            "vão para 'eliminadas' (motivo: excluída pelo produtor)."
+            "Rotations the farmer does not want to or cannot do (id '<verao>__<segunda>' or old slug, meaning soybean in summer); "
+            "they go to 'eliminadas' (reason: excluded by the farmer)."
         ),
     )
     maquinas: Maquinas | None = None
     sem_comprador: list[SemComprador] | None = Field(
         None,
         description=(
-            "Culturas de venda sem comprador local. 'milho' elimina as rotações com milho (verão ou safrinha); 'trigo', 'sorgo' e "
-            "'feijao' eliminam as que vendem essa cultura; 'aveia_grao' é aceito mas não tem efeito (a aveia é tratada como "
-            "cobertura, sem venda de grão)."
+            "Cash crops without a local buyer. 'milho' eliminates the rotations with corn (summer or off-season); 'trigo', 'sorgo' and "
+            "'feijao' eliminate the ones that sell that crop; 'aveia_grao' is accepted but has no effect (oat is treated as a "
+            "cover crop, without grain sale)."
         ),
     )
 
@@ -223,14 +223,14 @@ class Restricoes(BaseModel):
 
 
 class Irrigacao(BaseModel):
-    """Irrigação disponível na área. Irriga milho, milho+braquiária, trigo, sorgo e feijão da 2ª janela (não cobertura, pousio nem o verão)."""
+    """Irrigation available in the area. Irrigates second-window corn, corn+brachiaria, wheat, sorghum and beans (not cover crops, fallow or the summer crop)."""
 
-    disponivel: bool = Field(..., description="Há irrigação na área?")
+    disponivel: bool = Field(..., description="Is there irrigation in the area?")
     custo_r_mm_ha: Annotated[float, Field(ge=0, le=100)] | None = Field(
-        None, description="Custo por mm aplicado por ha (R$; padrão 4,0, estimativa a validar)."
+        None, description="Cost per mm applied per ha (BRL; default 4.0, estimate to be validated)."
     )
     lamina_max_mm_dia: Annotated[float, Field(gt=0, le=30)] | None = Field(
-        None, description="Lâmina máxima por dia (mm; padrão 6)."
+        None, description="Maximum depth per day (mm; default 6)."
     )
 
     model_config = ConfigDict(
@@ -240,7 +240,7 @@ class Irrigacao(BaseModel):
 
 
 class Pesos(BaseModel):
-    """Importância de cada critério, de 0 a 10. Omitidos usam o padrão (renda 5, demais 3)."""
+    """Importance of each criterion, from 0 to 10. Omitted ones use the default (renda 5, others 3)."""
 
     renda: Peso | None = None
     solo: Peso | None = None
@@ -252,18 +252,18 @@ class Pesos(BaseModel):
 
 
 class RotacaoSelecionada(BaseModel):
-    """Uma rotação pedida: cultura de verão + cultura da 2ª janela (enums fechados; ver GET /v1/opcoes)."""
+    """A requested rotation: summer crop + second-window crop (closed enums; see GET /v1/opcoes)."""
 
-    verao: CulturaVerao = Field(..., description="Cultura de verão (1ª safra).")
-    segunda: CulturaSegunda = Field(..., description="Cultura da 2ª janela (safrinha, inverno ou cobertura).")
+    verao: CulturaVerao = Field(..., description="Summer crop (1st season).")
+    segunda: CulturaSegunda = Field(..., description="Second-window crop (off-season, winter or cover).")
 
     model_config = ConfigDict(extra="forbid", json_schema_extra={"examples": [{"verao": "soja", "segunda": "milho_safrinha"}]})
 
 
 class DiagnosticoIn(BaseModel):
     area: Area
-    semeadura_safrinha: Semeadura = Field("01/02", description="Data de semeadura da safrinha (dd/mm).")
-    analise_solo: AnaliseSolo | None = Field(None, description="Análise de solo do produtor (substitui o SoilGrids no bloco solo).")
+    semeadura_safrinha: Semeadura = Field("01/02", description="Off-season sowing date (dd/mm).")
+    analise_solo: AnaliseSolo | None = Field(None, description="The farmer's soil analysis (replaces SoilGrids in the soil block).")
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -278,7 +278,7 @@ class DiagnosticoIn(BaseModel):
 
 class ContextoIn(BaseModel):
     area: Area
-    semeadura_safrinha: Semeadura = Field("01/02", description="Data de semeadura da safrinha (dd/mm); usada no histórico por fase do ENSO.")
+    semeadura_safrinha: Semeadura = Field("01/02", description="Off-season sowing date (dd/mm); used in the per-phase ENSO history.")
 
     model_config = ConfigDict(json_schema_extra={"examples": [{"area": {"talhao_id": "72638"}, "semeadura_safrinha": "01/02"}]})
 
@@ -287,56 +287,56 @@ class RecomendacaoIn(BaseModel):
     area: Area
     rotacao_atual: RotacaoSlug = Field(
         ...,
-        description="OBRIGATÓRIA. Rotação que o produtor usa hoje (id '<verao>__<segunda>' ou slug antigo = soja no verão). "
-        "A cultura de verão dela define o bloco `agora`; as combinações com outro verão vão em `proxima_safra`.",
+        description="REQUIRED. Rotation the farmer uses today (id '<verao>__<segunda>' or old slug = soybean in summer). "
+        "Its summer crop defines the `agora` block; combinations with another summer crop go into `proxima_safra`.",
     )
     estagio_verao: EstagioVerao | None = Field(
         None,
         description=(
-            "Estágio da cultura de verão da rotação atual (a colheita estimada = data_referencia + dias típicos do estágio; estimativa, "
-            "validar com Embrapa). Soja: vegetativo, floracao (R1–R2), formacao_vagens (R3–R4), enchimento_graos (R5–R6), maturacao "
-            "(R7–R8), colhida. Milho verão: vegetativo, pendoamento (VT–R1), grao_leitoso (R2–R3), grao_farinaceo (R4–R5), maturacao (R6), "
-            "colhida. Estágio de outra cultura dá 422. Ver GET /v1/opcoes."
+            "Stage of the current rotation's summer crop (estimated harvest = data_referencia + typical days of the stage; estimate, "
+            "to be validated with Embrapa). Soybean: vegetativo, floracao (R1–R2), formacao_vagens (R3–R4), enchimento_graos (R5–R6), maturacao "
+            "(R7–R8), colhida. Summer corn: vegetativo, pendoamento (VT–R1), grao_leitoso (R2–R3), grao_farinaceo (R4–R5), maturacao (R6), "
+            "colhida. A stage of another crop returns 422. See GET /v1/opcoes."
         ),
     )
     colheita_prevista: str | None = Field(
-        None, pattern=r"^\d{2}/\d{2}$", description="Colheita prevista do verão (dd/mm). Se vier, tem precedência sobre `estagio_verao`."
+        None, pattern=r"^\d{2}/\d{2}$", description="Expected summer harvest (dd/mm). If present, it takes precedence over `estagio_verao`."
     )
     data_referencia: date | None = Field(
-        None, description="Data de hoje para o produtor (ISO, AAAA-MM-DD; padrão: hoje). Torna a conta do estágio determinística."
+        None, description="Today's date for the farmer (ISO, YYYY-MM-DD; default: today). Makes the stage calculation deterministic."
     )
     semeadura_safrinha: Semeadura | None = Field(
         None,
         description=(
-            "Semeadura da 2ª janela (dd/mm). Opcional: sem ela, é a primeira data (15/01, 01/02, 15/02, 01/03, 15/03) a partir da colheita "
-            "estimada. Se vier junto com estágio/colheita, vale esta, mas não pode ser anterior à colheita (422). Sem estágio, colheita e "
-            "semeadura: premissa (colheita do catálogo e 01/02), com aviso."
+            "Second-window sowing date (dd/mm). Optional: without it, it is the first date (15/01, 01/02, 15/02, 01/03, 15/03) from the estimated "
+            "harvest on. If sent together with a stage/harvest, this one applies, but it cannot be earlier than the harvest (422). Without stage, harvest and "
+            "sowing date: assumption (catalog harvest and 01/02), with a warning."
         ),
     )
-    pesos: Pesos | None = Field(None, description="Pesos dos critérios (0 a 10).")
+    pesos: Pesos | None = Field(None, description="Criteria weights (0 to 10).")
     rotacoes: list[RotacaoSelecionada] | None = Field(
         None,
         min_length=1,
         description=(
-            "Rotações a avaliar. Se vier, o motor avalia e ranqueia só essas (cada par cai em `agora` ou `proxima_safra` pelo verão); "
-            "se não vier, avalia todas as combinações do catálogo. "
-            "Lista não vazia e sem duplicatas. Combinação eliminada pelas regras volta em 'eliminadas' com motivo (não é erro)."
+            "Rotations to evaluate. If present, the engine evaluates and ranks only these (each pair goes into `agora` or `proxima_safra` by its summer crop); "
+            "if absent, it evaluates every catalog combination. "
+            "Non-empty list without duplicates. A combination eliminated by the rules comes back in 'eliminadas' with the reason (not an error)."
         ),
     )
     ajustes: Ajustes | None = None
     analise_solo: AnaliseSolo | None = Field(
-        None, description="Análise de solo do produtor: substitui o SoilGrids no diagnóstico e na CAD do balanço hídrico."
+        None, description="The farmer's soil analysis: replaces SoilGrids in the diagnosis and in the water-balance capacity."
     )
     restricoes: Restricoes | None = Field(
-        None, description="Culturas excluídas, máquinas que o produtor tem e culturas sem comprador local."
+        None, description="Excluded crops, machines the farmer has and crops without a local buyer."
     )
-    irrigacao: Irrigacao | None = Field(None, description="Irrigação disponível (muda o critério água, o risco e a margem).")
-    n_alternativas: int = Field(3, ge=1, le=6, description="Quantas alternativas devolver.")
-    incluir_diagnostico: bool = Field(True, description="Inclui o diagnóstico completo na resposta.")
+    irrigacao: Irrigacao | None = Field(None, description="Available irrigation (changes the water criterion, the risk and the margin).")
+    n_alternativas: int = Field(3, ge=1, le=6, description="How many alternatives to return.")
+    incluir_diagnostico: bool = Field(True, description="Includes the full diagnosis in the response.")
 
     @model_validator(mode="after")
     def _calendario(self) -> "RecomendacaoIn":
-        """Estágio compatível com o verão da atual; semeadura informada não pode ser anterior à colheita (422)."""
+        """Stage compatible with the current summer crop; a provided sowing date cannot be earlier than the harvest (422)."""
         calendario.resolver(
             calendario.verao_de(self.rotacao_atual), self.estagio_verao, self.colheita_prevista, self.data_referencia,
             self.semeadura_safrinha,
@@ -348,7 +348,7 @@ class RecomendacaoIn(BaseModel):
         if self.rotacoes:
             pares = [(r.verao, r.segunda) for r in self.rotacoes]
             if len(set(pares)) != len(pares):
-                raise ValueError("'rotacoes' tem combinações duplicadas")
+                raise ValueError("'rotacoes' has duplicated combinations")
         return self
 
     model_config = ConfigDict(
@@ -400,7 +400,7 @@ class RecomendacaoIn(BaseModel):
 
 
 # --------------------------------------------------------------------------
-# Saída (permissiva: campos extras do serviço passam adiante)
+# Output (permissive: extra fields from the service are passed through)
 # --------------------------------------------------------------------------
 class _Saida(BaseModel):
     model_config = ConfigDict(extra="allow")
@@ -482,7 +482,7 @@ class Card(_Saida):
     lacunas: list[Any] = []
     riscos: list[Any] = []
     avisos: list[Any] = []
-    mercado: dict[str, Any] | None = Field(None, description="Viabilidade de mercado no Oeste do PR: nivel, texto, estimativa.")
+    mercado: dict[str, Any] | None = Field(None, description="Market viability in Western Paraná: nivel, texto, estimativa.")
 
 
 class CulturaRef(_Saida):
@@ -492,8 +492,8 @@ class CulturaRef(_Saida):
 
 class ItemRanking(_Saida):
     posicao: int | None = None
-    id: str = Field(..., description="Id estável '<verao>__<segunda>' (ex.: soja__milho_safrinha).")
-    id_legado: str | None = Field(None, description="Slug antigo (só soja no verão): milho_safrinha = soja__milho_safrinha.")
+    id: str = Field(..., description="Stable id '<verao>__<segunda>' (e.g. soja__milho_safrinha).")
+    id_legado: str | None = Field(None, description="Old slug (soybean in summer only): milho_safrinha = soja__milho_safrinha.")
     verao: CulturaRef | None = None
     segunda: CulturaRef | None = None
     rotacao: str
@@ -503,25 +503,25 @@ class ItemRanking(_Saida):
     contribuicoes: dict[str, float | None] = {}
     margem: Margem | None = None
     card: Card | None = None
-    irrigacao: dict[str, Any] | None = Field(None, description="Presente só se a candidata é irrigada: lamina_media_mm_ano e custo_r_ha.")
+    irrigacao: dict[str, Any] | None = Field(None, description="Present only if the candidate is irrigated: lamina_media_mm_ano and custo_r_ha.")
     ganho_vs_atual: dict[str, Any] | None = Field(
         None,
         description=(
-            "Como melhora (ou piora) a produção contra a rotação atual, sempre com `origem`: `soja_seguinte_sc` (central), `soja_seguinte_sc_faixa` [min, max] e `soja_seguinte_rs` (R$/ha, bônus do "
-            "catálogo × preço DERAL) com `fonte` (estimativa, validar com agrônomo/Embrapa), `renda_2a_safra` e `margem_total` (R$/ha; dado), `solo` "
-            "(dias de solo descoberto e cobertura; negativo em dias = melhora), `agua` e `risco_climatico` (diferença de critério; dado). "
-            "Nulo na própria atual ou se a atual foi eliminada."
+            "How it improves (or worsens) production against the current rotation, always with `origem`: `soja_seguinte_sc` (central), `soja_seguinte_sc_faixa` [min, max] and `soja_seguinte_rs` (BRL/ha, catalog "
+            "bonus × DERAL price) with `fonte` (estimate, to be validated with an agronomist/Embrapa), `renda_2a_safra` and `margem_total` (BRL/ha; data), `solo` "
+            "(days of bare soil and cover; negative days = improvement), `agua` and `risco_climatico` (criterion difference; data). "
+            "Null on the current rotation itself or if the current rotation was eliminated."
         ),
     )
 
 
 class ItemAtual(ItemRanking):
-    """Rotação atual. Se eliminada por regra dura: posicao/nota nulos, eliminada=true e motivos."""
+    """Current rotation. If eliminated by a hard rule: null posicao/nota, eliminada=true and motivos."""
 
     id: str | None = None
     rotacao: str | None = None
     eliminada: bool = False
-    avaliada: bool | None = Field(None, description="false se a atual não está em 'rotacoes' (não foi avaliada).")
+    avaliada: bool | None = Field(None, description="false if the current rotation is not in 'rotacoes' (it was not evaluated).")
     motivos: list[str] = []
 
 
@@ -542,10 +542,10 @@ class Metodologia(_Saida):
 
 
 class Bloco(_Saida):
-    """Ranking de um conjunto de combinações; `posicao` recomeça em 1 em cada bloco."""
+    """Ranking of a set of combinations; `posicao` restarts at 1 in each block."""
 
     ranking: list[ItemRanking] = []
-    alternativas: list[dict[str, Any]] = Field([], description="Melhores do bloco, sem a atual (até `n_alternativas`).")
+    alternativas: list[dict[str, Any]] = Field([], description="Best of the block, excluding the current rotation (up to `n_alternativas`).")
     eliminadas: list[Eliminada] = []
 
 
@@ -561,22 +561,22 @@ class DataOrigem(_Saida):
 
 class RecomendacaoOut(_Saida):
     entrada: dict[str, Any] = {}
-    cultura_atual: CulturaAtual | None = Field(None, description="Cultura de verão da rotação atual.")
-    estagio_verao: dict[str, Any] | None = Field(None, description="Estágio informado, com dias típicos até a colheita e a fonte (estimativa).")
+    cultura_atual: CulturaAtual | None = Field(None, description="Summer crop of the current rotation.")
+    estagio_verao: dict[str, Any] | None = Field(None, description="Provided stage, with typical days until harvest and the source (estimate).")
     colheita_estimada: DataOrigem | None = Field(None, description="dd/mm; origem: estagio | informada | premissa.")
     semeadura_2a: DataOrigem | None = Field(
-        None, description="Semeadura da 2ª janela usada (origem: derivada | informada | premissa); nulo se a colheita é tarde demais."
+        None, description="Second-window sowing date used (origem: derivada | informada | premissa); null if the harvest is too late."
     )
-    dias_ate_colheita: int | None = Field(None, description="Nulo quando a colheita é a premissa do catálogo.")
+    dias_ate_colheita: int | None = Field(None, description="Null when the harvest is the catalog assumption.")
     diagnostico: DiagnosticoOut | None = None
-    agora: Bloco | None = Field(None, description="Bloco principal: combinações com o MESMO verão da atual (o que entra depois da colheita).")
+    agora: Bloco | None = Field(None, description="Main block: combinations with the SAME summer crop as the current rotation (what goes in after the harvest).")
     proxima_safra: Bloco | None = Field(
-        None, description="Combinações com OUTRO verão (decisão da próxima safra), comparadas à atual; mesma semeadura da 2ª janela."
+        None, description="Combinations with ANOTHER summer crop (next-season decision), compared with the current rotation; same second-window sowing date."
     )
-    ranking: list[ItemRanking] = Field([], description="Alias de `agora.ranking` (compatibilidade).")
+    ranking: list[ItemRanking] = Field([], description="Alias of `agora.ranking` (compatibility).")
     atual: ItemAtual | None = None
-    alternativas: list[dict[str, Any]] = Field([], description="Alias de `agora.alternativas` (compatibilidade).")
-    eliminadas: list[Eliminada] = Field([], description="União das eliminadas de `agora` e `proxima_safra` (compatibilidade).")
+    alternativas: list[dict[str, Any]] = Field([], description="Alias of `agora.alternativas` (compatibility).")
+    eliminadas: list[Eliminada] = Field([], description="Union of the eliminated rotations of `agora` and `proxima_safra` (compatibility).")
     avisos: list[str] = []
     metodologia: Metodologia | None = None
 

@@ -1,4 +1,4 @@
-"""Aplicação FastAPI do Field Shift."""
+"""Field Shift FastAPI application."""
 
 from __future__ import annotations
 
@@ -17,19 +17,19 @@ from .rotas import health_router, router
 log = logging.getLogger("field_shift_api")
 
 DESCRICAO = """
-API do **Field Shift**: apoio à decisão de **rotação de culturas** (safrinha / entressafra) para o
-**Oeste do Paraná** (50 municípios, código IBGE 4106). Dado um talhão (id demo), um polígono GeoJSON
-ou um ponto lat/lon, devolve um diagnóstico da área e um ranking de rotações com nota, margem
-estimada (R$/ha) e um cartão explicativo por opção.
+**Field Shift** API: **crop-rotation** decision support (off-season / between seasons) for
+**Western Paraná** (50 municipalities, IBGE code 4106). Given a field (demo id), a GeoJSON polygon
+or a lat/lon point, it returns a diagnosis of the area and a ranking of rotations with a score, an estimated
+margin (BRL/ha) and an explanation card per option.
 
-Áreas fora do Oeste do PR retornam **422** (`fora_da_regiao`).
+Areas outside Western Paraná return **422** (`fora_da_regiao`).
 
-**Fontes de dados:** NASA POWER (clima), SoilGrids (solo), MapBiomas (uso e cobertura do solo),
-NASADEM (relevo), IBGE PAM (produtividade municipal), SEAB/DERAL (custos e preços regionais) e
-CONAB (preços e custos de referência).
+**Data sources:** NASA POWER (climate), SoilGrids (soil), MapBiomas (land use and cover),
+NASADEM (terrain), IBGE PAM (municipal yield), SEAB/DERAL (regional costs and prices) and
+CONAB (reference prices and costs).
 
-Os números de renda e risco são **estimativas** para apoiar a conversa com o agrônomo, não
-substituem o ZARC nem a recomendação técnica.
+Income and risk figures are **estimates** to support the conversation with the agronomist; they do not
+replace ZARC or a technical recommendation.
 """
 
 
@@ -40,8 +40,8 @@ async def lifespan(app: FastAPI):
     try:
         servico.aquecer()
         app.state.dados_ok = True
-    except Exception as exc:  # a API sobe mesmo sem dados; /health mostra "degradado"
-        log.exception("falha ao carregar dados no startup")
+    except Exception as exc:  # the API starts even without data; /health shows "degradado"
+        log.exception("failed to load data on startup")
         app.state.dados_erro = f"{type(exc).__name__}: {exc}"
     yield
 
@@ -79,8 +79,8 @@ async def _erro_consulta_externa(request: Request, exc: Exception) -> JSONRespon
 
 @app.exception_handler(Exception)
 async def _interno(request: Request, exc: Exception) -> JSONResponse:
-    log.error("erro inesperado em %s %s", request.method, request.url.path, exc_info=exc)
+    log.error("unexpected error in %s %s", request.method, request.url.path, exc_info=exc)
     return JSONResponse(
         status_code=500,
-        content={"erro": "interno", "mensagem": "Erro interno do servidor."},
+        content={"erro": "interno", "mensagem": "Internal server error."},
     )

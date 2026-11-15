@@ -22,12 +22,12 @@ def test_health_degradado_se_aquecer_falha(falso, monkeypatch):
     from field_shift_api.main import app
 
     def boom():
-        raise RuntimeError("sem dados")
+        raise RuntimeError("no data")
 
     monkeypatch.setattr(svc, "aquecer", boom)
     with TestClient(app) as c:
         j = c.get("/health").json()
-    assert j["status"] == "degradado" and "sem dados" in j["detalhe"]
+    assert j["status"] == "degradado" and "no data" in j["detalhe"]
 
 
 def test_opcoes_e_talhoes(client):
@@ -68,7 +68,7 @@ def test_recomendacao_formato(client, chamadas):
     item = j["ranking"][0]
     assert item["id"] == "soja__milho_safrinha" and item["id_legado"] == "milho_safrinha" and item["card"]["por_que"] == "x"
     assert item["margem"]["itens"][0]["cultura"] == "milho"
-    assert j["eliminadas"][0]["motivos"] == ["soja sobre soja"]
+    assert j["eliminadas"][0]["motivos"] == ["soybean after soybean"]
     assert j["metodologia"]["versao"] == "0.1"
     _, area, kw = chamadas[0]
     assert area == {"geometry": POLI}
@@ -107,7 +107,7 @@ def test_recomendacao_dados_proprios(client, chamadas):
     assert kw["analise_solo"] == {"argila_pct": 65.0, "areia_pct": 10.0, "materia_organica_pct": 3.5, "cad_mm_cm": 1.4}
     assert kw["restricoes"] == corpo["restricoes"]
     assert kw["irrigacao"] == {"disponivel": True, "custo_r_mm_ha": 4.5}
-    # sem as entradas novas, chegam None
+    # without the new inputs, they arrive as None
     client.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA})
     kw = chamadas[1][2]
     assert kw["analise_solo"] is None and kw["restricoes"] is None and kw["irrigacao"] is None
@@ -134,8 +134,8 @@ def test_clima_atalho(client, chamadas):
         {"area": {"lat": -24.9}},
         {"area": {"talhao_id": "1", "geometry": POLI}},
         {"area": {"talhao_id": "1"}, **RA, "semeadura_safrinha": "10/02"},
-        {"area": {"talhao_id": "1"}},  # rotacao_atual é obrigatória
-        {"area": {"talhao_id": "1"}, **RA, "estagio_verao": "pendoamento"},  # estágio de milho com verão soja
+        {"area": {"talhao_id": "1"}},  # rotacao_atual is required
+        {"area": {"talhao_id": "1"}, **RA, "estagio_verao": "pendoamento"},  # corn stage with a soybean summer crop
         {"area": {"talhao_id": "1"}, **RA, "estagio_verao": "colheita"},
         {"area": {"talhao_id": "1"}, "rotacao_atual": "milho_verao__aveia", "estagio_verao": "enchimento_graos"},
         {"area": {"talhao_id": "1"}, **RA, "colheita_prevista": "2026-01-10"},
@@ -193,7 +193,7 @@ def test_mapeamento_erros(client, falso, monkeypatch, rota, metodo, corpo):
     for exc, status, codigo in [
         (svc.ForaDaRegiao("fora"), 422, "fora_da_regiao"),
         (svc.EntradaInvalida("ruim"), 400, "entrada_invalida"),
-        (RuntimeError("segredo interno"), 500, "interno"),
+        (RuntimeError("internal secret"), 500, "interno"),
     ]:
         def levanta(*a, _e=exc, **k):
             raise _e
@@ -213,7 +213,7 @@ def test_mapeamento_erros(client, falso, monkeypatch, rota, metodo, corpo):
 def test_openapi_exemplos(client):
     j = client.get("/openapi.json").json()
     assert j["info"]["version"] == "0.1.0"
-    assert "Oeste do Paraná" in j["info"]["description"]
+    assert "Western Paraná" in j["info"]["description"]
     exs = j["components"]["schemas"]["RecomendacaoIn"]["examples"]
     assert exs[0]["area"]["talhao_id"] == "72638" and exs[0]["estagio_verao"] == "enchimento_graos"
     assert exs[0]["data_referencia"] == "2026-12-01"

@@ -1,9 +1,9 @@
-"""MJO: fase e amplitude atuais (índice ROMI, NOAA PSL; OLR em tempo quase real).
+"""MJO: current phase and amplitude (ROMI index, NOAA PSL; near-real-time OLR).
 
-Fonte: https://psl.noaa.gov/mjo/mjoindex/romi.cpcolr.1x.txt (colunas: ano mês dia hora PC1 PC2 amplitude).
-O RMM da BoM bloqueia acesso automatizado (HTTP 403) e o OMI do PSL está parado desde jun/2026, então
-usamos o ROMI. Para obter a fase no padrão RMM (1–8): RMM1 = PC2 e RMM2 = -PC1 (convenção do PSL para
-comparar OMI/ROMI com RMM). Amplitude < 1: MJO fraca/indefinida. Só informativo.
+Source: https://psl.noaa.gov/mjo/mjoindex/romi.cpcolr.1x.txt (columns: year month day hour PC1 PC2 amplitude).
+The BoM RMM blocks automated access (HTTP 403) and the PSL OMI has been stalled since Jun/2026, so
+we use ROMI. To get the phase in the RMM standard (1–8): RMM1 = PC2 and RMM2 = -PC1 (PSL convention for
+comparing OMI/ROMI with RMM). Amplitude < 1: weak/undefined MJO. Informational only.
 """
 from __future__ import annotations
 
@@ -14,8 +14,8 @@ from . import _base as B
 
 URL = "https://psl.noaa.gov/mjo/mjoindex/romi.cpcolr.1x.txt"
 FONTE = B.fonte("NOAA PSL — ROMI (Real-time OLR MJO Index)", URL)
-FRASE = ("A MJO modula a chuva no Sul do Brasil em escala de semanas, com efeito modesto que depende da fase e da estação; "
-         "é só contexto, não previsão para o talhão.")
+FRASE = ("The MJO modulates rainfall in southern Brazil on a scale of weeks, with a modest effect that depends on the phase and the season; "
+         "it is context only, not a forecast for the field.")
 
 
 def fase_rmm(pc1: float, pc2: float) -> tuple[int, float]:
@@ -36,7 +36,7 @@ def parse(txt: str) -> list[dict[str, Any]]:
             except ValueError:
                 pass
     if not linhas:
-        raise ValueError("arquivo ROMI vazio ou em formato inesperado")
+        raise ValueError("ROMI file empty or in an unexpected format")
     return linhas
 
 
@@ -45,7 +45,7 @@ def consultar(cache_only: bool = False) -> dict[str, Any]:
         if cache_only:
             bruto = B.ler_cache("mjo", B.TTL_MJO)
             if bruto is None:
-                raise LookupError("sem cache; consulte GET /v1/contexto")
+                raise LookupError("no cache; query GET /v1/contexto")
             cache = True
         else:
             bruto, cache = B.com_cache("mjo", B.TTL_MJO, lambda: parse(B.baixar_texto(URL)))
@@ -54,7 +54,7 @@ def consultar(cache_only: bool = False) -> dict[str, Any]:
         forte = amp >= 1.0
         return {"do_cache": cache, "data_ultimo_dado": u["data"], "fase": fase if forte else None, "fase_calculada": fase,
                 "amplitude": round(amp, 2), "ativa": forte,
-                "texto": (f"NOAA PSL (ROMI) em {u['data']}: MJO {'ativa, fase ' + str(fase) if forte else 'fraca ou indefinida'} "
+                "texto": (f"NOAA PSL (ROMI) on {u['data']}: MJO {'active, phase ' + str(fase) if forte else 'weak or undefined'} "
                           f"(amplitude {amp:.2f}). " + FRASE)}
 
     return B.seguro("mjo", FONTE, _fn)

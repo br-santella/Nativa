@@ -1,7 +1,7 @@
-"""Contexto atual (informativo): consulta fontes oficiais sobre eventos climáticos/fitossanitários em curso.
+"""Current context (informational): queries official sources about ongoing climate/plant-health events.
 
-NÃO prevê nada e NÃO altera ranking ou notas do motor. Cada fonte tem timeout, cache em disco e fallback
-({"disponivel": False, "motivo": ...}); uma fonte que falha nunca derruba as outras.
+It forecasts NOTHING and does NOT change the engine's ranking or scores. Each source has a timeout, disk cache and fallback
+({"disponivel": False, "motivo": ...}); a failing source never brings down the others.
 """
 from __future__ import annotations
 
@@ -11,12 +11,12 @@ from typing import Any
 from . import _base as B
 from . import alertas_inmet, enso, mjo, pragas, smap
 
-AVISO = ("Contexto informativo de fontes oficiais (NOAA, NASA, IDR-PR/ADAPAR). Não é previsão para o talhão e não "
-         "altera o ranking nem a nota das rotações.")
+AVISO = ("Informational context from official sources (NOAA, NASA, IDR-PR/ADAPAR). It is not a forecast for the field and does not "
+         "change the ranking or the score of the rotations.")
 
 
 def montar(lat: float, lon: float, semeadura: str = "01/02", cache_only: bool = False) -> dict[str, Any]:
-    """Contexto para um ponto (centroide do talhão) dentro do Oeste do PR. Nunca levanta exceção por falha de fonte."""
+    """Context for a point (field centroid) inside Western Paraná. Never raises because of a source failure."""
     from field_shift.clima.lookup import indicadores_para
 
     try:
@@ -39,7 +39,7 @@ def montar(lat: float, lon: float, semeadura: str = "01/02", cache_only: bool = 
         for k, fut in futs.items():
             try:
                 out[k] = fut.result()
-            except Exception as exc:  # defesa extra: cada fonte já é "segura"
+            except Exception as exc:  # extra safety: each source is already "safe"
                 out[k] = B.indisponivel(f"{type(exc).__name__}: {exc}"[:300], B.fonte(k, ""))
     return {"consultado_em": B.agora_iso(), "aviso": AVISO,
             "local": {"lat": lat, "lon": lon, "municipio": nome_mun, "celula_clima": celula, "semeadura_safrinha": semeadura},

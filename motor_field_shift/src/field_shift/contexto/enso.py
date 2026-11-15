@@ -1,14 +1,14 @@
-"""ENSO: status oficial da NOAA CPC, tabela ONI e histórico por fase para a célula do talhão.
+"""ENSO: official NOAA CPC status, the ONI table and the per-phase history for the field's cell.
 
-Fontes:
-- Status/sinopse: https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml
-  (HTML; texto após "ENSO Alert System Status:" e bloco "Synopsis:"). Não há JSON; extração por texto.
-- ONI: https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt (colunas SEAS YR TOTAL ANOM).
+Sources:
+- Status/synopsis: https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml
+  (HTML; text after "ENSO Alert System Status:" and the "Synopsis:" block). There is no JSON; extraction from text.
+- ONI: https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt (columns SEAS YR TOTAL ANOM).
 
-Convenção do ano agrícola (projeto): Y = jul/Y a jun/Y+1. A fase do ENSO do ano agrícola Y é a do
-trimestre DJF (dez/Y, jan/Y+1, fev/Y+1), o pico do verão austral, que cai no meio do ciclo da soja
-e antes da safrinha. Fase: ONI >= +0,5 El Niño; <= -0,5 La Niña; senão Neutro.
-Os anos 1991–2024 são os mesmos do motor (indicadores_anuais.parquet).
+Agricultural-year convention (project): Y = Jul/Y to Jun/Y+1. The ENSO phase of agricultural year Y is the one of
+the DJF quarter (Dec/Y, Jan/Y+1, Feb/Y+1), the peak of the austral summer, which falls mid soybean cycle
+and before the off-season. Phase: ONI >= +0.5 El Niño; <= -0.5 La Niña; otherwise Neutro.
+The years 1991–2024 are the same as the engine's (indicadores_anuais.parquet).
 """
 from __future__ import annotations
 
@@ -23,13 +23,13 @@ from . import _base as B
 
 URL_STATUS = "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"
 URL_ONI = "https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt"
-FONTE = B.fonte("NOAA Climate Prediction Center (CPC) — ENSO Diagnostic Discussion e ONI", URL_STATUS)
+FONTE = B.fonte("NOAA Climate Prediction Center (CPC) — ENSO Diagnostic Discussion and ONI", URL_STATUS)
 LIMIAR = 0.5
 FASES = ("El Niño", "La Niña", "Neutro")
-INDICADORES = {  # nome amigável -> (rótulo, indicador do motor; {tag} = semeadura sem barra)
-    "veranico_safrinha": ("veranico no safrinha", "veranico_safrinha_ge15"),
-    "geada_safrinha": ("geada no safrinha", "geada_safrinha_semeadura_{tag}_le3"),
-    "geada_trigo": ("geada no trigo", "geada_trigo_le3"),
+INDICADORES = {  # friendly name -> (label, engine indicator; {tag} = sowing date without the slash)
+    "veranico_safrinha": ("off-season dry spell", "veranico_safrinha_ge15"),
+    "geada_safrinha": ("off-season frost", "geada_safrinha_semeadura_{tag}_le3"),
+    "geada_trigo": ("wheat frost", "geada_trigo_le3"),
 }
 
 
@@ -47,7 +47,7 @@ def parse_oni(txt: str) -> list[dict[str, Any]]:
             except ValueError:
                 pass
     if not out:
-        raise ValueError("tabela ONI vazia ou em formato inesperado")
+        raise ValueError("ONI table empty or in an unexpected format")
     return out
 
 
@@ -56,7 +56,7 @@ def parse_status(htm: str) -> dict[str, Any]:
     txt = re.sub(r"\s+", " ", txt)
     m = re.search(r"ENSO Alert System Status:\s*(.{3,40}?)\s+Synopsis:\s*(.+?)(?:\s{2,}|Compared to|$)", txt)
     if not m:
-        raise ValueError("status do ENSO não encontrado na página do CPC")
+        raise ValueError("ENSO status not found on the CPC page")
     status = m.group(1).strip()
     sinopse = m.group(2).strip()
     emitido = re.search(r"issued by.*?(\d{1,2} [A-Z][a-z]+ \d{4})", txt)
@@ -80,7 +80,7 @@ def _busca() -> dict[str, Any]:
 
 
 def fase_por_ano_agricola(oni: list[dict]) -> dict[int, dict[str, Any]]:
-    """{Y: {fase, oni}} usando DJF cuja rotulagem no arquivo é o ano Y+1."""
+    """{Y: {fase, oni}} using DJF, which the file labels as year Y+1."""
     djf = {r["ano"]: r["oni"] for r in oni if r["trimestre"] == "DJF"}
     return {y: {"fase": classificar(djf[y + 1]), "oni": djf[y + 1]} for y in range(1991, 2025) if (y + 1) in djf}
 
@@ -95,8 +95,8 @@ def historico_por_fase(celula_id: str, semeadura: str, oni: list[dict], anuais: 
     df = _anuais() if anuais is None else anuais
     fases = fase_por_ano_agricola(oni)
     tag = semeadura.replace("/", "")
-    out: dict[str, Any] = {"convencao": "ano agrícola Y = jul/Y a jun/Y+1; fase = ONI do trimestre DJF (dez/Y a fev/Y+1); "
-                                        "El Niño ONI >= +0,5, La Niña <= -0,5, senão Neutro",
+    out: dict[str, Any] = {"convencao": "agricultural year Y = Jul/Y to Jun/Y+1; phase = ONI of the DJF quarter (Dec/Y to Feb/Y+1); "
+                                        "El Niño ONI >= +0.5, La Niña <= -0.5, otherwise Neutro",
                            "anos_por_fase": {f: sorted(a for a, v in fases.items() if v["fase"] == f) for f in FASES},
                            "indicadores": {}}
     sub = df[df.ponto_id == celula_id]
@@ -125,8 +125,8 @@ def frase_historico(fase: str, hist: dict[str, Any], chave: str = "veranico_safr
     pf = ind["por_fase"][fase]
     if not pf["n_anos"]:
         return None
-    return (f"Em anos de {fase} na série deste talhão, houve {ind['rotulo']} em {pf['anos_com_evento']} de {pf['n_anos']} anos "
-            f"(contra {ind['frequencia_media_geral']:.0%} na média de {ind['n_anos_total']} anos).")
+    return (f"In {fase} years in this field's series, there was {ind['rotulo']} in {pf['anos_com_evento']} of {pf['n_anos']} years "
+            f"(vs {ind['frequencia_media_geral']:.0%} on average over {ind['n_anos_total']} years).")
 
 
 def consultar(celula_id: str | None, semeadura: str = "01/02", cache_only: bool = False) -> dict[str, Any]:
@@ -134,7 +134,7 @@ def consultar(celula_id: str | None, semeadura: str = "01/02", cache_only: bool 
         if cache_only:
             bruto = B.ler_cache("enso", B.TTL_ENSO)
             if bruto is None:
-                raise LookupError("sem cache; consulte GET /v1/contexto")
+                raise LookupError("no cache; query GET /v1/contexto")
             cache = True
         else:
             bruto, cache = B.com_cache("enso", B.TTL_ENSO, _busca)
@@ -149,9 +149,9 @@ def consultar(celula_id: str | None, semeadura: str = "01/02", cache_only: bool 
                            "classe": classificar(ult["oni"])},
             "boletim": {"emitido_em": st["emitido_em"], "proximo": st["proximo_boletim"],
                         "sinopse_original_en": st["sinopse"], "percentuais_citados": st["percentuais_citados"]},
-            "texto": (f"NOAA/CPC indica {fase} em curso (status do alerta: {st['status']}); último ONI "
-                      f"{ult['trimestre']} {ult['ano']} = {ult['oni']:+.2f}. Previsão e status são da NOAA; "
-                      "o ENSO não prevê o clima deste talhão."),
+            "texto": (f"NOAA/CPC indicates {fase} under way (alert status: {st['status']}); latest ONI "
+                      f"{ult['trimestre']} {ult['ano']} = {ult['oni']:+.2f}. Forecast and status are NOAA's; "
+                      "ENSO does not forecast this field's climate."),
             "oni_historico_recente": oni[-12:],
         }
         if celula_id:
@@ -161,8 +161,8 @@ def consultar(celula_id: str | None, semeadura: str = "01/02", cache_only: bool 
                 frases = [frase_historico(fase, hist, k) for k in INDICADORES]
                 out["frases_historico"] = [f for f in frases if f]
                 out["frase_historico"] = out["frases_historico"][0] if out["frases_historico"] else None
-                out["aviso_historico"] = ("Cerca de 10 anos por fase: diferenças pequenas entre fases podem ser ruído "
-                                          "amostral; é frequência histórica, não previsão.")
+                out["aviso_historico"] = ("About 10 years per phase: small differences between phases may be sampling "
+                                          "noise; this is historical frequency, not a forecast.")
             except Exception as exc:
                 out["historico_por_fase"] = {"disponivel": False, "motivo": f"{type(exc).__name__}: {exc}"[:200]}
         return out

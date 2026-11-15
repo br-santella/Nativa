@@ -90,7 +90,7 @@ _CUSTO_ALIAS = {"milho": "milho_2safra", "milho_verao": "milho_1safra", "feijao"
 _PRODUTIVIDADE = ("soja", "milho_2safra", "trigo", "milho_1safra", "feijao_2safra", "sorgo")
 
 
-# --------------------------------------------------------------------------- utilidades
+# --------------------------------------------------------------------------- utilities
 def _limpo(o):
     """Converts to native JSON types: numpy -> python, NaN/inf -> None, tuples -> lists, keys -> str."""
     if o is None or isinstance(o, (str, bool)):
@@ -167,7 +167,7 @@ def _geojson(poly: BaseGeometry) -> dict:
     return json.loads(shapely.to_geojson(shapely.set_precision(poly, 1e-6)))
 
 
-# --------------------------------------------------------------------------- 1. resolver a área
+# --------------------------------------------------------------------------- 1. resolve the area
 def _poligono_geojson(g) -> BaseGeometry:
     if not isinstance(g, dict):
         raise EntradaInvalida("'geometry' deve ser um objeto GeoJSON (Polygon, MultiPolygon ou Feature).")
@@ -908,7 +908,7 @@ def opcoes() -> dict:
     ref = carregar_referencia()
     fontes = [dict(item=f"price {k}", fonte=v["fonte"], periodo=v.get("periodo"), estimativa=v.get("estimativa", False), url=v.get("url"))
               for k, v in ref["precos"].items()]
-    fontes += [dict(item=f"custo {k}", fonte=v["fonte"], estimativa=v.get("estimativa", False), url=v.get("url"))
+    fontes += [dict(item=f"cost {k}", fonte=v["fonte"], estimativa=v.get("estimativa", False), url=v.get("url"))
                for k, v in ref["custos"].items()]
     return _limpo(dict(
         culturas_verao=[dict(id=k, nome=v["nome"], tipo="grão", descricao_curta=v["descricao"],

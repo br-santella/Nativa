@@ -1,8 +1,8 @@
-"""Infraestrutura comum das fontes de contexto: cache em disco com TTL, fallback e carimbos.
+"""Shared infrastructure of the context sources: disk cache with TTL, fallback and timestamps.
 
-Regras: cada fonte tem timeout curto, nunca levanta exceção para o chamador e devolve sempre
-`consultado_em` e `fonte` (nome + URL). Falha vira {"disponivel": False, "motivo": ...}.
-O contexto é informativo: nada aqui altera ranking ou nota do motor.
+Rules: each source has a short timeout, never raises an exception to the caller and always returns
+`consultado_em` and `fonte` (name + URL). A failure becomes {"disponivel": False, "motivo": ...}.
+The context is informational: nothing here changes the engine's ranking or score.
 """
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[3]
 CACHE_DIR = Path(os.environ.get("FIELD_SHIFT_CACHE_CONTEXTO", ROOT / "data/cache_contexto"))
 CURADO_DIR = ROOT / "data/contexto"
 TIMEOUT_HTTP = 15  # s
-UA = "FieldShift/0.1 (NASA Space Apps 2026; contexto informativo)"
+UA = "FieldShift/0.1 (NASA Space Apps 2026; informational context)"
 
 TTL_ENSO = 24 * 3600
 TTL_SMAP = 24 * 3600
@@ -56,7 +56,7 @@ def ler_cache(chave: str, ttl: float, permitir_vencido: bool = False) -> Any | N
         if not permitir_vencido and time.time() - p.stat().st_mtime > ttl:
             return None
         return json.loads(p.read_text(encoding="utf-8"))
-    except Exception:  # cache corrompido não pode quebrar nada
+    except Exception:  # a corrupted cache must not break anything
         return None
 
 
@@ -67,12 +67,12 @@ def gravar_cache(chave: str, valor: Any) -> None:
         tmp.write_text(json.dumps(valor, ensure_ascii=False), encoding="utf-8")
         tmp.replace(_arquivo(chave))
     except Exception:
-        log.warning("não foi possível gravar cache %s", chave, exc_info=True)
+        log.warning("could not write cache %s", chave, exc_info=True)
 
 
 def com_cache(chave: str, ttl: float, buscar: Callable[[], Any]) -> tuple[Any, bool]:
-    """Valor bruto da fonte com cache. Devolve (valor, veio_do_cache). `buscar` pode levantar exceção:
-    nesse caso, usa o cache vencido (se existir) e marca; sem cache, repassa a exceção."""
+    """Raw value of the source with cache. Returns (value, came_from_cache). `buscar` may raise:
+    in that case, it uses the expired cache (if any) and flags it; without a cache, it re-raises the exception."""
     v = ler_cache(chave, ttl)
     if v is not None:
         return v, True
@@ -81,7 +81,7 @@ def com_cache(chave: str, ttl: float, buscar: Callable[[], Any]) -> tuple[Any, b
     except Exception:
         velho = ler_cache(chave, ttl, permitir_vencido=True)
         if velho is not None:
-            log.warning("fonte %s falhou; usando cache vencido", chave)
+            log.warning("source %s failed; using expired cache", chave)
             return velho, True
         raise
     gravar_cache(chave, v)
@@ -97,7 +97,7 @@ def baixar_texto(url: str, timeout: float = TIMEOUT_HTTP, params: dict | None = 
 
 
 def seguro(nome: str, fonte_: dict[str, str], fn: Callable[[], dict[str, Any]]) -> dict[str, Any]:
-    """Executa a consulta de uma fonte garantindo o contrato (nunca levanta)."""
+    """Runs a source query while guaranteeing the contract (never raises)."""
     try:
         out = fn()
         out.setdefault("consultado_em", agora_iso())
@@ -105,5 +105,5 @@ def seguro(nome: str, fonte_: dict[str, str], fn: Callable[[], dict[str, Any]]) 
         out.setdefault("disponivel", True)
         return out
     except Exception as exc:
-        log.warning("fonte de contexto %s indisponível: %s: %s", nome, type(exc).__name__, exc)
+        log.warning("context source %s unavailable: %s: %s", nome, type(exc).__name__, exc)
         return indisponivel(f"{type(exc).__name__}: {exc}"[:300], fonte_)

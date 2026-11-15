@@ -1,4 +1,4 @@
-"""Validação do campo `rotacoes` e dos ids de rotação na API (serviço falso: só o contrato de entrada/saída)."""
+"""Validation of the `rotacoes` field and the rotation ids in the API (fake service: input/output contract only)."""
 
 from __future__ import annotations
 
@@ -27,13 +27,13 @@ def test_sem_rotacoes_avalia_tudo(client, chamadas):
 @pytest.mark.parametrize(
     "rotacoes",
     [
-        [],  # vazia
-        [OK, OK],  # duplicada
-        [{"verao": "soja", "segunda": "girassol"}],  # fora do enum
+        [],  # empty
+        [OK, OK],  # duplicated
+        [{"verao": "soja", "segunda": "girassol"}],  # outside the enum
         [{"verao": "trigo", "segunda": "milho_safrinha"}],
-        [{"verao": "soja"}],  # falta campo
-        [{"verao": "soja", "segunda": "pousio", "x": 1}],  # campo extra
-        ["soja__milho_safrinha"],  # texto livre no lugar do par
+        [{"verao": "soja"}],  # missing field
+        [{"verao": "soja", "segunda": "pousio", "x": 1}],  # extra field
+        ["soja__milho_safrinha"],  # free text instead of the pair
     ],
 )
 def test_rotacoes_invalidas_422(client, chamadas, rotacoes):
@@ -69,13 +69,13 @@ def test_estagios_e_calendario_repassados_ao_servico(client, chamadas):
 def test_estagio_do_milho_com_verao_milho_ok_e_com_soja_422(client, chamadas):
     ok = {"area": AREA, "rotacao_atual": "milho_verao__aveia", "estagio_verao": "grao_leitoso"}
     assert client.post("/v1/recomendacao", json=ok).status_code == 200
-    r = client.post("/v1/recomendacao", json={**ok, "rotacao_atual": "milho_safrinha"})  # slug antigo = soja no verão
+    r = client.post("/v1/recomendacao", json={**ok, "rotacao_atual": "milho_safrinha"})  # old slug = soybean in summer
     assert r.status_code == 422 and "milho verao" in r.text.replace("_", " ") and len(chamadas) == 1
 
 
 def test_semeadura_anterior_a_colheita_422_com_mensagem(client, chamadas):
     r = client.post("/v1/recomendacao", json={"area": AREA, **RA, "colheita_prevista": "20/02", "semeadura_safrinha": "01/02"})
-    assert r.status_code == 422 and "anterior à colheita" in r.text and not chamadas
+    assert r.status_code == 422 and "earlier than" in r.text and not chamadas
 
 
 def test_rotacao_atual_obrigatoria_422(client, chamadas):

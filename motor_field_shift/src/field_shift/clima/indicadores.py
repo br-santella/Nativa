@@ -92,7 +92,7 @@ def _inicio_chuvas(p: pd.Series, y: int) -> float:
     return np.nan
 
 
-# ----------------------------------------------------------------------------- por ponto
+# ----------------------------------------------------------------------------- per point
 def indicadores_ponto(df: pd.DataFrame, lat: float, elev: float) -> dict[str, dict[int, float]]:
     df = df.sort_index()
     df = df.loc["1991-01-01":"2025-12-31"]

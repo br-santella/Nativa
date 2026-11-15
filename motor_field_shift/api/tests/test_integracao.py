@@ -1,4 +1,4 @@
-"""Testes contra o serviço real (precisam dos dados em data/). Rodar: uv run pytest -m integracao"""
+"""Tests against the real service (they need the data in data/). Run: uv run pytest -m integracao"""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from conftest import SERVICO_REAL
 RA = {"rotacao_atual": "soja__milho_safrinha"}
 pytestmark = [
     pytest.mark.integracao,
-    pytest.mark.skipif(not SERVICO_REAL, reason="serviço real ainda não existe"),
+    pytest.mark.skipif(not SERVICO_REAL, reason="the real service does not exist yet"),
 ]
 
 
@@ -42,12 +42,12 @@ def test_fora_da_regiao(real):
 def test_notas_72638(real):
     r = real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "semeadura_safrinha": "01/02"})
     rk = r.json()["ranking"]
-    notas = {i.get("id_legado"): i["nota"] for i in rk if "id_legado" in i}  # as 6 rotações antigas (soja no verão)
+    notas = {i.get("id_legado"): i["nota"] for i in rk if "id_legado" in i}  # the 6 old rotations (soybean in summer)
     assert notas["milho_braquiaria"] == 0.814
     assert notas["milho_safrinha"] == 0.757 and notas["milheto_crotalaria"] == 0.756
     assert notas["aveia"] == 0.698 and notas["pousio"] == 0.547 and notas["trigo"] == 0.466
     assert rk[0]["margem"]["incremental_r_ha"] == 1033 and rk[0]["margem"]["escala_S_r_ha"] == 1083
-    assert rk[0]["id"] == "soja__milho_braquiaria" and rk[0]["card"]["por_que"].startswith("Em relação à atual (milho safrinha)")
+    assert rk[0]["id"] == "soja__milho_braquiaria" and rk[0]["card"]["por_que"].startswith("Compared with the current rotation (off-season corn)")
 
 
 def test_ponto_guaira(real):
@@ -85,19 +85,19 @@ def test_recomendacao_dados_proprios(real):
     assert r.status_code == 200
     j = r.json()
     assert {"soja__soja_safrinha", "soja__trigo"} <= {e["id"] for e in j["eliminadas"]}
-    assert j["diagnostico"]["solo"]["fonte"] == "análise de solo do produtor"
+    assert j["diagnostico"]["solo"]["fonte"] == "farmer's soil analysis"
     top = {x["id"]: x for x in j["ranking"]}
     assert top["soja__milho_braquiaria"]["irrigacao"]["lamina_media_mm_ano"] > 0
     assert any("terceirizar" in a for a in top["soja__milho_braquiaria"]["card"]["avisos"])
     assert j["metodologia"]["ajustes_aplicados"]
-    # entradas inválidas: Pydantic (422) e motor (400)
+    # invalid inputs: Pydantic (422) and engine (400)
     assert real.post("/v1/recomendacao", json={**corpo, "analise_solo": {"argila_pct": 70, "areia_pct": 40}}).status_code == 422
     assert real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "restricoes": {
         "culturas_excluidas": ["milho_safrinha", "milho_braquiaria", "trigo", "aveia", "milheto_crotalaria", "pousio"],
-        "sem_comprador": ["milho"]}, "rotacoes": [{"verao": "soja", "segunda": "milho_safrinha"}]}).status_code == 200  # `rotacoes` só eliminadas: sem erro
+        "sem_comprador": ["milho"]}, "rotacoes": [{"verao": "soja", "segunda": "milho_safrinha"}]}).status_code == 200  # `rotacoes` all eliminated: no error
     assert real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "restricoes": {
         "culturas_excluidas": ["milho_safrinha", "milho_braquiaria", "trigo", "aveia", "milheto_crotalaria", "pousio"],
-        "sem_comprador": ["milho"]}}).status_code == 200  # os slugs antigos só valem p/ soja; sobram nabo, sorgo, feijão
+        "sem_comprador": ["milho"]}}).status_code == 200  # the old slugs only apply to soybean; radish, sorghum and beans remain
 
 
 def test_rotacoes_pedidas(real):
@@ -136,8 +136,8 @@ def test_soja_enchimento_graos_exemplo_principal(real):
     assert j["ranking"] == j["agora"]["ranking"] and all(x["id"].startswith("soja__") for x in j["agora"]["ranking"])
     assert all(x["id"].startswith("milho_verao__") for x in j["proxima_safra"]["ranking"])
     top = j["agora"]["ranking"][0]
-    assert top["ganho_vs_atual"]["soja_seguinte_sc"] == 2.0 and top["ganho_vs_atual"]["renda_2a_safra"]["origem"].startswith("dado")
-    # 422 do contrato novo
+    assert top["ganho_vs_atual"]["soja_seguinte_sc"] == 2.0 and top["ganho_vs_atual"]["renda_2a_safra"]["origem"].startswith("data")
+    # 422 from the new contract
     assert real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}}).status_code == 422
     assert real.post("/v1/recomendacao", json={**corpo, "estagio_verao": "pendoamento"}).status_code == 422
     assert real.post("/v1/recomendacao", json={**corpo, "estagio_verao": "floracao", "semeadura_safrinha": "15/01"}).status_code == 422
@@ -145,4 +145,4 @@ def test_soja_enchimento_graos_exemplo_principal(real):
 
 def test_opcoes_estagios(real):
     soja = next(c for c in real.get("/v1/opcoes").json()["culturas_verao"] if c["id"] == "soja")
-    assert soja["estagios"][3] == {"id": "enchimento_graos", "nome": "Enchimento de grãos (R5–R6)", "dias_ate_colheita": 32}
+    assert soja["estagios"][3] == {"id": "enchimento_graos", "nome": "Grain fill (R5–R6)", "dias_ate_colheita": 32}

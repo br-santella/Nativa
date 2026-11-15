@@ -1,4 +1,4 @@
-"""Testes das fontes de contexto com rede mockada (sem acesso à internet, cache em diretório temporário)."""
+"""Tests of the context sources with a mocked network (no internet access, cache in a temporary directory)."""
 from __future__ import annotations
 
 import json
@@ -34,7 +34,7 @@ def cache_tmp(tmp_path, monkeypatch):
 def _rede_enso(monkeypatch, falhar=False):
     def baixar(url, *a, **k):
         if falhar:
-            raise ConnectionError("sem rede")
+            raise ConnectionError("no network")
         return ONI_TXT if "oni.ascii" in url else STATUS_HTML
     monkeypatch.setattr(B, "baixar_texto", baixar)
 
@@ -42,7 +42,7 @@ def _rede_enso(monkeypatch, falhar=False):
 def test_enso_sucesso_e_historico(monkeypatch):
     _rede_enso(monkeypatch)
     anuais = []
-    # anos agrícolas 1991..1995 -> DJF 1992..1996 (El Niño, Neutro, La Niña, El Niño, La Niña)
+    # agricultural years 1991..1995 -> DJF 1992..1996 (El Niño, Neutro, La Niña, El Niño, La Niña)
     for y, v in zip(range(1991, 1996), [1, 0, 0, 1, 0]):
         anuais.append(("c1", y, "veranico_safrinha_ge15", float(v)))
     monkeypatch.setattr(enso, "_anuais", lambda: pd.DataFrame(anuais, columns=["ponto_id", "ano", "indicador", "valor"]))
@@ -52,8 +52,8 @@ def test_enso_sucesso_e_historico(monkeypatch):
     h = r["historico_por_fase"]["indicadores"]["veranico_safrinha"]
     assert h["por_fase"]["El Niño"] == {"n_anos": 2, "anos_com_evento": 2, "frequencia": 1.0}
     assert h["por_fase"]["La Niña"]["n_anos"] == 2 and h["por_fase"]["Neutro"]["n_anos"] == 1
-    assert r["frase_historico"] == ("Em anos de El Niño na série deste talhão, houve veranico no safrinha em 2 de 2 anos "
-                                    "(contra 40% na média de 5 anos).")
+    assert r["frase_historico"] == ("In El Niño years in this field's series, there was off-season dry spell in 2 of 2 years "
+                                    "(vs 40% on average over 5 years).")
     assert r["consultado_em"] and r["fonte"]["url"].startswith("https://www.cpc.ncep.noaa.gov")
 
 
@@ -62,13 +62,13 @@ def test_enso_cache_e_fallback_com_cache_vencido(monkeypatch):
     monkeypatch.setattr(enso, "_anuais", lambda: pd.DataFrame(columns=["ponto_id", "ano", "indicador", "valor"]))
     assert enso.consultar(None)["do_cache"] is False
     _rede_enso(monkeypatch, falhar=True)
-    assert enso.consultar(None)["do_cache"] is True  # nem tocou na rede
+    assert enso.consultar(None)["do_cache"] is True  # did not even touch the network
 
 
 def test_enso_fallback_sem_rede(monkeypatch):
     _rede_enso(monkeypatch, falhar=True)
     r = enso.consultar(None)
-    assert r["disponivel"] is False and "sem rede" in r["motivo"] and r["fonte"]["url"] and r["consultado_em"]
+    assert r["disponivel"] is False and "no network" in r["motivo"] and r["fonte"]["url"] and r["consultado_em"]
 
 
 def test_enso_formato_inesperado(monkeypatch):
@@ -83,7 +83,7 @@ def test_classificar_e_cache_only(monkeypatch):
 
 
 def test_mjo_fase_e_fallback(monkeypatch):
-    # PC1=0,PC2=1 -> RMM1=1, RMM2=0 -> ângulo 0 -> fase 5; amplitude 1
+    # PC1=0,PC2=1 -> RMM1=1, RMM2=0 -> angle 0 -> phase 5; amplitude 1
     assert mjo.fase_rmm(0.0, 1.0)[0] == 5
     assert mjo.fase_rmm(0.0, -1.0)[0] == 1
     assert mjo.fase_rmm(1.0, 0.0)[0] == 7 or mjo.fase_rmm(1.0, 0.0)[0] in range(1, 9)
@@ -117,7 +117,7 @@ def test_ferrugem_resumo():
     r = pragas.resumir_ferrugem(PONTOS, -24.81, -53.55, "Toledo", "2026/2027")
     assert r["municipio"] == {"nome": "Toledo", "coletores": 1, "com_esporos": 1, "ultima_deteccao": "03/11/2026"}
     assert r["mesorregiao_oeste"]["coletores"] == 2 and r["raio_100_km"]["coletores"] == 2
-    assert "IDR-PR" in r["texto"] and "não altera a nota" in r["texto"]
+    assert "IDR-PR" in r["texto"] and "does not change the score" in r["texto"]
 
 
 def test_ferrugem_consulta_mock_e_falha(monkeypatch):
@@ -126,11 +126,11 @@ def test_ferrugem_consulta_mock_e_falha(monkeypatch):
     assert r["disponivel"] and r["safra"] == pragas.safra_atual() and r["fonte"]["url"].startswith("https://geoserver.pr.gov.br")
 
     def erro(safra):
-        raise ConnectionError("fora do ar")
+        raise ConnectionError("down")
     monkeypatch.setattr(pragas, "_buscar_ferrugem", erro)
     monkeypatch.setattr(B, "CACHE_DIR", B.CACHE_DIR / "x")
     r = pragas.consultar_ferrugem(-24.81, -53.55, "Toledo")
-    assert r["disponivel"] is False and "fora do ar" in r["motivo"]
+    assert r["disponivel"] is False and "down" in r["motivo"]
 
 
 def test_safra_atual():
@@ -149,13 +149,13 @@ def test_curado_vigente_vencido_e_regiao(tmp_path):
             "url": "https://x", "data": "2026-11-05", "validade_dias": 30}
     arq = _curado(tmp_path, [
         {**base, "id": "a", "regiao": ["Oeste do PR"]},
-        {**base, "id": "b", "regiao": ["Oeste do PR"], "data": "2026-01-01"},       # vencido
-        {**base, "id": "c", "regiao": ["Londrina"]},                                  # outra região
+        {**base, "id": "b", "regiao": ["Oeste do PR"], "data": "2026-01-01"},       # expired
+        {**base, "id": "c", "regiao": ["Londrina"]},                                  # another region
     ])
     r = pragas.consultar_curado("Toledo", hoje=date(2026, 11, 14), arquivo=arq)
     assert [a["id"] for a in r["alertas"]] == ["a"] and r["alertas_vencidos_ignorados"] == 1
-    assert r["alertas"][0]["texto"] == ("ADAPAR/IDR-PR indicam alta população de cigarrinha-do-milho no Oeste do PR "
-                                        "(boletim de 05/11). Atenção ao milho safrinha: rotações com cobertura reduzem a exposição.")
+    assert r["alertas"][0]["texto"] == ("ADAPAR/IDR-PR report a high population of cigarrinha-do-milho in Oeste do PR "
+                                        "(bulletin of 05/11). Watch the off-season corn: rotations with cover crops reduce the exposure.")
 
 
 def test_curado_sem_alerta_e_arquivo_ausente(tmp_path):
@@ -177,14 +177,14 @@ def test_smap_pixel_classe_e_fallback(monkeypatch):
     monkeypatch.setattr(smap, "_buscar", lambda lat, lon: bruto)
     r = smap.consultar(-24.95, -53.45)
     assert r["disponivel"] and r["classe"] == "abaixo do normal" and r["tendencia_7d_percentil"] == -18.0
-    assert "percentil 12" in r["texto"]
+    assert "percentile 12" in r["texto"]
 
     def erro(lat, lon):
-        raise RuntimeError("earthdata fora")
+        raise RuntimeError("earthdata down")
     monkeypatch.setattr(B, "CACHE_DIR", B.CACHE_DIR / "y")
     monkeypatch.setattr(smap, "_buscar", erro)
     r = smap.consultar(-24.95, -53.45)
-    assert r["disponivel"] is False and "earthdata fora" in r["motivo"] and r["fonte"]["url"]
+    assert r["disponivel"] is False and "earthdata down" in r["motivo"] and r["fonte"]["url"]
 
 
 def test_montar_isola_falhas(monkeypatch):
@@ -196,4 +196,4 @@ def test_montar_isola_falhas(monkeypatch):
     monkeypatch.setattr(contexto.pragas, "consultar", lambda *a, **k: {"disponivel": True})
     r = contexto.montar(-24.81, -53.55)
     assert r["enso"]["disponivel"] is False and r["smap"]["disponivel"] is True
-    assert r["alertas_inmet"]["disponivel"] is False and "não altera" in r["aviso"]
+    assert r["alertas_inmet"]["disponivel"] is False and "does not change" in r["aviso"]

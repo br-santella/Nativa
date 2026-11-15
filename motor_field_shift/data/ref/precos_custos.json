@@ -4,52 +4,52 @@
   "precos": {
     "soja": {
       "valor": 120.14,
-      "unidade": "R$/sc 60 kg",
+      "unidade": "BRL/bag (60 kg)",
       "estimativa": false,
-      "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)",
+      "fonte": "SEAB/DERAL-PR, mean nominal monthly prices received by farmers in Paraná (state average; the Toledo/Cascavel regional value only exists in the weekly series for the current week)",
       "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls",
       "pagina": "https://www.agricultura.pr.gov.br/deral/Precos",
-      "periodo": "nov/25 a out/26 (média de 12 meses)",
+      "periodo": "nov/25 to out/26 (12-month average)",
       "ultimo_mes": 135.53
     },
     "milho": {
       "valor": 53.89,
-      "unidade": "R$/sc 60 kg",
+      "unidade": "BRL/bag (60 kg)",
       "estimativa": false,
-      "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)",
+      "fonte": "SEAB/DERAL-PR, mean nominal monthly prices received by farmers in Paraná (state average; the Toledo/Cascavel regional value only exists in the weekly series for the current week)",
       "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls",
       "pagina": "https://www.agricultura.pr.gov.br/deral/Precos",
-      "periodo": "nov/25 a out/26 (média de 12 meses)",
+      "periodo": "nov/25 to out/26 (12-month average)",
       "ultimo_mes": 52.88
     },
     "trigo": {
       "valor": 68.44,
-      "unidade": "R$/sc 60 kg",
+      "unidade": "BRL/bag (60 kg)",
       "estimativa": false,
-      "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente)",
+      "fonte": "SEAB/DERAL-PR, mean nominal monthly prices received by farmers in Paraná (state average; the Toledo/Cascavel regional value only exists in the weekly series for the current week)",
       "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls",
       "pagina": "https://www.agricultura.pr.gov.br/deral/Precos",
-      "periodo": "nov/25 a out/26 (média de 12 meses)",
+      "periodo": "nov/25 to out/26 (12-month average)",
       "ultimo_mes": 79.38
     },
     "feijao": {
       "valor": 174.3,
-      "unidade": "R$/sc 60 kg",
+      "unidade": "BRL/bag (60 kg)",
       "estimativa": false,
-      "fonte": "SEAB/DERAL-PR, preços médios nominais mensais recebidos pelos produtores no Paraná (média do estado; o regional Toledo/Cascavel só existe na série semanal da semana corrente). Feijão = tipo preto (predominante no PR; o feijão de cor tem preço bem maior: validar o tipo)",
+      "fonte": "SEAB/DERAL-PR, mean nominal monthly prices received by farmers in Paraná (state average; the Toledo/Cascavel regional value only exists in the weekly series for the current week). Beans = black type (predominant in Paraná; colored beans have a much higher price: validate the type)",
       "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls",
       "pagina": "https://www.agricultura.pr.gov.br/deral/Precos",
-      "periodo": "nov/25 a out/26 (média de 12 meses)",
+      "periodo": "nov/25 to out/26 (12-month average)",
       "ultimo_mes": 229.45
     },
     "sorgo": {
       "valor": 43.11,
-      "unidade": "R$/sc 60 kg",
+      "unidade": "BRL/bag (60 kg)",
       "estimativa": true,
-      "fonte": "estimativa — validar: a SEAB/DERAL não publica preço do sorgo; usa 80% do preço do milho (média PR, mesmo período)",
+      "fonte": "estimate — to be validated: SEAB/DERAL does not publish a sorghum price; uses 80% of the corn price (Paraná average, same period)",
       "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls",
       "pagina": "https://www.agricultura.pr.gov.br/deral/Precos",
-      "periodo": "nov/25 a out/26 (média de 12 meses)",
+      "periodo": "nov/25 to out/26 (12-month average)",
       "ultimo_mes": 42.3
     }
   },
@@ -60,11 +60,11 @@
       "ct": 7898.06,
       "unidade": "R$/ha",
       "estimativa": false,
-      "fonte": "CONAB, soja OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 1ª safra 2026/27 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+      "fonte": "CONAB, GM soybean, no-till, high technology, commercial farming, Londrina-PR, 1st season 2026/27 (estimated, Mar/2026). coe = 'variable cost' (operating inputs + other expenses + financial costs, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + returns to factors",
       "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/serie-historica-custos-soja-1997-a-2026.xls",
       "aba": "OGM-Londrina-PR-2026",
       "consulta": "2026-11-14",
-      "curto": "CONAB Londrina-PR, safra 2026/27 (est. mar/2026)"
+      "curto": "CONAB Londrina-PR, 2026/27 season (est. Mar/2026)"
     },
     "milho_2safra": {
       "coe": 4678.1,
@@ -72,11 +72,11 @@
       "ct": 7676.89,
       "unidade": "R$/ha",
       "estimativa": false,
-      "fonte": "CONAB, milho 2ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Londrina-PR, 2026 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+      "fonte": "CONAB, GM 2nd-season corn, no-till, high technology, commercial farming, Londrina-PR, 2026 (estimated, Mar/2026). coe = 'variable cost' (operating inputs + other expenses + financial costs, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + returns to factors",
       "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_2a_safra_serie_historica_2005-2026.xls",
       "aba": "Londrina-PR-2026",
       "consulta": "2026-11-14",
-      "curto": "CONAB Londrina-PR, 2ª safra 2026 (est. mar/2026)"
+      "curto": "CONAB Londrina-PR, 2nd season 2026 (est. Mar/2026)"
     },
     "trigo": {
       "coe": 4333.52,
@@ -84,11 +84,11 @@
       "ct": 7489.11,
       "unidade": "R$/ha",
       "estimativa": false,
-      "fonte": "CONAB, trigo plantio direto alta tecnologia, agricultura empresarial, Ponta Grossa-PR, safra de inverno 2025 (ex-post, nov/2025). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+      "fonte": "CONAB, wheat, no-till, high technology, commercial farming, Ponta Grossa-PR, 2025 winter season (ex-post, Nov/2025). coe = 'variable cost' (operating inputs + other expenses + financial costs, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + returns to factors",
       "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/seriehistoricacustostrigo1998a2025.xls",
       "aba": "Ponta Grossa-PR-2025-11",
       "consulta": "2026-11-14",
-      "curto": "CONAB Ponta Grossa-PR, inverno 2025 (nov/2025)"
+      "curto": "CONAB Ponta Grossa-PR, winter 2025 (Nov/2025)"
     },
     "milho_1safra": {
       "coe": 9656.06,
@@ -96,11 +96,11 @@
       "ct": 13288.91,
       "unidade": "R$/ha",
       "estimativa": false,
-      "fonte": "CONAB, milho 1ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Ponta Grossa-PR, 2026/27 (estimado, mar/2026; produtividade de referência 12 t/ha, acima da média do Oeste do PR). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+      "fonte": "CONAB, GM 1st-season corn, no-till, high technology, commercial farming, Ponta Grossa-PR, 2026/27 (estimated, Mar/2026; reference yield 12 t/ha, above the Western Paraná average). coe = 'variable cost' (operating inputs + other expenses + financial costs, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + returns to factors",
       "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_1a_safra_serie_historica_1997-2026.xls",
       "aba": "Ponta Grossa-PR-2026",
       "consulta": "2026-11-14",
-      "curto": "CONAB Ponta Grossa-PR, 1ª safra 2026/27 (est. mar/2026)"
+      "curto": "CONAB Ponta Grossa-PR, 1st season 2026/27 (est. Mar/2026)"
     },
     "feijao_2safra": {
       "coe": 4452.6,
@@ -108,11 +108,11 @@
       "ct": 8768.11,
       "unidade": "R$/ha",
       "estimativa": false,
-      "fonte": "CONAB, feijão 2ª safra plantio direto alta tecnologia, agricultura familiar, Francisco Beltrão-PR, 2026 (estimado, mar/2026; a planilha de Cascavel-PR só vai até 2021). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+      "fonte": "CONAB, 2nd-season beans, no-till, high technology, family farming, Francisco Beltrão-PR, 2026 (estimated, Mar/2026; the Cascavel-PR sheet only goes up to 2021). coe = 'variable cost' (operating inputs + other expenses + financial costs, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + returns to factors",
       "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/feijao/feijao_2_e_3_safras_serie_historica_2013-2026.xls",
       "aba": "Francisco Beltrão-PR-2026",
       "consulta": "2026-11-14",
-      "curto": "CONAB Francisco Beltrão-PR, 2ª safra 2026 (est. mar/2026)"
+      "curto": "CONAB Francisco Beltrão-PR, 2nd season 2026 (est. Mar/2026)"
     },
     "sorgo": {
       "coe": 2807.0,
@@ -120,11 +120,11 @@
       "ct": 4788.11,
       "unidade": "R$/ha",
       "estimativa": true,
-      "fonte": "estimativa — validar: não há planilha CONAB do sorgo no PR; usa CONAB, sorgo granífero 2ª safra OGM plantio direto alta tecnologia, agricultura empresarial, Rio Verde-GO, 2026 (estimado, mar/2026). coe = 'custo variável' (custeio + outras despesas + financeiras, desembolso); cot = 'custo operacional' (coe + depreciações e outros custos fixos); ct = cot + renda de fatores",
+      "fonte": "estimate — to be validated: there is no CONAB sorghum sheet for Paraná; uses CONAB, GM 2nd-season grain sorghum, no-till, high technology, commercial farming, Rio Verde-GO, 2026 (estimated, Mar/2026). coe = 'variable cost' (operating inputs + other expenses + financial costs, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + returns to factors",
       "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/seriehistoricacustossorgo2013a2026.xls",
       "aba": "Rio Verde-GO-2026",
       "consulta": "2026-11-14",
-      "curto": "estimativa — validar (CONAB Rio Verde-GO 2026, sem planilha PR)"
+      "curto": "estimate — to be validated (CONAB Rio Verde-GO 2026, no Paraná sheet)"
     },
     "aveia": {
       "coe": 375.0,
@@ -132,9 +132,9 @@
       "ct": 375.0,
       "unidade": "R$/ha",
       "estimativa": true,
-      "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): aveia como cobertura (semente + operação): faixa R$ 300–450/ha",
+      "fonte": "reference estimate, to be validated (no CONAB series; order of magnitude agreed with the team): oat as cover (seed + operation): range BRL 300–450/ha",
       "url": null,
-      "curto": "estimativa de referência, validar"
+      "curto": "reference estimate, to be validated"
     },
     "milheto_crotalaria": {
       "coe": 450.0,
@@ -142,9 +142,9 @@
       "ct": 450.0,
       "unidade": "R$/ha",
       "estimativa": true,
-      "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): milheto/crotalária (semente + operação): milheto ~R$ 300–450, crotalária ~R$ 400–600/ha",
+      "fonte": "reference estimate, to be validated (no CONAB series; order of magnitude agreed with the team): millet/crotalaria (seed + operation): millet ~BRL 300–450, crotalaria ~BRL 400–600/ha",
       "url": null,
-      "curto": "estimativa de referência, validar"
+      "curto": "reference estimate, to be validated"
     },
     "braquiaria_consorcio": {
       "coe": 200.0,
@@ -152,9 +152,9 @@
       "ct": 200.0,
       "unidade": "R$/ha",
       "estimativa": true,
-      "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): braquiária em consórcio com o milho, adicional ao custo do milho: faixa R$ 150–250/ha",
+      "fonte": "reference estimate, to be validated (no CONAB series; order of magnitude agreed with the team): brachiaria intercropped with corn, on top of the corn cost: range BRL 150–250/ha",
       "url": null,
-      "curto": "estimativa de referência, validar"
+      "curto": "reference estimate, to be validated"
     },
     "pousio": {
       "coe": 200.0,
@@ -162,9 +162,9 @@
       "ct": 200.0,
       "unidade": "R$/ha",
       "estimativa": true,
-      "fonte": "estimativa de referência, validar (sem série CONAB; ordem de grandeza combinada com o time): pousio: dessecação/manejo de plantas daninhas, faixa R$ 150–250/ha",
+      "fonte": "reference estimate, to be validated (no CONAB series; order of magnitude agreed with the team): fallow: desiccation/weed management, range BRL 150–250/ha",
       "url": null,
-      "curto": "estimativa de referência, validar"
+      "curto": "reference estimate, to be validated"
     },
     "nabo_forrageiro": {
       "coe": 275.0,
@@ -172,9 +172,9 @@
       "ct": 275.0,
       "unidade": "R$/ha",
       "estimativa": true,
-      "fonte": "estimativa — validar: nabo forrageiro como cobertura (10–15 kg/ha de semente + semeadura): faixa R$ 200–350/ha",
+      "fonte": "estimate — to be validated: forage radish as cover (10–15 kg/ha of seed + sowing): range BRL 200–350/ha",
       "url": null,
-      "curto": "estimativa de referência, validar"
+      "curto": "reference estimate, to be validated"
     },
     "aveia_nabo": {
       "coe": 400.0,
@@ -182,9 +182,9 @@
       "ct": 400.0,
       "unidade": "R$/ha",
       "estimativa": true,
-      "fonte": "estimativa — validar: mix aveia + nabo forrageiro como cobertura (semente das duas + semeadura): faixa R$ 350–450/ha",
+      "fonte": "estimate — to be validated: oat + forage radish mix as cover (seed of both + sowing): range BRL 350–450/ha",
       "url": null,
-      "curto": "estimativa de referência, validar"
+      "curto": "reference estimate, to be validated"
     }
   }
 }

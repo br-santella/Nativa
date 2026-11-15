@@ -1,4 +1,4 @@
-"""Rotas HTTP. Endpoints `def` (síncronos) rodam no threadpool do FastAPI."""
+"""HTTP routes. `def` (synchronous) endpoints run in the FastAPI threadpool."""
 
 from __future__ import annotations
 
@@ -23,12 +23,12 @@ from .schemas import (
 )
 
 ERROS = {
-    400: {"model": ErroOut, "description": "Entrada inválida segundo o motor (`entrada_invalida`)."},
-    422: {"model": ErroOut, "description": "Fora do Oeste do PR (`fora_da_regiao`) ou erro de validação do corpo."},
-    500: {"model": ErroOut, "description": "Erro interno (`interno`)."},
+    400: {"model": ErroOut, "description": "Input rejected by the engine (`entrada_invalida`)."},
+    422: {"model": ErroOut, "description": "Outside Western Paraná (`fora_da_regiao`) or body validation error."},
+    500: {"model": ErroOut, "description": "Internal error (`interno`)."},
 }
 
-health_router = APIRouter(tags=["saúde"])
+health_router = APIRouter(tags=["health"])
 router = APIRouter(prefix="/v1")
 
 
@@ -36,7 +36,7 @@ def _dump(m: Any) -> dict[str, Any] | None:
     return m.model_dump(exclude_none=True) if m is not None else None
 
 
-@health_router.get("/health", response_model=HealthOut, summary="Estado do serviço")
+@health_router.get("/health", response_model=HealthOut, summary="Service status")
 def health(request: Request) -> HealthOut:
     ok = bool(getattr(request.app.state, "dados_ok", False))
     return HealthOut(
@@ -49,14 +49,14 @@ def health(request: Request) -> HealthOut:
 
 @router.get(
     "/opcoes",
-    tags=["metadados"],
-    summary="Culturas de verão e da 2ª janela, combinações, pesos padrão e metadados do motor",
+    tags=["metadata"],
+    summary="Summer and second-window crops, combinations, default weights and engine metadata",
 )
 def opcoes() -> dict[str, Any]:
     return servico.opcoes()
 
 
-@router.get("/talhoes/demo", tags=["metadados"], summary="Talhões de demonstração")
+@router.get("/talhoes/demo", tags=["metadata"], summary="Demo fields")
 def talhoes_demo() -> Any:
     return servico.opcoes().get("talhoes_demo", [])
 
@@ -65,8 +65,8 @@ def talhoes_demo() -> Any:
     "/diagnostico",
     response_model=DiagnosticoOut,
     responses=ERROS,
-    tags=["motor"],
-    summary="Diagnóstico da área (relevo, solo, histórico, clima, produtividade)",
+    tags=["engine"],
+    summary="Diagnosis of the area (terrain, soil, history, climate, yield)",
 )
 def diagnostico(corpo: DiagnosticoIn) -> dict[str, Any]:
     extra = {}
@@ -79,8 +79,8 @@ def diagnostico(corpo: DiagnosticoIn) -> dict[str, Any]:
     "/recomendacao",
     response_model=RecomendacaoOut,
     responses=ERROS,
-    tags=["motor"],
-    summary="O que entra depois da colheita do verão e como melhora a produção (`agora`), mais a próxima safra",
+    tags=["engine"],
+    summary="What goes in after the summer harvest and how it improves production (`agora`), plus the next season",
 )
 def recomendacao(corpo: RecomendacaoIn) -> dict[str, Any]:
     pesos = corpo.pesos.model_dump(exclude_none=True) if corpo.pesos else None
@@ -107,8 +107,8 @@ def recomendacao(corpo: RecomendacaoIn) -> dict[str, Any]:
     "/clima",
     response_model=ClimaOut,
     responses=ERROS,
-    tags=["motor"],
-    summary="Atalho: só o bloco de clima para um ponto",
+    tags=["engine"],
+    summary="Shortcut: only the climate block for a point",
 )
 def clima(
     lat: float = Query(..., ge=-90, le=90, examples=[-24.95]),
@@ -122,26 +122,26 @@ def clima(
 def _contexto_da_area(area: dict[str, Any], semeadura: str) -> dict[str, Any]:
     from field_shift import contexto
 
-    a = servico._resolver_area(area)  # mesmas validações e erros (400/422) da recomendação
+    a = servico._resolver_area(area)  # same validations and errors (400/422) as the recommendation
     return contexto.montar(a["lat"], a["lon"], semeadura)
 
 
 @router.post(
     "/contexto",
-    tags=["contexto"],
-    summary="Situação atual (informativa): ENSO, umidade do solo SMAP, MJO, pragas em surto",
+    tags=["context"],
+    summary="Current conditions (informational): ENSO, SMAP soil moisture, MJO, pest outbreaks",
     responses=ERROS,
 )
 def contexto_post(corpo: ContextoIn) -> dict[str, Any]:
-    """Consulta fontes oficiais (NOAA, NASA SMAP, IDR-PR/ADAPAR) sobre eventos em curso. Não prevê nada e não altera
-    ranking nem nota. Cada fonte falha isoladamente: `{"disponivel": false, "motivo": ...}`."""
+    """Queries official sources (NOAA, NASA SMAP, IDR-PR/ADAPAR) about ongoing events. It forecasts nothing and does not change
+    the ranking or the score. Each source fails independently: `{"disponivel": false, "motivo": ...}`."""
     return _contexto_da_area(corpo.area.para_servico(), corpo.semeadura_safrinha)
 
 
 @router.get(
     "/contexto",
-    tags=["contexto"],
-    summary="Situação atual (informativa) por talhao_id ou ponto lat/lon",
+    tags=["context"],
+    summary="Current conditions (informational) by talhao_id or lat/lon point",
     responses=ERROS,
 )
 def contexto_get(
@@ -150,7 +150,7 @@ def contexto_get(
     lon: float | None = Query(None, ge=-180, le=180, examples=[-53.45]),
     semeadura_safrinha: Semeadura = "01/02",
 ) -> dict[str, Any]:
-    """Mesmo contexto do POST, para talhão demo ou ponto. Para polígono use `POST /v1/contexto`."""
+    """Same context as the POST, for a demo field or a point. For a polygon use `POST /v1/contexto`."""
     try:
         area = Area(talhao_id=talhao_id, lat=lat, lon=lon)
     except ValueError as exc:

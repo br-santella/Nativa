@@ -1,9 +1,9 @@
-"""SMAP: umidade do solo recente no talhão (NASA SMAP L4, SPL4SMGP v8, ~9 km, 3 h, latência ~2-3 dias).
+"""SMAP: recent soil moisture at the field (NASA SMAP L4, SPL4SMGP v8, ~9 km, 3 h, ~2-3 day latency).
 
-Lê só o pixel do talhão via HTTPS com requisição por faixa (earthaccess.open + h5py), sem baixar o arquivo
-de ~145 MB. O próprio produto traz o percentil em relação à climatologia SMAP (`sm_rootzone_pctl`,
-`sm_surface_pctl`), então não é preciso montar climatologia própria. Credenciais Earthdata em ~/.netrc.
-Cache por pixel, 24 h. Classe: < 20 abaixo do normal; 20–80 normal; > 80 acima.
+Reads only the field's pixel over HTTPS with range requests (earthaccess.open + h5py), without downloading the
+~145 MB file. The product itself includes the percentile relative to the SMAP climatology (`sm_rootzone_pctl`,
+`sm_surface_pctl`), so there is no need to build our own climatology. Earthdata credentials in ~/.netrc.
+Cache per pixel, 24 h. Class: < 20 "abaixo do normal"; 20–80 "normal"; > 80 "acima do normal".
 """
 from __future__ import annotations
 
@@ -26,8 +26,11 @@ def pixel_ease2(lat: float, lon: float) -> tuple[int, int]:
     x, y = Transformer.from_crs(4326, 6933, always_xy=True).transform(lon, lat)
     col, row = int((x - EASE_X0) / EASE_RES), int((EASE_Y0 - y) / EASE_RES)
     if not (0 <= row < NL and 0 <= col < NC):
-        raise ValueError("ponto fora da grade EASE-Grid 2.0 do SMAP")
+        raise ValueError("point outside the SMAP EASE-Grid 2.0")
     return row, col
+
+
+CLASSE_TXT = {"abaixo do normal": "below normal", "normal": "normal", "acima do normal": "above normal"}  # labels for the `classe` codes
 
 
 def classe(pctl: float) -> str:
@@ -72,7 +75,7 @@ def _buscar(lat: float, lon: float) -> dict[str, Any]:
 
     recentes = achar(agora, 6)
     if not recentes:
-        raise LookupError("nenhum granulo SPL4SMGP nos últimos 6 dias")
+        raise LookupError("no SPL4SMGP granule in the last 6 days")
     ultimo = recentes[-1]
     t_ult = _granulo_data(ultimo)
     out = {"referencia_utc": t_ult.isoformat(), "pixel_ease2": {"linha": row, "coluna": col}}
@@ -94,7 +97,7 @@ def consultar(lat: float, lon: float, cache_only: bool = False) -> dict[str, Any
         if cache_only:
             bruto = B.ler_cache(chave, B.TTL_SMAP)
             if bruto is None:
-                raise LookupError("sem cache; consulte GET /v1/contexto")
+                raise LookupError("no cache; query GET /v1/contexto")
             cache = True
         else:
             with cf.ThreadPoolExecutor(max_workers=1) as ex:
@@ -102,18 +105,18 @@ def consultar(lat: float, lon: float, cache_only: bool = False) -> dict[str, Any
                 try:
                     bruto, cache = fut.result(timeout=TIMEOUT_S)
                 except cf.TimeoutError:
-                    raise TimeoutError(f"SMAP não respondeu em {TIMEOUT_S} s") from None
+                    raise TimeoutError(f"SMAP did not respond within {TIMEOUT_S} s") from None
         a = bruto["atual"]
         pc = a.get("sm_rootzone_pctl")
         out: dict[str, Any] = {"do_cache": cache, **bruto}
         if pc is None:
-            out["texto"] = "SMAP sem valor válido de umidade da zona de raízes no pixel do talhão."
+            out["texto"] = "SMAP has no valid root-zone moisture value at the field's pixel."
         else:
             cl = classe(pc)
             out["classe"] = cl
-            out["texto"] = (f"SMAP (NASA, {bruto['referencia_utc'][:10]}): umidade na zona de raízes em {a['sm_rootzone']:.2f} m³/m³, "
-                            f"percentil {pc:.0f} da climatologia SMAP ({cl}). Pixel de ~9 km; modelo de assimilação, "
-                            "não medida no talhão.")
+            out["texto"] = (f"SMAP (NASA, {bruto['referencia_utc'][:10]}): root-zone moisture at {a['sm_rootzone']:.2f} m³/m³, "
+                            f"percentile {pc:.0f} of the SMAP climatology ({CLASSE_TXT.get(cl, cl)}). ~9 km pixel; assimilation model, "
+                            "not measured at the field.")
             h = bruto.get("ha_7_dias")
             if h and h.get("sm_rootzone_pctl") is not None:
                 out["tendencia_7d_percentil"] = round(pc - h["sm_rootzone_pctl"], 1)

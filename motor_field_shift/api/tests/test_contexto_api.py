@@ -1,4 +1,4 @@
-"""Endpoint /v1/contexto com o contexto e a resolução de área mockados."""
+"""/v1/contexto endpoint with the context and the area resolution mocked."""
 from __future__ import annotations
 
 import pytest

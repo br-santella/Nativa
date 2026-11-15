@@ -1,4 +1,4 @@
-"""Camada de serviço do motor Field Shift (usada pela API)."""
+"""Service layer of the Field Shift engine (used by the API)."""
 from field_shift.motor.servico import (ROTACOES, EntradaInvalida, ErroConsultaExterna, ForaDaRegiao,
                                        aquecer, diagnosticar, opcoes, recomendar)
 

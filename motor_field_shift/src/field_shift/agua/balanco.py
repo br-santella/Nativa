@@ -1,16 +1,16 @@
-"""Balanço hídrico diário (modelo de balde FAO-56) para o critério ÁGUA.
+"""Daily water balance (FAO-56 bucket model) for the WATER criterion.
 
-Por candidata e por ano (safras 1991–2024; o safrinha e o trigo da safra Y caem em Y+1, mesma convenção de
-field_shift.clima.indicadores): simula ETa = Ks·Kc·ET0 com P e ET0 diários da CÉLULA NASA POWER e a CAD do solo
-(SoilGrids + Saxton & Rawls) × profundidade de raiz. Critério = média nos anos de ΣETa/ΣETc na FASE CRÍTICA.
+Per candidate and per year (seasons 1991–2024; the off-season and wheat of season Y fall in Y+1, the same convention as
+field_shift.clima.indicadores): simulates ETa = Ks·Kc·ET0 with daily P and ET0 of the NASA POWER CELL and the soil AWC
+(SoilGrids + Saxton & Rawls) × root depth. Criterion = mean over the years of ΣETa/ΣETc in the CRITICAL PHASE.
 
-Hipóteses simplificadas (documentadas; validar com agrônomo):
- - Balde começa cheio na semeadura; toda chuva infiltra (sem escoamento/interceptação); excesso além de TAW drena.
- - Profundidade de raiz constante (não cresce com o ciclo); G = 0 no ET0; sem ascensão capilar.
- - Ks = 1 enquanto depleção Dr ≤ RAW = p·TAW; depois Ks = (TAW − Dr)/((1 − p)·TAW). p = 0,55 (FAO-56 tab. 22, cereais).
- - Irrigação (opcional): quando Dr > RAW repõe até a capacidade, limitada pela lâmina máxima diária, no ciclo todo; lâmina líquida
-   (eficiência 100%). O ganho de produtividade da irrigação NÃO é modelado (só o critério água, o risco e o custo).
- - CAD só vai até 60 cm no SoilGrids; para raiz 0,8 m a camada 60–80 cm usa a CAD da camada 30–60 cm (extrapolação).
+Simplifying assumptions (documented; to be validated with an agronomist):
+ - The bucket starts full at sowing; all rain infiltrates (no runoff/interception); excess beyond TAW drains.
+ - Constant root depth (does not grow with the cycle); G = 0 in ET0; no capillary rise.
+ - Ks = 1 while depletion Dr ≤ RAW = p·TAW; then Ks = (TAW − Dr)/((1 − p)·TAW). p = 0.55 (FAO-56 table 22, cereals).
+ - Irrigation (optional): when Dr > RAW it refills up to capacity, limited by the maximum daily depth, over the whole cycle; net depth
+   (100% efficiency). The yield gain from irrigation is NOT modeled (only the water criterion, the risk and the cost).
+ - SoilGrids AWC only goes to 60 cm; for a 0.8 m root the 60–80 cm layer uses the AWC of the 30–60 cm layer (extrapolation).
 """
 from __future__ import annotations
 
@@ -25,37 +25,37 @@ from field_shift.clima.indicadores import et0_fao56
 ROOT = Path(__file__).resolve().parents[3]
 POWER = ROOT / "data/processed/clima/power_diario.parquet"
 ANOS = range(1991, 2025)
-P_DEPL = 0.55  # fração de depleção sem estresse — FAO-56 tabela 22 (milho/trigo ~0,55), validar
-SEMEADURA_TRIGO = "01/05"  # trigo e aveia: semeadura fixa em 01/05 — estimativa, validar com ZARC
-LIMIAR_FRACAO = 0.7  # ETa/ETc abaixo disto = estresse relevante na fase crítica
+P_DEPL = 0.55  # depletion fraction without stress — FAO-56 table 22 (corn/wheat ~0.55), to be validated
+SEMEADURA_TRIGO = "01/05"  # wheat and oat: fixed sowing on 01/05 — estimate, to be validated with ZARC
+LIMIAR_FRACAO = 0.7  # ETa/ETc below this = relevant stress in the critical phase
 
-# Cada modelo: zr (m), kc=(ini, mid, end), est=(dias ini, desenv, mid, final) — FAO-56 tabelas 11 e 12 (estimativa, validar);
-# fase=(dia_ini, dia_fim) após a semeadura (None = usar fase_ini/fim do ciclo). `semeadura`: 'app' (data escolhida para o safrinha) ou 'fixa'
-# (`data` dd/mm; padrão SEMEADURA_TRIGO). `p`: fração de depleção sem estresse da cultura (padrão P_DEPL).
-# Fase crítica: milho = florescimento/enchimento (+55 a +95 d); trigo = espigamento/enchimento (+60 a +100 d no ciclo de 120 d);
-# aveia, milheto, crotalária (sem colheita de grão) = estabelecimento (primeiros 30 d), pois a falha de estande é o que importa.
+# Each model: zr (m), kc=(ini, mid, end), est=(days ini, dev, mid, late) — FAO-56 tables 11 and 12 (estimate, to be validated);
+# fase=(start_day, end_day) after sowing (None = use the cycle's fase_ini/fim). `semeadura`: 'app' (date chosen for the off-season) or 'fixa'
+# (`data` dd/mm; default SEMEADURA_TRIGO). `p`: the crop's depletion fraction without stress (default P_DEPL).
+# Critical phase: corn = flowering/grain fill (+55 to +95 d); wheat = heading/grain fill (+60 to +100 d in the 120 d cycle);
+# oat, millet, crotalaria (no grain harvest) = establishment (first 30 d), because stand failure is what matters.
 MODELOS = {
     "milho": dict(zr=0.8, kc=(0.30, 1.20, 0.60), est=(25, 40, 45, 30), fase=(55, 95), semeadura="app"),
-    "milho+braquiaria": dict(zr=0.8, kc=(0.30, 1.25, 0.60), est=(25, 40, 45, 30), fase=(55, 95), semeadura="app"),  # Kc_mid +0,05
+    "milho+braquiaria": dict(zr=0.8, kc=(0.30, 1.25, 0.60), est=(25, 40, 45, 30), fase=(55, 95), semeadura="app"),  # Kc_mid +0.05
     "trigo": dict(zr=0.8, kc=(0.30, 1.15, 0.30), est=(20, 30, 45, 25), fase=(60, 100), semeadura="fixa"),
     "aveia": dict(zr=0.6, kc=(0.30, 1.15, 0.25), est=(20, 25, 35, 20), fase=(0, 30), semeadura="fixa"),
     "milheto": dict(zr=0.6, kc=(0.30, 1.00, 0.30), est=(20, 30, 30, 20), fase=(0, 30), semeadura="app"),
-    # crotalária não está na FAO-56: aproximada por leguminosa de cobertura (Kc_ini 0,4; mid 1,10; end 0,50) — validar.
+    # crotalaria is not in FAO-56: approximated by a cover legume (Kc_ini 0.4; mid 1.10; end 0.50) — to be validated.
     "crotalaria": dict(zr=0.6, kc=(0.40, 1.10, 0.50), est=(20, 30, 40, 20), fase=(0, 30), semeadura="app"),
-    # Sorgo granífero — FAO-56 (Allen et al., 1998) tab. 12: Kc ini 0,30, mid 1,00–1,10 (usado 1,05), end 0,55; tab. 11: estágios 20/35/40/30 d
-    # (125 d); p = 0,55 (tab. 22). Fase crítica: emborrachamento a enchimento de grãos (+50 a +90 d). Raiz 0,8 m (a FAO dá 1,0–2,0 m; o CAD
-    # do SoilGrids só vai a 60 cm) — estimativa, validar.
+    # Grain sorghum — FAO-56 (Allen et al., 1998) table 12: Kc ini 0.30, mid 1.00–1.10 (1.05 used), end 0.55; table 11: stages 20/35/40/30 d
+    # (125 d); p = 0.55 (table 22). Critical phase: booting to grain fill (+50 to +90 d). Root 0.8 m (FAO gives 1.0–2.0 m; the SoilGrids
+    # AWC only goes to 60 cm) — estimate, to be validated.
     "sorgo": dict(zr=0.8, kc=(0.30, 1.05, 0.55), est=(20, 35, 40, 30), fase=(50, 90), semeadura="app"),
-    # Feijão seco — FAO-56 tab. 12: Kc ini 0,40, mid 1,15, end 0,35; tab. 11: 20/30/40/20 d (110 d; ciclo de 85–95 d no PR, conservador);
-    # p = 0,45 e raiz 0,6–0,7 m (tab. 22). Fase crítica: floração e formação de vagens (+30 a +65 d) — estimativa, validar.
+    # Dry beans — FAO-56 table 12: Kc ini 0.40, mid 1.15, end 0.35; table 11: 20/30/40/20 d (110 d; 85–95 d cycle in Paraná, conservative);
+    # p = 0.45 and root 0.6–0.7 m (table 22). Critical phase: flowering and pod formation (+30 to +65 d) — estimate, to be validated.
     "feijao": dict(zr=0.6, kc=(0.40, 1.15, 0.35), est=(20, 30, 40, 20), fase=(30, 65), semeadura="app", p=0.45),
-    # Nabo forrageiro: não está na FAO-56; aproximado pelo nabo (Turnip) da tab. 12 (Kc ini 0,50, mid 1,10, end 0,95), estágios de ciclo
-    # curto (15/25/35/20 d) e raiz 0,5 m; semeadura fixa em 01/04 (cobertura de outono; data estimada, validar com Embrapa/IDR-PR) —
-    # fase crítica = estabelecimento (30 primeiros dias), como as demais coberturas. Estimativa, validar.
+    # Forage radish: not in FAO-56; approximated by the Turnip of table 12 (Kc ini 0.50, mid 1.10, end 0.95), short-cycle stages
+    # (15/25/35/20 d) and a 0.5 m root; fixed sowing on 01/04 (autumn cover; estimated date, to be validated with Embrapa/IDR-PR) —
+    # critical phase = establishment (first 30 days), like the other cover crops. Estimate, to be validated.
     "nabo": dict(zr=0.5, kc=(0.50, 1.10, 0.95), est=(15, 25, 35, 20), fase=(0, 30), semeadura="fixa", data="01/04"),
 }
-# cultura da 2ª janela (slug de field_shift.app.engine.SEGUNDA) -> lista de modelos; com 2+ modelos, o critério é a média entre eles.
-# O balanço só depende da 2ª cultura (a cultura de verão não entra no modelo de água).
+# second-window crop (slug of field_shift.app.engine.SEGUNDA) -> list of models; with 2+ models, the criterion is their mean.
+# The balance only depends on the second crop (the summer crop does not enter the water model).
 CANDIDATAS = {
     "milho_safrinha": ["milho"],
     "milho_braquiaria": ["milho+braquiaria"],
@@ -67,17 +67,17 @@ CANDIDATAS = {
     "nabo_forrageiro": ["nabo"],
     "aveia_nabo": ["aveia", "nabo"],
 }
-FASE_TXT = {"milho": "floração/enchimento do milho", "milho+braquiaria": "floração/enchimento do milho consorciado",
-            "trigo": "espigamento/enchimento do trigo", "aveia": "estabelecimento da aveia (30 primeiros dias)",
-            "milheto": "estabelecimento do milheto/crotalária (30 primeiros dias)",
-            "crotalaria": "estabelecimento do milheto/crotalária (30 primeiros dias)",
-            "sorgo": "emborrachamento/enchimento do sorgo", "feijao": "floração/formação de vagens do feijão",
-            "nabo": "estabelecimento do nabo forrageiro (30 primeiros dias)"}
+FASE_TXT = {"milho": "corn flowering/grain fill", "milho+braquiaria": "intercropped corn flowering/grain fill",
+            "trigo": "wheat heading/grain fill", "aveia": "oat establishment (first 30 days)",
+            "milheto": "millet/crotalaria establishment (first 30 days)",
+            "crotalaria": "millet/crotalaria establishment (first 30 days)",
+            "sorgo": "sorghum booting/grain fill", "feijao": "bean flowering/pod formation",
+            "nabo": "forage radish establishment (first 30 days)"}
 
 
 @lru_cache(maxsize=8)
 def clima_diario(ponto_id: str) -> pd.DataFrame:
-    """P e ET0 diários (mm) da célula, 1991–2025. ET0 FAO-56 via field_shift.clima.indicadores."""
+    """Daily P and ET0 (mm) of the cell, 1991–2025. FAO-56 ET0 via field_shift.clima.indicadores."""
     d = pd.read_parquet(POWER, filters=[("ponto_id", "==", ponto_id)])
     d = d.set_index("data").sort_index()
     et0 = et0_fao56(d, float(d["lat"].iloc[0]), float(d["elev"].iloc[0]))
@@ -92,17 +92,17 @@ def curva_kc(kc, est) -> np.ndarray:
 
 
 def taw_mm(cad_camadas: dict, zr_m: float) -> float:
-    """Água disponível total (mm) até zr_m. cad_camadas: mm/cm por camada {'0-5cm','5-15cm','15-30cm','30-60cm'};
-    abaixo de 60 cm repete a camada 30–60 (extrapolação)."""
+    """Total available water (mm) down to zr_m. cad_camadas: mm/cm per layer {'0-5cm','5-15cm','15-30cm','30-60cm'};
+    below 60 cm it repeats the 30–60 layer (extrapolation)."""
     lim = [(0, 5, "0-5cm"), (5, 15, "5-15cm"), (15, 30, "15-30cm"), (30, 60, "30-60cm"), (60, 200, "30-60cm")]
     z = zr_m * 100
     return float(sum(max(0.0, min(z, b) - a) * cad_camadas[k] for a, b, k in lim))
 
 
 def _simula(p, et0, kc, taw, p_depl=P_DEPL, lamina_max=None):
-    """Balde diário. Retorna ETa, ETc e lâmina irrigada (arrays). Dr = depleção (mm), 0 = cheio.
-    `lamina_max` (mm/dia): com valor, irriga no início do dia quando Dr > RAW (p·TAW), repondo até a capacidade (Dr -> 0),
-    limitado a `lamina_max` por dia, durante todo o ciclo (lâmina líquida, eficiência de aplicação 100%). None = sequeiro."""
+    """Daily bucket. Returns ETa, ETc and irrigated depth (arrays). Dr = depletion (mm), 0 = full.
+    `lamina_max` (mm/day): when set, irrigates at the start of the day when Dr > RAW (p·TAW), refilling up to capacity (Dr -> 0),
+    limited to `lamina_max` per day, over the whole cycle (net depth, 100% application efficiency). None = rainfed."""
     raw = p_depl * taw
     dr = 0.0
     eta = np.empty_like(kc)
@@ -129,7 +129,7 @@ def _um_modelo(cl: pd.DataFrame, nome: str, semeadura: str, taw: float, lamina_m
     a, b = m["fase"]
     razoes, lams = [], []
     for y in ANOS:
-        ini = pd.Timestamp(y + 1, mm, dd)  # safra Y -> semeadura em Y+1
+        ini = pd.Timestamp(y + 1, mm, dd)  # season Y -> sowing in Y+1
         j = cl.loc[ini:ini + pd.Timedelta(days=len(kc) - 1)]
         if len(j) < len(kc):
             razoes.append(np.nan)
@@ -166,9 +166,9 @@ def _cached(cand: str, ponto_id: str, semeadura: str, cad_t: tuple, lamina_max=N
 
 
 def agua_fase_critica(cand: str, ponto_id: str, semeadura: str, cad_camadas: dict, lamina_max_mm_dia: float | None = None) -> dict | None:
-    """Critério água = média nos 34 anos de ΣETa/ΣETc na fase crítica (0–1). `cand` = slug da 2ª cultura (CANDIDATAS). None se não tem modelo
-    (ex.: pousio, que o engine trata como 1,0). `lamina_max_mm_dia`: com valor, simula irrigação (ver _simula) e devolve
-    `lamina_media_mm` (lâmina total do ciclo, média dos anos); None = sequeiro."""
+    """Water criterion = mean over 34 years of ΣETa/ΣETc in the critical phase (0–1). `cand` = second-crop slug (CANDIDATAS). None if there is no model
+    (e.g. fallow, which the engine treats as 1.0). `lamina_max_mm_dia`: when set, simulates irrigation (see _simula) and returns
+    `lamina_media_mm` (total cycle depth, mean over the years); None = rainfed."""
     if cand not in CANDIDATAS:
         return None
     lm = None if lamina_max_mm_dia is None else float(lamina_max_mm_dia)

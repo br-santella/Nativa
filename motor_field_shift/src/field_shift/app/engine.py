@@ -110,7 +110,7 @@ def dias_solo_por_ano(ndvi: pd.Series) -> float:
             tot.append(int((ndvi[ini:fim] < LIMIAR_SOLO).sum()))
     return float(np.mean(tot)) if tot else float("nan")
 
-# --------------------------------------------------------------------------- 3. Clima NASA POWER
+# --------------------------------------------------------------------------- 3. NASA POWER climate
 POWER_URL = ("https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MIN,T2M_MAX,PRECTOTCORR"
              "&community=AG&longitude={lon}&latitude={lat}&start=19950101&end=20241231&format=JSON")
 
