@@ -117,6 +117,7 @@ function App() {
     [farm, setFarm] = useState<Farm>({ ...initialFarm }),
     [draft, setDraft] = useState<Farm>({ ...initialFarm }),
     [crops, setCrops] = useState<Crop[]>(initialCrops),
+    [deletedCrop, setDeletedCrop] = useState<{ crop: Crop; index: number } | null>(null),
     [year, setYear] = useState("2025"),
     [period, setPeriod] = useState("12"),
     [layer, setLayer] = useState("Vegetação (NDVI)"),
@@ -169,6 +170,25 @@ function App() {
   function toast(s: string) {
     setNotice(s);
   }
+  function deleteCrop(id: Crop["id"]) {
+    const index = crops.findIndex((crop) => crop.id === id);
+    if (index < 0) return;
+    setDeletedCrop({ crop: crops[index], index });
+    setCrops((prev) => prev.filter((crop) => crop.id !== id));
+  }
+
+  function undoDeleteCrop() {
+    if (!deletedCrop) return;
+    const { crop, index } = deletedCrop;
+    setCrops((prev) => {
+      if (prev.some((item) => item.id === crop.id)) return prev;
+      const restored = [...prev];
+      restored.splice(Math.min(index, restored.length), 0, crop);
+      return restored;
+    });
+    setDeletedCrop(null);
+  }
+
   function saveFarm(e: React.FormEvent) {
     e.preventDefault();
     setFarm({ ...draft });
@@ -952,6 +972,41 @@ function App() {
           </div>
           <Btn onClick={() => open("addCrop")}>＋ Adicionar cultivo</Btn>
         </div>
+        {deletedCrop && (
+          <div
+            role="status"
+            aria-live="polite"
+            style={{
+              display: "flex", alignItems: "center", gap: 14,
+              padding: "14px 18px", margin: "12px 0 18px",
+              background: "#19383a", border: "1px solid #527568",
+              borderRadius: 10, color: "#f1f7f4", flexWrap: "wrap",
+            }}
+          >
+            <div style={{ flex: 1, minWidth: 180, display: "flex", flexDirection: "column", gap: 4 }}>
+              <strong>Crop record deleted</strong>
+              <span style={{ fontSize: 13, color: "#b4cdca" }}>
+                {deletedCrop.crop.crop} • {deletedCrop.crop.season} was removed from your history.
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={undoDeleteCrop}
+              style={{ background: "transparent", border: "1px solid #a8ce83", color: "#c2e99d", borderRadius: 6, padding: "8px 14px", cursor: "pointer", fontWeight: 700 }}
+            >
+              Undo
+            </button>
+            <button
+              type="button"
+              onClick={() => setDeletedCrop(null)}
+              aria-label="Dismiss notification"
+              title="Dismiss notification"
+              style={{ background: "transparent", border: "none", color: "#b4cdca", fontSize: 22, cursor: "pointer" }}
+            >
+              ×
+            </button>
+          </div>
+        )}
         <Demo />
         <div className="grid-two">
           <section className="panel current-crop">
@@ -998,6 +1053,7 @@ function App() {
                     "Área",
                     "Produtividade",
                     "Situação",
+                    "Actions",
                   ].map((t) => (
                     <th key={t}>{t}</th>
                   ))}
@@ -1020,6 +1076,21 @@ function App() {
                     </td>
                     <td>
                       <span className="status">{c.status}</span>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => deleteCrop(c.id)}
+                        aria-label={`Delete ${c.crop} ${c.season}`}
+                        title={`Delete ${c.crop} ${c.season}`}
+                        style={{
+                          background: "transparent", border: "none", color: "#f28c8c",
+                          fontSize: 24, cursor: "pointer", padding: "3px 10px",
+                          borderRadius: 6,
+                        }}
+                      >
+                        ×
+                      </button>
                     </td>
                   </tr>
                 ))}
