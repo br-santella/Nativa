@@ -96,19 +96,19 @@ def test_gain_vs_current():
     assert by_id[SOYBEAN]["ganho_vs_atual"] is None  # the current one itself
     g = by_id["soja__milho_braquiaria"]["ganho_vs_atual"]
     assert g["comparado_com"] == SOYBEAN
-    assert g["soja_seguinte_sc"] == 2.0  # bonus 3.0 (corn + brachiaria) − 1.0 (second-season corn)
-    assert g["soja_seguinte_sc_faixa"] == [2.0, 2.0]  # for now range = central value
-    assert g["soja_seguinte_rs"] == pytest.approx(2.0 * g["preco_soja_r_sc"], abs=1)
-    assert "validar com agrônomo/Embrapa" in g["fonte"]
+    assert g["soja_seguinte_sc"] == 4.0  # bonus 5.0 (corn + brachiaria) − 1.0 (second-season corn)
+    assert g["soja_seguinte_sc_faixa"] == [-2.5, 12.0]  # worst case (1 − 3.5) and best case (9 − (−3)) from the trial ranges
+    assert g["soja_seguinte_rs"] == pytest.approx(4.0 * g["preco_soja_r_sc"], abs=1)
+    assert "Cafelândia" in g["fonte"]
     assert g["renda_2a_safra"]["origem"].startswith("dado:") and g["agua"]["origem"].startswith("dado:")
     assert g["solo"]["dias_descobertos"] == 30 - 60 and g["solo"]["cobertura"] == 0.3
     # same summer: total margin = extra income of the 2nd season + value of the bonus in the following soybean
     assert g["margem_total"]["r_ha"] == pytest.approx(g["renda_2a_safra"]["r_ha"] + g["soja_seguinte_rs"], abs=2)
     # a cover crop loses income but gains soil; the other summer also brings a gain (summer corn: +3 bags/ha of summer bonus)
     c = by_id["soja__aveia"]["ganho_vs_atual"]
-    assert c["renda_2a_safra"]["r_ha"] < 0 and c["solo"]["dias_descobertos"] == 40 - 60 and c["soja_seguinte_sc"] == 1.0
+    assert c["renda_2a_safra"]["r_ha"] < 0 and c["solo"]["dias_descobertos"] == 40 - 60 and c["soja_seguinte_sc"] == 2.0
     p = by_id["milho_verao__aveia"]["ganho_vs_atual"]
-    assert p["soja_seguinte_sc"] == 4.0 and p["comparado_com"] == SOYBEAN
+    assert p["soja_seguinte_sc"] == 5.0 and p["comparado_com"] == SOYBEAN
     assert all(x["ganho_vs_atual"] for x in r["proxima_safra"]["ranking"])
 
 

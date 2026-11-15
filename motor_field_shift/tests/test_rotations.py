@@ -93,20 +93,20 @@ def test_summer_corn_income():
     assert "SEAB/DERAL" in corn1["fonte"]
     # same S scale (municipality soybean margin): incomes comparable between summer soybean and summer corn
     assert mv["escala_S_r_ha"] == sa["escala_S_r_ha"] == sv["escala_S_r_ha"]
-    # incremental = (summer corn − soybean) + oat + bonus (oat 2 + summer corn 3 bags/ha × soybean price)
+    # incremental = (summer corn − soybean) + oat + bonus (oat 3 + summer corn 3 bags/ha × soybean price)
     expected = (corn1["margem_r_ha"] - soy["margem_r_ha"]) + (mv["itens"][1]["margem_r_ha"]) + mv["bonus_proxima_soja_r_ha"]
     assert mv["incremental_r_ha"] == pytest.approx(expected, abs=2)
     assert mv["bonus_proxima_soja_r_ha"] - sa["bonus_proxima_soja_r_ha"] == pytest.approx(3.0 * 120.14, abs=2)  # +3 bags/ha from the catalog
     c = ids["milho_verao__aveia"]["card"]
     assert any("quebra ciclo de doença e nematoide" in b for b in c["beneficios"])
-    assert any("Bônus na soja seguinte: 5 sc/ha" in e for e in c["evidencias"])
+    assert any("Bônus na soja seguinte: 6 sc/ha" in e for e in c["evidencias"])
 
 
 def test_summer_soy_keeps_old_scores():
     all_ = _rec(sowing_second="01/02")
     old = {x["id"]: x["nota"] for x in all_["ranking"] if "id_legado" in x}
-    assert old == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.799, "milho_safrinha": 0.751, "milheto_crotalaria": 0.756,
-                                                     "aveia": 0.699, "pousio": 0.568, "trigo": 0.519}.items()}
+    assert old == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.806, "milho_safrinha": 0.751, "milheto_crotalaria": 0.74,
+                                                     "aveia": 0.714, "pousio": 0.568, "trigo": 0.54}.items()}
 
 
 # Culturas novas

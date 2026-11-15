@@ -65,10 +65,10 @@ def test_scores_72638(real):
     r = real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}, **RA, "semeadura_safrinha": "01/02"})
     rk = r.json()["ranking"]
     scores = {i.get("id_legado"): i["nota"] for i in rk if "id_legado" in i}  # the 6 old rotations (summer soybean)
-    assert scores["milho_braquiaria"] == 0.799
-    assert scores["milho_safrinha"] == 0.751 and scores["milheto_crotalaria"] == 0.756
-    assert scores["aveia"] == 0.699 and scores["pousio"] == 0.568 and scores["trigo"] == 0.519
-    assert rk[0]["margem"]["incremental_r_ha"] == 1406 and rk[0]["margem"]["escala_S_r_ha"] == 1110
+    assert scores["milho_braquiaria"] == 0.806
+    assert scores["milho_safrinha"] == 0.751 and scores["milheto_crotalaria"] == 0.74
+    assert scores["aveia"] == 0.714 and scores["pousio"] == 0.568 and scores["trigo"] == 0.54
+    assert rk[0]["margem"]["incremental_r_ha"] == 1646 and rk[0]["margem"]["escala_S_r_ha"] == 1110
     assert rk[0]["id"] == "soja__milho_braquiaria" and rk[0]["card"]["por_que"].startswith("Em relação à atual (milho safrinha)")
 
 
@@ -158,7 +158,7 @@ def test_soy_grain_fill_main_example(real):
     assert j["ranking"] == j["agora"]["ranking"] and all(x["id"].startswith("soja__") for x in j["agora"]["ranking"])
     assert all(x["id"].startswith("milho_verao__") for x in j["proxima_safra"]["ranking"])
     top = j["agora"]["ranking"][0]
-    assert top["ganho_vs_atual"]["soja_seguinte_sc"] == 2.0 and top["ganho_vs_atual"]["renda_2a_safra"]["origem"].startswith("dado")
+    assert top["ganho_vs_atual"]["soja_seguinte_sc"] == 4.0 and top["ganho_vs_atual"]["renda_2a_safra"]["origem"].startswith("dado")
     # 422 of the new contract
     assert real.post("/v1/recomendacao", json={"area": {"talhao_id": "72638"}}).status_code == 422
     assert real.post("/v1/recomendacao", json={**body, "estagio_verao": "pendoamento"}).status_code == 422

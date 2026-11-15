@@ -12,7 +12,7 @@ def recommend(area, **kw):
     return _recommend(area, **kw)
 
 # Scores of the 6 old rotations (summer soybean), by old slug (`id_legado`): they do not change with the larger catalog (absolute scale).
-EXPECTED = {"milho_braquiaria": 0.799, "milho_safrinha": 0.751, "milheto_crotalaria": 0.756, "aveia": 0.699, "pousio": 0.568, "trigo": 0.519}
+EXPECTED = {"milho_braquiaria": 0.806, "milho_safrinha": 0.751, "milheto_crotalaria": 0.74, "aveia": 0.714, "pousio": 0.568, "trigo": 0.54}
 
 
 def _old(r):
@@ -30,11 +30,11 @@ def test_field_72638():
     r, dt = _t(recommend, {"talhao_id": "72638"})
     assert _old(r) == EXPECTED
     assert r["entrada"]["rotacao_atual"] == "soja__milho_safrinha" and r["atual"]["atual"] and r["atual"]["id_legado"] == "milho_safrinha"
-    assert [a["id"] for a in r["alternativas"]] == ["soja__milho_braquiaria", "soja__milheto_crotalaria", "soja__aveia_nabo"]
+    assert [a["id"] for a in r["alternativas"]] == ["soja__milho_braquiaria", "soja__milheto_crotalaria", "soja__aveia"]
     assert [e["id"] for e in r["eliminadas"]][0] == "soja__soja_safrinha" and len(r["eliminadas"]) == 7
     # incremental margin and S scale (Cascavel soybean); rounded output (R$ without decimals, criteria with 3)
     m = _rk(r)
-    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 1370 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1406
+    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 1370 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1646
     assert m["milho_safrinha"]["margem"]["incremental_preco_atual_r_ha"] == 1762 and m["milho_safrinha"]["margem"]["base_renda"] == "historico"
     assert m["trigo"]["margem"]["escala_S_r_ha"] == 1110
     # income never saturates: the two corn options are separated and no one sits at 0 or 1
@@ -44,7 +44,7 @@ def test_field_72638():
     top = r["ranking"][0]["card"]["por_que"]
     assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top
     current = r["atual"]["card"]["por_que"]
-    assert current.startswith("É a rotação atual; ficou em 3º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
+    assert current.startswith("É a rotação atual; ficou em 2º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
     print("72638", round(dt, 2), "s", [(x["id"], round(x["nota"], 2)) for x in r["ranking"]])
 
 
@@ -170,7 +170,7 @@ def test_constraints_excluded_and_no_buyer():
     assert el["milho_verao__trigo"] == ["Sem comprador local informado pelo produtor (milho)."]  # the old exclusion only applies to summer soybean
     assert "Sem comprador local informado pelo produtor" in el["soja__milho_safrinha"][0] and "soja__milho_braquiaria" in el
     assert "Sem comprador local informado pelo produtor (milho)" in el["milho_verao__aveia"][0]  # summer corn also needs a buyer
-    assert [x["id"] for x in r["ranking"]][:3] == ["soja__milheto_crotalaria", "soja__aveia_nabo", "soja__aveia"]
+    assert [x["id"] for x in r["ranking"]][:3] == ["soja__milheto_crotalaria", "soja__aveia", "soja__aveia_nabo"]
     assert r["atual"]["eliminada"] and r["entrada"]["restricoes"]["sem_comprador"] == ["milho", "aveia_grao"]
     assert r["entrada"]["restricoes"]["culturas_excluidas"] == ["soja__trigo"]
     r2, _ = _t(recommend, T, constraints={"sem_comprador": ["trigo"]}, include_diagnosis=False)
@@ -257,8 +257,8 @@ if __name__ == "__main__":
 
 
 def test_technical_tie():
-    # 15/03 with income weight 6: millet/crotalaria and corn + brachiaria are less than 0.02 apart on field 72638
-    r = recommend({"talhao_id": "72638"}, sowing_second="15/03", pesos={"renda": 6}, include_diagnosis=False)
+    # 15/03 with default weights: millet/crotalaria and corn + brachiaria are less than 0.02 apart on field 72638
+    r = recommend({"talhao_id": "72638"}, sowing_second="15/03", include_diagnosis=False)
     e = r["agora"]["empate_tecnico"]
     assert e is not None and e["ids"][:2] == ["soja__milheto_crotalaria", "soja__milho_braquiaria"] and 0 <= e["diferenca"] < 0.02
     tied = [x for x in r["agora"]["ranking"] if x["id"] in e["ids"]]
