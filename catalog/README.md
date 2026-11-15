@@ -9,4 +9,5 @@ Agronomic catalog in YAML.
 
 Sources used: Embrapa, FAO (Ecocrop, FAO-56), ZARC (MAPA), CONAB, CEPEA, IBGE.
 
-The engine in `motor_field_shift/` does not read these files.
+The engine in `motor_field_shift/` does not read `crops.yaml` or `textos.yaml`. From `vocabulario.yaml` it reads
+only `problemas_area` (with a built-in fallback copy), and its texts are extracted for the English API catalog.
