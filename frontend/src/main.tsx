@@ -1,2267 +1,1427 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  createContext,
-  useContext,
-} from "react";
+import { t as __text, t, locale, useLanguage, LanguageProvider, LanguageSwitcher } from "./i18n";
+import React, { useState, useEffect, useRef, createContext, useContext, } from "react";
 import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
-import {
-  months,
-  initialFarm,
-  initialCrops,
-  series,
-  scenarios,
-  profiles,
-  score,
-  info,
-} from "./data";
+import { months, initialFarm, initialCrops, series, scenarios, profiles, score, info, } from "./data";
 import type { Farm, Crop } from "./data";
 import "./styles.css";
 import ClimateStory from "./ClimateStory";
-
-const A = assets.overview,
-  L = assets["13:16"];
+import SolutionStory from "./SolutionStory";
+const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
-type Page =
-  | "landing"
-  | "signup"
-  | "onboard"
-  | "overview"
-  | "farm"
-  | "history"
-  | "climate"
-  | "rotation"
-  | "settings";
-type Modal =
-  | null
-  | "sources"
-  | "indicators"
-  | "help"
-  | "technology"
-  | "addCrop"
-  | "account"
-  | "property"
-  | "login"
-  | "contact"
-  | "map"
-  | number;
+type Page = "landing" | "signup" | "onboard" | "overview" | "farm" | "history" | "climate" | "rotation" | "settings";
+type Modal = null | "sources" | "indicators" | "help" | "technology" | "addCrop" | "account" | "property" | "login" | "contact" | "map" | number;
 const pages: Page[] = [
-  "landing",
-  "signup",
-  "onboard",
-  "overview",
-  "farm",
-  "history",
-  "climate",
-  "rotation",
-  "settings",
+    "landing",
+    "signup",
+    "onboard",
+    "overview",
+    "farm",
+    "history",
+    "climate",
+    "rotation",
+    "settings",
 ];
 function currentPage(): Page {
-  const p = location.hash.slice(1) as Page;
-  return pages.includes(p) ? p : "landing";
+    const p = location.hash.slice(1) as Page;
+    return pages.includes(p) ? p : "landing";
 }
-
 const DraftContext = createContext<{
-  draft: Farm;
-  setDraft: React.Dispatch<React.SetStateAction<Farm>>;
-}>({ draft: initialFarm, setDraft: () => {} });
-function Field({
-  label,
-  name,
-  type = "text",
-  options,
-  min,
-  max,
-  step,
-}: {
-  label: string;
-  name: keyof Farm;
-  type?: string;
-  options?: string[];
-  min?: number;
-  max?: number;
-  step?: string;
+    draft: Farm;
+    setDraft: React.Dispatch<React.SetStateAction<Farm>>;
+}>({ draft: initialFarm, setDraft: () => { } });
+function Field({ label, name, type = "text", options, min, max, step, }: {
+    label: string;
+    name: keyof Farm;
+    type?: string;
+    options?: string[];
+    min?: number;
+    max?: number;
+    step?: string;
 }) {
-  const { draft, setDraft } = useContext(DraftContext);
-  return (
-    <label className="field">
-      <span>{label}</span>
-      {options ? (
-        <select
-          value={draft[name]}
-          onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))}
-        >
-          {options.map((o) => (
-            <option key={o}>{o}</option>
-          ))}
-        </select>
-      ) : (
-        <input
-          type={type}
-          value={draft[name]}
-          onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))}
-          min={min}
-          max={max}
-          step={step}
-          required={name === "name" || name === "area"}
-        />
-      )}
-    </label>
-  );
+    const { draft, setDraft } = useContext(DraftContext);
+    return (<label className="field">
+      <span>{__text(label)}</span>
+      {__text(options ? (<select value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))}>
+          {__text(options.map((o) => (<option key={o} value={o}>{__text(o)}</option>)))}
+        </select>) : (<input type={type} value={draft[name]} onChange={(e) => setDraft((v) => ({ ...v, [name]: e.target.value }))} min={min} max={max} step={step} required={name === "name" || name === "area"}/>))}
+    </label>);
 }
 function App() {
-  const [page, setPage] = useState<Page>(currentPage),
-    [modal, setModal] = useState<Modal>(null),
-    [farm, setFarm] = useState<Farm>({ ...initialFarm }),
-    [draft, setDraft] = useState<Farm>({ ...initialFarm }),
-    [crops, setCrops] = useState<Crop[]>(initialCrops),
-    [year, setYear] = useState("2025"),
-    [period, setPeriod] = useState("12"),
-    [layer, setLayer] = useState("Vegetação (NDVI)"),
-    [zoom, setZoom] = useState(1),
-    [menu, setMenu] = useState(false),
-    [notice, setNotice] = useState(""),
-    [weights, setWeights] = useState<number[]>(profiles.soil),
-    [applied, setApplied] = useState<number[]>(profiles.soil),
-    [busy, setBusy] = useState(false),
-    [slide, setSlide] = useState(0),
-    [carouselPaused, setCarouselPaused] = useState(false),
-    [carouselFocused, setCarouselFocused] = useState(false),
-    [report, setReport] = useState<File | null>(null),
-    [calendar, setCalendar] = useState(false),
-    [explain, setExplain] = useState(false),
-    [userName, setUserName] = useState("Marina Silva"),
-    [settings, setSettings] = useState({
-      temperature: "Graus Celsius (°C)",
-      language: "Português (Brasil)",
+    useLanguage();
+    const [page, setPage] = useState<Page>(currentPage), [modal, setModal] = useState<Modal>(null), [farm, setFarm] = useState<Farm>({ ...initialFarm }), [draft, setDraft] = useState<Farm>({ ...initialFarm }), [crops, setCrops] = useState<Crop[]>(initialCrops), [year, setYear] = useState("2025"), [period, setPeriod] = useState("12"), [layer, setLayer] = useState("Vegetação (NDVI)"), [zoom, setZoom] = useState(1), [menu, setMenu] = useState(false), [notice, setNotice] = useState(""), [weights, setWeights] = useState<number[]>(profiles.soil), [applied, setApplied] = useState<number[]>(profiles.soil), [busy, setBusy] = useState(false), [slide, setSlide] = useState(0), [carouselPaused, setCarouselPaused] = useState(false), [carouselFocused, setCarouselFocused] = useState(false), [report, setReport] = useState<File | null>(null), [calendar, setCalendar] = useState(false), [explain, setExplain] = useState(false), [userName, setUserName] = useState("Marina Silva"), [settings, setSettings] = useState({
+        temperature: "Graus Celsius (°C)",
     });
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const reduced = useReducedMotion();
-  useEffect(() => {
-    if (page !== "landing" || reduced || carouselPaused || carouselFocused) return;
-    const interval = window.setInterval(() => {
-      if (!document.hidden) setSlide((current) => (current + 1) % 3);
-    }, 6000);
-    return () => window.clearInterval(interval);
-  }, [page, reduced, carouselPaused, carouselFocused, slide]);
-
-  useEffect(() => {
-    const h = () => {
-      setPage(currentPage());
-      setMenu(false);
-      setModal(null);
-      window.scrollTo(0, 0);
-    };
-    addEventListener("hashchange", h);
-    return () => removeEventListener("hashchange", h);
-  }, []);
-  useEffect(() => {
-    if (!notice) return;
-    const t = setTimeout(() => setNotice(""), 4500);
-    return () => clearTimeout(t);
-  }, [notice]);
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-    },
-    [],
-  );
-  function go(p: Page) {
-    location.hash = p;
-    if (page === p) {
-      setMenu(false);
-      setModal(null);
-      window.scrollTo(0, 0);
+    const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const reduced = useReducedMotion();
+    useEffect(() => {
+        if (page !== "landing" || reduced || carouselPaused || carouselFocused)
+            return;
+        const interval = window.setInterval(() => {
+            if (!document.hidden)
+                setSlide((current) => (current + 1) % 3);
+        }, 6000);
+        return () => window.clearInterval(interval);
+    }, [page, reduced, carouselPaused, carouselFocused, slide]);
+    useEffect(() => {
+        const h = () => {
+            setPage(currentPage());
+            setMenu(false);
+            setModal(null);
+            window.scrollTo(0, 0);
+        };
+        addEventListener("hashchange", h);
+        return () => removeEventListener("hashchange", h);
+    }, []);
+    useEffect(() => {
+        if (!notice)
+            return;
+        const t = setTimeout(() => setNotice(""), 4500);
+        return () => clearTimeout(t);
+    }, [notice]);
+    useEffect(() => () => {
+        if (timer.current)
+            clearTimeout(timer.current);
+    }, []);
+    function go(p: Page) {
+        location.hash = p;
+        if (page === p) {
+            setMenu(false);
+            setModal(null);
+            window.scrollTo(0, 0);
+        }
     }
-  }
-  function toast(s: string) {
-    setNotice(s);
-  }
-  function saveFarm(e: React.FormEvent) {
-    e.preventDefault();
-    setFarm({ ...draft });
-    toast("Alterações aplicadas nesta sessão.");
-  }
-  function compare() {
-    if (!weights.some(Boolean)) {
-      toast("Defina pelo menos uma prioridade maior que zero.");
-      return;
+    function toast(s: string) {
+        setNotice(s);
     }
-    setBusy(true);
-    timer.current = setTimeout(() => {
-      setApplied([...weights]);
-      setBusy(false);
-      toast("Comparação demonstrativa atualizada.");
-    }, 600);
-  }
-  const chosen = scenarios.map((s) => score(s.notes, applied));
-  const winner = chosen.indexOf(Math.max(...chosen));
-  const navItems: [Page, string, string][] = [
-    ["overview", "Visão Geral", A.imgIconeDeNavegacao],
-    ["farm", "Minha Propriedade", A.imgIconeDeNavegacao1],
-    ["climate", "Análise Climática", A.imgIconeDeNavegacao3],
-    ["history", "Histórico de Cultivo", A.imgIconeDeNavegacao2],
-    ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
-  ];
-  const open = (m: Modal) => setModal(m);
-  function Logo() {
-    return (
-      <button
-        className="brand"
-        onClick={() => go("landing")}
-        aria-label="NATIVA — início"
-      >
-        <img src={A.imgLogoNativaEnviada} alt="" />
-        <strong>NATIVA</strong>
-      </button>
-    );
-  }
-  function Demo() {
-    return (
-      <p className="demo">
-        DADOS DEMONSTRATIVOS{" "}
-        <span>
-          • Propriedade fictícia. Valores ilustrativos, não são medições reais
-          nem recomendações validadas.
-        </span>
-      </p>
-    );
-  }
-  function Btn({
-    children,
-    onClick,
-    secondary = false,
-    type = "button",
-  }: {
-    children: React.ReactNode;
-    onClick?: () => void;
-    secondary?: boolean;
-    type?: "button" | "submit";
-  }) {
-    return (
-      <button
-        type={type}
-        className={secondary ? "button secondary" : "button"}
-        onClick={onClick}
-      >
-        {children}
-      </button>
-    );
-  }
-  function LinkButton({
-    children,
-    onClick,
-  }: {
-    children: React.ReactNode;
-    onClick: () => void;
-  }) {
-    return (
-      <button className="text-link" onClick={onClick}>
-        {children}
-      </button>
-    );
-  }
-  function Chart({
-    kind = "temperature",
-    large = false,
-  }: {
-    kind?: keyof typeof series;
-    large?: boolean;
-  }) {
-    const vals = series[kind]
-      .slice(period === "6" ? 6 : 0)
-      .map((x) =>
-        year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x,
-      );
-    const color = {
-      temperature: "#efae38",
-      rain: "#8ebdc6",
-      moisture: "#a8c9a3",
-      ndvi: "#8ca53b",
-    }[kind];
-    const max = { temperature: 35, rain: 300, moisture: 60, ndvi: 1 }[kind];
-    const minimum = kind === "temperature" ? 15 : 0;
-    const plotY = (v: number) => 125 - ((v - minimum) / (max - minimum)) * 110;
-    const positions = vals
-      .map((v, i) => `${(i / (vals.length - 1)) * 300},${plotY(v)}`)
-      .join(" ");
-    return (
-      <div className={"chart " + (large ? "chart-large" : "")}>
-        <svg
-          viewBox="0 0 350 174"
-          role="img"
-          aria-label={`${kind === "rain" ? "Precipitação" : kind === "temperature" ? "Temperatura" : kind === "moisture" ? "Umidade do solo" : "NDVI"} — valores demonstrativos de ${year}`}
-        >
+    function saveFarm(e: React.FormEvent) {
+        e.preventDefault();
+        setFarm({ ...draft });
+        toast("Alterações aplicadas nesta sessão.");
+    }
+    function compare() {
+        if (!weights.some(Boolean)) {
+            toast("Defina pelo menos uma prioridade maior que zero.");
+            return;
+        }
+        setBusy(true);
+        timer.current = setTimeout(() => {
+            setApplied([...weights]);
+            setBusy(false);
+            toast("Comparação demonstrativa atualizada.");
+        }, 600);
+    }
+    const chosen = scenarios.map((s) => score(s.notes, applied));
+    const winner = chosen.indexOf(Math.max(...chosen));
+    const navItems: [
+        Page,
+        string,
+        string
+    ][] = [
+        ["overview", "Visão Geral", A.imgIconeDeNavegacao],
+        ["farm", "Minha Propriedade", A.imgIconeDeNavegacao1],
+        ["climate", "Análise Climática", A.imgIconeDeNavegacao3],
+        ["history", "Histórico de Cultivo", A.imgIconeDeNavegacao2],
+        ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
+    ];
+    const open = (m: Modal) => setModal(m);
+    function Logo() {
+        return (<button className="brand" onClick={() => go("landing")} aria-label={__text("NATIVA \u2014 in\u00EDcio")}>
+        <img src={A.imgLogoNativaEnviada} alt={__text("")}/>
+        <strong>{__text("NATIVA")}</strong>
+      </button>);
+    }
+    function Demo() {
+        return (<p className="demo">{__text("DADOS DEMONSTRATIVOS")}{__text(" ")}
+        <span>{__text("\u2022 Propriedade fict\u00EDcia. Valores ilustrativos, n\u00E3o s\u00E3o medi\u00E7\u00F5es reais nem recomenda\u00E7\u00F5es validadas.")}</span>
+      </p>);
+    }
+    function Btn({ children, onClick, secondary = false, type = "button", }: {
+        children: React.ReactNode;
+        onClick?: () => void;
+        secondary?: boolean;
+        type?: "button" | "submit";
+    }) {
+        return (<button type={type} className={secondary ? "button secondary" : "button"} onClick={onClick}>
+        {__text(children)}
+      </button>);
+    }
+    function LinkButton({ children, onClick, }: {
+        children: React.ReactNode;
+        onClick: () => void;
+    }) {
+        return (<button className="text-link" onClick={onClick}>
+        {__text(children)}
+      </button>);
+    }
+    function Chart({ kind = "temperature", large = false, }: {
+        kind?: keyof typeof series;
+        large?: boolean;
+    }) {
+        const vals = series[kind]
+            .slice(period === "6" ? 6 : 0)
+            .map((x) => year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x);
+        const color = {
+            temperature: "#efae38",
+            rain: "#8ebdc6",
+            moisture: "#a8c9a3",
+            ndvi: "#8ca53b",
+        }[kind];
+        const max = { temperature: 35, rain: 300, moisture: 60, ndvi: 1 }[kind];
+        const minimum = kind === "temperature" ? 15 : 0;
+        const plotY = (v: number) => 125 - ((v - minimum) / (max - minimum)) * 110;
+        const positions = vals
+            .map((v, i) => `${(i / (vals.length - 1)) * 300},${plotY(v)}`)
+            .join(" ");
+        return (<div className={"chart " + (large ? "chart-large" : "")}>
+        <svg viewBox="0 0 350 174" role="img" aria-label={__text(`${kind === "rain" ? t("Precipitação") : kind === "temperature" ? t("Temperatura") : kind === "moisture" ? t("Umidade do solo") : "NDVI"} ${t("— valores demonstrativos de")} ${year}`)}>
           <g transform="translate(34 8)">
-            {[15, 70, 125].map((y, i) => (
-              <g key={y}>
-                <line x1="0" x2="306" y1={y} y2={y} stroke="#28464b" />
+            {__text([15, 70, 125].map((y, i) => (<g key={y}>
+                <line x1="0" x2="306" y1={y} y2={y} stroke="#28464b"/>
                 <text x="-12" y={y + 3} textAnchor="end">
-                  {kind === "temperature"
+                  {__text(kind === "temperature"
                     ? [35, 25, 15][i]
                     : i === 2
-                      ? "0"
-                      : (max * (1 - i * 0.5)).toLocaleString("pt-BR")}
+                        ? "0"
+                        : (max * (1 - i * 0.5)).toLocaleString(locale()))}
                 </text>
-              </g>
-            ))}
-            {kind === "rain" ? (
-              vals.map((v, i) => (
-                <rect
-                  key={i}
-                  x={(i * 300) / vals.length + 2}
-                  y={plotY(v)}
-                  width={vals.length === 6 ? 13 : 9}
-                  height={(v / max) * 110}
-                  rx="3"
-                  fill={color}
-                >
+              </g>)))}
+            {__text(kind === "rain" ? (vals.map((v, i) => (<rect key={i} x={(i * 300) / vals.length + 2} y={plotY(v)} width={vals.length === 6 ? 13 : 9} height={(v / max) * 110} rx="3" fill={color}>
                   <title>
-                    {months[(period === "6" ? 6 : 0) + i]}: {v.toFixed(0)} mm
-                  </title>
-                </rect>
-              ))
-            ) : period === "12" &&
-              year === "2025" &&
-              !large &&
-              kind !== "ndvi" ? (
-              <image
-                href={
-                  kind === "temperature"
+                    {__text(months[(period === "6" ? 6 : 0) + i])}{__text(":")}{__text(v.toFixed(0))}{__text("mm")}</title>
+                </rect>))) : period === "12" &&
+                year === "2025" &&
+                !large &&
+                kind !== "ndvi" ? (<image href={kind === "temperature"
                     ? A.imgCurvaDeTemperatura
-                    : A.imgCurvaDeUmidadeDoSolo
-                }
-                x="0"
-                y={kind === "temperature" ? 55 : 54}
-                width="306"
-                height={kind === "temperature" ? 43 : 33}
-              />
-            ) : (
-              <polyline
-                points={positions}
-                fill="none"
-                stroke={color}
-                strokeWidth="2.2"
-              />
-            )}
-            {large && (
-              <>
-                <rect
-                  x="275"
-                  y="20"
-                  width="31"
-                  height="100"
-                  fill="#9aadb0"
-                  opacity=".08"
-                />
-                <path
-                  d={`M 250 ${plotY(vals[vals.length - 1])} L 300 28`}
-                  stroke={color}
-                  strokeDasharray="3 4"
-                  fill="none"
-                  opacity=".6"
-                />
-              </>
-            )}
-            {(period === "6"
-              ? ["Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-              : ["Jan", "Abr", "Jul", "Out", "Dez"]
-            ).map((m, i, arr) => (
-              <text
-                key={m}
-                x={(i * 300) / (arr.length - 1)}
-                y="151"
-                textAnchor="middle"
-              >
-                {m}
-              </text>
-            ))}
+                    : A.imgCurvaDeUmidadeDoSolo} x="0" y={kind === "temperature" ? 55 : 54} width="306" height={kind === "temperature" ? 43 : 33}/>) : (<polyline points={positions} fill="none" stroke={color} strokeWidth="2.2"/>))}
+            {__text(large && (<>
+                <rect x="275" y="20" width="31" height="100" fill="#9aadb0" opacity=".08"/>
+                <path d={`M 250 ${plotY(vals[vals.length - 1])} L 300 28`} stroke={color} strokeDasharray="3 4" fill="none" opacity=".6"/>
+              </>))}
+            {__text((period === "6"
+                ? ["Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+                : ["Jan", "Abr", "Jul", "Out", "Dez"]).map((m, i, arr) => (<text key={m} x={(i * 300) / (arr.length - 1)} y="151" textAnchor="middle">
+                {__text(m)}
+              </text>)))}
           </g>
         </svg>
-        <small>
-          ● NASA{" "}
-          {kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} ·
-          série fictícia
-        </small>
-      </div>
-    );
-  }
-  function Map({ expanded = false }: { expanded?: boolean }) {
-    return (
-      <div className={"farm-map " + (expanded ? "expanded" : "")}>
+        <small>{__text("\u25CF NASA")}{__text(" ")}
+          {__text(kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER")}{__text("\u00B7 s\u00E9rie fict\u00EDcia")}</small>
+      </div>);
+    }
+    function Map({ expanded = false }: {
+        expanded?: boolean;
+    }) {
+        return (<div className={"farm-map " + (expanded ? "expanded" : "")}>
         <div className="map-image" style={{ transform: `scale(${zoom})` }}>
-          <img
-            src={A.imgPlanoGeografico}
-            alt="Vista aérea ilustrativa de campos agrícolas"
-          />
-          <img
-            className="field-boundary"
-            src={A.imgLimiteFicticio}
-            alt="Limite fictício da propriedade"
-          />
+          <img src={A.imgPlanoGeografico} alt={__text("Vista a\u00E9rea ilustrativa de campos agr\u00EDcolas")}/>
+          <img className="field-boundary" src={A.imgLimiteFicticio} alt={__text("Limite fict\u00EDcio da propriedade")}/>
         </div>
-        <select
-          className="map-layer"
-          aria-label="Camada do mapa"
-          value={layer}
-          onChange={(e) => setLayer(e.target.value)}
-        >
-          {[
-            "Vegetação (NDVI)",
-            "Umidade do solo",
-            "Precipitação",
-            "Temperatura",
-          ].map((x) => (
-            <option key={x}>{x}</option>
-          ))}
+        <select className="map-layer" aria-label={__text("Camada do mapa")} value={layer} onChange={(e) => setLayer(e.target.value)}>
+          {__text([
+                "Vegetação (NDVI)",
+                "Umidade do solo",
+                "Precipitação",
+                "Temperatura",
+            ].map((x) => (<option key={x} value={x}>{__text(x)}</option>)))}
         </select>
         <div className="map-controls">
-          <button
-            aria-label="Aproximar mapa"
-            onClick={() => setZoom((v) => Math.min(2.4, v + 0.2))}
-          >
-            +
-          </button>
-          <button
-            aria-label="Afastar mapa"
-            onClick={() => setZoom((v) => Math.max(1, v - 0.2))}
-          >
-            −
-          </button>
-          <button
-            aria-label="Centralizar propriedade"
-            onClick={() => setZoom(1)}
-          >
-            ⌖
-          </button>
+          <button aria-label={__text("Aproximar mapa")} onClick={() => setZoom((v) => Math.min(2.4, v + 0.2))}>{__text("+")}</button>
+          <button aria-label={__text("Afastar mapa")} onClick={() => setZoom((v) => Math.max(1, v - 0.2))}>{__text("\u2212")}</button>
+          <button aria-label={__text("Centralizar propriedade")} onClick={() => setZoom(1)}>{__text("\u2316")}</button>
         </div>
         <div className="map-farm">
-          <strong>{farm.name}</strong>
-          <small>{farm.area} ha • limite fictício</small>
+          <strong>{__text(farm.name)}</strong>
+          <small>{__text(farm.area)}{__text("ha \u2022 limite fict\u00EDcio")}</small>
         </div>
-        <small className="map-disclaimer">
-          Imagem ilustrativa • limites fictícios, sem georreferenciamento
-        </small>
+        <small className="map-disclaimer">{__text("Imagem ilustrativa \u2022 limites fict\u00EDcios, sem georreferenciamento")}</small>
         <div className="map-legend">
           <span>
-            {layer === "Vegetação (NDVI)"
-              ? "NDVI · 0,2–0,9"
-              : layer + " · exemplo"}
+            {__text(layer === "Vegetação (NDVI)"
+                ? "NDVI · 0,2–0,9"
+                : layer + " · exemplo")}
           </span>
           <div>
-            {["#c4ad70", "#c3d58b", "#90b66c", "#4d8153", "#315b3d"].map(
-              (c) => (
-                <i key={c} style={{ background: c }} />
-              ),
-            )}
+            {__text(["#c4ad70", "#c3d58b", "#90b66c", "#4d8153", "#315b3d"].map((c) => (<i key={c} style={{ background: c }}/>)))}
           </div>
         </div>
-        <button
-          className="map-fullscreen"
-          aria-label={expanded ? "Fechar mapa ampliado" : "Ampliar mapa"}
-          onClick={() => open(expanded ? null : "map")}
-        >
-          <img src={A.imgTelaCheia} alt="" />
+        <button className="map-fullscreen" aria-label={__text(expanded ? "Fechar mapa ampliado" : "Ampliar mapa")} onClick={() => open(expanded ? null : "map")}>
+          <img src={A.imgTelaCheia} alt={__text("")}/>
         </button>
-      </div>
-    );
-  }
-  function ClimateSummary() {
-    return (
-      <section className="panel climate-summary">
+      </div>);
+    }
+    function ClimateSummary() {
+        return (<section className="panel climate-summary">
         <div className="section-heading">
           <div>
-            <h2>Como o clima está mudando?</h2>
-            <p>
-              Jan–Dez {year} · comparação entre meses · valores demonstrativos
-            </p>
+            <h2>{__text("Como o clima est\u00E1 mudando?")}</h2>
+            <p>{__text("Jan\u2013Dez")}{__text(year)}{__text("\u00B7 compara\u00E7\u00E3o entre meses \u00B7 valores demonstrativos")}</p>
           </div>
-          <select
-            aria-label="Período dos gráficos"
-            value={period}
-            onChange={(e) => setPeriod(e.target.value)}
-          >
-            <option value="12">Últimos 12 meses</option>
-            <option value="6">Últimos 6 meses</option>
+          <select aria-label={__text("Per\u00EDodo dos gr\u00E1ficos")} value={period} onChange={(e) => setPeriod(e.target.value)}>
+            <option value="12">{__text("\u00DAltimos 12 meses")}</option>
+            <option value="6">{__text("\u00DAltimos 6 meses")}</option>
           </select>
         </div>
         <div className="charts-three">
-          {(["temperature", "rain", "moisture"] as const).map((kind, i) => (
-            <div key={kind}>
+          {__text((["temperature", "rain", "moisture"] as const).map((kind, i) => (<div key={kind}>
               <div className="chart-title">
                 <strong>
-                  {["Temperatura", "Precipitação", "Umidade do solo"][i]}
+                  {__text(["Temperatura", "Precipitação", "Umidade do solo"][i])}
                 </strong>
-                <small>{["°C", "mm/mês", "%"][i]}</small>
+                <small>{__text(["°C", "mm/mês", "%"][i])}</small>
               </div>
-              <Chart kind={kind} />
-            </div>
-          ))}
+              <Chart kind={kind}/>
+            </div>)))}
         </div>
-      </section>
-    );
-  }
-  function MetricCards() {
-    return (
-      <div className="metrics">
-        {[
-          [
-            "Temperatura média",
-            settings.temperature.startsWith("Graus Fahrenheit")
-              ? "76,6"
-              : "24,8",
-            settings.temperature.startsWith("Graus Fahrenheit") ? "°F" : "°C",
-            "↗ +1,2 °C no histórico",
-            "POWER",
-          ],
-          [
-            "Precipitação acumulada",
-            "142",
-            "mm",
-            "↘ −18% no histórico",
-            "POWER",
-          ],
-          ["Umidade do solo", "32", "%", "↗ +4 p.p. no mês", "SMAP"],
-          ["Índice de vegetação", "0,76", "NDVI", "↗ +0,08 no mês", "MODIS"],
-        ].map((m, i) => (
-          <button
-            className="metric panel"
-            key={m[0]}
-            onClick={() => open("indicators")}
-          >
-            <span className="metric-title">{m[0]}</span>
+      </section>);
+    }
+    function MetricCards() {
+        return (<div className="metrics">
+        {__text([
+                [
+                    "Temperatura média",
+                    settings.temperature.startsWith("Graus Fahrenheit")
+                        ? "76,6"
+                        : "24,8",
+                    settings.temperature.startsWith("Graus Fahrenheit") ? "°F" : "°C",
+                    "↗ +1,2 °C no histórico",
+                    "POWER",
+                ],
+                [
+                    "Precipitação acumulada",
+                    "142",
+                    "mm",
+                    "↘ −18% no histórico",
+                    "POWER",
+                ],
+                ["Umidade do solo", "32", "%", "↗ +4 p.p. no mês", "SMAP"],
+                ["Índice de vegetação", "0,76", "NDVI", "↗ +0,08 no mês", "MODIS"],
+            ].map((m, i) => (<button className="metric panel" key={m[0]} onClick={() => open("indicators")}>
+            <span className="metric-title">{__text(m[0])}</span>
             <div className="metric-value">
-              <motion.strong
-                data-node-id={["3:330", "3:336", "3:342", "3:348"][i]}
-                initial={reduced ? false : { opacity: 0.8, y: 3 }}
-                animate={
-                  reduced
+              <motion.strong data-node-id={["3:330", "3:336", "3:342", "3:348"][i]} initial={reduced ? false : { opacity: 0.8, y: 3 }} animate={reduced
                     ? { opacity: 1, y: 0 }
-                    : { opacity: [0.8, 1, 1], y: [3, 0, 0] }
-                }
-                transition={{
-                  duration: 2,
-                  times: [0, 0.325, 1],
-                  ease: ["easeOut", "linear"],
-                  repeat: Infinity,
-                }}
-              >
-                {m[1]}
+                    : { opacity: [0.8, 1, 1], y: [3, 0, 0] }} transition={{
+                    duration: 2,
+                    times: [0, 0.325, 1],
+                    ease: ["easeOut", "linear"],
+                    repeat: Infinity,
+                }}>
+                {__text(m[1])}
               </motion.strong>
-              <small>{m[2]}</small>
+              <small>{__text(m[2])}</small>
             </div>
-            <span className={"delta " + (i < 2 ? "warm" : "")}>{m[3]}</span>
-            <small className="metric-source">NASA {m[4]} • exemplo</small>
-            {i === 0 ? (
-              <img
-                className="metric-spark"
-                src={A.imgMinigraficoDeTemperatura}
-                alt=""
-              />
-            ) : i === 1 ? (
-              <div className="mini-bars">
-                {[14, 24, 18, 35, 27, 42, 33].map((v, n) => (
-                  <i key={n} style={{ height: v }} />
-                ))}
-              </div>
-            ) : i === 2 ? (
-              <div className="metric-ring">
-                <img src={A.imgUmidadeCircular} alt="" />
-                <img src={A.img32DeUmidade} alt="" />
-              </div>
-            ) : (
-              <div className="ndvi-bars">
-                {Array.from({ length: 9 }, (_, n) => (
-                  <i key={n} style={{ opacity: n > 6 ? 0.25 : 1 }} />
-                ))}
-              </div>
-            )}
-          </button>
-        ))}
-      </div>
-    );
-  }
-  function Overview() {
-    return (
-      <>
+            <span className={"delta " + (i < 2 ? "warm" : "")}>{__text(m[3])}</span>
+            <small className="metric-source">{__text("NASA")}{__text(m[4])}{__text("\u2022 exemplo")}</small>
+            {__text(i === 0 ? (<img className="metric-spark" src={A.imgMinigraficoDeTemperatura} alt={__text("")}/>) : i === 1 ? (<div className="mini-bars">
+                {__text([14, 24, 18, 35, 27, 42, 33].map((v, n) => (<i key={n} style={{ height: v }}/>)))}
+              </div>) : i === 2 ? (<div className="metric-ring">
+                <img src={A.imgUmidadeCircular} alt={__text("")}/>
+                <img src={A.img32DeUmidade} alt={__text("")}/>
+              </div>) : (<div className="ndvi-bars">
+                {__text(Array.from({ length: 9 }, (_, n) => (<i key={n} style={{ opacity: n > 6 ? 0.25 : 1 }}/>)))}
+              </div>))}
+          </button>)))}
+      </div>);
+    }
+    function Overview() {
+        return (<>
         <div className="page-heading overview-heading">
           <div>
-            <h1>Sua propriedade, uma nova perspectiva.</h1>
-            <p>
-              Explore sua fazenda com dados da NASA e descubra oportunidades
-              para suas próximas safras.
-            </p>
+            <h1>{__text("Sua propriedade, uma nova perspectiva.")}</h1>
+            <p>{__text("Explore sua fazenda com dados da NASA e descubra oportunidades para suas pr\u00F3ximas safras.")}</p>
           </div>
-          <Btn onClick={() => go("rotation")}>＋ Nova Análise</Btn>
+          <Btn onClick={() => go("rotation")}>{__text("\uFF0B Nova An\u00E1lise")}</Btn>
         </div>
         <Demo />
         <div className="overview-map">
           <Map />
           <aside className="farm-context">
-            <h2>{farm.name}</h2>
+            <h2>{__text(farm.name)}</h2>
             <p>
-              {farm.city} · {farm.country}
+              {__text(farm.city)}{__text("\u00B7")}{__text(farm.country)}
             </p>
             <small>
-              {farm.latitude} / {farm.longitude} • coordenadas fictícias
-            </small>
+              {__text(farm.latitude)}{__text("/")}{__text(farm.longitude)}{__text("\u2022 coordenadas fict\u00EDcias")}</small>
             <div className="current-context">
-              <small>CULTIVO ATUAL</small>
-              <strong>{farm.crop}</strong>
-              <span>Talhão 01 · {farm.area} ha</span>
+              <small>{__text("CULTIVO ATUAL")}</small>
+              <strong>{__text(farm.crop)}</strong>
+              <span>{__text("Talh\u00E3o 01 \u00B7")}{__text(farm.area)}{__text("ha")}</span>
             </div>
             <hr />
-            <h3>Um novo olhar para o próximo ciclo.</h3>
-            <LinkButton onClick={() => go("farm")}>
-              Ver minha propriedade →
-            </LinkButton>
-            <LinkButton onClick={() => open("sources")}>
-              Fontes e limitações →
-            </LinkButton>
+            <h3>{__text("Um novo olhar para o pr\u00F3ximo ciclo.")}</h3>
+            <LinkButton onClick={() => go("farm")}>{__text("Ver minha propriedade \u2192")}</LinkButton>
+            <LinkButton onClick={() => open("sources")}>{__text("Fontes e limita\u00E7\u00F5es \u2192")}</LinkButton>
           </aside>
         </div>
         <MetricCards />
-        <button
-          className="disclosure"
-          aria-expanded={explain}
-          onClick={() => setExplain(!explain)}
-        >
-          Entenda os indicadores <span>{explain ? "−" : "⌄"}</span>
+        <button className="disclosure" aria-expanded={explain} onClick={() => setExplain(!explain)}>{__text("Entenda os indicadores")}<span>{__text(explain ? "−" : "⌄")}</span>
         </button>
-        {explain && (
-          <div className="panel inline-info">
-            {info.indicators.items.map(([t, d]) => (
-              <div key={t}>
-                <h3>{t}</h3>
-                <p>{d}</p>
-              </div>
-            ))}
-          </div>
-        )}
+        {__text(explain && (<div className="panel inline-info">
+            {__text(info.indicators.items.map(([t, d]) => (<div key={t}>
+                <h3>{__text(t)}</h3>
+                <p>{__text(d)}</p>
+              </div>)))}
+          </div>))}
         <section className="plan-banner">
           <div>
-            <h2>Planeje sua próxima safra.</h2>
-            <p>
-              Compare estratégias de rotação considerando o clima, o solo e as
-              prioridades da sua propriedade.
-            </p>
-            <button className="button lime" onClick={() => go("rotation")}>
-              Comparar estratégias →
-            </button>
+            <h2>{__text("Planeje sua pr\u00F3xima safra.")}</h2>
+            <p>{__text("Compare estrat\u00E9gias de rota\u00E7\u00E3o considerando o clima, o solo e as prioridades da sua propriedade.")}</p>
+            <button className="button lime" onClick={() => go("rotation")}>{__text("Comparar estrat\u00E9gias \u2192")}</button>
           </div>
           <div className="banner-art">
-            {[A.imgRotation, A.imgFieldRows, A.imgSprout, A.imgWarmAccent].map(
-              (src, i) => (
-                <img key={src} className={"art-" + i} src={src} alt="" />
-              ),
-            )}
+            {__text([A.imgRotation, A.imgFieldRows, A.imgSprout, A.imgWarmAccent].map((src, i) => (<img key={src} className={"art-" + i} src={src} alt={__text("")}/>)))}
           </div>
         </section>
         <ClimateSummary />
-        <button
-          className="disclosure"
-          aria-expanded={calendar}
-          onClick={() => setCalendar(!calendar)}
-        >
-          Calendário agrícola <span>{calendar ? "−" : "⌄"}</span>
+        <button className="disclosure" aria-expanded={calendar} onClick={() => setCalendar(!calendar)}>{__text("Calend\u00E1rio agr\u00EDcola")}<span>{__text(calendar ? "−" : "⌄")}</span>
         </button>
-        {calendar && <Timeline />}
-      </>
-    );
-  }
-
-  function FarmPage() {
-    return (
-      <form onSubmit={saveFarm}>
+        {__text(calendar && <Timeline />)}
+      </>);
+    }
+    function FarmPage() {
+        return (<form onSubmit={saveFarm}>
         <div className="page-heading">
           <div>
-            <h1>Minha Propriedade</h1>
-            <p>As características da sua terra são o ponto de partida.</p>
+            <h1>{__text("Minha Propriedade")}</h1>
+            <p>{__text("As caracter\u00EDsticas da sua terra s\u00E3o o ponto de partida.")}</p>
           </div>
-          <Btn type="submit">Salvar alterações</Btn>
+          <Btn type="submit">{__text("Salvar altera\u00E7\u00F5es")}</Btn>
         </div>
         <Demo />
         <div className="two-col">
           <div className="stack">
             <section className="panel">
-              <h2>01 Localização</h2>
-              <p>
-                Informe onde você cultiva. Os campos marcados são opcionais.
-              </p>
+              <h2>{__text("01 Localiza\u00E7\u00E3o")}</h2>
+              <p>{__text("Informe onde voc\u00EA cultiva. Os campos marcados s\u00E3o opcionais.")}</p>
               <div className="fields-grid">
-                <Field label="Nome da propriedade" name="name" />
-                <Field
-                  label="País"
-                  name="country"
-                  options={[
-                    "Brasil",
-                    "Argentina",
-                    "Uruguai",
-                    "Paraguai",
-                    "Outro",
-                  ]}
-                />
+                <Field label={__text("Nome da propriedade")} name="name"/>
+                <Field label={__text("Pa\u00EDs")} name="country" options={[
+                "Brasil",
+                "Argentina",
+                "Uruguai",
+                "Paraguai",
+                "Outro",
+            ]}/>
                 <div className="fields-grid">
-                  <Field
-                    label="Latitude"
-                    name="latitude"
-                    type="number"
-                    min={-90}
-                    max={90}
-                    step="any"
-                  />
-                  <Field
-                    label="Longitude"
-                    name="longitude"
-                    type="number"
-                    min={-180}
-                    max={180}
-                    step="any"
-                  />
+                  <Field label={__text("Latitude")} name="latitude" type="number" min={-90} max={90} step="any"/>
+                  <Field label={__text("Longitude")} name="longitude" type="number" min={-180} max={180} step="any"/>
                 </div>
-                <Field
-                  label="Área da propriedade (ha)"
-                  name="area"
-                  type="number"
-                  min={0.01}
-                  step="any"
-                />
+                <Field label={__text("\u00C1rea da propriedade (ha)")} name="area" type="number" min={0.01} step="any"/>
               </div>
               <div className="location-preview">
-                <img
-                  src={assets["13:478"].imgLocalizacaoDemonstrativa}
-                  alt="Localização ilustrativa da fazenda"
-                />
-                <span>
-                  ⌖ {draft.latitude}, {draft.longitude} • exemplo
-                </span>
+                <img src={assets["13:478"].imgLocalizacaoDemonstrativa} alt={__text("Localiza\u00E7\u00E3o ilustrativa da fazenda")}/>
+                <span>{__text("\u2316")}{__text(draft.latitude)}{__text(",")}{__text(draft.longitude)}{__text("\u2022 exemplo")}</span>
               </div>
             </section>
             <section className="panel">
-              <h2>02 Características do solo</h2>
+              <h2>{__text("02 Caracter\u00EDsticas do solo")}</h2>
               <div className="fields-grid">
-                <Field
-                  label="Textura do solo"
-                  name="texture"
-                  options={[
-                    "Argiloso",
-                    "Arenoso",
-                    "Franco",
-                    "Siltoso",
-                    "Não informado",
-                  ]}
-                />
-                <Field
-                  label="pH do solo ⓘ"
-                  name="ph"
-                  type="number"
-                  min={0}
-                  max={14}
-                  step=".1"
-                />
-                <Field
-                  label="Drenagem"
-                  name="drainage"
-                  options={["Moderada", "Boa", "Baixa", "Não informado"]}
-                />
-                <Field
-                  label="Matéria orgânica (%) • opcional"
-                  name="organic"
-                  type="number"
-                  min={0}
-                  max={100}
-                  step=".1"
-                />
+                <Field label={__text("Textura do solo")} name="texture" options={[
+                "Argiloso",
+                "Arenoso",
+                "Franco",
+                "Siltoso",
+                "Não informado",
+            ]}/>
+                <Field label={__text("pH do solo \u24D8")} name="ph" type="number" min={0} max={14} step=".1"/>
+                <Field label={__text("Drenagem")} name="drainage" options={["Moderada", "Boa", "Baixa", "Não informado"]}/>
+                <Field label={__text("Mat\u00E9ria org\u00E2nica (%) \u2022 opcional")} name="organic" type="number" min={0} max={100} step=".1"/>
               </div>
             </section>
             <section className="panel">
-              <h2>03 Recursos hídricos</h2>
+              <h2>{__text("03 Recursos h\u00EDdricos")}</h2>
               <div className="fields-grid">
-                <Field
-                  label="Disponibilidade de irrigação"
-                  name="irrigation"
-                  options={["Sim", "Não", "Não informado"]}
-                />
-                <Field
-                  label="Tipo de irrigação"
-                  name="irrigationType"
-                  options={[
-                    "Pivô central",
-                    "Gotejamento",
-                    "Aspersão",
-                    "Não se aplica",
-                    "Outro",
-                  ]}
-                />
+                <Field label={__text("Disponibilidade de irriga\u00E7\u00E3o")} name="irrigation" options={["Sim", "Não", "Não informado"]}/>
+                <Field label={__text("Tipo de irriga\u00E7\u00E3o")} name="irrigationType" options={[
+                "Pivô central",
+                "Gotejamento",
+                "Aspersão",
+                "Não se aplica",
+                "Outro",
+            ]}/>
                 <div className="full">
-                  <Field
-                    label="Restrições de água • opcional"
-                    name="waterRestriction"
-                  />
+                  <Field label={__text("Restri\u00E7\u00F5es de \u00E1gua \u2022 opcional")} name="waterRestriction"/>
                 </div>
               </div>
             </section>
           </div>
           <aside className="stack">
             <section className="panel">
-              <h2>Sua terra, em contexto</h2>
-              <h3 className="farm-name">{farm.name}</h3>
+              <h2>{__text("Sua terra, em contexto")}</h2>
+              <h3 className="farm-name">{__text(farm.name)}</h3>
               <p>
-                {farm.city} • {farm.country}
+                {__text(farm.city)}{__text("\u2022")}{__text(farm.country)}
               </p>
               <dl>
                 <div>
-                  <dt>Área total</dt>
-                  <dd>{farm.area} ha</dd>
+                  <dt>{__text("\u00C1rea total")}</dt>
+                  <dd>{__text(farm.area)}{__text("ha")}</dd>
                 </div>
                 <div>
-                  <dt>Talhões cadastrados</dt>
-                  <dd>1 talhão</dd>
+                  <dt>{__text("Talh\u00F5es cadastrados")}</dt>
+                  <dd>{__text("1 talh\u00E3o")}</dd>
                 </div>
                 <div>
-                  <dt>Informações preenchidas</dt>
-                  <dd>{Object.values(draft).filter(Boolean).length} campos</dd>
+                  <dt>{__text("Informa\u00E7\u00F5es preenchidas")}</dt>
+                  <dd>{__text(Object.values(draft).filter(Boolean).length)}{__text("campos")}</dd>
                 </div>
               </dl>
             </section>
             <section className="panel">
-              <h3>Por que pedimos estes dados?</h3>
-              <p>
-                Solo, água e localização ajudam a contextualizar os cenários de
-                rotação.
-              </p>
-              <p>
-                Você pode começar com o que sabe e completar os campos opcionais
-                depois.
-              </p>
-              <small>ⓘ Alterações mantidas somente nesta sessão.</small>
+              <h3>{__text("Por que pedimos estes dados?")}</h3>
+              <p>{__text("Solo, \u00E1gua e localiza\u00E7\u00E3o ajudam a contextualizar os cen\u00E1rios de rota\u00E7\u00E3o.")}</p>
+              <p>{__text("Voc\u00EA pode come\u00E7ar com o que sabe e completar os campos opcionais depois.")}</p>
+              <small>{__text("\u24D8 Altera\u00E7\u00F5es mantidas somente nesta sess\u00E3o.")}</small>
             </section>
             <section className="panel">
-              <h2>Análise de solo</h2>
-              <h3>{report ? report.name : "Nenhum laudo anexado"}</h3>
-              <p>
-                Se tiver um laudo recente, adicione-o para consultar junto ao
-                cadastro.
-              </p>
+              <h2>{__text("An\u00E1lise de solo")}</h2>
+              <h3>{__text(report ? report.name : "Nenhum laudo anexado")}</h3>
+              <p>{__text("Se tiver um laudo recente, adicione-o para consultar junto ao cadastro.")}</p>
               <label className="button upload">
-                {report ? "Substituir laudo" : "Adicionar laudo"}
-                <input
-                  type="file"
-                  accept=".pdf,.png,.jpg,.jpeg"
-                  onChange={(e) => {
-                    const f = e.target.files?.[0];
-                    if (f) {
-                      setReport(f);
-                      toast(
-                        "Laudo selecionado localmente. Nenhum arquivo foi enviado.",
-                      );
-                    }
-                  }}
-                />
+                {__text(report ? "Substituir laudo" : "Adicionar laudo")}
+                <input type="file" accept=".pdf,.png,.jpg,.jpeg" onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) {
+                    setReport(f);
+                    toast("Laudo selecionado localmente. Nenhum arquivo foi enviado.");
+                }
+            }}/>
               </label>
-              {report && (
-                <button
-                  className="text-link"
-                  type="button"
-                  onClick={() => setReport(null)}
-                >
-                  Remover arquivo
-                </button>
-              )}
-              <small>
-                Arquivo local • não enviado nem analisado automaticamente.
-              </small>
+              {__text(report && (<button className="text-link" type="button" onClick={() => setReport(null)}>{__text("Remover arquivo")}</button>))}
+              <small>{__text("Arquivo local \u2022 n\u00E3o enviado nem analisado automaticamente.")}</small>
             </section>
           </aside>
         </div>
-        <p className="footnote">
-          Seus dados ajudam a explorar possibilidades; não substituem uma
-          avaliação agronômica local.
-        </p>
-      </form>
-    );
-  }
-  function Timeline() {
-    return (
-      <section className="panel timeline-panel">
+        <p className="footnote">{__text("Seus dados ajudam a explorar possibilidades; n\u00E3o substituem uma avalia\u00E7\u00E3o agron\u00F4mica local.")}</p>
+      </form>);
+    }
+    function Timeline() {
+        return (<section className="panel timeline-panel">
         <div className="section-heading">
           <div>
-            <h2>Uma visão de cada safra</h2>
-            <p>
-              Talhão 01 • {farm.area} ha • plantio, desenvolvimento e colheita
-            </p>
+            <h2>{__text("Uma vis\u00E3o de cada safra")}</h2>
+            <p>{__text("Talh\u00E3o 01 \u2022")}{__text(farm.area)}{__text("ha \u2022 plantio, desenvolvimento e colheita")}</p>
           </div>
-          <select
-            aria-label="Ano do calendário"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-          >
-            {["2025", "2024", "2023"].map((y) => (
-              <option key={y}>{y}</option>
-            ))}
+          <select aria-label={__text("Ano do calend\u00E1rio")} value={year} onChange={(e) => setYear(e.target.value)}>
+            {__text(["2025", "2024", "2023"].map((y) => (<option key={y} value={y}>{__text(y)}</option>)))}
           </select>
         </div>
         <div className="timeline-scroll">
           <div className="timeline">
             <div className="timeline-labels">
               <span />
-              {months.map((m) => (
-                <span key={m}>{m}</span>
-              ))}
+              {__text(months.map((m) => (<span key={m}>{__text(m)}</span>)))}
             </div>
             <div className="timeline-row">
-              <strong>
-                Soja {Number(year) - 1}/{year.slice(2)}
+              <strong>{__text("Soja")}{__text(Number(year) - 1)}{__text("/")}{__text(year.slice(2))}
               </strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "1/3" }}>Desenvolvimento</span>
-                <span className="harvest" style={{ gridColumn: "3/4" }}>
-                  Colheita
-                </span>
-                <span style={{ gridColumn: "10/11" }}>Plantio</span>
-                <span style={{ gridColumn: "11/13" }}>
-                  Soja {year}/{String(Number(year) + 1).slice(2)}
+                <span style={{ gridColumn: "1/3" }}>{__text("Desenvolvimento")}</span>
+                <span className="harvest" style={{ gridColumn: "3/4" }}>{__text("Colheita")}</span>
+                <span style={{ gridColumn: "10/11" }}>{__text("Plantio")}</span>
+                <span style={{ gridColumn: "11/13" }}>{__text("Soja")}{__text(year)}{__text("/")}{__text(String(Number(year) + 1).slice(2))}
                 </span>
               </div>
             </div>
             <div className="timeline-row">
-              <strong>Milho safrinha</strong>
+              <strong>{__text("Milho safrinha")}</strong>
               <div className="timeline-track">
-                <span style={{ gridColumn: "3/4" }}>Plantio</span>
-                <span style={{ gridColumn: "4/7" }}>Desenvolvimento</span>
-                <span className="harvest" style={{ gridColumn: "7/8" }}>
-                  Colheita
-                </span>
-                <span className="bare" style={{ gridColumn: "8/10" }}>
-                  Solo descoberto
-                </span>
+                <span style={{ gridColumn: "3/4" }}>{__text("Plantio")}</span>
+                <span style={{ gridColumn: "4/7" }}>{__text("Desenvolvimento")}</span>
+                <span className="harvest" style={{ gridColumn: "7/8" }}>{__text("Colheita")}</span>
+                <span className="bare" style={{ gridColumn: "8/10" }}>{__text("Solo descoberto")}</span>
               </div>
             </div>
           </div>
         </div>
         <div className="legend">
-          <span>● Plantio</span>
-          <span>● Desenvolvimento</span>
-          <span className="warm">● Colheita</span>
-          <span>● Solo descoberto</span>
+          <span>{__text("\u25CF Plantio")}</span>
+          <span>{__text("\u25CF Desenvolvimento")}</span>
+          <span className="warm">{__text("\u25CF Colheita")}</span>
+          <span>{__text("\u25CF Solo descoberto")}</span>
         </div>
-      </section>
-    );
-  }
-  function History() {
-    const fmt = (s: string) =>
-      new Date(s + "T12:00:00").toLocaleDateString("pt-BR");
-    return (
-      <>
+      </section>);
+    }
+    function History() {
+        const fmt = (s: string) => new Date(s + "T12:00:00").toLocaleDateString(locale());
+        return (<>
         <div className="page-heading">
           <div>
-            <h1>Histórico de Cultivo</h1>
-            <p>Cada safra conta uma parte da história da sua terra.</p>
+            <h1>{__text("Hist\u00F3rico de Cultivo")}</h1>
+            <p>{__text("Cada safra conta uma parte da hist\u00F3ria da sua terra.")}</p>
           </div>
-          <Btn onClick={() => open("addCrop")}>＋ Adicionar cultivo</Btn>
+          <Btn onClick={() => open("addCrop")}>{__text("\uFF0B Adicionar cultivo")}</Btn>
         </div>
         <Demo />
         <div className="grid-two">
           <section className="panel current-crop">
-            <small>CULTIVO ATUAL • TALHÃO 01</small>
+            <small>{__text("CULTIVO ATUAL \u2022 TALH\u00C3O 01")}</small>
             <div>
-              <h2>{farm.crop}</h2>
-              <span>Em crescimento</span>
+              <h2>{__text(farm.crop)}</h2>
+              <span>{__text("Em crescimento")}</span>
             </div>
-            <p>Plantio: 15 out 2025 → Colheita prevista: 20 fev 2026</p>
+            <p>{__text("Plantio: 15 out 2025 \u2192 Colheita prevista: 20 fev 2026")}</p>
           </section>
           <section className="panel">
-            <h2>Seu histórico em números</h2>
+            <h2>{__text("Seu hist\u00F3rico em n\u00FAmeros")}</h2>
             <div className="numbers">
               <div>
-                <strong>{crops.length + 2}</strong>
-                <small>cultivos registrados</small>
+                <strong>{__text(crops.length + 2)}</strong>
+                <small>{__text("cultivos registrados")}</small>
               </div>
               <div>
-                <strong>3</strong>
-                <small>anos de histórico</small>
+                <strong>{__text("3")}</strong>
+                <small>{__text("anos de hist\u00F3rico")}</small>
               </div>
               <div>
-                <strong>2</strong>
-                <small>cultivos por ano</small>
+                <strong>{__text("2")}</strong>
+                <small>{__text("cultivos por ano")}</small>
               </div>
             </div>
           </section>
         </div>
         <Timeline />
         <section className="panel">
-          <h2>Cultivos registrados</h2>
-          <p>
-            Valores demonstrativos • produtividade informada em sacas de 60 kg
-            por hectare
-          </p>
+          <h2>{__text("Cultivos registrados")}</h2>
+          <p>{__text("Valores demonstrativos \u2022 produtividade informada em sacas de 60 kg por hectare")}</p>
           <div className="table-scroll">
             <table>
               <thead>
                 <tr>
-                  {[
-                    "Cultura / safra",
-                    "Plantio",
-                    "Colheita",
-                    "Área",
-                    "Produtividade",
-                    "Situação",
-                  ].map((t) => (
-                    <th key={t}>{t}</th>
-                  ))}
+                  {__text([
+                "Cultura / safra",
+                "Plantio",
+                "Colheita",
+                "Área",
+                "Produtividade",
+                "Situação",
+            ].map((t) => (<th key={t}>{__text(t)}</th>)))}
                 </tr>
               </thead>
               <tbody>
-                {crops.map((c) => (
-                  <tr key={c.id}>
+                {__text(crops.map((c) => (<tr key={c.id}>
                     <td>
-                      {c.crop} • {c.season}
+                      {__text(c.crop)}{__text("\u2022")}{__text(c.season)}
                     </td>
-                    <td>{fmt(c.plant)}</td>
+                    <td>{__text(fmt(c.plant))}</td>
                     <td>
-                      {fmt(c.harvest)}
-                      {c.status !== "Concluído" ? "*" : ""}
+                      {__text(fmt(c.harvest))}
+                      {__text(c.status !== "Concluído" ? "*" : "")}
                     </td>
-                    <td>{c.area} ha</td>
+                    <td>{__text(c.area)}{__text("ha")}</td>
                     <td>
-                      {c.yield ? c.yield + " sc/ha" : "Ainda não colhida"}
+                      {__text(c.yield ? c.yield + " sc/ha" : "Ainda não colhida")}
                     </td>
                     <td>
-                      <span className="status">{c.status}</span>
+                      <span className="status">{__text(c.status)}</span>
                     </td>
-                  </tr>
-                ))}
+                  </tr>)))}
               </tbody>
             </table>
           </div>
-          <small>
-            * Data prevista, não observada. Mostrando {crops.length} de{" "}
-            {crops.length + 2} cultivos.
-          </small>
+          <small>{__text("* Data prevista, n\u00E3o observada. Mostrando")}{__text(crops.length)}{__text("de")}{__text(" ")}
+            {__text(crops.length + 2)}{__text("cultivos.")}</small>
         </section>
         <section className="callout">
           <div>
-            <h3>O próximo ciclo começa com o que você já aprendeu.</h3>
-            <p>Use seu histórico para explorar estratégias de rotação.</p>
+            <h3>{__text("O pr\u00F3ximo ciclo come\u00E7a com o que voc\u00EA j\u00E1 aprendeu.")}</h3>
+            <p>{__text("Use seu hist\u00F3rico para explorar estrat\u00E9gias de rota\u00E7\u00E3o.")}</p>
           </div>
-          <Btn onClick={() => go("rotation")}>Explorar estratégias →</Btn>
+          <Btn onClick={() => go("rotation")}>{__text("Explorar estrat\u00E9gias \u2192")}</Btn>
         </section>
-      </>
-    );
-  }
-  function Climate() {
-    return (
-      <>
+      </>);
+    }
+    function Climate() {
+        return (<>
         <div className="page-heading">
           <div>
-            <h1>Análise Climática</h1>
-            <p>Do histórico ao planejamento: entenda os sinais do clima.</p>
+            <h1>{__text("An\u00E1lise Clim\u00E1tica")}</h1>
+            <p>{__text("Do hist\u00F3rico ao planejamento: entenda os sinais do clima.")}</p>
           </div>
         </div>
         <Demo />
         <div className="period-bar">
-          <span>Período de análise</span>
+          <span>{__text("Per\u00EDodo de an\u00E1lise")}</span>
           <div>
-            {["2023", "2024", "2025"].map((y) => (
-              <button
-                key={y}
-                className={year === y ? "active" : ""}
-                onClick={() => {
-                  setYear(y);
-                  setPeriod("12");
-                }}
-              >
-                {y}
-              </button>
-            ))}
+            {__text(["2023", "2024", "2025"].map((y) => (<button key={y} className={year === y ? "active" : ""} onClick={() => {
+                    setYear(y);
+                    setPeriod("12");
+                }}>
+                {__text(y)}
+              </button>)))}
           </div>
-          <small>● Histórico ilustrativo</small>
-          <small className="warm">Estimativa ilustrativa</small>
-          <small>Projeção ilustrativa</small>
+          <small>{__text("\u25CF Hist\u00F3rico ilustrativo")}</small>
+          <small className="warm">{__text("Estimativa ilustrativa")}</small>
+          <small>{__text("Proje\u00E7\u00E3o ilustrativa")}</small>
         </div>
         <div className="grid-two climate-grid">
-          {(["temperature", "rain", "moisture", "ndvi"] as const).map(
-            (kind, i) => (
-              <section className="panel" key={kind}>
+          {__text((["temperature", "rain", "moisture", "ndvi"] as const).map((kind, i) => (<section className="panel" key={kind}>
                 <div className="section-heading">
                   <div>
                     <h2>
-                      {
-                        [
-                          "Temperatura média",
-                          "Precipitação acumulada",
-                          "Umidade do solo ⓘ",
-                          "Vigor da vegetação ⓘ",
-                        ][i]
-                      }
+                      {__text([
+                    "Temperatura média",
+                    "Precipitação acumulada",
+                    "Umidade do solo ⓘ",
+                    "Vigor da vegetação ⓘ",
+                ][i])}
                     </h2>
-                    <p>
-                      NASA {i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER"} •
-                      exemplo de série histórica
-                    </p>
+                    <p>{__text("NASA")}{__text(i === 2 ? "SMAP" : i === 3 ? "MODIS" : "POWER")}{__text("\u2022 exemplo de s\u00E9rie hist\u00F3rica")}</p>
                   </div>
                   <strong className={"climate-number n" + i}>
-                    {
-                      [
-                        year === "2025"
-                          ? "24,8 °C"
-                          : year === "2024"
+                    {__text([
+                    year === "2025"
+                        ? "24,8 °C"
+                        : year === "2024"
                             ? "23,1 °C"
                             : "25,8 °C",
-                        year === "2025"
-                          ? "142 mm"
-                          : year === "2024"
+                    year === "2025"
+                        ? "142 mm"
+                        : year === "2024"
                             ? "132 mm"
                             : "148 mm",
-                        "32%",
-                        "0,76",
-                      ][i]
-                    }
+                    "32%",
+                    "0,76",
+                ][i])}
                   </strong>
                 </div>
-                <Chart kind={kind} large />
+                <Chart kind={kind} large/>
                 <p>
-                  {
-                    [
-                      "Meses mais quentes podem aumentar a demanda por água.",
-                      "A chuva se concentra entre outubro e março neste exemplo.",
-                      "Água na camada superficial; não representa toda a zona de raízes.",
-                      "NDVI indica atividade da vegetação, não rendimento da safra.",
-                    ][i]
-                  }
+                  {__text([
+                    "Meses mais quentes podem aumentar a demanda por água.",
+                    "A chuva se concentra entre outubro e março neste exemplo.",
+                    "Água na camada superficial; não representa toda a zona de raízes.",
+                    "NDVI indica atividade da vegetação, não rendimento da safra.",
+                ][i])}
                 </p>
-              </section>
-            ),
-          )}
+              </section>)))}
         </div>
         <div className="two-col">
           <section className="panel">
-            <h2>Planeje com a sazonalidade</h2>
-            <p>Padrão ilustrativo • não é previsão meteorológica</p>
+            <h2>{__text("Planeje com a sazonalidade")}</h2>
+            <p>{__text("Padr\u00E3o ilustrativo \u2022 n\u00E3o \u00E9 previs\u00E3o meteorol\u00F3gica")}</p>
             <div className="season wet">
-              <strong>Out–Mar</strong>
-              <div>
-                Período mais chuvoso
-                <small>Atenção à drenagem e à janela de plantio.</small>
+              <strong>{__text("Out\u2013Mar")}</strong>
+              <div>{__text("Per\u00EDodo mais chuvoso")}<small>{__text("Aten\u00E7\u00E3o \u00E0 drenagem e \u00E0 janela de plantio.")}</small>
               </div>
             </div>
             <div className="season dry">
-              <strong>Mai–Ago</strong>
-              <div>
-                Período mais seco
-                <small>Cobertura do solo ajuda a reduzir evaporação.</small>
+              <strong>{__text("Mai\u2013Ago")}</strong>
+              <div>{__text("Per\u00EDodo mais seco")}<small>{__text("Cobertura do solo ajuda a reduzir evapora\u00E7\u00E3o.")}</small>
               </div>
             </div>
           </section>
           <section className="panel">
-            <h2>Antes de decidir</h2>
-            <h3>Histórico</h3>
-            <p>
-              Observações passadas, aqui representadas por exemplos fictícios.
-            </p>
-            <h3 className="warm">Estimativas e projeções</h3>
-            <p>
-              São aproximações com incerteza. Linhas tracejadas não são
-              observações.
-            </p>
+            <h2>{__text("Antes de decidir")}</h2>
+            <h3>{__text("Hist\u00F3rico")}</h3>
+            <p>{__text("Observa\u00E7\u00F5es passadas, aqui representadas por exemplos fict\u00EDcios.")}</p>
+            <h3 className="warm">{__text("Estimativas e proje\u00E7\u00F5es")}</h3>
+            <p>{__text("S\u00E3o aproxima\u00E7\u00F5es com incerteza. Linhas tracejadas n\u00E3o s\u00E3o observa\u00E7\u00F5es.")}</p>
           </section>
         </div>
         <section className="callout">
           <div>
-            <h3>ⓘ Fontes, resolução e limitações dos indicadores</h3>
-            <p>
-              Explore a diferença entre a escala do satélite e a escala do
-              talhão.
-            </p>
+            <h3>{__text("\u24D8 Fontes, resolu\u00E7\u00E3o e limita\u00E7\u00F5es dos indicadores")}</h3>
+            <p>{__text("Explore a diferen\u00E7a entre a escala do sat\u00E9lite e a escala do talh\u00E3o.")}</p>
           </div>
-          <LinkButton onClick={() => open("sources")}>
-            Ver detalhes →
-          </LinkButton>
+          <LinkButton onClick={() => open("sources")}>{__text("Ver detalhes \u2192")}</LinkButton>
         </section>
-      </>
-    );
-  }
-  function Radar() {
-    const R = assets["3:218"];
-    return (
-      <div
-        className="radar-assets"
-        role="img"
-        aria-label="Comparação ilustrativa dos quatro critérios"
-      >
+      </>);
+    }
+    function Radar() {
+        const R = assets["3:218"];
+        return (<div className="radar-assets" role="img" aria-label={__text("Compara\u00E7\u00E3o ilustrativa dos quatro crit\u00E9rios")}>
         <div className="radar-shapes">
-          {[
-            R.imgEixoDeComparacao,
-            R.imgEixoDeComparacao1,
-            R.imgEixoDeComparacao2,
-            R.imgEixoDeComparacao3,
-            R.imgEixoDeComparacao4,
-          ].map((src, i) => (
-            <img
-              key={src}
-              className={"radar-axis axis-" + i}
-              src={src}
-              alt=""
-            />
-          ))}
-          <img className="radar-current" src={R.imgAreaDoCenario} alt="" />
-          <img className="radar-soil" src={R.imgAreaDoCenario1} alt="" />
-          <img className="radar-climate" src={R.imgAreaDoCenario2} alt="" />
+          {__text([
+                R.imgEixoDeComparacao,
+                R.imgEixoDeComparacao1,
+                R.imgEixoDeComparacao2,
+                R.imgEixoDeComparacao3,
+                R.imgEixoDeComparacao4,
+            ].map((src, i) => (<img key={src} className={"radar-axis axis-" + i} src={src} alt={__text("")}/>)))}
+          <img className="radar-current" src={R.imgAreaDoCenario} alt={__text("")}/>
+          <img className="radar-soil" src={R.imgAreaDoCenario1} alt={__text("")}/>
+          <img className="radar-climate" src={R.imgAreaDoCenario2} alt={__text("")}/>
         </div>
-        <span className="radar-water">Água</span>
-        <span className="radar-soil-label">Solo</span>
-        <span className="radar-profit">Rentabilidade</span>
-        <span className="radar-resilience">Resiliência</span>
-      </div>
-    );
-  }
-  function Rotation() {
-    return (
-      <>
+        <span className="radar-water">{__text("\u00C1gua")}</span>
+        <span className="radar-soil-label">{__text("Solo")}</span>
+        <span className="radar-profit">{__text("Rentabilidade")}</span>
+        <span className="radar-resilience">{__text("Resili\u00EAncia")}</span>
+      </div>);
+    }
+    function Rotation() {
+        return (<>
         <div className="page-heading">
           <div>
-            <h1>Estratégias de Rotação</h1>
-            <p>
-              Compare caminhos para a próxima safra, com as suas prioridades.
-            </p>
+            <h1>{__text("Estrat\u00E9gias de Rota\u00E7\u00E3o")}</h1>
+            <p>{__text("Compare caminhos para a pr\u00F3xima safra, com as suas prioridades.")}</p>
           </div>
         </div>
         <Demo />
         <section className="panel priorities">
-          <h2>01 O que importa mais para a sua próxima safra?</h2>
-          <p>
-            Ajuste os controles ou explore os três perfis predefinidos de
-            prioridade.
-          </p>
+          <h2>{__text("01 O que importa mais para a sua pr\u00F3xima safra?")}</h2>
+          <p>{__text("Ajuste os controles ou explore os tr\u00EAs perfis predefinidos de prioridade.")}</p>
           <div className="sliders">
-            {[
-              "Economia de água",
-              "Saúde do solo",
-              "Rentabilidade",
-              "Resiliência climática",
-            ].map((label, i) => (
-              <label key={label}>
+            {__text([
+                "Economia de água",
+                "Saúde do solo",
+                "Rentabilidade",
+                "Resiliência climática",
+            ].map((label, i) => (<label key={label}>
                 <span>
-                  {label}
-                  <strong>{weights[i]}%</strong>
+                  {__text(label)}
+                  <strong>{__text(weights[i])}{__text("%")}</strong>
                 </span>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={weights[i]}
-                  aria-label={label}
-                  onChange={(e) =>
-                    setWeights((prev) =>
-                      prev.map((v, n) => (n === i ? +e.target.value : v)),
-                    )
-                  }
-                />
-                <small>
-                  Menor <span>Maior</span>
+                <input type="range" min="0" max="100" value={weights[i]} aria-label={__text(label)} onChange={(e) => setWeights((prev) => prev.map((v, n) => (n === i ? +e.target.value : v)))}/>
+                <small>{__text("Menor")}<span>{__text("Maior")}</span>
                 </small>
-              </label>
-            ))}
+              </label>)))}
           </div>
           <div className="profile-buttons">
-            {(
-              [
+            {__text(([
                 ["soil", "Solo equilibrado"],
                 ["water", "Água e clima"],
                 ["profit", "Rentabilidade"],
-              ] as const
-            ).map(([key, label]) => (
-              <button
-                key={key}
-                className={
-                  weights.every((v, i) => v === profiles[key][i])
+            ] as const).map(([key, label]) => (<button key={key} className={weights.every((v, i) => v === profiles[key][i])
                     ? "active"
-                    : ""
-                }
-                onClick={() => setWeights([...profiles[key]])}
-              >
-                {label}
-              </button>
-            ))}
+                    : ""} onClick={() => setWeights([...profiles[key]])}>
+                {__text(label)}
+              </button>)))}
           </div>
         </section>
         <div className="section-heading scenarios-heading">
           <div>
-            <h2>02 Compare os cenários</h2>
-            <p>Pontuações ilustrativas ponderadas pelos objetivos acima.</p>
+            <h2>{__text("02 Compare os cen\u00E1rios")}</h2>
+            <p>{__text("Pontua\u00E7\u00F5es ilustrativas ponderadas pelos objetivos acima.")}</p>
           </div>
           <button className="button" onClick={compare} disabled={busy}>
-            {busy ? "Comparando…" : "Comparar Estratégias"}
+            {__text(busy ? "Comparando…" : "Comparar Estratégias")}
           </button>
         </div>
         <div className="scenario-grid">
-          {scenarios.map((s, i) => (
-            <article
-              className={
-                "scenario panel " + (winner === i ? "recommended" : "")
-              }
-              key={s.name}
-            >
+          {__text(scenarios.map((s, i) => (<article className={"scenario panel " + (winner === i ? "recommended" : "")} key={s.name}>
               <div className="scenario-ribbon">
-                {winner === i
-                  ? "MAIOR ADERÊNCIA AOS SEUS PESOS"
-                  : i === 0
-                    ? "Referência de comparação"
-                    : "Alternativa para explorar"}
+                {__text(winner === i
+                    ? "MAIOR ADERÊNCIA AOS SEUS PESOS"
+                    : i === 0
+                        ? "Referência de comparação"
+                        : "Alternativa para explorar")}
               </div>
-              <h2>{s.name}</h2>
+              <h2>{__text(s.name)}</h2>
               <div className="score">
-                <strong style={{ color: s.color }}>{chosen[i]}</strong>
-                <small>/ 100</small>
-                <small>aderência ilustrativa ⓘ</small>
+                <strong style={{ color: s.color }}>{__text(chosen[i])}</strong>
+                <small>{__text("/ 100")}</small>
+                <small>{__text("ader\u00EAncia ilustrativa \u24D8")}</small>
               </div>
-              <h3>{s.sequence}</h3>
-              <small>CALENDÁRIO DO CENÁRIO • 12 MESES</small>
+              <h3>{__text(s.sequence)}</h3>
+              <small>{__text("CALEND\u00C1RIO DO CEN\u00C1RIO \u2022 12 MESES")}</small>
               <div className="mini-calendar">
-                {months.map((m, n) => (
-                  <div key={n}>
-                    <span>{m[0]}</span>
-                    <i
-                      style={{
-                        background:
-                          n === 7 || n === 8
+                {__text(months.map((m, n) => (<div key={n}>
+                    <span>{__text(m[0])}</span>
+                    <i style={{
+                        background: n === 7 || n === 8
                             ? i === 0
-                              ? "#e8e4d7"
-                              : i === 2
-                                ? "#e9bc6c"
-                                : "#a8c477"
+                                ? "#e8e4d7"
+                                : i === 2
+                                    ? "#e9bc6c"
+                                    : "#a8c477"
                             : "#365f44",
-                      }}
-                    />
-                  </div>
-                ))}
+                    }}/>
+                  </div>)))}
               </div>
-              <small>{s.calendar}</small>
+              <small>{__text(s.calendar)}</small>
               <dl>
                 <div>
-                  <dt>Água</dt>
-                  <dd>{s.water}</dd>
+                  <dt>{__text("\u00C1gua")}</dt>
+                  <dd>{__text(s.water)}</dd>
                 </div>
                 <div>
-                  <dt>Solo</dt>
-                  <dd>{s.soil}</dd>
+                  <dt>{__text("Solo")}</dt>
+                  <dd>{__text(s.soil)}</dd>
                 </div>
                 <div>
-                  <dt>Clima</dt>
-                  <dd>{s.climate}</dd>
+                  <dt>{__text("Clima")}</dt>
+                  <dd>{__text(s.climate)}</dd>
                 </div>
               </dl>
               <div className="benefit">
-                <small>BENEFÍCIO POTENCIAL</small>
-                <p>{s.benefit}</p>
+                <small>{__text("BENEF\u00CDCIO POTENCIAL")}</small>
+                <p>{__text(s.benefit)}</p>
               </div>
               <div className="risk">
-                <small>PONTO DE ATENÇÃO</small>
-                <p>{s.risk}</p>
+                <small>{__text("PONTO DE ATEN\u00C7\u00C3O")}</small>
+                <p>{__text(s.risk)}</p>
               </div>
-              <Btn onClick={() => open(i)} secondary={winner !== i}>
-                Entender este cenário →
-              </Btn>
-            </article>
-          ))}
+              <Btn onClick={() => open(i)} secondary={winner !== i}>{__text("Entender este cen\u00E1rio \u2192")}</Btn>
+            </article>)))}
         </div>
         <div className="grid-two compare-bottom">
           <section className="panel">
-            <h2>Os objetivos, lado a lado</h2>
-            <p>Escala relativa: 0–100 • maior = maior aderência</p>
+            <h2>{__text("Os objetivos, lado a lado")}</h2>
+            <p>{__text("Escala relativa: 0\u2013100 \u2022 maior = maior ader\u00EAncia")}</p>
             <Radar />
             <div className="legend">
-              {scenarios.map((s) => (
-                <span key={s.name} style={{ color: s.color }}>
-                  ■ {s.name}
-                </span>
-              ))}
+              {__text(scenarios.map((s) => (<span key={s.name} style={{ color: s.color }}>{__text("\u25A0")}{__text(s.name)}
+                </span>)))}
             </div>
           </section>
           <section className="panel green-panel">
-            <h2>Por que esta estratégia foi sugerida?</h2>
+            <h2>{__text("Por que esta estrat\u00E9gia foi sugerida?")}</h2>
             <p className="body-text">
-              {scenarios[winner].name} teve maior aderência aos pesos deste
-              exemplo.
-            </p>
-            <p>{scenarios[winner].detail}</p>
-            <h3>Como a pontuação funciona</h3>
-            <p>
-              Média ponderada das quatro notas do cenário. Notas e pesos são
-              demonstrativos e não representam um modelo validado.
-            </p>
-            <LinkButton onClick={() => open("sources")}>
-              Ver premissas e limitações →
-            </LinkButton>
+              {__text(scenarios[winner].name)}{__text("teve maior ader\u00EAncia aos pesos deste exemplo.")}</p>
+            <p>{__text(scenarios[winner].detail)}</p>
+            <h3>{__text("Como a pontua\u00E7\u00E3o funciona")}</h3>
+            <p>{__text("M\u00E9dia ponderada das quatro notas do cen\u00E1rio. Notas e pesos s\u00E3o demonstrativos e n\u00E3o representam um modelo validado.")}</p>
+            <LinkButton onClick={() => open("sources")}>{__text("Ver premissas e limita\u00E7\u00F5es \u2192")}</LinkButton>
           </section>
         </div>
-        <p className="footnote">
-          Nenhum cenário é uma recomendação absoluta. Confirme a viabilidade com
-          assistência agronômica e dados locais antes de decidir.
-        </p>
-      </>
-    );
-  }
-  function Settings() {
-    return (
-      <>
+        <p className="footnote">{__text("Nenhum cen\u00E1rio \u00E9 uma recomenda\u00E7\u00E3o absoluta. Confirme a viabilidade com assist\u00EAncia agron\u00F4mica e dados locais antes de decidir.")}</p>
+      </>);
+    }
+    function Settings() {
+        return (<>
         <div className="page-heading">
           <div>
-            <h1>Configurações</h1>
-            <p>Controle suas preferências e a origem dos dados.</p>
+            <h1>{__text("Configura\u00E7\u00F5es")}</h1>
+            <p>{__text("Controle suas prefer\u00EAncias e a origem dos dados.")}</p>
           </div>
-          <Btn onClick={() => toast("Preferências aplicadas nesta sessão.")}>
-            Salvar ajustes
-          </Btn>
+          <Btn onClick={() => toast("Preferências aplicadas nesta sessão.")}>{__text("Salvar ajustes")}</Btn>
         </div>
         <Demo />
         <div className="two-col">
           <div className="stack">
             <section className="panel">
-              <h2>Preferências de leitura</h2>
+              <h2>{__text("Prefer\u00EAncias de leitura")}</h2>
               <dl className="preferences">
                 <div>
-                  <dt>Idioma</dt>
-                  <dd>{settings.language}</dd>
+                  <dt>{__text("Idioma")}</dt>
+                  <dd><LanguageSwitcher /></dd>
                 </div>
                 <div>
-                  <dt>Temperatura</dt>
+                  <dt>{__text("Temperatura")}</dt>
                   <dd>
-                    <select
-                      aria-label="Unidade de temperatura"
-                      value={settings.temperature}
-                      onChange={(e) =>
-                        setSettings((v) => ({
-                          ...v,
-                          temperature: e.target.value,
-                        }))
-                      }
-                    >
-                      <option>Graus Celsius (°C)</option>
-                      <option>Graus Fahrenheit (°F)</option>
+                    <select aria-label={__text("Unidade de temperatura")} value={settings.temperature} onChange={(e) => setSettings((v) => ({
+                ...v,
+                temperature: e.target.value,
+            }))}>
+                      <option value={"Graus Celsius (\u00B0C)"}>{__text("Graus Celsius (\u00B0C)")}</option>
+                      <option value={"Graus Fahrenheit (\u00B0F)"}>{__text("Graus Fahrenheit (\u00B0F)")}</option>
                     </select>
                   </dd>
                 </div>
                 <div>
-                  <dt>Área e produtividade</dt>
-                  <dd>Hectares • sacas de 60 kg / ha</dd>
+                  <dt>{__text("\u00C1rea e produtividade")}</dt>
+                  <dd>{__text("Hectares \u2022 sacas de 60 kg / ha")}</dd>
                 </div>
                 <div>
-                  <dt>Precipitação</dt>
-                  <dd>Milímetros (mm)</dd>
+                  <dt>{__text("Precipita\u00E7\u00E3o")}</dt>
+                  <dd>{__text("Mil\u00EDmetros (mm)")}</dd>
                 </div>
               </dl>
             </section>
             <section className="panel">
-              <h2>Fontes de referência</h2>
-              <p className="warm">Nenhuma fonte está conectada nesta versão.</p>
+              <h2>{__text("Fontes de refer\u00EAncia")}</h2>
+              <p className="warm">{__text("Nenhuma fonte est\u00E1 conectada nesta vers\u00E3o.")}</p>
               <dl className="source-list">
                 <div>
-                  <dt>NASA POWER</dt>
-                  <dd>Clima • temperatura e precipitação</dd>
+                  <dt>{__text("NASA POWER")}</dt>
+                  <dd>{__text("Clima \u2022 temperatura e precipita\u00E7\u00E3o")}</dd>
                 </div>
                 <div>
-                  <dt>NASA SMAP</dt>
-                  <dd>Umidade superficial do solo</dd>
+                  <dt>{__text("NASA SMAP")}</dt>
+                  <dd>{__text("Umidade superficial do solo")}</dd>
                 </div>
                 <div>
-                  <dt>NASA MODIS</dt>
-                  <dd>Vegetação • exemplo de índice NDVI</dd>
+                  <dt>{__text("NASA MODIS")}</dt>
+                  <dd>{__text("Vegeta\u00E7\u00E3o \u2022 exemplo de \u00EDndice NDVI")}</dd>
                 </div>
               </dl>
-              <LinkButton onClick={() => open("sources")}>
-                Consultar documentação e limitações →
-              </LinkButton>
+              <LinkButton onClick={() => open("sources")}>{__text("Consultar documenta\u00E7\u00E3o e limita\u00E7\u00F5es \u2192")}</LinkButton>
             </section>
           </div>
           <aside className="stack">
             <section className="panel green-panel">
-              <h2>Você está no controle</h2>
-              <p>
-                Este é um ambiente demonstrativo. A fazenda, os cultivos, os
-                indicadores e os cenários são fictícios.
-              </p>
-              <p>
-                As alterações ficam apenas na memória desta sessão. Não há conta
-                real, sincronização ou envio de documentos.
-              </p>
-              <small>
-                NASA Space Apps Challenge 2026
-                <br />
-                Projeto NATIVA
-              </small>
+              <h2>{__text("Voc\u00EA est\u00E1 no controle")}</h2>
+              <p>{__text("Este \u00E9 um ambiente demonstrativo. A fazenda, os cultivos, os indicadores e os cen\u00E1rios s\u00E3o fict\u00EDcios.")}</p>
+              <p>{__text("As altera\u00E7\u00F5es ficam apenas na mem\u00F3ria desta sess\u00E3o. N\u00E3o h\u00E1 conta real, sincroniza\u00E7\u00E3o ou envio de documentos.")}</p>
+              <small>{__text("NASA Space Apps Challenge 2026")}<br />{__text("Projeto NATIVA")}</small>
             </section>
             <section className="panel">
-              <h2>Começar de novo</h2>
-              <p>Volte à visão geral para explorar o fluxo.</p>
-              <LinkButton onClick={() => go("overview")}>
-                Voltar à visão geral →
-              </LinkButton>
+              <h2>{__text("Come\u00E7ar de novo")}</h2>
+              <p>{__text("Volte \u00E0 vis\u00E3o geral para explorar o fluxo.")}</p>
+              <LinkButton onClick={() => go("overview")}>{__text("Voltar \u00E0 vis\u00E3o geral \u2192")}</LinkButton>
             </section>
           </aside>
         </div>
-      </>
-    );
-  }
-  function Landing() {
-    const heroImgs = [
-      L.imgFotografiaComZoomSuave,
-      L.imgFotografiaComZoomSuave1,
-      L.imgFotografiaComZoomSuave2,
-    ];
-    return (
-      <div className="landing">
+      </>);
+    }
+    function Landing() {
+        const heroImgs = [
+            L.imgFotografiaComZoomSuave,
+            L.imgFotografiaComZoomSuave1,
+            L.imgFotografiaComZoomSuave2,
+        ];
+        return (<div className="landing">
         <nav className="landing-nav">
           <Logo />
+          <LanguageSwitcher />
           <div>
-            <a
-              href="#como-funciona"
-              onClick={(e) => {
+            <a href="#como-funciona" onClick={(e) => {
                 e.preventDefault();
                 document.getElementById("como-funciona")?.scrollIntoView({
-                  behavior: reduced ? "instant" : "smooth",
+                    behavior: reduced ? "instant" : "smooth",
                 });
-              }}
-            >
-              Como funciona
-            </a>
-            <a
-              href="#tecnologia"
-              onClick={(e) => {
+            }}>{__text("Como funciona")}</a>
+            <a href="#tecnologia" onClick={(e) => {
                 e.preventDefault();
                 document.getElementById("tecnologia")?.scrollIntoView({
-                  behavior: reduced ? "instant" : "smooth",
+                    behavior: reduced ? "instant" : "smooth",
                 });
-              }}
-            >
-              Tecnologia
-            </a>
-            <button onClick={() => open("technology")}>Sobre nós</button>
-          </div>
-          <div>
-            <button onClick={() => open("login")}>Entrar</button>
-            <button className="button lime" onClick={() => go("signup")}>
-              Cadastre-se →
-            </button>
+            }}>{__text("Tecnologia")}</a>
+            <button onClick={() => open("technology")}>{__text("Sobre n\u00F3s")}</button>
           </div>
         </nav>
-        <section className="hero" aria-label="Destaques NATIVA" aria-roledescription="carrossel"
-          onFocusCapture={() => setCarouselFocused(true)}
-          onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCarouselFocused(false);
-          }}>
-          {heroImgs.map((src, index) => (
-            <img key={src} className={`hero-photo${slide === index ? " hero-photo-active" : ""}`}
-              src={src} alt={slide === index ? "Paisagem agrícola em destaque" : ""}
-              aria-hidden={slide !== index} fetchPriority={index === 0 ? "high" : "auto"} decoding="async" />
-          ))}
-          <div className="hero-shade" />
+        <section className="hero" aria-label={__text("Destaques NATIVA")} aria-roledescription={__text("carrossel")} onFocusCapture={() => setCarouselFocused(true)} onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+                    setCarouselFocused(false);
+            }}>
+          {__text(heroImgs.map((src, index) => (<img key={src} className={`hero-photo${slide === index ? " hero-photo-active" : ""}`} src={src} alt={__text(slide === index ? "Paisagem agrícola em destaque" : "")} aria-hidden={slide !== index} fetchPriority={index === 0 ? "high" : "auto"} decoding="async"/>)))}
+          <div className="hero-shade"/>
           <div className="hero-content">
-            <small>INTELIGÊNCIA QUE VEM DO ESPAÇO</small>
+            <small>{__text("INTELIG\u00CANCIA QUE VEM DO ESPA\u00C7O")}</small>
             <h1>
-              {
-                [
-                  "O futuro da sua\nlavoura começa aqui.",
-                  "Um novo olhar\npara a sua terra.",
-                  "Da observação\nà próxima safra.",
-                ][slide]
-              }
+              {__text([
+                "O futuro da sua\nlavoura começa aqui.",
+                "Um novo olhar\npara a sua terra.",
+                "Da observação\nà próxima safra.",
+            ][slide])}
             </h1>
-            <p>
-              Transforme dados espaciais em decisões inteligentes para sua
-              propriedade.
-            </p>
+            <p>{__text("Transforme dados espaciais em decis\u00F5es inteligentes para sua propriedade.")}</p>
             <div>
-              <button className="button yellow" onClick={() => go("signup")}>
-                Começar gratuitamente →
-              </button>
-              <button className="button outline" onClick={() => go("overview")}>
-                Conhecer a plataforma
-              </button>
+              <button className="button yellow" onClick={() => go("signup")}>{__text("Come\u00E7ar gratuitamente \u2192")}</button>
+              <button className="button outline" onClick={() => go("overview")}>{__text("Conhecer a plataforma")}</button>
             </div>
           </div>
           <div className="carousel-controls">
             <div>
-              {heroImgs.map((_, i) => (
-                <button
-                  key={i}
-                  aria-label={"Ir para imagem " + (i + 1)}
-                  aria-pressed={slide === i}
-                  className={slide === i ? "active" : ""}
-                  onClick={() => setSlide(i)}
-                />
-              ))}
-              <small>0{slide + 1} / 03</small>
+              {__text(heroImgs.map((_, i) => (<button key={i} aria-label={__text("Ir para imagem " + (i + 1))} aria-pressed={slide === i} className={slide === i ? "active" : ""} onClick={() => setSlide(i)}/>)))}
+              <small>{__text("0")}{__text(slide + 1)}{__text("/ 03")}</small>
             </div>
             <div>
-              {!reduced && <button
-                aria-label={carouselPaused ? "Retomar troca automática de imagens" : "Pausar troca automática de imagens"}
-                aria-pressed={carouselPaused}
-                onClick={() => { setCarouselPaused((paused) => !paused); setCarouselFocused(false); }}
-              >{carouselPaused ? "▶" : "Ⅱ"}</button>}
-              <button
-                aria-label="Imagem anterior"
-                onClick={() => setSlide((current) => (current + 2) % 3)}
-              >
-                ‹
-              </button>
-              <button
-                aria-label="Próxima imagem"
-                onClick={() => setSlide((current) => (current + 1) % 3)}
-              >
-                ›
-              </button>
+              {__text(!reduced && <button aria-label={__text(carouselPaused ? "Retomar troca automática de imagens" : "Pausar troca automática de imagens")} aria-pressed={carouselPaused} onClick={() => { setCarouselPaused((paused) => !paused); setCarouselFocused(false); }}>{__text(carouselPaused ? "▶" : "Ⅱ")}</button>)}
+              <button aria-label={__text("Imagem anterior")} onClick={() => setSlide((current) => (current + 2) % 3)}>{__text("\u2039")}</button>
+              <button aria-label={__text("Pr\u00F3xima imagem")} onClick={() => setSlide((current) => (current + 1) % 3)}>{__text("\u203A")}</button>
             </div>
           </div>
         </section>
-        <ClimateStory calmImage={L.imgFotografiaComZoomSuave} />
+        <ClimateStory calmImage={L.imgFotografiaComZoomSuave}/>
+        <SolutionStory earth={L.imgFotografiaComZoomSuave1} field={L.imgFotografiaComZoomSuave2} onExplore={() => go("overview")}/>
         <section className="how-it-works" id="como-funciona">
-          <small>SIMPLES DE USAR. AMPLO EM POSSIBILIDADES.</small>
-          <h2>Da observação à decisão.</h2>
+          <small>{__text("SIMPLES DE USAR. AMPLO EM POSSIBILIDADES.")}</small>
+          <h2>{__text("Da observa\u00E7\u00E3o \u00E0 decis\u00E3o.")}</h2>
           <div className="steps">
-            {[
-              [
-                "Localize sua propriedade.",
-                "Comece pela sua terra. Informe onde você cultiva e o seu contexto.",
-                L.imgIconeDoPasso1,
-              ],
-              [
-                "Explore as condições ambientais.",
-                "Veja clima, umidade e vegetação com uma nova perspectiva.",
-                L.imgIconeDoPasso2,
-              ],
-              [
-                "Compare estratégias de rotação.",
-                "Explore caminhos para o próximo ciclo com as suas prioridades.",
-                L.imgIconeDoPasso3,
-              ],
-            ].map(([t, d, img], i) => (
-              <article key={t}>
-                <span>0{i + 1}</span>
-                <img src={img} alt="" />
-                <h3>{t}</h3>
-                <p>{d}</p>
-              </article>
-            ))}
+            {__text([
+                [
+                    "Localize sua propriedade.",
+                    "Comece pela sua terra. Informe onde você cultiva e o seu contexto.",
+                    L.imgIconeDoPasso1,
+                ],
+                [
+                    "Explore as condições ambientais.",
+                    "Veja clima, umidade e vegetação com uma nova perspectiva.",
+                    L.imgIconeDoPasso2,
+                ],
+                [
+                    "Compare estratégias de rotação.",
+                    "Explore caminhos para o próximo ciclo com as suas prioridades.",
+                    L.imgIconeDoPasso3,
+                ],
+            ].map(([t, d, img], i) => (<article key={t}>
+                <span>{__text("0")}{__text(i + 1)}</span>
+                <img src={img} alt={__text("")}/>
+                <h3>{__text(t)}</h3>
+                <p>{__text(d)}</p>
+              </article>)))}
           </div>
-          <LinkButton onClick={() => go("overview")}>
-            Comece pela nossa propriedade →
-          </LinkButton>
+          <LinkButton onClick={() => go("overview")}>{__text("Comece pela nossa propriedade \u2192")}</LinkButton>
         </section>
         <section className="space-section" id="tecnologia">
-          <img
-            src={L.imgFotografiaComZoomSuave1}
-            alt="A Terra vista do espaço"
-          />
+          <img src={L.imgFotografiaComZoomSuave1} alt={__text("A Terra vista do espa\u00E7o")}/>
           <div>
-            <small>TECNOLOGIA NASA. CONTEXTO LOCAL.</small>
-            <h2>
-              Uma nova perspectiva
-              <br />
-              sobre sua lavoura.
-            </h2>
-            <h3>
-              A observação da Terra nos ajuda a enxergar além do que está à
-              vista.
-            </h3>
-            <p>
-              A NATIVA utiliza dados de observação da NASA para explorar
-              condições ambientais e apoiar decisões agrícolas, integrando o
-              espaço, o contexto e a realidade da sua propriedade.
-            </p>
-            <LinkButton onClick={() => open("technology")}>
-              Conheça nossa tecnologia →
-            </LinkButton>
+            <small>{__text("TECNOLOGIA NASA. CONTEXTO LOCAL.")}</small>
+            <h2>{__text("Uma nova perspectiva")}<br />{__text("sobre sua lavoura.")}</h2>
+            <h3>{__text("A observa\u00E7\u00E3o da Terra nos ajuda a enxergar al\u00E9m do que est\u00E1 \u00E0 vista.")}</h3>
+            <p>{__text("A NATIVA utiliza dados de observa\u00E7\u00E3o da NASA para explorar condi\u00E7\u00F5es ambientais e apoiar decis\u00F5es agr\u00EDcolas, integrando o espa\u00E7o, o contexto e a realidade da sua propriedade.")}</p>
+            <LinkButton onClick={() => open("technology")}>{__text("Conhe\u00E7a nossa tecnologia \u2192")}</LinkButton>
             <div className="source-chips">
-              {["POWER", "SMAP", "MODIS"].map((s) => (
-                <span key={s}>
-                  {s}
-                  <small>NASA · referência</small>
-                </span>
-              ))}
+              {__text(["POWER", "SMAP", "MODIS"].map((s) => (<span key={s}>
+                  {__text(s)}
+                  <small>{__text("NASA \u00B7 refer\u00EAncia")}</small>
+                </span>)))}
             </div>
           </div>
         </section>
         <section className="about-section">
           <div>
-            <small>SOBRE O PROJETO</small>
-            <h2>
-              Tecnologia espacial.
-              <br />
-              Propósito no campo.
-            </h2>
+            <small>{__text("SOBRE O PROJETO")}</small>
+            <h2>{__text("Tecnologia espacial.")}<br />{__text("Prop\u00F3sito no campo.")}</h2>
           </div>
           <div>
-            <p>
-              Desenvolvido para o NASA Space Apps Challenge 2026, a NATIVA
-              explora novas formas de usar dados de observação da Terra para
-              ampliar as possibilidades do produtor rural.
-            </p>
-            <LinkButton onClick={() => open("technology")}>
-              Ciência aberta. Possibilidades para o campo.
-            </LinkButton>
+            <p>{__text("Desenvolvido para o NASA Space Apps Challenge 2026, a NATIVA explora novas formas de usar dados de observa\u00E7\u00E3o da Terra para ampliar as possibilidades do produtor rural.")}</p>
+            <LinkButton onClick={() => open("technology")}>{__text("Ci\u00EAncia aberta. Possibilidades para o campo.")}</LinkButton>
           </div>
         </section>
         <section className="landing-cta">
-          <img src={L.imgFotografiaComZoomSuave2} alt="Campos de cultivo" />
+          <img src={L.imgFotografiaComZoomSuave2} alt={__text("Campos de cultivo")}/>
           <div>
-            <small>DO SEU CAMPO PARA O FUTURO.</small>
-            <h2>
-              Sua próxima safra começa
-              <br />
-              com uma decisão.
-            </h2>
-            <p>Descubra novas possibilidades para sua propriedade.</p>
-            <button className="button yellow" onClick={() => go("signup")}>
-              Começar gratuitamente →
-            </button>
-            <small>Explore a demonstração gratuitamente.</small>
+            <small>{__text("DO SEU CAMPO PARA O FUTURO.")}</small>
+            <h2>{__text("Sua pr\u00F3xima safra come\u00E7a")}<br />{__text("com uma decis\u00E3o.")}</h2>
+            <p>{__text("Descubra novas possibilidades para sua propriedade.")}</p>
+            <button className="button yellow" onClick={() => go("signup")}>{__text("Come\u00E7ar gratuitamente \u2192")}</button>
+            <small>{__text("Explore a demonstra\u00E7\u00E3o gratuitamente.")}</small>
           </div>
         </section>
         <footer>
           <Logo />
           <div>
-            <button onClick={() => open("technology")}>Sobre o projeto</button>
-            <button onClick={() => open("technology")}>Tecnologia</button>
-            <button onClick={() => open("contact")}>Contato</button>
+            <button onClick={() => open("technology")}>{__text("Sobre o projeto")}</button>
+            <button onClick={() => open("technology")}>{__text("Tecnologia")}</button>
+            <button onClick={() => open("contact")}>{__text("Contato")}</button>
           </div>
-          <small>NASA Space Apps Challenge 2026</small>
-          <small>
-            Protótipo demonstrativo • dados fictícios e cenários sem validação
-            local.
-          </small>
+          <small>{__text("NASA Space Apps Challenge 2026")}</small>
+          <small>{__text("Prot\u00F3tipo demonstrativo \u2022 dados fict\u00EDcios e cen\u00E1rios sem valida\u00E7\u00E3o local.")}</small>
         </footer>
-      </div>
-    );
-  }
-  function Signup() {
-    return (
-      <div className="signup">
+      </div>);
+    }
+    function Signup() {
+        return (<div className="signup">
         <section className="signup-photo">
-          <img src={L.imgFotografiaComZoomSuave2} alt="Fazenda ao amanhecer" />
+          <img src={L.imgFotografiaComZoomSuave2} alt={__text("Fazenda ao amanhecer")}/>
           <Logo />
           <div>
-            <h1>
-              Sua terra merece
-              <br />
-              um novo olhar.
-            </h1>
-            <p>
-              Da observação do espaço às possibilidades
-              <br />
-              da sua próxima safra.
-            </p>
+            <h1>{__text("Sua terra merece")}<br />{__text("um novo olhar.")}</h1>
+            <p>{__text("Da observa\u00E7\u00E3o do espa\u00E7o \u00E0s possibilidades")}<br />{__text("da sua pr\u00F3xima safra.")}</p>
           </div>
         </section>
         <section className="signup-form">
-          <button className="back-link" onClick={() => go("landing")}>
-            Voltar ao início
-          </button>
-          <small>01 / 02 • SEU CADASTRO</small>
-          <h1>
-            Comece pela sua
-            <br />
-            propriedade.
-          </h1>
-          <p>Uma visão mais ampla começa com o seu contexto.</p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              go("onboard");
-            }}
-          >
+          <div className="signup-language"><LanguageSwitcher /></div>
+          <button className="back-link" onClick={() => go("landing")}>{__text("Voltar ao in\u00EDcio")}</button>
+          <small>{__text("01 / 02 \u2022 SEU CADASTRO")}</small>
+          <h1>{__text("Comece pela sua")}<br />{__text("propriedade.")}</h1>
+          <p>{__text("Uma vis\u00E3o mais ampla come\u00E7a com o seu contexto.")}</p>
+          <form onSubmit={(e) => {
+                e.preventDefault();
+                go("onboard");
+            }}>
             <label className="field">
-              <span>Seu nome</span>
-              <input
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                required
-              />
+              <span>{__text("Seu nome")}</span>
+              <input value={userName} onChange={(e) => setUserName(e.target.value)} required/>
             </label>
             <label className="field">
-              <span>E-mail</span>
-              <input type="email" placeholder="produtor@example.com" />
+              <span>{__text("E-mail")}</span>
+              <input type="email" placeholder={__text("produtor@example.com")}/>
             </label>
-            <Field label="Nome da propriedade" name="name" />
+            <Field label={__text("Nome da propriedade")} name="name"/>
             <div className="signup-location">
-              <Field label="Cidade / UF" name="city" />
-              <Field
-                label="Área (ha) • opcional"
-                name="area"
-                type="number"
-                min={0.01}
-                step="any"
-              />
+              <Field label={__text("Cidade / UF")} name="city"/>
+              <Field label={__text("\u00C1rea (ha) \u2022 opcional")} name="area" type="number" min={0.01} step="any"/>
             </div>
-            <button className="button yellow" type="submit">
-              Continuar →
-            </button>
-            <small>
-              Ambiente demonstrativo. Nenhuma conta será criada ou armazenada.
-            </small>
+            <button className="button yellow" type="submit">{__text("Continuar \u2192")}</button>
+            <small>{__text("Ambiente demonstrativo. Nenhuma conta ser\u00E1 criada ou armazenada.")}</small>
           </form>
-          <LinkButton onClick={() => open("login")}>
-            Já conhece a NATIVA? Entrar
-          </LinkButton>
+          <LinkButton onClick={() => open("login")}>{__text("J\u00E1 conhece a NATIVA? Entrar")}</LinkButton>
         </section>
-      </div>
-    );
-  }
-  function Onboard() {
-    return (
-      <div className="onboard">
+      </div>);
+    }
+    function Onboard() {
+        return (<div className="onboard">
         <header>
           <Logo />
-          <LinkButton onClick={() => go("signup")}>
-            Voltar ao cadastro
-          </LinkButton>
+          <LanguageSwitcher />
+          <LinkButton onClick={() => go("signup")}>{__text("Voltar ao cadastro")}</LinkButton>
         </header>
         <div className="onboard-grid">
           <section>
-            <small>02 / 02 • SUA PROPRIEDADE</small>
-            <h1>
-              Vamos conhecer
-              <br />a sua terra.
-            </h1>
-            <p>Confirme o contexto para explorar a plataforma.</p>
+            <small>{__text("02 / 02 \u2022 SUA PROPRIEDADE")}</small>
+            <h1>{__text("Vamos conhecer")}<br />{__text("a sua terra.")}</h1>
+            <p>{__text("Confirme o contexto para explorar a plataforma.")}</p>
             <div className="onboard-map">
-              <img
-                src={assets["13:478"].imgLocalizacaoDemonstrativa}
-                alt="Localização demonstrativa"
-              />
-              <span>
-                ⌖ {draft.name}
+              <img src={assets["13:478"].imgLocalizacaoDemonstrativa} alt={__text("Localiza\u00E7\u00E3o demonstrativa")}/>
+              <span>{__text("\u2316")}{__text(draft.name)}
                 <small>
-                  {draft.city} · {draft.area} ha · exemplo
-                </small>
+                  {__text(draft.city)}{__text("\u00B7")}{__text(draft.area)}{__text("ha \u00B7 exemplo")}</small>
               </span>
             </div>
           </section>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setFarm({ ...draft });
-              go("overview");
-              toast(
-                `Bem-vinda, ${userName.split(" ")[0]}. Explore sua propriedade!`,
-              );
-            }}
-          >
-            <Field
-              label="Cultura atual"
-              name="crop"
-              options={["Soja", "Milho", "Sorgo", "Café", "Trigo", "Outra"]}
-            />
-            <Field
-              label="Textura do solo"
-              name="texture"
-              options={["Argiloso", "Arenoso", "Franco", "Não informado"]}
-            />
-            <Field
-              label="Disponibilidade de irrigação"
-              name="irrigation"
-              options={["Sim", "Não", "Não informado"]}
-            />
-            <button className="button yellow" type="submit">
-              Explorar plataforma →
-            </button>
-            <small>
-              Fluxo demonstrativo. As condições não representam uma fazenda
-              real.
-            </small>
+          <form onSubmit={(e) => {
+                e.preventDefault();
+                setFarm({ ...draft });
+                go("overview");
+                toast(`${t("Bem-vinda")}, ${userName.split(" ")[0]}. ${t("Explore sua propriedade!")}`);
+            }}>
+            <Field label={__text("Cultura atual")} name="crop" options={["Soja", "Milho", "Sorgo", "Café", "Trigo", "Outra"]}/>
+            <Field label={__text("Textura do solo")} name="texture" options={["Argiloso", "Arenoso", "Franco", "Não informado"]}/>
+            <Field label={__text("Disponibilidade de irriga\u00E7\u00E3o")} name="irrigation" options={["Sim", "Não", "Não informado"]}/>
+            <button className="button yellow" type="submit">{__text("Explorar plataforma \u2192")}</button>
+            <small>{__text("Fluxo demonstrativo. As condi\u00E7\u00F5es n\u00E3o representam uma fazenda real.")}</small>
           </form>
         </div>
-      </div>
-    );
-  }
-  function AddCrop() {
-    const [value, setValue] = useState({
-      crop: "Milho",
-      plant: "2026-03-05",
-      harvest: "2026-07-28",
-      area: farm.area,
-      yield: "",
-    });
-    const [error, setError] = useState("");
-    return (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (value.harvest < value.plant) {
-            setError("A colheita deve ocorrer após o plantio.");
-            return;
-          }
-          setCrops((p) => [
-            {
-              ...value,
-              id: Date.now(),
-              season: value.plant.slice(0, 4),
-              status: value.yield ? "Concluído" : "Planejado",
-            },
-            ...p,
-          ]);
-          setModal(null);
-          toast("Cultivo adicionado nesta sessão.");
-        }}
-      >
-        <h2>Adicionar cultivo</h2>
-        <p>Registre um exemplo para explorar o histórico da propriedade.</p>
+      </div>);
+    }
+    function AddCrop() {
+        const [value, setValue] = useState({
+            crop: "Milho",
+            plant: "2026-03-05",
+            harvest: "2026-07-28",
+            area: farm.area,
+            yield: "",
+        });
+        const [error, setError] = useState("");
+        return (<form onSubmit={(e) => {
+                e.preventDefault();
+                if (value.harvest < value.plant) {
+                    setError("A colheita deve ocorrer após o plantio.");
+                    return;
+                }
+                setCrops((p) => [
+                    {
+                        ...value,
+                        id: Date.now(),
+                        season: value.plant.slice(0, 4),
+                        status: value.yield ? "Concluído" : "Planejado",
+                    },
+                    ...p,
+                ]);
+                setModal(null);
+                toast("Cultivo adicionado nesta sessão.");
+            }}>
+        <h2>{__text("Adicionar cultivo")}</h2>
+        <p>{__text("Registre um exemplo para explorar o hist\u00F3rico da propriedade.")}</p>
         <div className="fields-grid">
           <label className="field">
-            <span>Cultura</span>
-            <select
-              value={value.crop}
-              onChange={(e) =>
-                setValue((v) => ({ ...v, crop: e.target.value }))
-              }
-            >
-              {[
+            <span>{__text("Cultura")}</span>
+            <select value={value.crop} onChange={(e) => setValue((v) => ({ ...v, crop: e.target.value }))}>
+              {__text([
                 "Milho",
                 "Soja",
                 "Sorgo",
                 "Crotalária",
                 "Braquiária",
                 "Trigo",
-              ].map((c) => (
-                <option key={c}>{c}</option>
-              ))}
+            ].map((c) => (<option key={c} value={c}>{__text(c)}</option>)))}
             </select>
           </label>
           <label className="field">
-            <span>Talhão</span>
+            <span>{__text("Talh\u00E3o")}</span>
             <select>
-              <option>Talhão 01</option>
+              <option value={"Talh\u00E3o 01"}>{__text("Talh\u00E3o 01")}</option>
             </select>
           </label>
-          {(["plant", "harvest", "area", "yield"] as const).map((key, i) => (
-            <label className="field" key={key}>
+          {__text((["plant", "harvest", "area", "yield"] as const).map((key, i) => (<label className="field" key={key}>
               <span>
-                {
-                  [
+                {__text([
                     "Data de plantio",
                     "Data de colheita • prevista",
                     "Área cultivada (ha)",
                     "Produtividade (sc/ha) • opcional",
-                  ][i]
-                }
+                ][i])}
               </span>
-              <input
-                type={i < 2 ? "date" : "number"}
-                min={i > 1 ? 0 : undefined}
-                step={i > 1 ? "any" : undefined}
-                value={value[key]}
-                required={key !== "yield"}
-                onChange={(e) =>
-                  setValue((v) => ({ ...v, [key]: e.target.value }))
-                }
-              />
-            </label>
-          ))}
+              <input type={i < 2 ? "date" : "number"} min={i > 1 ? 0 : undefined} step={i > 1 ? "any" : undefined} value={value[key]} required={key !== "yield"} onChange={(e) => setValue((v) => ({ ...v, [key]: e.target.value }))}/>
+            </label>)))}
         </div>
-        {error && (
-          <p className="error" role="alert">
-            {error}
-          </p>
-        )}
-        <p>As datas podem coexistir com outros cultivos no mesmo ano.</p>
-        <button type="submit" className="button">
-          Salvar cultivo
-        </button>
-        <small>Dados mantidos somente nesta sessão.</small>
-      </form>
-    );
-  }
-  function ModalContent() {
-    if (modal === "addCrop") return <AddCrop />;
-    if (modal === "map")
-      return (
-        <>
-          <h2>Mapa • {layer}</h2>
-          <p>Camada demonstrativa • valores e áreas sem georreferenciamento.</p>
-          <Map expanded />
-        </>
-      );
-    if (typeof modal === "number") {
-      const s = scenarios[modal];
-      return (
-        <>
-          <h2>{s.name}</h2>
-          <h3>{s.sequence}</h3>
-          <h3>Fundamento agronômico</h3>
-          <p>{s.detail}</p>
-          <h3>Benefício potencial</h3>
-          <p>{s.benefit}</p>
-          <h3>Riscos e condições</h3>
-          <p>{s.risk}</p>
-          <small>
-            Hipóteses gerais, sem validação para esta propriedade fictícia.
-          </small>
-          <Btn onClick={() => open(null)}>Voltar</Btn>
-        </>
-      );
+        {__text(error && (<p className="error" role="alert">
+            {__text(error)}
+          </p>))}
+        <p>{__text("As datas podem coexistir com outros cultivos no mesmo ano.")}</p>
+        <button type="submit" className="button">{__text("Salvar cultivo")}</button>
+        <small>{__text("Dados mantidos somente nesta sess\u00E3o.")}</small>
+      </form>);
     }
-    if (modal === "account")
-      return (
-        <>
-          <h2>Sua conta</h2>
-          <h3>Perfil de demonstração</h3>
-          <p>
-            Explore a experiência sem criar uma conta real. As alterações ficam
-            somente nesta sessão.
-          </p>
-          <LinkButton onClick={() => go("settings")}>
-            Configurações da conta →
-          </LinkButton>
-        </>
-      );
-    if (modal === "property")
-      return (
-        <>
-          <h2>Selecionar propriedade</h2>
+    function ModalContent() {
+        if (modal === "addCrop")
+            return <AddCrop />;
+        if (modal === "map")
+            return (<>
+          <h2>{__text("Mapa \u2022")}{__text(layer)}</h2>
+          <p>{__text("Camada demonstrativa \u2022 valores e \u00E1reas sem georreferenciamento.")}</p>
+          <Map expanded/>
+        </>);
+        if (typeof modal === "number") {
+            const s = scenarios[modal];
+            return (<>
+          <h2>{__text(s.name)}</h2>
+          <h3>{__text(s.sequence)}</h3>
+          <h3>{__text("Fundamento agron\u00F4mico")}</h3>
+          <p>{__text(s.detail)}</p>
+          <h3>{__text("Benef\u00EDcio potencial")}</h3>
+          <p>{__text(s.benefit)}</p>
+          <h3>{__text("Riscos e condi\u00E7\u00F5es")}</h3>
+          <p>{__text(s.risk)}</p>
+          <small>{__text("Hip\u00F3teses gerais, sem valida\u00E7\u00E3o para esta propriedade fict\u00EDcia.")}</small>
+          <Btn onClick={() => open(null)}>{__text("Voltar")}</Btn>
+        </>);
+        }
+        if (modal === "account")
+            return (<>
+          <h2>{__text("Sua conta")}</h2>
+          <h3>{__text("Perfil de demonstra\u00E7\u00E3o")}</h3>
+          <p>{__text("Explore a experi\u00EAncia sem criar uma conta real. As altera\u00E7\u00F5es ficam somente nesta sess\u00E3o.")}</p>
+          <LinkButton onClick={() => go("settings")}>{__text("Configura\u00E7\u00F5es da conta \u2192")}</LinkButton>
+        </>);
+        if (modal === "property")
+            return (<>
+          <h2>{__text("Selecionar propriedade")}</h2>
           <button className="property-choice" onClick={() => open(null)}>
-            <strong>{farm.name} ✓</strong>
+            <strong>{__text(farm.name)}{__text("\u2713")}</strong>
             <small>
-              {farm.city} • {farm.area} ha
-            </small>
+              {__text(farm.city)}{__text("\u2022")}{__text(farm.area)}{__text("ha")}</small>
           </button>
-          <p>Uma propriedade está disponível nesta demonstração.</p>
-          <LinkButton onClick={() => go("farm")}>
-            Editar propriedade →
-          </LinkButton>
-        </>
-      );
-    if (modal === "login")
-      return (
-        <>
-          <h2>Bem-vinda à NATIVA</h2>
-          <p>
-            Entre na experiência demonstrativa. Nenhuma autenticação ou conta
-            real é necessária.
-          </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              go("overview");
-            }}
-          >
+          <p>{__text("Uma propriedade est\u00E1 dispon\u00EDvel nesta demonstra\u00E7\u00E3o.")}</p>
+          <LinkButton onClick={() => go("farm")}>{__text("Editar propriedade \u2192")}</LinkButton>
+        </>);
+        if (modal === "login")
+            return (<>
+          <h2>{__text("Bem-vinda \u00E0 NATIVA")}</h2>
+          <p>{__text("Entre na experi\u00EAncia demonstrativa. Nenhuma autentica\u00E7\u00E3o ou conta real \u00E9 necess\u00E1ria.")}</p>
+          <form onSubmit={(e) => {
+                    e.preventDefault();
+                    go("overview");
+                }}>
             <label className="field">
-              <span>E-mail • opcional</span>
-              <input type="email" placeholder="produtor@example.com" />
+              <span>{__text("E-mail \u2022 opcional")}</span>
+              <input type="email" placeholder={__text("produtor@example.com")}/>
             </label>
-            <button type="submit" className="button yellow">
-              Explorar demonstração →
-            </button>
+            <button type="submit" className="button yellow">{__text("Explorar demonstra\u00E7\u00E3o \u2192")}</button>
           </form>
-        </>
-      );
-    if (modal === "contact")
-      return (
-        <>
-          <h2>Vamos conversar?</h2>
-          <p>Formulário demonstrativo: esta versão não envia mensagens.</p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              toast("Demonstração concluída. Nenhuma mensagem foi enviada.");
-              open(null);
-            }}
-          >
+        </>);
+        if (modal === "contact")
+            return (<>
+          <h2>{__text("Vamos conversar?")}</h2>
+          <p>{__text("Formul\u00E1rio demonstrativo: esta vers\u00E3o n\u00E3o envia mensagens.")}</p>
+          <form onSubmit={(e) => {
+                    e.preventDefault();
+                    toast("Demonstração concluída. Nenhuma mensagem foi enviada.");
+                    open(null);
+                }}>
             <label className="field">
-              <span>Seu nome</span>
-              <input required placeholder="Seu nome" />
+              <span>{__text("Seu nome")}</span>
+              <input required placeholder={__text("Seu nome")}/>
             </label>
             <label className="field">
-              <span>Seu e-mail</span>
-              <input required type="email" placeholder="produtor@example.com" />
+              <span>{__text("Seu e-mail")}</span>
+              <input required type="email" placeholder={__text("produtor@example.com")}/>
             </label>
             <label className="field">
-              <span>Sua mensagem</span>
-              <textarea required placeholder="Quero conhecer a NATIVA." />
+              <span>{__text("Sua mensagem")}</span>
+              <textarea required placeholder={__text("Quero conhecer a NATIVA.")}/>
             </label>
-            <button className="button yellow" type="submit">
-              Concluir demonstração
-            </button>
+            <button className="button yellow" type="submit">{__text("Concluir demonstra\u00E7\u00E3o")}</button>
           </form>
-        </>
-      );
-    if (modal && modal in info) {
-      const data = info[modal as keyof typeof info];
-      return (
-        <>
-          <h2>{data.title}</h2>
-          <p>{data.subtitle}</p>
-          {data.items.map(([t, d]) => (
-            <section className="info-item" key={t}>
-              <h3>{t}</h3>
-              <p>{d}</p>
-            </section>
-          ))}
-          <Btn onClick={() => open(null)}>Entendi</Btn>
-        </>
-      );
+        </>);
+        if (modal && modal in info) {
+            const data = info[modal as keyof typeof info];
+            return (<>
+          <h2>{__text(data.title)}</h2>
+          <p>{__text(data.subtitle)}</p>
+          {__text(data.items.map(([t, d]) => (<section className="info-item" key={t}>
+              <h3>{__text(t)}</h3>
+              <p>{__text(d)}</p>
+            </section>)))}
+          <Btn onClick={() => open(null)}>{__text("Entendi")}</Btn>
+        </>);
+        }
+        return null;
     }
-    return null;
-  }
-  const inDashboard = !["landing", "signup", "onboard"].includes(page);
-  return (
-    <DraftContext.Provider value={{ draft, setDraft }}>
-      {page === "landing" ? (
-        Landing()
-      ) : page === "signup" ? (
-        Signup()
-      ) : page === "onboard" ? (
-        Onboard()
-      ) : (
-        <div className="dashboard">
-          {menu && (
-            <button
-              className="nav-shade"
-              aria-label="Fechar navegação"
-              onClick={() => setMenu(false)}
-            />
-          )}
+    const inDashboard = !["landing", "signup", "onboard"].includes(page);
+    return (<DraftContext.Provider value={{ draft, setDraft }}>
+      {__text(page === "landing" ? (Landing()) : page === "signup" ? (Signup()) : page === "onboard" ? (Onboard()) : (<div className="dashboard">
+          {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
           <aside className={"sidebar " + (menu ? "shown" : "")}>
             <Logo />
-            <small className="nav-section">PRINCIPAL</small>
+            <small className="nav-section">{__text("PRINCIPAL")}</small>
             <nav>
-              {navItems.map(([id, label, img], i) => (
-                <React.Fragment key={id}>
-                  {i === 3 && (
-                    <small className="nav-section planning">PLANEJAMENTO</small>
-                  )}
-                  <button
-                    className={page === id ? "selected" : ""}
-                    onClick={() => go(id)}
-                  >
-                    <img src={img} alt="" />
-                    {label}
+              {__text(navItems.map(([id, label, img], i) => (<React.Fragment key={id}>
+                  {__text(i === 3 && (<small className="nav-section planning">{__text("PLANEJAMENTO")}</small>))}
+                  <button className={page === id ? "selected" : ""} onClick={() => go(id)}>
+                    <img src={img} alt={__text("")}/>
+                    {__text(label)}
                   </button>
-                </React.Fragment>
-              ))}
+                </React.Fragment>)))}
             </nav>
             <div className="sidebar-bottom">
-              <button
-                className={page === "settings" ? "selected" : ""}
-                onClick={() => go("settings")}
-              >
-                <img src={A.imgIconeDeNavegacao5} alt="" />
-                Configurações
-              </button>
+              <button className={page === "settings" ? "selected" : ""} onClick={() => go("settings")}>
+                <img src={A.imgIconeDeNavegacao5} alt={__text("")}/>{__text("Configura\u00E7\u00F5es")}</button>
               <button onClick={() => open("help")}>
-                <img src={A.imgIconeAjuda} alt="" />
-                Ajuda
-              </button>
-              <LinkButton onClick={() => go("landing")}>
-                Voltar ao início ↗
-              </LinkButton>
+                <img src={A.imgIconeAjuda} alt={__text("")}/>{__text("Ajuda")}</button>
+              <LinkButton onClick={() => go("landing")}>{__text("Voltar ao in\u00EDcio \u2197")}</LinkButton>
             </div>
           </aside>
           <header className="topbar">
-            <button
-              className="mobile-menu"
-              aria-label="Abrir navegação"
-              onClick={() => setMenu(true)}
-            >
-              ☰
-            </button>
-            <span className="mobile-brand">NATIVA</span>
-            <button
-              className="property-select"
-              onClick={() => open("property")}
-            >
-              {farm.name} ⌄
-            </button>
-            <button
-              className="account"
-              aria-label="Minha conta"
-              onClick={() => open("account")}
-            >
-              <img src={A.imgIconeDeConta} alt="" />
+            <LanguageSwitcher />
+            <button className="mobile-menu" aria-label={__text("Abrir navega\u00E7\u00E3o")} onClick={() => setMenu(true)}>{__text("\u2630")}</button>
+            <span className="mobile-brand">{__text("NATIVA")}</span>
+            <button className="property-select" onClick={() => open("property")}>
+              {__text(farm.name)}{__text("\u2304")}</button>
+            <button className="account" aria-label={__text("Minha conta")} onClick={() => open("account")}>
+              <img src={A.imgIconeDeConta} alt={__text("")}/>
             </button>
           </header>
           <main className="main-content">
-            {page === "overview"
-              ? Overview()
-              : page === "farm"
-                ? FarmPage()
-                : page === "history"
-                  ? History()
-                  : page === "climate"
-                    ? Climate()
-                    : page === "rotation"
-                      ? Rotation()
-                      : Settings()}
+            {__text(page === "overview"
+                ? Overview()
+                : page === "farm"
+                    ? FarmPage()
+                    : page === "history"
+                        ? History()
+                        : page === "climate"
+                            ? Climate()
+                            : page === "rotation"
+                                ? Rotation()
+                                : Settings())}
           </main>
-        </div>
-      )}
-      {modal !== null && (
-        <Dialog onClose={() => open(null)} wide={modal === "map"}>
+        </div>))}
+      {__text(modal !== null && (<Dialog onClose={() => open(null)} wide={modal === "map"}>
           <ModalContent />
-        </Dialog>
-      )}
-      {notice && (
-        <div className="toast" role="status">
-          ✓ {notice}
-          <button aria-label="Fechar notificação" onClick={() => setNotice("")}>
-            ×
-          </button>
-        </div>
-      )}
-      {inDashboard && <span className="sr-only">Demonstração NATIVA</span>}
-    </DraftContext.Provider>
-  );
+        </Dialog>))}
+      {__text(notice && (<div className="toast" role="status">{__text("\u2713")}{__text(notice)}
+          <button aria-label={__text("Fechar notifica\u00E7\u00E3o")} onClick={() => setNotice("")}>{__text("\u00D7")}</button>
+        </div>))}
+      {__text(inDashboard && <span className="sr-only">{__text("Demonstra\u00E7\u00E3o NATIVA")}</span>)}
+    </DraftContext.Provider>);
 }
-function Dialog({
-  children,
-  onClose,
-  wide,
-}: {
-  children: React.ReactNode;
-  onClose: () => void;
-  wide: boolean;
+function Dialog({ children, onClose, wide, }: {
+    children: React.ReactNode;
+    onClose: () => void;
+    wide: boolean;
 }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const d = ref.current;
-    d?.showModal();
-    return () => {
-      d?.close();
-    };
-  }, []);
-  return (
-    <dialog
-      ref={ref}
-      className={"modal " + (wide ? "modal-wide" : "")}
-      aria-label="Detalhes NATIVA"
-      onCancel={(e) => {
-        e.preventDefault();
-        onClose();
-      }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          const r = e.currentTarget.getBoundingClientRect();
-          if (
-            e.clientX < r.left ||
-            e.clientX > r.right ||
-            e.clientY < r.top ||
-            e.clientY > r.bottom
-          )
+    const ref = useRef<HTMLDialogElement>(null);
+    useEffect(() => {
+        const d = ref.current;
+        d?.showModal();
+        return () => {
+            d?.close();
+        };
+    }, []);
+    return (<dialog ref={ref} className={"modal " + (wide ? "modal-wide" : "")} aria-label={__text("Detalhes NATIVA")} onCancel={(e) => {
+            e.preventDefault();
             onClose();
-        }
-      }}
-    >
-      <button className="close-modal" aria-label="Fechar" onClick={onClose}>
-        ×
-      </button>
-      {children}
-    </dialog>
-  );
+        }} onClick={(e) => {
+            if (e.target === e.currentTarget) {
+                const r = e.currentTarget.getBoundingClientRect();
+                if (e.clientX < r.left ||
+                    e.clientX > r.right ||
+                    e.clientY < r.top ||
+                    e.clientY > r.bottom)
+                    onClose();
+            }
+        }}>
+      <button className="close-modal" aria-label={__text("Fechar")} onClick={onClose}>{__text("\u00D7")}</button>
+      {__text(children)}
+    </dialog>);
 }
-createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+createRoot(document.getElementById("root")!).render(<React.StrictMode>
+    <LanguageProvider><App /></LanguageProvider>
+  </React.StrictMode>);
