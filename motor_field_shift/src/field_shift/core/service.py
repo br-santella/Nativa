@@ -344,15 +344,11 @@ def _context(area: dict, sowing: str, soil_analysis: dict | None = None, fert: d
         raise InvalidInput(f"Sem dados de relevo para a área: {e}") from e
 
     cache_nasa = _load_nasa_cache()
-    try:
-        rk, origin = E.get_climate(a["lat"], a["lon"], sowing)
-    except (TimeoutError, URLError, ConnectionError, requests.RequestException) as e:
-        raise ExternalQueryError(
-            f"Timeout ou falha de ligação ao consultar dados climáticos da NASA: {e}"
-        ) from e
-
-    if rk.get("modo") != "regiao":
+    # The API only answers from the pre-computed Paraná climate table. Check it before E.get_climate, which would
+    # otherwise fetch NASA POWER live (its reduced mode, used by the Streamlit app) only for the answer to be a 422.
+    if indicators_for(a["lat"], a["lon"]) is None:
         raise OutOfRegion("Centroide sem indicadores climáticos pré-calculados (fora do Paraná).")
+    rk, origin = E.get_climate(a["lat"], a["lon"], sowing)
 
     try:
         rk = E.enrich(rk, dict(poly=poly), soil_analysis)

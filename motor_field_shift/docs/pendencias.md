@@ -157,9 +157,11 @@ This file is the living list of open items for the project (crop-rotation engine
 
 - **Live NASA POWER fallback is dead code in the API**: `engine.get_climate` fetches POWER live when the pre-computed table has no cell,
   but `service._context` then raises `OutOfRegion` (422) for any mode other than `regiao`, so the fetch is wasted. The docs now describe
-  the real behaviour (SoilGrids is the only live fallback). Decide: remove the fetch, or accept its reduced-mode result.
-  Files: `src/field_shift/app/engine.py`, `src/field_shift/core/service.py`.
-  Status: open
+  the real behaviour (SoilGrids is the only live fallback).
+  Files: `src/field_shift/core/service.py`.
+  Done (15/11/2026): `service._context` checks the pre-computed table first and returns 422 without any network call; the live
+  reduced mode stays in `engine.get_climate` for the Streamlit app. Test: `test_no_precomputed_climate_is_422_without_live_power`.
+  Status: done
 
 ## Data/infra
 

@@ -280,3 +280,21 @@ def test_technical_tie():
     assert not any(a.startswith("Empate técnico") for x in r["agora"]["ranking"] if x["id"] not in e["ids"] for a in x["card"]["avisos"])
     # default weights at 15/01: corn + brachiaria clearly ahead
     assert recommend({"talhao_id": "72638"}, sowing_second="15/01", include_diagnosis=False)["agora"]["empate_tecnico"] is None
+
+
+@needs_data
+def test_no_precomputed_climate_is_422_without_live_power(monkeypatch):
+    """A centroid without a pre-computed climate cell is out of region without fetching NASA POWER live."""
+    import pytest
+
+    from field_shift.app import engine
+    from field_shift.core import service
+
+    def no_live_fetch(*a, **k):
+        raise AssertionError("NASA POWER must not be fetched live by the API")
+
+    monkeypatch.setattr(service, "indicators_for", lambda lat, lon: None)
+    monkeypatch.setattr(engine, "indicators_for", lambda lat, lon: None)
+    monkeypatch.setattr(engine, "fetch_power", no_live_fetch)
+    with pytest.raises(OutOfRegion, match="indicadores climáticos"):
+        _recommend({"lat": -24.95, "lon": -53.45}, current_rotation="soja__milho_safrinha")
