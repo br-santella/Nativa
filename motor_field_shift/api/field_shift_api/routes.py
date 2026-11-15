@@ -175,3 +175,10 @@ def context_get(
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     return _area_context(area.to_service(), sowing_second)
+
+
+@router.get("/monitoramento", tags=["clima"], summary="Indicadores recentes no ponto de referência da propriedade")
+def monitoring(lat: float = Query(ge=-90, le=90), lon: float = Query(ge=-180, le=180)) -> dict[str, Any]:
+    from field_shift.monitoring import monitor
+
+    return monitor(lat, lon)

@@ -3214,6 +3214,81 @@
     ]
    }
   },
+  "/v1/monitoramento": {
+   "get": {
+    "operationId": "monitoring_v1_monitoramento_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "lat",
+      "required": true,
+      "schema": {
+       "maximum": 90,
+       "minimum": -90,
+       "title": "Lat",
+       "type": "number"
+      }
+     },
+     {
+      "in": "query",
+      "name": "lon",
+      "required": true,
+      "schema": {
+       "maximum": 180,
+       "minimum": -180,
+       "title": "Lon",
+       "type": "number"
+      }
+     },
+     {
+      "description": "Idioma dos textos da resposta: `pt-BR` (padrão) ou `en`. Tem precedência sobre o header `Accept-Language`; valor desconhecido = pt-BR. Só os textos mudam: chaves, ids e números são os mesmos.",
+      "in": "query",
+      "name": "lang",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "Idioma dos textos da resposta: `pt-BR` (padrão) ou `en`. Tem precedência sobre o header `Accept-Language`; valor desconhecido = pt-BR. Só os textos mudam: chaves, ids e números são os mesmos.",
+       "title": "Lang"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Monitoring V1 Monitoramento Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Indicadores recentes no ponto de referência da propriedade",
+    "tags": [
+     "clima"
+    ]
+   }
+  },
   "/v1/opcoes": {
    "get": {
     "operationId": "opcoes_v1_opcoes_get",

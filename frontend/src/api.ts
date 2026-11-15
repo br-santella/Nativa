@@ -112,3 +112,9 @@ export function pesosDosSliders([agua, solo, renda, resiliencia]: number[]): Pes
   const p = (v: number) => Math.round(v) / 10;
   return { agua: p(agua), solo: p(solo), renda: p(renda), risco: p(resiliencia), pragas: 3 };
 }
+
+export type MonitoringIndicator = { source: string; unit: string; value: number | null; delta: number | null; start: string | null; end: string | null; series: { date: string; value: number | null }[] };
+export type Monitoring = { indicators: Record<string, MonitoringIndicator> };
+export function getMonitoring(lat: number, lon: number, signal: AbortSignal) {
+  return request<Monitoring>(`/v1/monitoramento?lat=${lat}&lon=${lon}`, { signal });
+}

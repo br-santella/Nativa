@@ -4271,8 +4271,10 @@ small.error.full {
 .season-soil-score progress::-moz-progress-bar { background: #34c985; }
 
 .dashboard .sidebar nav .selected,
-.dashboard .sidebar-bottom .selected { background: #00573f; color: #c4f2db; }
-.dashboard .sidebar .selected::before { background: #34c985; }
+.dashboard .sidebar-bottom .selected { background: var(--agro-yellow, #ffbf22); color: #152217; }
+.dashboard .sidebar .selected::before { background: #9c6d0a; }
+.dashboard .sidebar nav .selected img,
+.dashboard .sidebar-bottom .selected img { filter: brightness(0); opacity: .8; }
 
 .overview-intro { margin: 0 0 18px; color: #9aadb0; font-size: 14px; line-height: 1.6; }
 @media (max-width: 700px) {
