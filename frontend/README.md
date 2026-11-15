@@ -45,6 +45,8 @@ There is no dependency on Tailwind or on paid export services.
 
 Navigation between screens; forms with validation; property editing; crop registration; period and year filters; calendar expansion; map zoom and layer selection; modals; carousel; weighted scenario comparison; mobile menu; transitions that respect reduced motion.
 
+First-access tutorial (`src/OnboardingTour.tsx`): the first time the dashboard opens, a 10-step guided tour highlights the property selector, map and indicators, current season and each menu item (on phones, the ☰ button stands in for the hidden sidebar). Finishing or skipping stores `nativa-tour-done-v1` in `localStorage`; Help → "Ver tutorial guiado" replays it.
+
 Changes are kept in session memory. Reloading the page restores the example. Sign-up does not create real accounts, the contact form does not send messages and the selected soil report is not uploaded or interpreted.
 
 ## Data and backend

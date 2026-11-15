@@ -1,0 +1,109 @@
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+.tour-shade {
+  position: fixed;
+  inset: 0;
+  background: #000b;
+}
+/* The huge shadow darkens everything except the highlighted target. */
+.tour-spotlight {
+  position: fixed;
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px #000b;
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+  pointer-events: none;
+  transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease;
+}
+.tour-card {
+  position: fixed;
+  width: min(360px, calc(100vw - 32px));
+  padding: 22px;
+  color: #f5f7f4;
+  background: var(--panel);
+  border: 1px solid #35504b;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px #0009;
+  transition: top 0.25s ease, left 0.25s ease;
+}
+.tour-card:focus {
+  outline: none;
+}
+.tour-card.centered {
+  top: 50%;
+  left: 50%;
+  width: min(440px, calc(100vw - 32px));
+  transform: translate(-50%, -50%);
+}
+.tour-progress {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.tour-card h2 {
+  margin: 6px 0 8px;
+  font-size: 20px;
+}
+.tour-card p {
+  margin: 0;
+  color: #cfdcd9;
+  line-height: 1.5;
+}
+.tour-dots {
+  display: flex;
+  gap: 6px;
+  margin: 16px 0;
+}
+.tour-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+}
+.tour-dots span.active {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--lime);
+}
+.tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.tour-actions > div {
+  display: flex;
+  gap: 8px;
+}
+.tour-actions .button {
+  min-height: 38px;
+  padding: 8px 16px;
+}
+.tour-skip {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.tour-later {
+  display: block;
+  margin: 14px auto 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-spotlight,
+  .tour-card {
+    transition: none;
+  }
+}
+.tour-restart {
+  margin: 8px 12px 0 0;
+}

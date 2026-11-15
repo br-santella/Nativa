@@ -27,6 +27,7 @@ import type { SetupInputs } from "./PropertyWizard";
 import PropertySettings from "./PropertySettings";
 import ClimateStory from "./ClimateStory";
 import SolutionStory from "./SolutionStory";
+import OnboardingTour, { tourSeen } from "./OnboardingTour";
 import { loadSaved, persist, clearSaved } from "./storage";
 import { PRIORITIES } from "./priorities";
 import type { Pesos } from "./api";
@@ -126,6 +127,7 @@ function App() {
         };
     }, [menu]);
     const [mapView, setMapView] = useState(initialMapView);
+    const [tour, setTour] = useState(false);
     const [setupInputs, setSetupInputs] = useState<SetupInputs | undefined>(saved?.setupInputs);
     // One set of engine weights (five criteria, 0–10) for Overview, Rotation Strategies and Settings:
     // the setup's weights, or the app's own ones before the setup is done.
@@ -941,12 +943,23 @@ function App() {
               <h3>{__text(t)}</h3>
               <p>{__text(d)}</p>
             </section>)))}
+          {modal === "help" && (<button type="button" className="button lime tour-restart" onClick={startTour}>{__text("Ver tutorial guiado")}</button>)}
           <Btn onClick={() => open(null)}>{__text("Entendi")}</Btn>
         </>);
         }
         return null;
     }
     const inDashboard = !["landing", "demo", "about"].includes(page);
+    // First visit to the dashboard: open the guided tour on the overview, where all its targets are.
+    function startTour() {
+        setModal(null);
+        setMenu(false);
+        go("overview");
+        setTour(true);
+    }
+    useEffect(() => {
+        if (inDashboard && !tour && !tourSeen()) startTour();
+    }, [inDashboard]);
     return (<>
       {__text(page === "landing" ? (Landing()) : page === "demo" ? (PropertySetup()) : page === "about" ? (AboutPage()) : (<div className={"dashboard" + (sidebarCollapsed ? " sidebar-collapsed" : "")}>
           {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
@@ -958,16 +971,16 @@ function App() {
             <small className="nav-section">{__text("Principal")}</small>
             <nav id="dashboard-nav">
               {__text(navItems.map(([id, label, img]) => (<React.Fragment key={id}>
-                  <button className={page === id ? "selected" : ""} aria-current={page === id ? "page" : undefined} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
+                  <button data-tour={id} className={page === id ? "selected" : ""} aria-current={page === id ? "page" : undefined} aria-label={__text(label)} title={__text(label)} onClick={() => go(id)}>
                     <img src={img} alt={__text("")}/>
                     <span className="nav-label">{__text(label)}</span>
                   </button>
                 </React.Fragment>)))}
             </nav>
             <div className="sidebar-bottom">
-              <button className={page === "settings" || page === "farm" ? "selected" : ""} aria-label={__text("Configurações")} title={__text("Configurações")} onClick={() => go("settings")}>
+              <button data-tour="settings" className={page === "settings" || page === "farm" ? "selected" : ""} aria-label={__text("Configurações")} title={__text("Configurações")} onClick={() => go("settings")}>
                 <img src={A.imgIconeDeNavegacao5} alt={__text("")}/><span className="nav-label">{__text("Configura\u00E7\u00F5es")}</span></button>
-              <button aria-label={__text("Ajuda")} title={__text("Ajuda")} onClick={() => open("help")}>
+              <button data-tour="help" aria-label={__text("Ajuda")} title={__text("Ajuda")} onClick={() => open("help")}>
                 <img src={A.imgIconeAjuda} alt={__text("")}/><span className="nav-label">{__text("Ajuda")}</span></button>
               <button className="sidebar-home" aria-label={__text("Voltar ao início")} title={__text("Voltar ao início")} onClick={() => go("landing")}><span className="sidebar-home-icon" aria-hidden="true">←</span><span className="nav-label">{__text("Voltar ao início")}</span></button>
             </div>
@@ -996,6 +1009,7 @@ function App() {
       {__text(modal !== null && (<Dialog onClose={() => open(null)} wide={modal === "map"}>
           <ModalContent />
         </Dialog>))}
+      {tour && page === "overview" && (<OnboardingTour onClose={() => setTour(false)} onFinish={() => { setTour(false); go("rotation"); }}/>)}
       {__text(notice && (<div className="toast" role="status">{__text("\u2713")}{__text(notice)}
           <button aria-label={__text("Fechar notifica\u00E7\u00E3o")} onClick={() => setNotice("")}>{__text("\u00D7")}</button>
         </div>))}
