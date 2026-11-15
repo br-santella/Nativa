@@ -888,6 +888,7 @@
       "texto": "Rendimento médio em Toledo, 2021–2025: soja 49 sc/ha, milho 2ª safra 103 sc/ha, trigo 37 sc/ha, aveia 1660 kg/ha.",
       "rendimento_usado": "PAM do município (cód. IBGE 4127700)"
     },
+    "fertilidade": null,
     "avisos": []
   },
   "agora": {
@@ -966,9 +967,11 @@
             "Chuva atende praticamente toda a demanda hídrica."
           ],
           "lacunas": [
-            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
             "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
-            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+            "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+            "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
           ],
           "riscos": [
             "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1056,9 +1059,11 @@
             "Chuva atende praticamente toda a demanda hídrica."
           ],
           "lacunas": [
-            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
             "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
-            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+            "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+            "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
           ],
           "riscos": [
             "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1178,9 +1183,11 @@
             "Chuva atende praticamente toda a demanda hídrica."
           ],
           "lacunas": [
-            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
             "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
-            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+            "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+            "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
           ],
           "riscos": [
             "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1307,10 +1314,12 @@
             "Chuva atende praticamente toda a demanda hídrica."
           ],
           "lacunas": [
-            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
             "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
             "Milho verão no verão: risco climático e balanço hídrico do verão não modelados (só a 2ª janela entra nesses critérios).",
-            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+            "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+            "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
           ],
           "riscos": [
             "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1434,10 +1443,12 @@
             "Chuva atende praticamente toda a demanda hídrica."
           ],
           "lacunas": [
-            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
             "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
             "Milho verão no verão: risco climático e balanço hídrico do verão não modelados (só a 2ª janela entra nesses critérios).",
-            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+            "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+            "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
           ],
           "riscos": [
             "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1564,10 +1575,12 @@
             "Chuva atende praticamente toda a demanda hídrica."
           ],
           "lacunas": [
-            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
             "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
             "Milho verão no verão: risco climático e balanço hídrico do verão não modelados (só a 2ª janela entra nesses critérios).",
-            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+            "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+            "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
           ],
           "riscos": [
             "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1689,10 +1702,12 @@
             "Chuva atende praticamente toda a demanda hídrica."
           ],
           "lacunas": [
-            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+            "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
             "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
             "Milho verão no verão: risco climático e balanço hídrico do verão não modelados (só a 2ª janela entra nesses critérios).",
-            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+            "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+            "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+            "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
           ],
           "riscos": [
             "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1838,9 +1853,11 @@
           "Chuva atende praticamente toda a demanda hídrica."
         ],
         "lacunas": [
-          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
           "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
-          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+          "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+          "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
         ],
         "riscos": [
           "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -1928,9 +1945,11 @@
           "Chuva atende praticamente toda a demanda hídrica."
         ],
         "lacunas": [
-          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
           "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
-          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+          "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+          "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
         ],
         "riscos": [
           "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -2053,9 +2072,11 @@
         "Chuva atende praticamente toda a demanda hídrica."
       ],
       "lacunas": [
-        "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+        "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
         "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
-        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+        "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+        "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+        "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
       ],
       "riscos": [
         "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",
@@ -2146,9 +2167,11 @@
           "Chuva atende praticamente toda a demanda hídrica."
         ],
         "lacunas": [
-          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais; fertilidade do solo não usada.",
+          "CAD por pedotransferência (Saxton & Rawls), pode errar em latossolos tropicais.",
           "Umidade do solo (SMAP) e chuva satelital (GPM) não usadas.",
-          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência."
+          "Renda: preço = média PR dos últimos 12 meses (SEAB/DERAL); custo CONAB de Londrina/Ponta Grossa (não do Oeste do PR); custo de cobertura/pousio, bônus da palhada/N e Kc são estimativas de referência.",
+          "Problemas da área (nematoide, mofo-branco, cigarrinha, compactação) não informados: não considerados.",
+          "Fertilidade não considerada (não informada): sem custo de adubação/calagem e sem penalidade ou bônus por fertilidade."
         ],
         "riscos": [
           "Fora do ZARC pode comprometer crédito/seguro (não elimina a candidata).",

@@ -206,6 +206,26 @@ The three attributes come from the second crop's catalog entry. They are estimat
 
 Catalog attribute of the second crop, from 0 to 1 (estimate to be validated). Corn after corn subtracts 0.25 (minimum 0).
 
+### 6.6 Field state informed by the farmer (optional)
+
+Two optional inputs adjust the criteria without ever inventing data: if they are absent, nothing about them enters the analysis and the
+card says "not considered". Every number below is tagged in `src/field_shift/app/estado_area.py` with its source or with "no confirmed
+source"; the sources, with URL and the excerpt each number came from, are in [`fontes_estado_area.md`](fontes_estado_area.md).
+
+- **`problemas_area`** (`nematoide`, `mofo_branco`, `cigarrinha`, `compactacao`). Each (problem, crop) pair has a qualitative level,
+  `favorece`, `neutro` or `penaliza`, that moves `pragas` (or `solo`, for compaction) by one declared magnitude (+0.15 / −0.15). The
+  direction (host or non-host, suppresses or favours) comes from Embrapa and academic sources we read; the magnitude is our
+  modelling choice, not from the literature. A pair without a source we read is **neutral** and is listed in the card as "efeito sem
+  fonte confirmada" and in `pendencias.md`. Caveats are carried to the card (for example, nematode effects depend on the species,
+  so brachiaria and corn stay neutral).
+- **Fertility in `analise_solo`** (P, K, Ca, Mg, Al, V%, CEC). Classes follow the Manual de Adubação e Calagem do Paraná: P depends on
+  the clay band of the farmer's own `argila_pct` (without it, the most demanding band), K, V% and Al have their own tables. Liming uses
+  the base-saturation method of the Manual, with a reference PRNT of 76.9% (CBPTT 2020) and V2 = 60% (the Manual groups corn, wheat,
+  beans, sorghum and soybean in the same 51–70% class). P/K doses come from the Manual (corn, expected yield < 8 t/ha) and from CBPTT 2020
+  (wheat); beans and sorghum doses, lime price, the dose cap and the penalty/bonus sizes have no confirmed source. The fertilizer cost
+  is the difference against the "medium" class dose, which we assume is what the CONAB cost already embeds (an assumption without
+  source).
+
 ## 7. Final score
 
 **Score = Σ weightᵢ × criterionᵢ / Σ weightᵢ**

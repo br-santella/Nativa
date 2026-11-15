@@ -379,8 +379,10 @@ def _contexto(area: dict, semeadura: str, analise_solo: dict | None = None, fert
     fert_out = None
     if fert:
         fert_out = dict(valores=fert["valores"], classes=fert["classes"], v_pct_origem=fert["v_origem"], severidade_acidez=fert["severidade_acidez"],
-                        nao_informados=fert["ausentes"], fonte="análise de solo do produtor; classes: Manual de Adubação e Calagem PR/IDR-PR "
-                        "simplificado (" + EA.FONTE_ESTIMATIVA + ")")
+                        nao_informados=fert["ausentes"], fonte="análise de solo do produtor; classes: " + EA.FONTE_MANUAL)
+        if fert.get("argila_faixa_g_kg"):
+            fert_out["argila_faixa_g_kg"] = fert["argila_faixa_g_kg"]
+            fert_out["argila_origem"] = fert["argila_origem"]
     d = rk["diagnostico"]
     cel = rk["celula"]
     clima = dict(
@@ -512,7 +514,7 @@ def _separar_fertilidade(solo_n: dict | None) -> tuple[dict | None, dict | None]
     """Divide a análise validada em (parte física/CAD que substitui o SoilGrids | None, fertilidade interpretada | None)."""
     if not solo_n:
         return None, None
-    fert = EA.preparar_fertilidade({k: v for k, v in solo_n.items() if k in _CAMPOS_FERT})
+    fert = EA.preparar_fertilidade({k: v for k, v in solo_n.items() if k in _CAMPOS_FERT}, solo_n.get("argila_pct"))
     fis = {k: v for k, v in solo_n.items() if k not in _CAMPOS_FERT}
     return (fis if ("argila_pct" in fis or "cad_mm_cm" in fis) else None), fert
 
@@ -838,7 +840,8 @@ def recomendar(area: dict, semeadura_safrinha: str | None = None, pesos: dict | 
       ctc_cmolc_dm3. Se informada: custo de calagem e adubação P/K na margem, penalidade (critério solo) para cultura sensível em solo
       ácido/pobre e bônus para cobertura recicladora; se NÃO informada, não entra na análise (sem estimativa nem padrão).
     problemas_area (opcional): lista fechada ["nematoide", "mofo_branco", "cigarrinha", "compactacao"] (catalog/vocabulario.yaml);
-      ajusta os critérios pragas e solo por cultura (tabela em field_shift.app.estado_area; estimativa a validar). Sem ela, nada muda.
+      ajusta os critérios pragas e solo por cultura em três níveis (favorece/neutro/penaliza), só onde há fonte lida
+      (tabela e fontes em field_shift.app.estado_area; sem fonte o efeito é neutro). Sem ela, nada muda.
     restricoes (opcional): {"culturas_excluidas": [slugs], "maquinas": {"plataforma_milho": bool, "semeadora_consorcio": bool},
       "sem_comprador": ["milho"|"trigo"|"aveia_grao"]}. Excluída/sem comprador -> eliminada; máquina false -> aviso + custo
       extra de terceirização (estimativa); máquina omitida = tem.

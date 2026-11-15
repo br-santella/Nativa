@@ -830,5 +830,6 @@
     "texto": "Rendimento médio em Toledo, 2021–2025: soja 49 sc/ha, milho 2ª safra 103 sc/ha, trigo 37 sc/ha, aveia 1660 kg/ha.",
     "rendimento_usado": "PAM do município (cód. IBGE 4127700)"
   },
+  "fertilidade": null,
   "avisos": []
 }
