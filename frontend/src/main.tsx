@@ -331,13 +331,6 @@ function App() {
     }
     function Overview() {
         return (<>
-        <div className="page-heading overview-heading">
-          <div>
-            <h1>{__text("Sua propriedade, uma nova perspectiva.")}</h1>
-            <p>{__text("Explore sua fazenda com dados da NASA e descubra oportunidades para suas pr\u00F3ximas safras.")}</p>
-          </div>
-          <Btn onClick={() => go("rotation")}>{__text("\uFF0B Nova An\u00E1lise")}</Btn>
-        </div>
         <Demo />
         <div className="overview-map">
           <Map />
