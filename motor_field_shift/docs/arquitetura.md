@@ -40,14 +40,27 @@ Core: `diagnostico(poligono) → {clima, solo, relevo, historico, rotacao_detect
 
 ```
 src/field_shift/
-  clima/     indicadores_para(lat, lon)        (in progress)
-  regiao/    historico_mapbiomas(), relevo()   (in progress)
-  solo/      soilgrids(poligono)               (to do)
-  ndvi/      rotacao_detectada(poligono)       (currently in talhoes/ndvi.py)
-  regras/    hard rules + ZARC                 (currently inside engine.py)
-  motor/     diagnostico() + ranking()         (split out of the current app/engine.py)
-  app/       Streamlit (hackathon) → FastAPI + web frontend
+  core/service.py   API service layer: options, diagnose, recommend (+ plan), warm_up
+  app/engine.py     rotation catalog, hard rules, criteria, ranking and card texts
+  app/field_state.py  farmer-reported area problems and soil fertility
+  app/mvp.py        Streamlit teaching version
+  climate/          precomputed NASA POWER indicators (lookup), INMET, POWER x station validation
+  water/            daily FAO-56 water balance per 2nd-crop candidate
+  soil/             SoilGrids per polygon + farmer soil analysis (AWC by Saxton & Rawls)
+  region/           MapBiomas/relief clip per polygon; soybean-free period (ADAPAR)
+  pam/              IBGE PAM municipal yield (expected yield = trend)
+  income/           margins (PAM x SEAB/DERAL price - CONAB cost), price history, data/ref updater
+  context/          informative current context: ENSO, MJO, SMAP, pests, INMET alerts
+  fields/           demo fields: NDVI and relief
+  zarc.py           ZARC (MAPA) checks per crop and sowing date
+  crop_calendar.py  summer-crop stage -> harvest -> 2nd-window sowing
+  i18n/             response translation pt-BR -> en (catalog en.json, applied by the API middleware)
+  validation/       offline validation (backtest, sensitivity, satellite, ZARC agreement)
+api/field_shift_api/  FastAPI app (main.py: language middleware and error handlers; routes.py; schemas.py)
 ```
+
+All code (identifiers, comments, logs) is in English; the public API contract (JSON keys such as `rotacao_atual`, ids/slugs)
+and the user-facing texts stay in Portuguese, with English answers produced by `i18n` (see `api/README.md`, "Response language").
 
 ## 5. Disk space (Western Paraná)
 

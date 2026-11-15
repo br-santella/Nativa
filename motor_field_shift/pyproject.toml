@@ -46,10 +46,11 @@ build-backend = "uv_build"
 dev = [
     "httpx>=0.28.1",
     "pytest>=9.2.0",
+    "tabulate>=0.10.0",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["api"]
-testpaths = ["api/tests"]
-markers = ["integracao: usa o serviço real e os dados em data/ (lento)"]
-addopts = "-m 'not integracao'"
+testpaths = ["api/tests", "tests"]
+markers = ["integration: usa o serviço real e os dados em data/ (lento)"]
+addopts = "-m 'not integration'"

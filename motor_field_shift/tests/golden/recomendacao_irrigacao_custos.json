@@ -1,0 +1,33 @@
+{
+ "body": {
+  "detail": [
+   {
+    "ctx": {
+     "expected": "'nematoide', 'mofo_branco', 'cigarrinha' or 'compactacao'"
+    },
+    "input": "percevejo",
+    "loc": [
+     "body",
+     "problemas_area",
+     0
+    ],
+    "msg": "Input should be 'nematoide', 'mofo_branco', 'cigarrinha' or 'compactacao'",
+    "type": "literal_error"
+   },
+   {
+    "ctx": {
+     "expected": "'nematoide', 'mofo_branco', 'cigarrinha' or 'compactacao'"
+    },
+    "input": "erosao",
+    "loc": [
+     "body",
+     "problemas_area",
+     1
+    ],
+    "msg": "Input should be 'nematoide', 'mofo_branco', 'cigarrinha' or 'compactacao'",
+    "type": "literal_error"
+   }
+  ]
+ },
+ "status": 422
+}
