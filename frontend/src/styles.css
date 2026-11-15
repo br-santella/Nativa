@@ -3625,7 +3625,6 @@ footer > small:last-child {
   .sidebar-collapsed .main-content { margin-left: 72px; }
   .sidebar-collapsed .sidebar .brand { margin-left: 0; }
   .sidebar-collapsed .sidebar .brand img { width: 40px; height: 40px; }
-  .sidebar-collapsed .brand-wordmark,
   .sidebar-collapsed .nav-label { display: none; }
   .sidebar-collapsed .nav-section { font-size: 0; margin: 28px 8px 12px; }
   .sidebar-collapsed .nav-section.planning { border-top: 1px solid #28464b; }
@@ -3715,4 +3714,14 @@ footer > small:last-child {
   .dashboard .sidebar { padding-inline: 12px; }
   .dashboard.sidebar-collapsed .sidebar-header { justify-content: flex-start; }
   .dashboard .sidebar-header .brand { gap: 8px; }
+}
+
+/* Keep the wordmark at its final size while the sidebar changes width. */
+.dashboard .sidebar-header .brand { overflow: hidden; gap: 8px; }
+.dashboard .sidebar-header .brand-wordmark { width: 144px; flex: 0 0 144px; }
+.dashboard .sidebar-header .brand strong { font-size: 22px; white-space: nowrap; }
+.dashboard .sidebar-header .brand-slogan { width: 144px; min-height: 24px; line-height: 12px; }
+@media (min-width: 701px) {
+  .sidebar-collapsed .sidebar-header .brand { width: 40px; }
+  .sidebar-collapsed .sidebar-header .brand-wordmark { visibility: hidden; }
 }
