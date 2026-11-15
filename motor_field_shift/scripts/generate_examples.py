@@ -28,6 +28,7 @@ def rec(**kw):
 REQUESTS = {
     "recomendacao_talhao_72638": rec(area=FIELD),
     "recomendacao_talhao_72638_2a_chamada": rec(area=FIELD),
+    "recomendacao_talhao_72638_en": ("POST", "/v1/recomendacao?lang=en", rec(area=FIELD)[2]),  # same request, English texts
     "recomendacao_dados_proprios": rec(
         area=FIELD, ajustes={"produtividade": {"soja": 65, "milho": 110, "trigo": 50}},
         analise_solo={"argila_pct": 65, "areia_pct": 10, "materia_organica_pct": 3.5, "ph": 5.4, "cad_mm_cm": 1.4},
@@ -50,7 +51,8 @@ REQUESTS = {
     "clima_ponto": ("GET", "/v1/clima?lat=-24.95&lon=-53.45&semeadura_safrinha=01/02", None),
     "opcoes": ("GET", "/v1/opcoes", None),
     "talhoes_demo": ("GET", "/v1/talhoes/demo", None),
-    "erro_fora_da_regiao": ("POST", "/v1/recomendacao", dict(area={"lat": -25.43, "lon": -49.27}, rotacao_atual="soja__milho_safrinha", **STAGE)),
+    "recomendacao_ponto_curitiba": rec(area={"lat": -25.43, "lon": -49.27}),  # outside the Oeste: Região 1 calendar and prices warning
+    "erro_fora_da_regiao": ("POST", "/v1/recomendacao", dict(area={"lat": -23.55, "lon": -46.63}, rotacao_atual="soja__milho_safrinha", **STAGE)),  # São Paulo
     "erro_validacao": rec(area=FIELD, pesos={"renda": 11}),
     "erro_ajuste_invalido": rec(area=FIELD, ajustes={"custos": {"milho": -1}}),
 }

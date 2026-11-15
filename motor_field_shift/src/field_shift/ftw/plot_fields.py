@@ -1,4 +1,4 @@
-"""Figura RGB + polígonos FTW. Uso: plot_fields.py scene.tif fields.gpkg out.png"""
+"""RGB figure + FTW polygons. Usage: plot_fields.py scene.tif fields.gpkg out.png"""
 import sys, numpy as np, rasterio, geopandas as gpd
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -6,7 +6,7 @@ scene, fields, out = sys.argv[1:4]
 with rasterio.open(scene) as s:
     img = s.read().astype(float); b = s.bounds
 g = gpd.read_file(fields).to_crs(32722)
-def rgb(off):  # ordem FTW: R,G,B,NIR por janela
+def rgb(off):  # FTW order: R,G,B,NIR per window
     x = np.moveaxis(img[off:off+3], 0, -1)
     return np.clip(x / np.nanpercentile(x, 98), 0, 1)
 ext = (b.left, b.right, b.bottom, b.top)

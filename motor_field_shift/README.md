@@ -5,7 +5,7 @@ It is the project backend. Its API is contract C3 in [`../docs/contratos.md`](..
 
 Documentation (in Portuguese):
 
-- Engine logic: [`docs/motor.md`](docs/motor.md)
+- Engine logic: [`docs/motor.md`](docs/motor.md) · validation: [`docs/validation.md`](docs/validation.md)
 - Data architecture: [`docs/arquitetura.md`](docs/arquitetura.md) · sources: [`docs/datasets.md`](docs/datasets.md)
 - API (FastAPI) and usage: [`api/README.md`](api/README.md)
 
@@ -23,8 +23,9 @@ uv run pytest                                                    # unit tests
 
 | Folder | Contents |
 | --- | --- |
-| `src/field_shift/motor/` | service layer: `diagnosticar()`, `recomendar()` |
+| `src/field_shift/core/` | service layer: `diagnose()`, `recommend()` |
 | `src/field_shift/app/` | hard rules, criteria, weighted score, cards (`engine.py`) + Streamlit app (`mvp.py`) |
-| `src/field_shift/{clima,regiao,solo,agua,pam,renda}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, FAO-56 water balance, IBGE PAM, prices/costs |
-| `ingest/` | scripts that download and pre-compute the data (only the `*_oeste_pr` versions; the whole-of-Paraná `*_pr` ingests are not versioned yet, see `docs/pendencias.md`) |
+| `src/field_shift/{climate,region,soil,water,pam,income}/` | NASA POWER, MapBiomas/NASADEM, SoilGrids, FAO-56 water balance, IBGE PAM, prices/costs |
+| `ingest/` | scripts that download and pre-compute the data (`--regiao oeste_pr|pr`); `scripts/download_pr/run_all.sh` runs the whole-of-Paraná ingestion |
+| `src/field_shift/i18n/` | English translation of the API responses (catalog `en.json`; pt-BR is the default) |
 | `api/` | FastAPI app, tests and real response examples |

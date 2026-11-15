@@ -45,7 +45,7 @@ Mapping of the NATIVA screen sliders (0–100%) to `pesos` (0–10):
 | Soil (clay, sand, organic C, pH, available water capacity) | SoilGrids | 250 m | `diagnostico.solo` |
 | Terrain (elevation, slope, Embrapa class) | NASADEM | 30 m | `diagnostico.relevo` |
 | Crop history | MapBiomas | 2019–2024 | `diagnostico.historico` |
-| Municipality and average yield | IBGE PAM | Last 10 years | `diagnostico.area.municipio`, `diagnostico.produtividade` |
+| Municipality and expected yield (trend) | IBGE PAM | Last 10 years | `diagnostico.area.municipio`, `diagnostico.produtividade` |
 | Price | SEAB/DERAL-PR | 12-month average | `ranking[].margem.itens[].preco` |
 | Cost | CONAB COE (Londrina/Ponta Grossa) | Latest season | `ranking[].margem.itens[].custo` |
 | Legal rules (soybean-free period, soybean after soybean) | ADAPAR (free period 02/06–31/08) and Ordinance SDA/MAPA 1.124/2024 | In force (check before the pitch) | `eliminadas[]`, `avisos` |
@@ -65,7 +65,7 @@ Ordered by impact.
 | Soil analysis (clay, organic matter, pH, available water capacity) | SoilGrids and pedotransfer | Available water capacity is the largest uncertainty in the water criterion | `analise_solo` (top level): `argila_pct`, `areia_pct`, `materia_organica_pct` or `carbono_organico_g_kg`, `ph`, `cad_mm_cm` (optional), `profundidade_cm` (optional, default 20). Requires clay+sand or `cad_mm_cm`. Also valid in `POST /v1/diagnostico` | Accepted |
 | Exact field polygon | Point (~100 ha square) | Climate, soil and terrain of the right field | `area.geometry` | Accepted |
 | Restrictions: crops the farmer does not want or cannot plant/sell; machinery (corn header, intercrop seeder); local buyer | All candidates allowed | Only what the farmer can execute appears | `restricoes` (top level): `culturas_excluidas` (ids `<verao>__<segunda>` or legacy slugs = soybean in summer), `maquinas{plataforma_milho, semeadora_consorcio}`, `sem_comprador` (`milho`, `trigo`, `sorgo`, `feijao`, `aveia_grao`). To evaluate only some rotations, use `rotacoes` (list of `{verao, segunda}`; see `docs/motor.md`). Excluded or no buyer eliminates; machine `false` only adds a warning and an outsourcing cost. Market viability (high/medium/low/not applicable) appears in `card.mercado` | Accepted |
-| Irrigation | Engine assumes rainfed | Changes the water criterion | `irrigacao` (top level): `disponivel`, `custo_r_mm_ha` (default 4.0), `lamina_max_mm_dia` (default 6). Irrigates corn, corn+brachiaria and wheat; dry spells stop counting; the margin subtracts depth × cost. Does not model a yield gain | Accepted |
+| Irrigation | Engine assumes rainfed | Changes the water criterion | `irrigacao` (top level): `disponivel`, `custo_r_mm_ha` (default 4.0), `lamina_max_mm_dia` (default 6). Irrigates corn, corn+brachiaria and wheat; the water-deficit risk stops counting; the margin subtracts depth × cost. Does not model a yield gain | Accepted |
 
 ## 5. How to show it on screen (suggestion for the frontend)
 

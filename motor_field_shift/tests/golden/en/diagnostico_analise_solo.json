@@ -1,0 +1,24 @@
+{
+ "body": {
+  "detail": [
+   {
+    "ctx": {
+     "error": {}
+    },
+    "input": {
+     "argila_pct": 60,
+     "k_cmolc_dm3": 0.2,
+     "p_mg_dm3": 6,
+     "ph": 5.0
+    },
+    "loc": [
+     "body",
+     "analise_solo"
+    ],
+    "msg": "Value error, informe 'argila_pct' and 'areia_pct' juntos",
+    "type": "value_error"
+   }
+  ]
+ },
+ "status": 422
+}

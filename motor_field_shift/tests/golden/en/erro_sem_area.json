@@ -1,0 +1,19 @@
+{
+ "body": {
+  "detail": [
+   {
+    "ctx": {
+     "error": {}
+    },
+    "input": {},
+    "loc": [
+     "body",
+     "area"
+    ],
+    "msg": "Value error, give exactly one area form: 'geometry', 'lat'+'lon' or 'talhao_id'",
+    "type": "value_error"
+   }
+  ]
+ },
+ "status": 422
+}

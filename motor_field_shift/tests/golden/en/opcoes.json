@@ -1,0 +1,919 @@
+{
+ "body": {
+  "combinacoes": [
+   {
+    "id": "soja__milho_safrinha",
+    "id_legado": "milho_safrinha",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → second-season corn",
+    "segunda": "milho_safrinha",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__milho_braquiaria",
+    "id_legado": "milho_braquiaria",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → second-season corn + brachiaria",
+    "segunda": "milho_braquiaria",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__trigo",
+    "id_legado": "trigo",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → wheat",
+    "segunda": "trigo",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__aveia",
+    "id_legado": "aveia",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → oat (cover/straw)",
+    "segunda": "aveia",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__milheto_crotalaria",
+    "id_legado": "milheto_crotalaria",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → pearl millet/sunn hemp (cover)",
+    "segunda": "milheto_crotalaria",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__pousio",
+    "id_legado": "pousio",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → fallow",
+    "segunda": "pousio",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__soja_safrinha",
+    "id_legado": "soja_safrinha",
+    "motivo_se_invalida": "Soybean on soybean in the same crop year is prohibited (Ordinance SDA/MAPA 1,124/2024). Soybean in the 2nd window (sowing on 01/02) falls outside the legal soybean sowing window (01/09–31/12, Region 2). There is live soybean during the soybean-free period (02/06–31/08, Region 2 of PR).",
+    "nome": "Soybean → second-season soybean",
+    "segunda": "soja_safrinha",
+    "semeaduras_validas": [],
+    "valida": false,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__sorgo",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → sorghum",
+    "segunda": "sorgo",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__feijao_safrinha",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → second-season beans",
+    "segunda": "feijao_safrinha",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__nabo_forrageiro",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → forage radish (cover)",
+    "segunda": "nabo_forrageiro",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "soja__aveia_nabo",
+    "motivo_se_invalida": null,
+    "nome": "Soybean → oat + forage radish (cover)",
+    "segunda": "aveia_nabo",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "soja"
+   },
+   {
+    "id": "milho_verao__milho_safrinha",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → second-season corn",
+    "segunda": "milho_safrinha",
+    "semeaduras_validas": [
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__milho_braquiaria",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → second-season corn + brachiaria",
+    "segunda": "milho_braquiaria",
+    "semeaduras_validas": [
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__trigo",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → wheat",
+    "segunda": "trigo",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__aveia",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → oat (cover/straw)",
+    "segunda": "aveia",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__milheto_crotalaria",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → pearl millet/sunn hemp (cover)",
+    "segunda": "milheto_crotalaria",
+    "semeaduras_validas": [
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__pousio",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → fallow",
+    "segunda": "pousio",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__soja_safrinha",
+    "motivo_se_invalida": "Soybean in the 2nd window (sowing on 01/02) falls outside the legal soybean sowing window (01/09–31/12, Region 2). There is live soybean during the soybean-free period (02/06–31/08, Region 2 of PR).",
+    "nome": "Summer corn → second-season soybean",
+    "segunda": "soja_safrinha",
+    "semeaduras_validas": [],
+    "valida": false,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__sorgo",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → sorghum",
+    "segunda": "sorgo",
+    "semeaduras_validas": [
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__feijao_safrinha",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → second-season beans",
+    "segunda": "feijao_safrinha",
+    "semeaduras_validas": [
+     "15/02"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__nabo_forrageiro",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → forage radish (cover)",
+    "segunda": "nabo_forrageiro",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   },
+   {
+    "id": "milho_verao__aveia_nabo",
+    "motivo_se_invalida": null,
+    "nome": "Summer corn → oat + forage radish (cover)",
+    "segunda": "aveia_nabo",
+    "semeaduras_validas": [
+     "15/01",
+     "01/02",
+     "15/02",
+     "01/03",
+     "15/03"
+    ],
+    "valida": true,
+    "verao": "milho_verao"
+   }
+  ],
+  "criterios": [
+   {
+    "id": "renda",
+    "nome": "Income"
+   },
+   {
+    "id": "solo",
+    "nome": "Soil health"
+   },
+   {
+    "id": "agua",
+    "nome": "Water"
+   },
+   {
+    "id": "pragas",
+    "nome": "Pest break"
+   },
+   {
+    "id": "risco",
+    "nome": "Climate risk"
+   }
+  ],
+  "culturas_segunda": [
+   {
+    "descricao_curta": "Corn in the second season, after soybean; the most common rotation in Western Paraná.",
+    "id": "milho_safrinha",
+    "nome": "Second-season corn",
+    "tipo": "grain"
+   },
+   {
+    "descricao_curta": "Second-season corn intercropped with brachiaria: grain plus straw for no-till.",
+    "id": "milho_braquiaria",
+    "nome": "Second-season corn + brachiaria",
+    "tipo": "grain"
+   },
+   {
+    "descricao_curta": "Winter wheat after soybean; sensitive to frost at flowering.",
+    "id": "trigo",
+    "nome": "Wheat",
+    "tipo": "grain"
+   },
+   {
+    "descricao_curta": "Oat for cover/straw (and occasional grain) in winter.",
+    "id": "aveia",
+    "nome": "Oat (cover/straw)",
+    "tipo": "cobertura"
+   },
+   {
+    "descricao_curta": "Pearl millet and sunn hemp cover: straw and nitrogen fixation, no grain sale.",
+    "id": "milheto_crotalaria",
+    "nome": "Pearl millet/sunn hemp (cover)",
+    "tipo": "cobertura"
+   },
+   {
+    "descricao_curta": "No crop in the second window; exposed soil and no extra income.",
+    "id": "pousio",
+    "nome": "Fallow",
+    "tipo": "pousio"
+   },
+   {
+    "descricao_curta": "Soybean on soybean in the same crop year; prohibited by regulation (always eliminated).",
+    "id": "soja_safrinha",
+    "nome": "Second-season soybean",
+    "tipo": "grain"
+   },
+   {
+    "descricao_curta": "Grain sorghum in the second season: drought tolerant, no corn leafhopper; uses the grain machinery and sales channel.",
+    "id": "sorgo",
+    "nome": "Sorghum",
+    "tipo": "grain"
+   },
+   {
+    "descricao_curta": "2nd-season beans: short cycle and good income in a good year, but sensitive to frost and water deficit and a host of white mold.",
+    "id": "feijao_safrinha",
+    "nome": "Second-season beans",
+    "tipo": "grain"
+   },
+   {
+    "descricao_curta": "Forage radish cover: nutrient cycling and weed suppression, fast-decomposing straw; no grain sale.",
+    "id": "nabo_forrageiro",
+    "nome": "Forage radish (cover)",
+    "tipo": "cobertura"
+   },
+   {
+    "descricao_curta": "Oat + forage radish cover mix: long-lasting straw and nutrient cycling, no grain sale.",
+    "id": "aveia_nabo",
+    "nome": "Oat + forage radish (cover)",
+    "tipo": "cobertura"
+   }
+  ],
+  "culturas_verao": [
+   {
+    "colheita_catalogo": "10/01",
+    "descricao_curta": "Summer soybean: the most common crop in Western Paraná; sowing from 01/09 to 31/12.",
+    "estagios": [
+     {
+      "dias_ate_colheita": 90,
+      "id": "vegetativo",
+      "nome": "Vegetative (before flowering)"
+     },
+     {
+      "dias_ate_colheita": 65,
+      "id": "floracao",
+      "nome": "Flowering (R1–R2)"
+     },
+     {
+      "dias_ate_colheita": 48,
+      "id": "formacao_vagens",
+      "nome": "Pod formation (R3–R4)"
+     },
+     {
+      "dias_ate_colheita": 32,
+      "id": "enchimento_graos",
+      "nome": "Grain filling (R5–R6)"
+     },
+     {
+      "dias_ate_colheita": 10,
+      "id": "maturacao",
+      "nome": "Maturity (R7–R8)"
+     },
+     {
+      "dias_ate_colheita": 0,
+      "id": "colhida",
+      "nome": "Already harvested"
+     }
+    ],
+    "id": "soja",
+    "nome": "Soybean",
+    "tipo": "grain"
+   },
+   {
+    "colheita_catalogo": "05/02",
+    "descricao_curta": "1st-season corn in place of soybean: breaks the disease and nematode cycle and leaves more straw.",
+    "estagios": [
+     {
+      "dias_ate_colheita": 110,
+      "id": "vegetativo",
+      "nome": "Vegetative (before tasseling)"
+     },
+     {
+      "dias_ate_colheita": 80,
+      "id": "pendoamento",
+      "nome": "Pendoamento and espigamento (VT–R1)"
+     },
+     {
+      "dias_ate_colheita": 60,
+      "id": "grao_leitoso",
+      "nome": "Milk grain (R2–R3)"
+     },
+     {
+      "dias_ate_colheita": 40,
+      "id": "grao_farinaceo",
+      "nome": "Dough to dent grain (R4–R5)"
+     },
+     {
+      "dias_ate_colheita": 15,
+      "id": "maturacao",
+      "nome": "Physiological maturity (R6)"
+     },
+     {
+      "dias_ate_colheita": 0,
+      "id": "colhida",
+      "nome": "Already harvested"
+     }
+    ],
+    "id": "milho_verao",
+    "nome": "Summer corn",
+    "tipo": "grain"
+   }
+  ],
+  "dias_preparo_2a": 0,
+  "estagios_fonte": "estimate (Fehr & Caviness / Ritchie scale), validate with Embrapa",
+  "pesos_padrao": {
+   "agua": 3,
+   "pragas": 3,
+   "renda": 5,
+   "risco": 3,
+   "solo": 3
+  },
+  "regiao": {
+   "bbox": [
+    -54.6202,
+    -26.7171,
+    -48.0235,
+    -22.5163
+   ],
+   "n_municipios": 399,
+   "nome": "Paraná (IBGE 41)"
+  },
+  "renda_referencia": {
+   "custos": {
+    "aveia": {
+     "coe": 375.0,
+     "cot": 375.0,
+     "ct": 375.0
+    },
+    "aveia_nabo": {
+     "coe": 400.0,
+     "cot": 400.0,
+     "ct": 400.0
+    },
+    "braquiaria_consorcio": {
+     "coe": 200.0,
+     "cot": 200.0,
+     "ct": 200.0
+    },
+    "feijao_2safra": {
+     "coe": 4452.6,
+     "cot": 6545.64,
+     "ct": 8768.11
+    },
+    "milheto_crotalaria": {
+     "coe": 450.0,
+     "cot": 450.0,
+     "ct": 450.0
+    },
+    "milho_1safra": {
+     "coe": 9656.06,
+     "cot": 11787.99,
+     "ct": 13288.91
+    },
+    "milho_2safra": {
+     "coe": 4678.1,
+     "cot": 6218.1,
+     "ct": 7676.89
+    },
+    "nabo_forrageiro": {
+     "coe": 275.0,
+     "cot": 275.0,
+     "ct": 275.0
+    },
+    "pousio": {
+     "coe": 200.0,
+     "cot": 200.0,
+     "ct": 200.0
+    },
+    "soja": {
+     "coe": 4823.57,
+     "cot": 6366.75,
+     "ct": 7898.06
+    },
+    "sorgo": {
+     "coe": 2807.0,
+     "cot": 3806.76,
+     "ct": 4788.11
+    },
+    "trigo": {
+     "coe": 4333.52,
+     "cot": 5139.01,
+     "ct": 7489.11
+    }
+   },
+   "fontes": [
+    {
+     "estimativa": false,
+     "fonte": "SEAB/DERAL-PR, monthly mean nominal prices received by farmers in Paraná (state mean; the Toledo/Cascavel regional price only exists in the weekly series for the current week)",
+     "item": "price soybean",
+     "periodo": "Nov/25 to Oct/26 (12-month mean)",
+     "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "SEAB/DERAL-PR, monthly mean nominal prices received by farmers in Paraná (state mean; the Toledo/Cascavel regional price only exists in the weekly series for the current week)",
+     "item": "price corn",
+     "periodo": "Nov/25 to Oct/26 (12-month mean)",
+     "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "SEAB/DERAL-PR, monthly mean nominal prices received by farmers in Paraná (state mean; the Toledo/Cascavel regional price only exists in the weekly series for the current week)",
+     "item": "price wheat",
+     "periodo": "Nov/25 to Oct/26 (12-month mean)",
+     "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "SEAB/DERAL-PR, monthly mean nominal prices received by farmers in Paraná (state mean; the Toledo/Cascavel regional price only exists in the weekly series for the current week). Beans = black type: about two thirds of the PR 2nd-season area (Deral estimate reported in 2026, date not confirmed); colored beans fetch a much higher price (e.g. carioca/colored R$ 360 against black R$ 320 in Apucarana in the week of 13/11/2026), so the result applies to black beans",
+     "item": "price feijao",
+     "periodo": "Nov/25 to Oct/26 (12-month mean)",
+     "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+    },
+    {
+     "estimativa": true,
+     "fonte": "estimate — validate: SEAB/DERAL does not publish a sorghum price; uses 75% of the corn price (PR mean, same period), ratio of minimum prices, not market prices: ratio between the CONAB/MAPA minimum prices of the 2026/27 season for the Southeast and Paraná (sorghum R$ 40.19 / corn R$ 53.58)",
+     "item": "price sorghum",
+     "periodo": "Nov/25 to Oct/26 (12-month mean)",
+     "url": "https://www.agricultura.pr.gov.br/system/files/publico/Precos/pmrp.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "CONAB, GMO soybean, no-till, high technology, commercial farming, Londrina-PR, 1st season 2026/27 (estimated, Mar/2026). coe = 'variable cost' (operating inputs + other expenses + financial, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + factor income",
+     "item": "cost soybean",
+     "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/serie-historica-custos-soja-1997-a-2026.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "CONAB, 2nd-season GMO corn, no-till, high technology, commercial farming, Londrina-PR, 2026 (estimated, Mar/2026). coe = 'variable cost' (operating inputs + other expenses + financial, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + factor income",
+     "item": "cost milho_2safra",
+     "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_2a_safra_serie_historica_2005-2026.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "CONAB, wheat, no-till, high technology, commercial farming, Ponta Grossa-PR, 2025 winter season (ex-post, Nov/2025). coe = 'variable cost' (operating inputs + other expenses + financial, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + factor income",
+     "item": "cost wheat",
+     "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/seriehistoricacustostrigo1998a2025.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "CONAB, 1st-season GMO corn, no-till, high technology, commercial farming, Ponta Grossa-PR, 2026/27 (estimated, Mar/2026; reference yield 12 t/ha, above the Western Paraná mean). coe = 'variable cost' (operating inputs + other expenses + financial, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + factor income",
+     "item": "cost milho_1safra",
+     "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/milho/milho_1a_safra_serie_historica_1997-2026.xls"
+    },
+    {
+     "estimativa": false,
+     "fonte": "CONAB, 2nd-season beans, no-till, high technology, family farming, Francisco Beltrão-PR, 2026 (estimated, Mar/2026; the Cascavel-PR sheet only goes up to 2021). coe = 'variable cost' (operating inputs + other expenses + financial, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + factor income",
+     "item": "cost feijao_2safra",
+     "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/feijao/feijao_2_e_3_safras_serie_historica_2013-2026.xls"
+    },
+    {
+     "estimativa": true,
+     "fonte": "estimate — validate: there is no CONAB sorghum sheet for PR; uses CONAB, 2nd-season GMO grain sorghum, no-till, high technology, commercial farming, Rio Verde-GO, 2026 (estimated, Mar/2026). coe = 'variable cost' (operating inputs + other expenses + financial, cash outlay); cot = 'operating cost' (coe + depreciation and other fixed costs); ct = cot + factor income",
+     "item": "cost sorghum",
+     "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao/arquivos-custo-de-producao/agricolas/seriehistoricacustossorgo2013a2026.xls"
+    },
+    {
+     "estimativa": true,
+     "fonte": "reference estimate, validate (no CONAB series; order of magnitude agreed with the team): oat as cover (seed + operation): range R$ 300–450/ha",
+     "item": "cost oat",
+     "url": null
+    },
+    {
+     "estimativa": true,
+     "fonte": "reference estimate, validate (no CONAB series; order of magnitude agreed with the team): pearl millet/sunn hemp (seed + operation): millet ~R$ 300–450, sunn hemp ~R$ 400–600/ha",
+     "item": "cost milheto_crotalaria",
+     "url": null
+    },
+    {
+     "estimativa": true,
+     "fonte": "reference estimate, validate (no CONAB series; order of magnitude agreed with the team): brachiaria intercropped with corn, on top of the corn cost: range R$ 150–250/ha",
+     "item": "cost braquiaria_consorcio",
+     "url": null
+    },
+    {
+     "estimativa": true,
+     "fonte": "reference estimate, validate (no CONAB series; order of magnitude agreed with the team): fallow: desiccation/weed management, range R$ 150–250/ha",
+     "item": "cost fallow",
+     "url": null
+    },
+    {
+     "estimativa": true,
+     "fonte": "estimate — validate: forage radish as cover (10–15 kg/ha of seed + sowing): range R$ 200–350/ha",
+     "item": "cost nabo_forrageiro",
+     "url": null
+    },
+    {
+     "estimativa": true,
+     "fonte": "estimate — validate: oat + forage radish mix as cover (seed of both + sowing): range R$ 350–450/ha",
+     "item": "cost aveia_nabo",
+     "url": null
+    }
+   ],
+   "linha_custo_padrao": "coe",
+   "precos": {
+    "feijao": 174.3,
+    "milho": 53.89,
+    "soja": 120.14,
+    "sorgo": 40.42,
+    "trigo": 68.44
+   }
+  },
+  "rotacoes": [
+   {
+    "descricao_curta": "Corn in the second season, after soybean; the most common rotation in Western Paraná.",
+    "id": "soja__milho_safrinha",
+    "id_legado": "milho_safrinha",
+    "nome": "Soybean → second-season corn"
+   },
+   {
+    "descricao_curta": "Second-season corn intercropped with brachiaria: grain plus straw for no-till.",
+    "id": "soja__milho_braquiaria",
+    "id_legado": "milho_braquiaria",
+    "nome": "Soybean → second-season corn + brachiaria"
+   },
+   {
+    "descricao_curta": "Winter wheat after soybean; sensitive to frost at flowering.",
+    "id": "soja__trigo",
+    "id_legado": "trigo",
+    "nome": "Soybean → wheat"
+   },
+   {
+    "descricao_curta": "Oat for cover/straw (and occasional grain) in winter.",
+    "id": "soja__aveia",
+    "id_legado": "aveia",
+    "nome": "Soybean → oat (cover/straw)"
+   },
+   {
+    "descricao_curta": "Pearl millet and sunn hemp cover: straw and nitrogen fixation, no grain sale.",
+    "id": "soja__milheto_crotalaria",
+    "id_legado": "milheto_crotalaria",
+    "nome": "Soybean → pearl millet/sunn hemp (cover)"
+   },
+   {
+    "descricao_curta": "No crop in the second window; exposed soil and no extra income.",
+    "id": "soja__pousio",
+    "id_legado": "pousio",
+    "nome": "Soybean → fallow"
+   },
+   {
+    "descricao_curta": "Soybean on soybean in the same crop year; prohibited by regulation (always eliminated).",
+    "id": "soja__soja_safrinha",
+    "id_legado": "soja_safrinha",
+    "nome": "Soybean → second-season soybean"
+   },
+   {
+    "descricao_curta": "Grain sorghum in the second season: drought tolerant, no corn leafhopper; uses the grain machinery and sales channel.",
+    "id": "soja__sorgo",
+    "nome": "Soybean → sorghum"
+   },
+   {
+    "descricao_curta": "2nd-season beans: short cycle and good income in a good year, but sensitive to frost and water deficit and a host of white mold.",
+    "id": "soja__feijao_safrinha",
+    "nome": "Soybean → second-season beans"
+   },
+   {
+    "descricao_curta": "Forage radish cover: nutrient cycling and weed suppression, fast-decomposing straw; no grain sale.",
+    "id": "soja__nabo_forrageiro",
+    "nome": "Soybean → forage radish (cover)"
+   },
+   {
+    "descricao_curta": "Oat + forage radish cover mix: long-lasting straw and nutrient cycling, no grain sale.",
+    "id": "soja__aveia_nabo",
+    "nome": "Soybean → oat + forage radish (cover)"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Corn in the second season, after soybean; the most common rotation in Western Paraná.",
+    "id": "milho_verao__milho_safrinha",
+    "nome": "Summer corn → second-season corn"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Second-season corn intercropped with brachiaria: grain plus straw for no-till.",
+    "id": "milho_verao__milho_braquiaria",
+    "nome": "Summer corn → second-season corn + brachiaria"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Winter wheat after soybean; sensitive to frost at flowering.",
+    "id": "milho_verao__trigo",
+    "nome": "Summer corn → wheat"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Oat for cover/straw (and occasional grain) in winter.",
+    "id": "milho_verao__aveia",
+    "nome": "Summer corn → oat (cover/straw)"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Pearl millet and sunn hemp cover: straw and nitrogen fixation, no grain sale.",
+    "id": "milho_verao__milheto_crotalaria",
+    "nome": "Summer corn → pearl millet/sunn hemp (cover)"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: No crop in the second window; exposed soil and no extra income.",
+    "id": "milho_verao__pousio",
+    "nome": "Summer corn → fallow"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Soybean on soybean in the same crop year; prohibited by regulation (always eliminated).",
+    "id": "milho_verao__soja_safrinha",
+    "nome": "Summer corn → second-season soybean"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Grain sorghum in the second season: drought tolerant, no corn leafhopper; uses the grain machinery and sales channel.",
+    "id": "milho_verao__sorgo",
+    "nome": "Summer corn → sorghum"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: 2nd-season beans: short cycle and good income in a good year, but sensitive to frost and water deficit and a host of white mold.",
+    "id": "milho_verao__feijao_safrinha",
+    "nome": "Summer corn → second-season beans"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Forage radish cover: nutrient cycling and weed suppression, fast-decomposing straw; no grain sale.",
+    "id": "milho_verao__nabo_forrageiro",
+    "nome": "Summer corn → forage radish (cover)"
+   },
+   {
+    "descricao_curta": "Summer corn in summer, then: Oat + forage radish cover mix: long-lasting straw and nutrient cycling, no grain sale.",
+    "id": "milho_verao__aveia_nabo",
+    "nome": "Summer corn → oat + forage radish (cover)"
+   }
+  ],
+  "semeadura_padrao": "01/02",
+  "semeaduras": [
+   "15/01",
+   "01/02",
+   "15/02",
+   "01/03",
+   "15/03"
+  ],
+  "talhoes_demo": [
+   {
+    "area_ha": 103.87,
+    "id": "72638",
+    "lat": -24.81473,
+    "lon": -53.55361
+   },
+   {
+    "area_ha": 177.01,
+    "id": "40654",
+    "lat": -24.74886,
+    "lon": -53.43628
+   },
+   {
+    "area_ha": 152.21,
+    "id": "76250",
+    "lat": -24.82724,
+    "lon": -53.34544
+   },
+   {
+    "area_ha": 150.75,
+    "id": "72240",
+    "lat": -24.77353,
+    "lon": -53.40623
+   },
+   {
+    "area_ha": 18.19,
+    "id": "116542",
+    "lat": -25.03338,
+    "lon": -53.29224
+   },
+   {
+    "area_ha": 10.53,
+    "id": "157700",
+    "lat": -25.28308,
+    "lon": -53.354
+   },
+   {
+    "area_ha": 8.88,
+    "id": "142056",
+    "lat": -25.30558,
+    "lon": -53.64734
+   },
+   {
+    "area_ha": 15.13,
+    "id": "36552",
+    "lat": -24.68781,
+    "lon": -53.72114
+   },
+   {
+    "area_ha": 14.54,
+    "id": "140590",
+    "lat": -25.24939,
+    "lon": -53.57575
+   },
+   {
+    "area_ha": 5.55,
+    "id": "143175",
+    "lat": -25.15123,
+    "lon": -53.4454
+   },
+   {
+    "area_ha": 49.6,
+    "id": "116671",
+    "lat": -25.03844,
+    "lon": -53.28868
+   },
+   {
+    "area_ha": 34.09,
+    "id": "120426",
+    "lat": -24.96122,
+    "lon": -53.03864
+   },
+   {
+    "area_ha": 28.89,
+    "id": "120195",
+    "lat": -24.95698,
+    "lon": -53.04889
+   },
+   {
+    "area_ha": 28.75,
+    "id": "43520",
+    "lat": -24.65968,
+    "lon": -53.27612
+   },
+   {
+    "area_ha": 25.25,
+    "id": "43411",
+    "lat": -24.65603,
+    "lon": -53.28393
+   },
+   {
+    "area_ha": 71.33,
+    "id": "108724",
+    "lat": -24.97345,
+    "lon": -53.53584
+   },
+   {
+    "area_ha": 70.47,
+    "id": "1127",
+    "lat": -24.4339,
+    "lon": -53.82065
+   }
+  ]
+ },
+ "status": 200
+}

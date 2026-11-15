@@ -8,7 +8,7 @@ Developed for the NASA Space Apps Challenge 2026 challenge
 ![Python](https://img.shields.io/badge/python-3.13-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)
 ![React](https://img.shields.io/badge/frontend-React%2019%20%2B%20Vite-61DAFB?logo=react&logoColor=black)
-![Region](https://img.shields.io/badge/region-Western%20Paran%C3%A1-2E7D32)
+![Region](https://img.shields.io/badge/region-Paran%C3%A1%20(399%20municipalities)-2E7D32)
 
 > [!IMPORTANT]
 > Field Shift does not replace the advice of an agronomist. Income and risk figures are estimates. They
@@ -33,7 +33,7 @@ Developed for the NASA Space Apps Challenge 2026 challenge
 
 ## Overview
 
-Field Shift ranks crop rotations for a field in Western Paraná. A rotation is a pair: a summer crop
+Field Shift ranks crop rotations for a field anywhere in Paraná (399 municipalities; the pilot is Western Paraná, and the income and risk backtests were repeated for all of Paraná: `motor_field_shift/docs/validation.md` §7). A rotation is a pair: a summer crop
 (soybean or summer corn) followed by a second-window crop (the *safrinha* / off-season).
 
 **Inputs**
@@ -55,9 +55,11 @@ Field Shift ranks crop rotations for a field in Western Paraná. A rotation is a
 
 | Rank | Rotation | Score | Margin (BRL/ha) | Income | Soil | Water | Pests | Risk |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | Soybean → corn + brachiaria | **0.814** | 2,116 | 0.98 | 0.71 | 0.84 | 0.65 | 0.78 |
-| 2 | Soybean → off-season corn *(current)* | 0.757 | 2,076 | 0.96 | 0.56 | 0.86 | 0.50 | 0.78 |
-| 3 | Soybean → millet / crotalaria (cover) | 0.756 | 994 | 0.46 | 0.82 | 1.00 | 0.70 | 1.00 |
+| 1 | Soybean → corn + brachiaria | **0.798** | 2,994 | 0.93 | 0.71 | 0.81 | 0.65 | 0.80 |
+| 2 | Soybean → millet / crotalaria (cover) | 0.756 | 1,103 | 0.46 | 0.82 | 1.00 | 0.70 | 1.00 |
+| 3 | Soybean → off-season corn *(current)* | 0.755 | 2,954 | 0.92 | 0.56 | 0.83 | 0.50 | 0.86 |
+
+Each option also carries its uncertainty (`incerteza`): for corn + brachiaria the income ranges from BRL 60 to 2,943/ha across the last 5 seasons, and the score from 0.68 to 0.818. Repeating each of those seasons, corn + brachiaria would be first in 4 of 5 (`estabilidade`).
 
 Full response:
 [`motor_field_shift/api/exemplos/recomendacao_talhao_72638.json`](motor_field_shift/api/exemplos/recomendacao_talhao_72638.json).
@@ -122,7 +124,7 @@ The frontend uses the demo data in `frontend/src/data.ts`. It does not call the 
 ```bash
 cd motor_field_shift
 uv run pytest                  # unit tests (fake service, no data needed)
-uv run pytest -m integracao    # integration tests (real service, requires the local data)
+uv run pytest -m integration    # integration tests (real service, requires the local data)
 
 cd ../frontend
 npm run build                  # type-check + production build
@@ -142,7 +144,7 @@ flowchart LR
 
     subgraph API["motor_field_shift (FastAPI, stateless)"]
         R["/v1 routes<br/>api/field_shift_api"]
-        S["Service layer<br/>motor/servico.py"]
+        S["Service layer<br/>core/service.py"]
         E["Engine<br/>app/engine.py<br/>rules · criteria · score · cards"]
         M["Data modules<br/>clima · solo · regiao · agua · pam · renda · contexto"]
         R --> S --> E --> M
@@ -179,7 +181,7 @@ flowchart LR
 ```mermaid
 flowchart TD
     A["Area + current rotation<br/>+ farmer data"] --> B["Resolve area<br/>(demo field · polygon · point)"]
-    B -->|outside Western PR| X["422 fora_da_regiao"]
+    B -->|outside Paraná| X["422 fora_da_regiao"]
     B --> C["Diagnosis<br/>terrain · soil · history · climate · yields"]
     C --> D{"Hard rules<br/>calendar, law, farmer restrictions"}
     D -->|fails| EL["eliminadas[] + reason"]
@@ -230,6 +232,10 @@ Interactive documentation (Swagger, with pre-filled examples): **`http://localho
 | `GET` | `/v1/clima` | Climate block only, for a point |
 | `GET` `POST` | `/v1/contexto` | Current conditions (ENSO, SMAP soil moisture, MJO, pest outbreaks). Informational: does not change the score |
 
+Responses are in **Brazilian Portuguese by default** and in **English** with `?lang=en` or `Accept-Language: en`
+(`lang` wins over the header; the answer says which one in `Content-Language`). Only the texts change: keys, ids, enums and
+numbers are the same in both languages. See [`motor_field_shift/api/README.md`](motor_field_shift/api/README.md#response-language-lang).
+
 <details>
 <summary><b>▶ Example: minimal recommendation</b></summary>
 
@@ -266,7 +272,7 @@ curl -s -X POST localhost:8000/v1/recomendacao \
 
 | Status | Body | When |
 | --- | --- | --- |
-| 422 | `{"erro": "fora_da_regiao"}` | Area outside Western Paraná |
+| 422 | `{"erro": "fora_da_regiao"}` | Area outside Paraná |
 | 422 | validation error | Malformed request body |
 | 400 | `{"erro": "entrada_invalida"}` | Invalid adjustment, or restrictions eliminated every rotation |
 | 504 | `{"erro": "timeout_externo"}` | Raised on `ErroConsultaExterna`. Failures of the NASA POWER and SoilGrids clients are handled inside those clients and do not raise it |
@@ -313,11 +319,12 @@ Details: [`motor_field_shift/docs/datasets.md`](motor_field_shift/docs/datasets.
 ├── motor_field_shift/          backend: engine + FastAPI (Python, uv)
 │   ├── api/                    routes, Pydantic schemas, tests, real response examples
 │   ├── src/field_shift/
-│   │   ├── motor/              service layer: diagnosticar(), recomendar(), opcoes()
+│   │   ├── core/               service layer: diagnose(), recommend(), options()
 │   │   ├── app/                engine: hard rules, criteria, score, explanation cards
-│   │   ├── clima/ solo/ agua/  climate, soil, FAO-56 water balance
-│   │   ├── regiao/ pam/ renda/ region clipping, IBGE yields, income
-│   │   └── contexto/           ENSO, SMAP, MJO, pest alerts
+│   │   ├── climate/ soil/ water/  climate, soil, FAO-56 water balance
+│   │   ├── region/ pam/ income/   region clipping, IBGE yields, income
+│   │   ├── context/            ENSO, SMAP, MJO, pest alerts
+│   │   └── i18n/               English translation of the API responses (pt-BR is the default)
 │   ├── ingest/  scripts/       data download and pre-processing
 │   ├── data/                   local data (raw/ and processed/ are git-ignored)
 │   └── docs/                   engine logic, data architecture
@@ -341,7 +348,7 @@ gh pr create --base main
 
 > [!TIP]
 > - Changes to a contract in [`docs/contratos.md`](docs/contratos.md) update that file in the same PR.
-> - Unit tests use a fake service. Engine changes are validated with `uv run pytest -m integracao` and
+> - Unit tests use a fake service. Engine changes are validated with `uv run pytest -m integration` and
 >   the local data.
 > - Keys, credentials, `.env` and `.netrc` are not committed.
 
@@ -351,7 +358,7 @@ gh pr create --base main
 
 | Limitation | Effect |
 | --- | --- |
-| **Region:** Western Paraná only (50 municipalities, IBGE 4106) | Any other area returns 422 |
+| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows and market texts come from Western Paraná; outside it the cover crop still ranks first more often (71 % of municipalities, on soil and pests) although it lost to off-season corn on realized income; the card states the income given up (`docs/validation.md` §7) | An area outside Paraná returns 422; outside Western Paraná the response warns |
 | **Climate cells of ~50 km** (NASA POWER) | Local microclimate is not represented |
 | **Soil water capacity** from Saxton & Rawls (2006), calibrated on temperate soils | Tends to underestimate it in clay-rich tropical Latosols. A farmer soil analysis replaces it |
 | **Income** from municipal averages and reference prices | Farm margins differ; yields, prices and costs can be overridden in the request |

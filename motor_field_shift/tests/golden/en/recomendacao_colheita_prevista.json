@@ -1,0 +1,19 @@
+{
+ "body": {
+  "detail": [
+   {
+    "ctx": {
+     "pattern": "^\\d{2}/\\d{2}$"
+    },
+    "input": "2027-02-10",
+    "loc": [
+     "body",
+     "colheita_prevista"
+    ],
+    "msg": "String should match pattern '^\\d{2}/\\d{2}$'",
+    "type": "string_pattern_mismatch"
+   }
+  ]
+ },
+ "status": 422
+}
