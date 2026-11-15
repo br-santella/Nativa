@@ -1,8 +1,7 @@
 # Motor de rotação — Oeste do PR (protótipo)
 
-Protótipo autocontido do motor de recomendação de rotação de culturas, focado no Oeste do Paraná
-(50 municípios, IBGE 4106). Ainda **não** está integrado à estrutura `backend/` nem aos contratos de
-`docs/contratos.md`; fica nesta pasta para o time decidir o que aproveitar.
+Motor de recomendação de rotação de culturas, focado no Oeste do Paraná (50 municípios, IBGE 4106).
+É o **backend do MVP**: a API daqui é o contrato C3 em [`../docs/contratos.md`](../docs/contratos.md).
 
 - Lógica do motor: [`docs/motor.md`](docs/motor.md)
 - Arquitetura de dados: [`docs/arquitetura.md`](docs/arquitetura.md) · fontes: [`docs/datasets.md`](docs/datasets.md)
