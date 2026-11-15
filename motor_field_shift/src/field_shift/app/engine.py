@@ -81,7 +81,8 @@ def soil_ranges(ndvi: pd.Series, threshold: float = SOIL_THRESHOLD) -> list[tupl
         if b and start is None:
             start = ndvi.index[i]
         if not b and start is not None:
-            ranges.append((start, ndvi.index[i - 1])); start = None
+            ranges.append((start, ndvi.index[i - 1]))
+            start = None
     if start is not None:
         ranges.append((start, ndvi.index[-1]))
     return ranges
@@ -869,15 +870,21 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
     if not c["riscos"]:
         ev.append("Sem risco climático da 2ª safra considerado (espécie de cobertura/pousio).")
     ben = []
-    if c["cobertura"] >= 0.8: ben.append("Boa cobertura/palha: protege o solo e reduz erosão.")
-    if c["n_fix"] >= 0.7: ben.append("Fixação de nitrogênio relevante para a próxima soja.")
-    if c["pragas"] >= 0.6: ben.append("Ajuda a quebrar ciclo de pragas e doenças.")
-    if c["bonus_sc"] >= 2: ben.append(f"Palhada/N elevam a soja seguinte (~+{c['bonus_sc']:g} sc/ha, estimativa).")
+    if c["cobertura"] >= 0.8:
+        ben.append("Boa cobertura/palha: protege o solo e reduz erosão.")
+    if c["n_fix"] >= 0.7:
+        ben.append("Fixação de nitrogênio relevante para a próxima soja.")
+    if c["pragas"] >= 0.6:
+        ben.append("Ajuda a quebrar ciclo de pragas e doenças.")
+    if c["bonus_sc"] >= 2:
+        ben.append(f"Palhada/N elevam a soja seguinte (~+{c['bonus_sc']:g} sc/ha, estimativa).")
     if c["bonus_verao_sc"]:
         ben.append(f"{c['nome_verao']} no lugar da soja de verão quebra ciclo de doença e nematoide e deixa mais palhada "
                    f"(~+{c['bonus_verao_sc']:g} sc/ha na soja seguinte, estimativa a validar com agrônomo/Embrapa).")
-    if margin is not None and margin["total"] >= 2000: ben.append(f"Margem da rotação alta (~R$ {_r(margin['total'])}/ha/ano).")
-    if c["ciclo_agua"] is None or water_met(c, risks, line["candidata"])[0] >= 0.9: ben.append("Chuva atende praticamente toda a demanda hídrica.")
+    if margin is not None and margin["total"] >= 2000:
+        ben.append(f"Margem da rotação alta (~R$ {_r(margin['total'])}/ha/ano).")
+    if c["ciclo_agua"] is None or water_met(c, risks, line["candidata"])[0] >= 0.9:
+        ben.append("Chuva atende praticamente toda a demanda hídrica.")
     solo_p = risks.get("solo") or {}
     if solo_p.get("fonte") == "análise de solo do produtor":
         lacuna_cad = ("CAD vinda da análise do produtor (informada ou por Saxton & Rawls com a análise), "
@@ -917,7 +924,8 @@ def build_card(line: pd.Series, current: bool, risks: dict, ndvi_bare_soil_days:
         review.append(f"Déficit hídrico na fase crítica em {p_def:.0%} dos anos: avaliar data de semeadura/cultivar.")
     if "geada_trigo" in c["riscos"] and risks["geada_trigo"] >= 0.2:
         review.append(f"Geada no florescimento do trigo em {risks['geada_trigo']:.0%} dos anos.")
-    if c["dias_descobertos"] >= 100: review.append("Muitos dias de solo exposto: risco de erosão e plantas daninhas.")
+    if c["dias_descobertos"] >= 100:
+        review.append("Muitos dias de solo exposto: risco de erosão e plantas daninhas.")
     mach = (risks.get("restr") or {}).get("maquinas", {})
     warnings = list(dict.fromkeys(MACHINE_COST[m]["aviso"] for m in c["req_maquinas"] + c["req_maquinas_verao"] if mach.get(m) is False))
     if z_warning:

@@ -53,7 +53,8 @@ def download(bounds):
             data = src.read(1, window=win)
             prof = src.profile | dict(height=win.height, width=win.width,
                                       transform=src.window_transform(win), compress="deflate", tiled=False)
-            prof.pop("blockxsize", None); prof.pop("blockysize", None)
+            prof.pop("blockxsize", None)
+            prof.pop("blockysize", None)
         with rasterio.open(dst, "w", **prof) as o:
             o.write(data, 1)
         print("baixado", dst.name, data.shape)
@@ -83,10 +84,12 @@ def main():
     for y in YEARS:
         r = exact_extract(str(RAW / f"mapbiomas_c10_coverage_{y}.tif"), g4s, ["unique", "frac"],
                           include_cols=["_i"], output="pandas", progress=False)
-        m = np.zeros(len(g4), dtype="int16"); t = np.zeros(len(g4), dtype="float32")
+        m = np.zeros(len(g4), dtype="int16")
+        t = np.zeros(len(g4), dtype="float32")
         fr = []
         for i, u, f in zip(r["_i"], r["unique"], r["frac"]):
-            u = np.asarray(u); f = np.asarray(f, dtype=float)
+            u = np.asarray(u)
+            f = np.asarray(f, dtype=float)
             ok = u != 0  # 0 = nodata
             if not ok.any():
                 continue

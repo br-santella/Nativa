@@ -23,7 +23,8 @@ def main():
     sel["id"] = sel["id"].astype(str)
     print("candidatos na caixa:", len(sel), flush=True)
     sel[["id"]].assign(geometry=sel.geometry).pipe(gpd.GeoDataFrame, crs=4326).to_file(OUT / "candidatos_box.gpkg", driver="GPKG")
-    b = sel.total_bounds; pad = 0.003
+    b = sel.total_bounds
+    pad = 0.003
     bbox = [b[0]-pad, b[1]-pad, b[2]+pad, b[3]+pad]
     cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1", modifier=pc.sign_inplace)
     rows = []
@@ -41,7 +42,8 @@ def main():
                   resampling={"SCL": "nearest", "*": "bilinear"}, fail_on_error=False)
         days = pd.to_datetime(ds.time.values).strftime("%Y-%m-%d")
         o = xr.DataArray([max(off.get(d, [0])) for d in days], dims="time", coords={"time": ds.time})
-        red = (ds.B04.astype("float32") - o).clip(min=0); nir = (ds.B08.astype("float32") - o).clip(min=0)
+        red = (ds.B04.astype("float32") - o).clip(min=0)
+        nir = (ds.B08.astype("float32") - o).clip(min=0)
         ndvi = (nir - red) / (nir + red + 1e-6)
         ok = ds.SCL.isin([4, 5, 6]) & (ds.B04 > 0)
         ndvi = ndvi.where(ok)
@@ -49,7 +51,8 @@ def main():
         cnt = ok.groupby("time.month").sum("time").compute()  # valid observations per pixel (sum)
         print(y, "itens", len(items), "dias", len(days), f"{time.time()-t0:.0f}s", flush=True)
         # zonal stats per month
-        xs = ds.x.values; ys = ds.y.values
+        xs = ds.x.values
+        ys = ds.y.values
         tr = from_origin(xs.min()-RES/2, ys.max()+RES/2, RES, RES)
         g32 = sel.to_crs(32722)
         for m in mon.month.values:
@@ -62,7 +65,8 @@ def main():
                 dst.write(a, 1)
             r = exact_extract(str(fn), g32, ["mean", "median", "count", "coverage"] if False else ["mean", "count"],
                               include_cols=["id"], output="pandas", progress=False)
-            r["year"] = y; r["month"] = int(m)
+            r["year"] = y
+            r["month"] = int(m)
             r["n_obs_dias"] = int((pd.Series(days).str[5:7].astype(int) == m).sum())
             rows.append(r)
     (OUT / "_tmp_ndvi.tif").unlink(missing_ok=True)

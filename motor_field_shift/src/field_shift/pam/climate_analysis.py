@@ -56,7 +56,8 @@ def summarize(d: pd.DataFrame, label: str) -> list[dict]:
     for ev in ("geada", "veranico", "algum"):
         com, sow_date = d[d[ev]], d[~d[ev]]
         if len(com) == 0:
-            out.append(dict(escopo=label, evento=ev, n_com=0, n_sem=len(sow_date))); continue
+            out.append(dict(escopo=label, evento=ev, n_com=0, n_sem=len(sow_date)))
+            continue
         out.append(dict(escopo=label, evento=ev, n_com=len(com), n_sem=len(sow_date),
                         desvio_com_pct=com.desvio_pct.mean(), desvio_sem_pct=sow_date.desvio_pct.mean(),
                         queda_pct_pontos=sow_date.desvio_pct.mean() - com.desvio_pct.mean(),
@@ -81,7 +82,9 @@ def main():
         groups = [(n, x) for n, x in groups if len(x)]
         a.bar([f"{n}\n(n={len(x)})" for n, x in groups], [x.desvio_pct.mean() for n, x in groups],
               color=["#4c78a8", "#e45756", "#f58518", "#72b7b2"][:len(groups)])
-        a.axhline(0, color="k", lw=0.8); a.set_title(title); a.tick_params(axis="x", labelsize=8)
+        a.axhline(0, color="k", lw=0.8)
+        a.set_title(title)
+        a.tick_params(axis="x", labelsize=8)
     ax[0].set_ylabel("Desvio do rendimento do milho 2ª safra\nvs tendência do município (%)")
     fig.suptitle("PAM x clima: milho 2ª safra, 2003–2025 (geada ≤3 °C c/ semeadura 15/02; veranico ≥15 d mar–abr)", fontsize=9)
     fig.tight_layout()

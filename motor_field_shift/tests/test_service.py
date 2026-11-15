@@ -262,10 +262,17 @@ if __name__ == "__main__":
     t0 = time.perf_counter()
     test_field_72638()
     print("frio total", round(time.perf_counter() - t0, 2))
-    test_polygon_cascavel(); test_point_guaira(); test_errors(); test_options_and_current_eliminated()
+    test_polygon_cascavel()
+    test_point_guaira()
+    test_errors()
+    test_options_and_current_eliminated()
     from field_shift.core import warm_up
-    t0 = time.perf_counter(); warm_up(); print("aquecer (ja quente)", round(time.perf_counter() - t0, 2))
-    t0 = time.perf_counter(); recommend({"lat": -24.5, "lon": -53.9}); print("quente, ponto novo", round(time.perf_counter() - t0, 2))
+    t0 = time.perf_counter()
+    warm_up()
+    print("aquecer (ja quente)", round(time.perf_counter() - t0, 2))
+    t0 = time.perf_counter()
+    recommend({"lat": -24.5, "lon": -53.9})
+    print("quente, ponto novo", round(time.perf_counter() - t0, 2))
     print("TUDO OK")
 
 
