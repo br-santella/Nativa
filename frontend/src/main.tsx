@@ -155,8 +155,10 @@ function App() {
         ["rotation", "Estratégias de Rotação", A.imgIconeDeNavegacao4],
     ];
     const open = (m: Modal) => setModal(m);
-    function Logo() {
-        return (<button className="brand" onClick={() => go("landing")} aria-label={__text("NATIVA \u2014 in\u00EDcio")}>
+    function Logo({ toggleSidebar = false }: { toggleSidebar?: boolean } = {}) {
+        const mobileSidebar = toggleSidebar && window.matchMedia("(max-width: 700px)").matches;
+        const label = toggleSidebar ? (mobileSidebar ? "Fechar navegação" : sidebarCollapsed ? "Expandir menu" : "Recolher menu") : "NATIVA — início";
+        return (<button className="brand" onClick={() => toggleSidebar ? (mobileSidebar ? setMenu(false) : setSidebarPreference(!sidebarCollapsed)) : go("landing")} aria-label={__text(label)} title={toggleSidebar ? __text(label) : undefined} aria-expanded={toggleSidebar ? (mobileSidebar ? menu : !sidebarCollapsed) : undefined} aria-controls={toggleSidebar ? "dashboard-sidebar" : undefined}>
         <img src={A.imgLogoNativaEnviada} alt={__text("")}/>
         <span className="brand-wordmark"><strong>{__text("NATIVA")}</strong><small className="brand-slogan">Every harvest begins with a better decision</small></span>
       </button>);
@@ -1096,10 +1098,7 @@ function App() {
           {__text(menu && (<button className="nav-shade" aria-label={__text("Fechar navega\u00E7\u00E3o")} onClick={() => setMenu(false)}/>))}
           <aside id="dashboard-sidebar" className={"sidebar " + (menu ? "shown" : "")}>
             <div className="sidebar-header">
-              <Logo />
-              <button className="sidebar-toggle" aria-expanded={!sidebarCollapsed} aria-controls="dashboard-nav" aria-label={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} title={__text(sidebarCollapsed ? "Expandir menu" : "Recolher menu")} onClick={() => setSidebarPreference(!sidebarCollapsed)}>
-                <span aria-hidden="true">{sidebarCollapsed ? "»" : "«"}</span>
-              </button>
+              <Logo toggleSidebar />
               <button className="sidebar-close" aria-label={__text("Fechar navegação")} onClick={() => setMenu(false)}><span aria-hidden="true">×</span></button>
             </div>
             <small className="nav-section">{__text("PRINCIPAL")}</small>
