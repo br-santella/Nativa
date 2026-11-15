@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { ApiError, health, pesosDosSliders, recomendacao } from "./api";
 import type { Area, Health, Recomendacao } from "./api";
+import { rotacaoDoHistorico } from "./rotacaoAtual";
 
 // Talhão demo do motor (Toledo, PR): usado só quando a fazenda não tem lat/lon válidas.
 const TALHAO_DEMO = "72638";
-// Rotação atual fixa enquanto o histórico de cultivos não alimenta a API.
-const ROTACAO_ATUAL = "soja__milho_safrinha";
 
 const brl = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
 const nota = (v: number | null | undefined) =>
@@ -19,12 +18,18 @@ function areaDaFazenda(latitude: string, longitude: string): { area: Area; rotul
   return { area: { talhao_id: TALHAO_DEMO }, rotulo: `Talhão demo ${TALHAO_DEMO} (fazenda sem coordenadas válidas)` };
 }
 
-/** Ranking real do motor para a localização da fazenda, com os pesos aplicados nos sliders da tela de Rotação. */
-export default function MotorPanel({ weights, latitude, longitude }: { weights: number[]; latitude: string; longitude: string }) {
+/** Ranking real do motor para a localização e a rotação atual da fazenda, com os pesos dos sliders da tela de Rotação. */
+export default function MotorPanel({ weights, latitude, longitude, crops }: {
+  weights: number[];
+  latitude: string;
+  longitude: string;
+  crops: { crop: string; plant: string }[];
+}) {
   const [api, setApi] = useState<Health | null>(null);
   const [res, setRes] = useState<Recomendacao | null>(null);
   const [erro, setErro] = useState<ApiError | null>(null);
   const { area, rotulo } = areaDaFazenda(latitude, longitude);
+  const rotacao = rotacaoDoHistorico(crops);
   const [carregando, setCarregando] = useState(false);
 
   useEffect(() => {
@@ -35,7 +40,7 @@ export default function MotorPanel({ weights, latitude, longitude }: { weights: 
       .then((h) => {
         if (!ativo) return null;
         setApi(h);
-        return h.status === "ok" ? recomendacao(area, ROTACAO_ATUAL, pesosDosSliders(weights)) : null;
+        return h.status === "ok" ? recomendacao(area, rotacao.id, pesosDosSliders(weights)) : null;
       })
       .then((r) => ativo && setRes(r))
       .catch((e: unknown) => {
@@ -47,7 +52,7 @@ export default function MotorPanel({ weights, latitude, longitude }: { weights: 
     return () => {
       ativo = false;
     };
-  }, [weights, latitude, longitude]);
+  }, [weights, latitude, longitude, rotacao.id]);
 
   return (
     <section className="panel">
@@ -55,7 +60,9 @@ export default function MotorPanel({ weights, latitude, longitude }: { weights: 
         <div>
           <h2>03 Recomendação do motor (dados reais)</h2>
           <p>
-            {rotulo} • rotação atual: soja → milho safrinha • pesos dos controles acima
+            {rotulo} • rotação atual: {rotacao.rotulo}{" "}
+            {rotacao.doHistorico ? "(do histórico de cultivo)" : "(padrão: histórico sem uma safra completa)"} • pesos
+            dos controles acima
           </p>
         </div>
         <small>
