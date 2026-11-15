@@ -1,6 +1,6 @@
 """Margem por cultura e por rotação. Lógica pura (sem Streamlit).
 
-margem_cultura = rendimento_municipal (sc/ha, PAM, média dos últimos 5 anos) × preço − custo.
+margem_cultura = rendimento_municipal (sc/ha, PAM, média dos últimos 10 anos) × preço − custo.
 Cobertura/pousio: − custo. margem_rotacao = cultura de verão (soja ou milho verão) + 2ª cultura + bônus na soja seguinte
 (bonus_sc × preço da soja; inclui o bônus do milho verão no lugar da soja).
 margem_incremental = margem_rotacao − margem da soja de verão do município = (margem do verão − margem da soja) + margem da 2ª
@@ -14,14 +14,16 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
+import geopandas as gpd
 import numpy as np
 import pandas as pd
 
 from field_shift.pam import produtividade as pam_produtividade
-from field_shift.pam.produtividade import PAM, serie
+from field_shift.pam.produtividade import PAM, YIELD_WINDOW_YEARS, serie
 
 ROOT = Path(__file__).resolve().parents[3]
 REF = ROOT / "data/ref/precos_custos.json"
+OESTE_MUN = ROOT / "data/raw/regiao/municipios_oeste_pr.geojson"
 # Piso (R$/ha) da escala S do critério de renda: evita que uma soja de margem muito baixa/negativa (preço baixo, custo
 # alto) estique a escala e faça qualquer diferença pequena saturar a nota em 0 ou 1.
 RENDA_ESCALA_MIN = 1000.0
@@ -44,13 +46,16 @@ def carregar_referencia() -> dict:
 
 @lru_cache(maxsize=1)
 def _cods_oeste() -> tuple[str, ...]:
+    """IBGE codes of the Oeste mesoregion municipalities (the PAM file now covers all of Paraná, but the regional
+    average used as fallback stays the Oeste one: it is the region the price/cost references were built for)."""
+    cods = {str(c) for c in gpd.read_file(OESTE_MUN, columns=["cod_ibge"])["cod_ibge"]}
     d = pd.read_parquet(PAM, columns=["cod_ibge"])
-    return tuple(sorted(d["cod_ibge"].astype(str).unique()))
+    return tuple(sorted(cods & set(d["cod_ibge"].astype(str).unique())))
 
 
 def _p20_sc(cod, cult: str) -> float | None:
     s = serie(cod, cult)
-    return float(np.percentile(s.iloc[-10:].values, 20) / 60) if len(s) >= 4 else None
+    return float(np.percentile(s.iloc[-YIELD_WINDOW_YEARS:].values, 20) / 60) if len(s) >= 4 else None
 
 
 def _serve(q: dict, c: str) -> bool:

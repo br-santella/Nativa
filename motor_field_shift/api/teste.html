@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Teste API Field Shift</title>
+<style>
+body{font-family:sans-serif;max-width:900px;margin:1em auto;padding:0 1em}
+input,select,textarea{width:100%;box-sizing:border-box;margin:.2em 0 .6em;font-family:monospace}
+textarea{height:14em} pre{background:#f4f4f4;padding:.6em;overflow:auto;max-height:60vh}
+</style></head><body>
+<h3>Teste da API Field Shift</h3>
+<label>URL base</label><input id="base" value="http://localhost:8000">
+<label>Endpoint</label><select id="sel"></select>
+<label>Caminho (editavel, inclui query string)</label><input id="path">
+<div id="bodyBox"><label>Corpo JSON</label><textarea id="body"></textarea></div>
+<button id="send">Enviar</button>
+<p id="info"></p><pre id="out"></pre>
+<script>
+const DEMO = {talhao_id: "72638"};
+const RA = {rotacao_atual: "soja__milho_safrinha", estagio_verao: "enchimento_graos", data_referencia: "2026-12-01"};
+const POLY = {type: "Polygon", coordinates: [[[-53.3045,-24.9045],[-53.3045,-24.8955],[-53.2955,-24.8955],[-53.2955,-24.9045],[-53.3045,-24.9045]]]};
+// Each entry: label, method, path, optional example body
+const ENDPOINTS = [
+  {m: "GET", p: "/health"},
+  {m: "GET", p: "/v1/opcoes"},
+  {m: "GET", p: "/v1/talhoes/demo"},
+  {m: "GET", p: "/v1/clima?lat=-24.95&lon=-53.45&semeadura_safrinha=01/02"},
+  {m: "GET", p: "/v1/contexto?talhao_id=72638&semeadura_safrinha=01/02"},
+  {m: "POST", p: "/v1/contexto", b: {area: {lat: -24.95, lon: -53.45}}},
+  {m: "POST", p: "/v1/diagnostico", b: {area: DEMO}},
+  {m: "POST", p: "/v1/recomendacao", b: {area: DEMO, ...RA}, n: "talhao demo"},
+  {m: "POST", p: "/v1/recomendacao", b: {area: {geometry: POLY}, ...RA, semeadura_safrinha: "15/02"}, n: "poligono"},
+  {m: "POST", p: "/v1/recomendacao", b: {area: {lat: -24.2, lon: -54.2}, ...RA}, n: "lat/lon"},
+  {m: "POST", p: "/v1/recomendacao", b: {area: DEMO, ...RA, pesos: {renda: 9, solo: 2, agua: 3, pragas: 4, risco: 6}, n_alternativas: 4}, n: "pesos"},
+  {m: "POST", p: "/v1/recomendacao", b: {area: DEMO, ...RA, problemas_area: ["mofo_branco"], analise_solo: {p_mg_dm3: 3, v_pct: 40}}, n: "estado da area"},
+  {m: "POST", p: "/v1/recomendacao", b: {area: DEMO, ...RA, ajustes: {precos: {soja: 125, milho: 58, trigo: 82}, linha_custo: "cot"}}, n: "precos proprios"},
+];
+const $ = id => document.getElementById(id);
+ENDPOINTS.forEach((e, i) => {
+  const o = document.createElement("option");
+  o.value = i; o.textContent = e.m + " " + e.p.split("?")[0] + (e.n ? " (" + e.n + ")" : "");
+  $("sel").appendChild(o);
+});
+function choose() {
+  const e = ENDPOINTS[$("sel").value];
+  $("path").value = e.p;
+  $("bodyBox").style.display = e.m === "GET" ? "none" : "";
+  $("body").value = e.b ? JSON.stringify(e.b, null, 2) : "";
+}
+$("sel").onchange = choose; choose();
+$("send").onclick = async () => {
+  const e = ENDPOINTS[$("sel").value];
+  const opts = {method: e.m};
+  if (e.m !== "GET") { opts.headers = {"content-type": "application/json"}; opts.body = $("body").value; }
+  $("info").textContent = "Enviando..."; $("out").textContent = "";
+  const t0 = performance.now();
+  try {
+    const r = await fetch($("base").value.replace(/\/$/, "") + $("path").value, opts);
+    const text = await r.text();
+    const ms = Math.round(performance.now() - t0);
+    $("info").textContent = "HTTP " + r.status + " " + r.statusText + " - " + ms + " ms";
+    try { $("out").textContent = JSON.stringify(JSON.parse(text), null, 2); }
+    catch (err) { $("out").textContent = "Resposta nao e JSON valido:\n" + text; }
+  } catch (err) {
+    $("info").textContent = "Erro de rede: " + err.message;
+  }
+};
+</script></body></html>

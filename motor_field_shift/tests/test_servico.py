@@ -12,7 +12,7 @@ def recomendar(area, **kw):
     return _recomendar(area, **kw)
 
 # Notas das 6 rotações antigas (soja no verão), pelo slug antigo (`id_legado`): não mudam com o catálogo maior (escala absoluta).
-ESPERADO = {"milho_braquiaria": 0.814, "milho_safrinha": 0.757, "milheto_crotalaria": 0.756, "aveia": 0.698, "pousio": 0.547, "trigo": 0.466}
+ESPERADO = {"milho_braquiaria": 0.764, "milho_safrinha": 0.709, "milheto_crotalaria": 0.759, "aveia": 0.703, "pousio": 0.555, "trigo": 0.471}
 
 
 def _antigas(r):
@@ -34,14 +34,14 @@ def test_talhao_72638():
     assert [e["id"] for e in r["eliminadas"]][0] == "soja__soja_safrinha" and len(r["eliminadas"]) == 7
     # margem incremental e escala S (soja de Cascavel); saída arredondada (R$ sem casas, critérios com 3)
     m = _rk(r)
-    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 993 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 1033
-    assert m["trigo"]["margem"]["escala_S_r_ha"] == 1083
-    assert r["ranking"][0]["criterios"]["renda"] == 0.977 and m["trigo"]["criterios"]["renda"] == 0.0
+    assert m["milho_safrinha"]["margem"]["incremental_r_ha"] == 888 and m["milho_braquiaria"]["margem"]["incremental_r_ha"] == 928
+    assert m["trigo"]["margem"]["escala_S_r_ha"] == 1503
+    assert r["ranking"][0]["criterios"]["renda"] == 0.809 and m["trigo"]["criterios"]["renda"] == 0.017
     # "por quê" comparado com a atual
     top = r["ranking"][0]["card"]["por_que"]
-    assert top.startswith("Em relação à atual (milho safrinha):") and "R$ 1.033/ha contra R$ 993/ha" in top
+    assert top.startswith("Em relação à atual (milho safrinha):") and "melhora a saúde do solo" in top  # renda gap (928 vs 888) is now below the top-3 contribution cut
     atual = r["atual"]["card"]["por_que"]
-    assert atual.startswith("É a rotação atual; ficou em 2º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
+    assert atual.startswith("É a rotação atual; ficou em 4º lugar entre 10 opções válidas. A melhor alternativa (milho safrinha + braquiária)")
     print("72638", round(dt, 2), "s", [(x["id"], round(x["nota"], 2)) for x in r["ranking"]])
 
 
@@ -65,7 +65,7 @@ def test_ponto_guaira():
 
 
 def test_erros():
-    for a, exc in [({"lat": -25.43, "lon": -49.27}, ForaDaRegiao), ({"talhao_id": "x"}, EntradaInvalida), ({}, EntradaInvalida),
+    for a, exc in [({"lat": -23.55, "lon": -46.63}, ForaDaRegiao), ({"talhao_id": "x"}, EntradaInvalida), ({}, EntradaInvalida),
                    ({"geometry": {"type": "Polygon", "coordinates": [[[-53, -24], [-52, -25], [-53, -25], [-52, -24], [-53, -24]]]}}, EntradaInvalida),
                    ({"geometry": {"type": "Polygon", "coordinates": [[[-54, -24], [-53, -24], [-53, -25], [-54, -25], [-54, -24]]]}}, EntradaInvalida)]:
         try:
@@ -85,7 +85,7 @@ def test_erros():
 
 def test_opcoes_e_atual_eliminada():
     o, _ = _t(opcoes)
-    assert o["regiao"]["n_municipios"] == 50 and o["talhoes_demo"][0]["id"] == "72638"
+    assert o["regiao"]["n_municipios"] == 399 and o["talhoes_demo"][0]["id"] == "72638"
     r, _ = _t(recomendar, {"talhao_id": "72638"}, rotacao_atual="soja_safrinha", incluir_diagnostico=False)  # slug antigo
     assert r["atual"]["eliminada"] and r["atual"]["id"] == "soja__soja_safrinha" and not any(x["atual"] for x in r["ranking"])
 

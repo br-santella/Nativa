@@ -105,8 +105,8 @@ def test_renda_do_milho_verao():
 def test_soja_no_verao_mantem_as_notas_antigas():
     todas = _rec(semeadura_safrinha="01/02")
     antigas = {x["id"]: x["nota"] for x in todas["ranking"] if "id_legado" in x}
-    assert antigas == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.814, "milho_safrinha": 0.757, "milheto_crotalaria": 0.756,
-                                                     "aveia": 0.698, "pousio": 0.547, "trigo": 0.466}.items()}
+    assert antigas == {f"soja__{k}": v for k, v in {"milho_braquiaria": 0.764, "milho_safrinha": 0.709, "milheto_crotalaria": 0.759,
+                                                     "aveia": 0.703, "pousio": 0.555, "trigo": 0.471}.items()}
 
 
 # --------------------------------------------------------------------------- culturas novas
@@ -210,3 +210,13 @@ def test_opcoes_culturas_e_combinacoes():
     fontes = {f["item"]: f for f in o["renda_referencia"]["fontes"]}
     assert fontes["preço sorgo"]["estimativa"] is True and fontes["custo sorgo"]["estimativa"] is True
     assert fontes["preço feijao"]["estimativa"] is False and "custo milho_1safra" in fontes
+
+
+def test_p20_never_above_mean():
+    """Regression: the bad-year (p20) yield must not exceed the mean yield (same 10-year window for both)."""
+    from field_shift.renda.renda import rendimentos
+    for cod in ("4127700", "4104808", "4105805", "4115200"):  # Toledo, Cascavel, Corbelia, Marechal C. Rondon
+        for cult, r in rendimentos(cod).items():
+            if cult.startswith("_") or r["p20_sc_ha"] is None or r["sc_ha"] is None:
+                continue
+            assert r["p20_sc_ha"] <= r["sc_ha"], (cod, cult, r)

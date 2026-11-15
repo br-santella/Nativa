@@ -87,7 +87,7 @@ def fase_por_ano_agricola(oni: list[dict]) -> dict[int, dict[str, Any]]:
 
 @lru_cache(maxsize=1)
 def _anuais() -> pd.DataFrame:
-    return pd.read_parquet(B.ROOT / "data/processed/clima/indicadores_anuais.parquet",
+    return pd.read_parquet(B.ROOT / "data/processed/clima_pr/indicadores_anuais.parquet",
                            columns=["ponto_id", "ano", "indicador", "valor"])
 
 
