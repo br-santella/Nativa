@@ -555,7 +555,7 @@ function App() {
             <p>{__text("Compare caminhos para a pr\u00F3xima safra, com as suas prioridades.")}</p>
           </div>
         </div>
-        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} onPesosChange={(pesos) => setSetupInputs((current) => (current ? { ...current, pesos } : current))} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onEditSetup={() => go("demo")} onSources={() => open("sources")} />
+        <RotationStrategies inputs={setupInputs} farm={farm} crops={crops} onPesosChange={(pesos) => setSetupInputs((current) => (current ? { ...current, pesos } : current))} onCountChange={(n) => setSetupInputs((current) => (current ? { ...current, n_alternativas: n } : current))} onSources={() => open("sources")} />
       </>);
     }
     function Settings() {

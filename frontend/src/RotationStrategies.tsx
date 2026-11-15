@@ -30,7 +30,6 @@ type Props = {
   onPesosChange?: (pesos: Pesos) => void;
   /** Persists the number of options shown. */
   onCountChange?: (count: number) => void;
-  onEditSetup: () => void;
   onSources: () => void;
 };
 
@@ -55,7 +54,7 @@ function fallbackInputs(farm: Farm, crops: Crop[]): SetupInputs {
 
 const score = (v: number | null | undefined) => (v == null ? null : Math.round(v * 100));
 
-export default function RotationStrategies({ inputs, farm, crops, onPesosChange, onCountChange, onEditSetup, onSources }: Props) {
+export default function RotationStrategies({ inputs, farm, crops, onPesosChange, onCountChange, onSources }: Props) {
   const { language } = useLanguage();
   const en = language === "en";
   const lang: Lang = en ? "en" : "pt-BR";
@@ -173,7 +172,6 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
       <li><span className="rs-fact-icon" aria-hidden="true">☀</span><div><small>{say("Colheita do verão", "Summer harvest")}</small><strong>{res?.colheita_estimada ? `~${res.colheita_estimada.data}` : "—"}</strong>{res?.colheita_estimada && <em>{origin(res.colheita_estimada.origem)}</em>}</div></li>
       <li><span className="rs-fact-icon" aria-hidden="true">✿</span><div><small>{say("Semeadura da 2ª safra", "Second-crop sowing")}</small><strong>{res?.semeadura_2a?.data ?? "—"}</strong>{res?.semeadura_2a && <em>{origin(res.semeadura_2a.origem)}</em>}</div></li>
      </ul>
-     <button type="button" className="rs-link-button" onClick={onEditSetup}>{say("Editar cadastro →", "Edit setup →")}</button>
     </section>
 
     {/* 01 · priorities */}
