@@ -3556,13 +3556,14 @@ footer > small:last-child {
 .about-intro p { max-width:650px; color:#afbfbd; font-size:17px; line-height:1.8; }
 .about-team { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
 .about-member { position:relative; padding:30px; border:1px solid #ffffff15; border-radius:20px; background:linear-gradient(140deg,#13313588,#06191c88); }
-.about-avatar { width:68px; height:68px; border-radius:50%; display:grid; place-items:center; color:#b7cc76; background:#8ba63818; font-size:28px; font-weight:600; }
-.about-member-number { position:absolute; right:28px; top:32px; color:#738b89; font-size:11px; letter-spacing:.15em; }
-.about-member h2 { margin:26px 0 10px; font-size:24px; }
+.about-photo { display:block; width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:14px; background:#0b2428; }
+.about-member-number { position:absolute; right:42px; top:42px; padding:4px 9px; border-radius:999px; background:#010e11cc; color:#c9d6d4; font-size:11px; letter-spacing:.15em; }
+.about-member h2 { margin:22px 0 6px; font-size:22px; }
+.about-course { display:block; margin-bottom:12px; color:#b7cc76; font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
 .about-member p { color:#afbfbd; font-size:14px; line-height:1.6; }
 .about-footer { margin-top:64px; padding-top:28px; border-top:1px solid #ffffff15; display:flex; justify-content:space-between; align-items:center; gap:24px; color:#afbfbd; }
 @media(max-width:800px) { .about-content{padding:60px 24px 32px}.about-team{grid-template-columns:repeat(2,minmax(0,1fr))}.about-footer{align-items:flex-start;flex-direction:column} }
-@media(max-width:480px) { .about-team{grid-template-columns:1fr}.about-intro{margin-bottom:36px}.about-member{padding:24px} }
+@media(max-width:480px) { .about-team{grid-template-columns:1fr}.about-intro{margin-bottom:36px}.about-member{padding:20px}.about-member-number{right:32px;top:32px} }
 
 .about-footer .back-link { position:static; inset:auto; flex-shrink:0; }
 
