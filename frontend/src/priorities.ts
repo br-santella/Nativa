@@ -44,6 +44,48 @@ export function matchPriority(pesos: Pesos): PriorityId | "custom" {
 
 export type CriterionId = keyof Pesos;
 
+/**
+ * Plain-language label for each criterion value (0–1 in the engine response), from the highest band down.
+ * The bands are a presentation choice of the app, not engine thresholds.
+ */
+const LEVELS: Record<CriterionId, { min: number; label: Text }[]> = {
+  renda: [
+    { min: 0.8, label: { pt: "Renda alta", en: "High income" } },
+    { min: 0.5, label: { pt: "Renda média", en: "Medium income" } },
+    { min: 0, label: { pt: "Renda baixa", en: "Low income" } },
+  ],
+  solo: [
+    { min: 0.75, label: { pt: "Mais cobertura e palha", en: "More cover and straw" } },
+    { min: 0.55, label: { pt: "Cobertura moderada", en: "Moderate cover" } },
+    { min: 0, label: { pt: "Cobertura limitada", en: "Limited cover" } },
+  ],
+  agua: [
+    { min: 0.9, label: { pt: "Chuva atende a demanda", en: "Rain meets the demand" } },
+    { min: 0.7, label: { pt: "Pouca falta d’água", en: "Little water shortage" } },
+    { min: 0, label: { pt: "Risco de falta d’água", en: "Risk of water shortage" } },
+  ],
+  pragas: [
+    { min: 0.7, label: { pt: "Quebra o ciclo de pragas", en: "Breaks the pest cycle" } },
+    { min: 0.55, label: { pt: "Quebra parcial do ciclo", en: "Partly breaks the cycle" } },
+    { min: 0, label: { pt: "Mantém o ciclo de pragas", en: "Keeps the pest cycle" } },
+  ],
+  risco: [
+    { min: 0.9, label: { pt: "Baixo risco de geada e veranico", en: "Low frost and dry-spell risk" } },
+    { min: 0.7, label: { pt: "Risco climático moderado", en: "Moderate climate risk" } },
+    { min: 0, label: { pt: "Exposta a geada e veranico", en: "Exposed to frost and dry spells" } },
+  ],
+};
+export const levelLabel = (id: CriterionId, value: number): Text => LEVELS[id].find(l => value >= l.min)!.label;
+
+/** Title of an option, after the criterion where it gains most over the current rotation (weighted). */
+export const THEMES: Record<CriterionId, Text> = {
+  renda: { pt: "Mais renda", en: "More income" },
+  solo: { pt: "Conservação do solo", en: "Soil conservation" },
+  agua: { pt: "Uso da água", en: "Water use" },
+  pragas: { pt: "Quebra de pragas", en: "Pest break" },
+  risco: { pt: "Adaptação climática", en: "Climate adaptation" },
+};
+
 /** The engine's five criteria (0–1 in the response), with a plain-language hint for each. */
 export const CRITERIA: { id: CriterionId; name: Text; hint: Text }[] = [
   { id: "renda", name: { pt: "Renda", en: "Income" }, hint: { pt: "Lucro estimado por hectare", en: "Estimated profit per hectare" } },

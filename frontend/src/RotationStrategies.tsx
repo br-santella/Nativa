@@ -8,8 +8,10 @@ import type { SetupInputs } from "./PropertyWizard";
 import type { Farm } from "./data";
 import { useLanguage } from "./i18n";
 import { rotacaoDoHistorico } from "./rotacaoAtual";
-import { CRITERIA, PRIORITIES, matchPriority } from "./priorities";
-import type { PriorityId } from "./priorities";
+import { CRITERIA, PRIORITIES, THEMES, levelLabel, matchPriority } from "./priorities";
+import { rotationCalendar } from "./rotationCalendar";
+import type { MonthUse } from "./rotationCalendar";
+import type { CriterionId, PriorityId } from "./priorities";
 import "./rotation-strategies.css";
 
 const DEMO_FIELD = "72638";
@@ -121,6 +123,23 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
   const options = block ? block.alternativas.slice(0, base.n_alternativas) : [];
   const evaluated = block?.ranking.length ?? 0;
 
+  const bestId = [...(current && !current.eliminada ? [current] : []), ...options].reduce<ItemRanking | null>((best, it) => (it.nota ?? -1) > (best?.nota ?? -1) ? it : best, null)?.id;
+
+  // Card titles: each option gets the criterion where it gains most over today (weighted by the priorities)
+  // that a better-ranked option has not taken yet.
+  const themes = new Map<string, CriterionId | null>();
+  {
+    const taken = new Set<CriterionId>();
+    const baseline = current && !current.eliminada ? current : null;
+    for (const o of options) {
+      const gains = CRITERIA.map(c => ({ id: c.id, gain: committed[c.id] * ((o.criterios?.[c.id] ?? 0) - (baseline?.criterios?.[c.id] ?? 0)) }))
+        .filter(g => baseline && g.gain > 0).sort((a, b) => b.gain - a.gain);
+      const pick = gains.find(g => !taken.has(g.id)) ?? gains[0];
+      if (pick) taken.add(pick.id);
+      themes.set(o.id, pick?.id ?? null);
+    }
+  }
+
   // 03 · comparison target (defaults to the best option).
   const [compareId, setCompareId] = useState<string | null>(null);
   const target = options.find(o => o.id === compareId) ?? options[0] ?? null;
@@ -134,7 +153,6 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
     premissa: say("estimativa de calendário", "calendar estimate"),
   })[o] ?? o;
 
-  const currentScore = score(current?.nota);
   const statusLine = error?.codigo === "sem_conexao" ? null : (loading || pending) && res ? say("Atualizando resultados…", "Updating results…") : null;
 
   return <div className="rs">
@@ -175,21 +193,14 @@ export default function RotationStrategies({ inputs, farm, crops, onPesosChange,
     </div></header>
     {statusLine && <p className="rs-status" role="status">{statusLine}</p>}
     {!res ? <Placeholder error={error} degraded={api != null && api.status !== "ok"} en={en}/> : <>
-     {current && <article className="rs-current">
-      <div className="rs-current-label">{say("Sua rotação hoje", "Your rotation today")}</div>
-      <h3>{current.rotacao}</h3>
-      {current.eliminada
-       ? <p className="rs-warning">{say("Eliminada pelas regras: ", "Ruled out: ")}{(current.motivos ?? []).join(" ")}</p>
-       : <div className="rs-current-facts">
-         <span><strong>{currentScore}</strong>/100</span>
-         {current.posicao != null && evaluated > 0 && <span>{say(`${current.posicao}ª entre ${evaluated} avaliadas`, `#${current.posicao} of ${evaluated} evaluated`)}</span>}
-         {current.margem && <span>{say("Margem estimada", "Estimated margin")} <strong>{money(current.margem.total_r_ha)}</strong>/ha</span>}
-        </div>}
-     </article>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
-     <ol className="rs-options">
-      {options.map((o, i) => <OptionCard key={o.id} item={o} rank={i + 1} current={current} en={en} money={money} signedMoney={signedMoney} onCompare={() => compareWith(o.id)} selected={target?.id === o.id}/>)}
-     </ol>
+     <div className="rs-cards">
+      {[...(current ? [current] : []), ...options].map(item => <ScenarioCard key={item.id} item={item} rank={options.indexOf(item) + 1} current={current} best={item.id === bestId}
+       theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
+       compared={target?.id === item.id} onCompare={item.atual ? undefined : () => compareWith(item.id)}/>)}
+     </div>
+     <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
+      "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
     </>}
    </section>
 
@@ -235,48 +246,77 @@ function Delta({ value, unit = "", en }: { value: number; unit?: string; en: boo
   return <span className={"rs-delta " + cls}>{text}</span>;
 }
 
-function OptionCard({ item, rank, current, en, money, signedMoney, onCompare, selected }: { item: ItemRanking; rank: number; current: ItemRanking | null; en: boolean; onCompare: () => void; selected: boolean } & MoneyFns) {
+const SHORT_NAMES: Record<string, { pt: string; en: string }> = {
+  renda: { pt: "Renda", en: "Income" }, solo: { pt: "Solo", en: "Soil" }, agua: { pt: "Água", en: "Water" },
+  pragas: { pt: "Pragas", en: "Pests" }, risco: { pt: "Clima", en: "Climate" },
+};
+
+function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evaluated, en, money, compared, onCompare }: {
+  item: ItemRanking; rank: number; current: ItemRanking | null; best: boolean; theme: CriterionId | null; harvest?: string; sowing?: string;
+  evaluated: number; en: boolean; money: (v: number) => string; compared: boolean; onCompare?: () => void;
+}) {
   const say = (pt: string, english: string) => (en ? english : pt);
+  const tx = (text: { pt: string; en: string }) => (en ? text.en : text.pt);
   const [open, setOpen] = useState(false);
-  const s = score(item.nota) ?? 0;
-  const cs = current && !current.eliminada ? score(current.nota) : null;
-  const marginDiff = item.margem && current?.margem ? item.margem.total_r_ha - current.margem.total_r_ha : null;
-  const benefit = item.card?.beneficios[0];
-  const attention = item.card?.riscos[0];
-  return <li className={"rs-option" + (selected ? " is-compared" : "")}>
-   <div className="rs-option-main">
-    <span className="rs-rank" aria-label={say(`Opção ${rank}`, `Option ${rank}`)}>#{rank}</span>
-    <div className="rs-option-title">
-     <h3>{item.rotacao}</h3>
-     <div className="rs-scoreline">
-      <span className="rs-score"><strong>{s}</strong>/100</span>
-      {cs != null && <span className="rs-vs">{say("vs. hoje", "vs. today")} <Delta value={s - cs} unit={say(" pts", " pts")} en={en}/></span>}
-     </div>
-     <div className="rs-bar" aria-hidden="true"><span style={{ width: `${s}%` }}/>{cs != null && <i style={{ left: `${cs}%` }} title={say("Sua rotação hoje", "Your rotation today")}/>}</div>
-    </div>
-    <div className="rs-money">
-     <span>{say("Margem estimada", "Estimated margin")}</span>
-     <strong>{item.margem ? `${money(item.margem.total_r_ha)}/ha` : "—"}</strong>
-     {marginDiff != null && <small className={marginDiff >= 0 ? "is-up" : "is-down"}>{signedMoney(marginDiff)}/ha {say("vs. hoje", "vs. today")}</small>}
-    </div>
-   </div>
-   <div className="rs-option-notes">
-    {benefit && <p className="rs-benefit"><span aria-hidden="true">✓</span>{benefit}</p>}
-    {attention && <p className="rs-attention"><span aria-hidden="true">!</span>{attention}</p>}
-   </div>
-   <div className="rs-mini-criteria">
-    {CRITERIA.map(c => { const v = score(item.criterios?.[c.id]) ?? 0; return <div key={c.id} title={en ? c.hint.en : c.hint.pt}><span>{en ? c.name.en : c.name.pt}</span><div className="rs-mini-bar"><span style={{ width: `${v}%` }}/></div><small>{v}</small></div>; })}
+  const isCurrent = item.atual;
+  const baseline = !isCurrent && current && !current.eliminada ? current : null;
+  const title = isCurrent ? say("Rotação atual", "Current rotation") : theme ? tx(THEMES[theme]) : say("Alternativa para explorar", "Alternative to explore");
+  const ribbon = best ? say("Maior nota para as suas prioridades", "Highest score for your priorities")
+    : isCurrent ? say("Sua rotação hoje · referência", "Your rotation today · baseline")
+    : say(`Opção #${rank} · para explorar`, `Option #${rank} · to explore`);
+  const calendar = item.verao && item.segunda && harvest && sowing ? rotationCalendar(item.verao.id, item.segunda.id, harvest, sowing) : null;
+  const secondName = item.segunda?.id === "pousio" ? say("Pousio", "Fallow") : item.segunda?.nome ?? "";
+  return <article className={"rs-card" + (best ? " is-best" : "") + (isCurrent ? " is-current" : "") + (compared ? " is-compared" : "")}>
+   <div className="rs-card-ribbon">{ribbon}</div>
+   <div className="rs-card-body">
+    <h3>{title}</h3>
+    {item.eliminada ? <p className="rs-warning">{say("Eliminada pelas regras: ", "Ruled out: ")}{(item.motivos ?? []).join(" ")}</p> : <>
+     <div className="rs-card-score"><strong>{score(item.nota)}</strong><span>/ 100</span><small>{isCurrent && item.posicao != null && evaluated > 0 ? say(`${item.posicao}ª entre ${evaluated} avaliadas`, `#${item.posicao} of ${evaluated} evaluated`) : say("nota para as suas prioridades", "score for your priorities")}</small></div>
+     <p className="rs-card-sequence">{item.rotacao}</p>
+     {calendar && <Calendar months={calendar} summer={item.verao!.nome} second={secondName} en={en}/>}
+     <dl className="rs-traits">
+      {CRITERIA.map(c => {
+        const value = item.criterios?.[c.id];
+        if (value == null) return null;
+        const before = baseline?.criterios?.[c.id];
+        const diff = before == null ? 0 : Math.round(value * 100) - Math.round(before * 100);
+        return <div key={c.id}><dt>{tx(SHORT_NAMES[c.id])}</dt><dd>
+         <span>{tx(levelLabel(c.id, value))}{diff !== 0 && <b className={diff > 0 ? "is-up" : "is-down"} title={diff > 0 ? say("Melhor que hoje", "Better than today") : say("Pior que hoje", "Worse than today")}>{diff > 0 ? "↑" : "↓"}</b>}</span>
+         {c.id === "renda" && item.margem && <small>{say("margem", "margin")} {money(item.margem.total_r_ha)}/ha</small>}
+        </dd></div>;
+      })}
+     </dl>
+     <div className="rs-card-note is-benefit"><small>{say("Benefício potencial", "Potential benefit")}</small><p>{item.card?.beneficios[0] ?? say("Sem benefício marcante nos critérios avaliados.", "No notable benefit in the criteria evaluated.")}</p></div>
+     <div className="rs-card-note is-attention"><small>{say("Ponto de atenção", "Point of attention")}</small><p>{item.card?.riscos[0] ?? "—"}</p></div>
+    </>}
    </div>
    {open && item.card && <div className="rs-details">
     <p>{item.card.por_que}</p>
     {item.card.evidencias.length > 0 && <><h4>{say("De onde vêm esses números", "Where these numbers come from")}</h4><ul>{item.card.evidencias.map(e => <li key={e}>{e}</li>)}</ul></>}
     {item.card.lacunas.length > 0 && <><h4>{say("O que ainda falta saber", "What is still unknown")}</h4><ul>{item.card.lacunas.map(e => <li key={e}>{e}</li>)}</ul></>}
    </div>}
-   <div className="rs-option-actions">
-    <button type="button" className="rs-link-button" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? say("Ocultar detalhes", "Hide details") : say("Ver detalhes", "See details")}</button>
-    <button type="button" className="rs-compare-button" onClick={onCompare}>{say("Comparar com a de hoje →", "Compare with today’s →")}</button>
+   <div className="rs-card-actions">
+    {item.card && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? say("Ocultar detalhes", "Hide details") : say("Entender este cenário →", "Understand this scenario →")}</button>}
+    {onCompare && <button type="button" className="rs-link-button" onClick={onCompare}>{say("Comparar com a de hoje", "Compare with today’s")}</button>}
    </div>
-  </li>;
+  </article>;
+}
+
+const MONTH_LETTERS = { pt: "JFMAMJJASOND", en: "JFMAMJJASOND" };
+
+function Calendar({ months, summer, second, en }: { months: MonthUse[]; summer: string; second: string; en: boolean }) {
+  const say = (pt: string, english: string) => (en ? english : pt);
+  const letters = en ? MONTH_LETTERS.en : MONTH_LETTERS.pt;
+  const uses = new Set(months);
+  return <div className="rs-cal" role="img" aria-label={say(`Calendário estimado: ${summer} no verão, ${second} na 2ª safra`, `Estimated calendar: ${summer} in summer, ${second} in the second season`)}>
+   <span className="rs-cal-title">{say("Calendário · estimativa", "Calendar · estimate")}</span>
+   <div className="rs-cal-grid">{months.map((m, i) => <div key={i}><span>{letters[i]}</span><i className={"is-" + m}/></div>)}</div>
+   <small className="rs-cal-legend">
+    {uses.has("summer") && <span><i className="is-summer"/>{summer}</span>}
+    {uses.has("second") && <span><i className="is-second"/>{second}</span>}
+    {uses.has("bare") && <span><i className="is-bare"/>{say("Sem cultura", "No crop")}</span>}
+   </small>
+  </div>;
 }
 
 function Comparison({ current, option, rank, en, money, signedMoney }: { current: ItemRanking; option: ItemRanking; rank: number; en: boolean } & MoneyFns) {
