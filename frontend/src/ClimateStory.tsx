@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'motion/react';
 import './climate-story.css';
 
+const documentarySource = "https://mst.org.br/2024/05/09/enchente-no-sul-arrasa-lavouras-de-arroz-organico-do-mst/";
+const documentaryPhotos = [{"file": "rs-arroz-viamao.webp", "label": "Arroz inundado · Viamão (RS), maio/2024 · Foto: MST-RS", "original": "https://mst.org.br/wp-content/uploads/2024/05/image-23-1024x770.jpg"}, {"file": "rs-maquinas-viamao.webp", "label": "Lavoura e máquinas atingidas · Viamão (RS), maio/2024 · Foto: MST-RS", "original": "https://mst.org.br/wp-content/uploads/2024/05/image-24.jpg"}, {"file": "rs-estufas-eldorado.webp", "label": "Estufas inundadas · Eldorado do Sul (RS), maio/2024 · Foto: MST-RS", "original": "https://mst.org.br/wp-content/uploads/2024/05/image-26.jpg"}];
 const sources = {
   inmet: { label: 'INMET · balanço do El Niño 2023–2024', url: 'https://portal.inmet.gov.br/noticias/el-ni%C3%B1o-saiba-como-foi-a-atua%C3%A7%C3%A3o-do-fen%C3%B4meno-no-brasil' },
   ibgeSafra: { label: 'IBGE · estimativa da safra, novembro de 2024', url: 'https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/42191-em-novembro-ibge-preve-safra-de-294-3-milhoes-de-toneladas-para-2024-e-de-314-8-milhoes-de-toneladas-para-2025' },
@@ -68,16 +70,16 @@ export default function ClimateStory({ calmImage }: { calmImage: string }) {
         <div className="climate-images" aria-hidden="true">
           <Photo progress={p} src={calmImage} range={[0,.025,.09,.16]} initial />
           <Photo progress={p} src="/assets/story-drought.webp" range={[.09,.16,.25,.32]} />
-          <Photo progress={p} src="/assets/story-flood.webp" range={[.26,.32,.39,.46]} />
-          <Photo progress={p} src="/assets/story-submerged.webp" range={[.39,.46,.59,.67]} />
-          <Photo progress={p} src={calmImage} range={[.60,.68,.78,.89]} />
+          <Photo progress={p} src="/assets/rs-arroz-viamao.webp" range={[.26,.32,.39,.46]} />
+          <Photo progress={p} src="/assets/rs-maquinas-viamao.webp" range={[.39,.46,.59,.67]} />
+          <Photo progress={p} src="/assets/rs-estufas-eldorado.webp" range={[.60,.68,.78,.89]} />
         </div>
         <div className="climate-darkness" style={{ opacity: darkness }}/><div className="climate-vignette"/>
         <div className="climate-chapter" aria-hidden="true"><span>01</span> O PROBLEMA</div>
         <Scene progress={p} index={0}><h2>Por gerações, aprendemos a cultivar seguindo os ciclos da natureza.</h2><span className="climate-scroll-cue">Mas a mudança já faz parte da nossa história <i>↓</i></span></Scene>
         {cases.map((item, i) => <Scene key={item.title} progress={p} index={i + 1}><Evidence item={item}/></Scene>)}
         <Scene progress={p} index={5}><h2>Como planejar a <em>próxima safra</em> quando o clima se torna imprevisível?</h2></Scene>
-        <span className="climate-photo-note" aria-hidden="true">Imagens de apoio · não são registros dos casos citados</span>
+        <span className="climate-photo-note" aria-hidden="true">{p < .26 ? "Paisagem e seca: imagens de apoio" : p < .43 ? documentaryPhotos[0].label : p < .64 ? documentaryPhotos[1].label : documentaryPhotos[2].label}</span>
       </div>}
     </section>
     <div className="climate-sources"><details><summary>Fontes e contexto dos casos reais</summary><div className="climate-sources-body">
@@ -85,7 +87,9 @@ export default function ClimateStory({ calmImage }: { calmImage: string }) {
       <p>O El Niño é um fenômeno natural. Sua atuação e as mudanças climáticas contribuíram para intensificar as chuvas de 2024 no RS; o desastre envolveu múltiplos fatores. A alta de um alimento não pode ser atribuída apenas às enchentes.</p>
       <p>Na produção de soja em Mato Grosso, a comparação é a estimativa do IBGE de novembro de 2024 frente a 2023, não uma perda isolada atribuída apenas ao El Niño. As perdas de soja no RS são estimativas do levantamento de maio de 2024 da Emater/RS-Ascar.</p>
       <ul>{Object.entries(sources).map(([key, source]) => <li key={key}><a href={source.url} target="_blank" rel="noreferrer">{source.label} ↗</a></li>)}</ul>
-      <p>As fotografias são imagens de apoio, sem associação documental aos locais citados. Os textos são sínteses das fontes, não depoimentos de agricultores.</p>
+      <p>As cenas das enchentes usam fotografias documentais do Rio Grande do Sul em maio de 2024, com crédito MST-RS. A localidade da fotografia está na legenda e pode ser diferente da descrita no texto. Paisagem e seca permanecem como apoio visual. Os textos são sínteses das fontes, não depoimentos.</p>
+      <p><a href={documentarySource} target="_blank" rel="noreferrer">Origem das fotografias · reportagem de 09/05/2024 ↗</a></p>
+      <ul>{documentaryPhotos.map(photo => <li key={photo.file}><a href={photo.original} target="_blank" rel="noreferrer">{photo.label} ↗</a></li>)}</ul>
     </div></details></div>
   </>;
 }
