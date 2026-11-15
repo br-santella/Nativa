@@ -1,6 +1,8 @@
 """Historical backtest of the engine against what actually happened (docs/validation.md, section 3).
 
-Three checks, all on the 50 municipalities of the Oeste mesoregion, using only information available before each season:
+Three checks, using only information available before each season. Scope (`set_scope`): "oeste" (default: the 50 municipalities
+of the Oeste mesoregion, the pilot the engine was tuned on) or "pr" (all 399 municipalities of
+Paraná; `mesoregions()` maps each one to its IBGE mesoregion; used by scripts/validation/statewide.py, section 7):
 
 a) Yield expectation: the engine uses the mean of the last 10 years of IBGE PAM (and p20 as the "bad year"). Does that mean
    predict the next year, and does the realized yield fall below p20 in ~20 % of the years?
@@ -32,6 +34,28 @@ WINDOW = 10            # years of PAM history the engine averages
 FAIL_DEV = -0.15       # crop failure: yield 15 % or more below the municipal linear trend
 FIRST_YEAR, LAST_YEAR = 2008, 2025
 KG_PER_BAG = 60.0
+SCOPES = ("oeste", "pr")
+_SCOPE = "oeste"
+
+
+def set_scope(scope: str) -> None:
+    """Switch the backtest between the Oeste pilot ("oeste") and all of Paraná ("pr"); clears the cached tables."""
+    global _SCOPE
+    if scope not in SCOPES:
+        raise ValueError(f"scope must be one of {SCOPES}")
+    _SCOPE = scope
+    pam.cache_clear()
+
+
+def scope() -> str:
+    return _SCOPE
+
+
+def mesoregions() -> pd.Series:
+    """cod_ibge -> short IBGE mesoregion label ('Oeste do PR', 'Norte Central do PR'...), for the 399 municipalities."""
+    from field_shift.income.income import MESOREGIONS, region_label
+    m = pd.read_csv(MESOREGIONS, dtype={"cod_ibge": str})
+    return m.set_index("cod_ibge")["mesorregiao"].map(region_label)
 
 
 # Data
@@ -39,8 +63,10 @@ KG_PER_BAG = 60.0
 
 @lru_cache(maxsize=1)
 def pam() -> pd.DataFrame:
-    """Long PAM table of the Oeste (cod_ibge, ano, cultura, variavel, valor), main + extra crops."""
-    p = pd.concat([pd.read_parquet(RAW / "ibge/pam_oeste_pr.parquet"), pd.read_parquet(RAW / "ibge/pam_extra_oeste_pr.parquet")])
+    """Long PAM table of the scope (cod_ibge, ano, cultura, variavel, valor), main + extra crops."""
+    files = (("pam_oeste_pr", "pam_extra_oeste_pr") if _SCOPE == "oeste" else ("pam_pr", "pam_extra_pr"))
+    p = pd.concat([pd.read_parquet(RAW / f"ibge/{f}.parquet") for f in files])
+    p["cod_ibge"] = p["cod_ibge"].astype(str)
     p = p.dropna(subset=["valor"])
     p["ano"] = p["ano"].astype(int)
     return p
@@ -54,7 +80,8 @@ def yields(crop: str) -> pd.DataFrame:
 
 
 def prices(crop: str) -> pd.Series:
-    """Realized price (BRL per 60 kg bag) per year, Oeste aggregate: Σ production value / Σ production (PAM table 1612)."""
+    """Realized price (BRL per 60 kg bag) per year, aggregate of the scope (Oeste or Paraná): Σ production value / Σ production
+    (PAM table 1612)."""
     p = pam()
     p = p[p["cultura"] == crop]
     v = p[p["variavel"] == "valor_mil_reais"].groupby("ano")["valor"].sum() * 1000
@@ -77,19 +104,22 @@ def climate_flags() -> pd.DataFrame:
 
 
 DEFICIT_FILE = ROOT / "data/processed/validation/backtest_deficit_flags.parquet"
+DEFICIT_FILE_PR = ROOT / "data/processed/validation/backtest_deficit_flags_pr.parquet"
 
 
 def deficit_flags(sowing: str = "15/02") -> pd.DataFrame:
-    """Per Oeste municipality and PAM year: ETa/ETc of off-season corn in the critical phase (FAO-56 daily balance, NASA POWER +
-    SoilGrids soil at the centroid, same path as a field) and the engine's deficit flag (ratio < DEFICIT_THRESHOLD).
-    Cached in data/processed/validation/ (the balance takes ~1 min)."""
+    """Per municipality of the scope and PAM year: ETa/ETc of off-season corn in the critical phase (FAO-56 daily balance, NASA
+    POWER + SoilGrids soil at the centroid, same path as a field) and the engine's deficit flag (ratio < DEFICIT_THRESHOLD).
+    Cached in data/processed/validation/ (the balance takes ~1 min for the Oeste, ~8 min for Paraná)."""
     from field_shift.water.balance import DEFICIT_THRESHOLD, YEARS, critical_phase_water
     from field_shift.validation import zarc as Z
-    if DEFICIT_FILE.exists():
-        d = pd.read_parquet(DEFICIT_FILE)
+    f = DEFICIT_FILE if _SCOPE == "oeste" else DEFICIT_FILE_PR
+    if f.exists():
+        d = pd.read_parquet(f)
     else:
         rows = []
-        for m in Z.municipalities().query("oeste").itertuples():
+        mun = Z.municipalities()
+        for m in (mun.query("oeste") if _SCOPE == "oeste" else mun).itertuples():
             rk = Z.engine_side(m.lat_c, m.lon_c, sowing)
             ac = (rk or {}).get("agua_ctx")
             if ac is None:
@@ -97,8 +127,8 @@ def deficit_flags(sowing: str = "15/02") -> pd.DataFrame:
             b = critical_phase_water("milho_safrinha", ac["ponto_id"], sowing, ac["cad_camadas"])
             rows += [dict(cod_ibge=str(m.geocodigo), ano_pam=y + 1, ratio=float(r)) for y, r in zip(YEARS, b["razoes"])]
         d = pd.DataFrame(rows)
-        DEFICIT_FILE.parent.mkdir(parents=True, exist_ok=True)
-        d.to_parquet(DEFICIT_FILE)
+        f.parent.mkdir(parents=True, exist_ok=True)
+        d.to_parquet(f)
     d["deficit"] = (d["ratio"] < DEFICIT_THRESHOLD).astype(float)
     return d
 

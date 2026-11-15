@@ -146,7 +146,7 @@ This file is the living list of open items for the project (crop-rotation engine
   - Card: market text and the 2nd-crop sowing-window reason say "referência do Oeste do PR" outside the Oeste.
   - Bug: a sold crop with a short PAM series (no p20 bad year) crashed the card (`TypeError` on `None`), seen in Cornélio Procópio; the line now says the series is too short.
   - Audit on soybean fields (MapBiomas 2024) in Londrina, Ponta Grossa, Guarapuava, Campo Mourão, Pato Branco, Umuarama, Cornélio Procópio, Jacarezinho and Paranavaí: all run end to end. Test: `tests/test_statewide.py`.
-  Still open: the backtest of the income decision (`docs/validation.md` §3, §6.2) only covers the Oeste; the catalog windows and market texts are Oeste references; costs by regional nucleus (item below). Outside the Oeste, cover crops (millet/crotalaria) rank first more often because the realized corn margin is lower (e.g. Cornélio Procópio, Guarapuava with frost risk 0.41): plausible, not validated.
+  Still open: the catalog windows and market texts are Oeste references; costs by regional nucleus (item below). The statewide validation is done (`docs/validation.md` §7, branch `feat/statewide-validation`); its open findings are the two items under "Paraná-wide coverage".
   Status: done (with the open points above)
 
 - **Slope computed on the fly**: `slope_pct.tif` (1.15 GB) could be computed on demand from the elevation instead of being stored.
@@ -176,6 +176,21 @@ This file is the living list of open items for the project (crop-rotation engine
   Status: pending
 
 ## Paraná-wide coverage
+
+- **Statewide validation of the income decision and the climate risk**: sections 3 and 6 of `validation.md` covered only the 50 Oeste municipalities.
+  Files: `src/field_shift/validation/backtest.py` (`set_scope`, `mesoregions`), `scripts/validation/statewide.py`, `docs/validation.md` §7.
+  Done (15/11/2026, branch `feat/statewide-validation`): same code, no parameter refitted. The 5-season track record beats the previous income estimator in every mesoregion (Paraná +1.54 bags/ha/yr, 90 % season bootstrap +0.72 to +2.50, 12/16 seasons). The cover crop loses to off-season corn on realized income in every mesoregion (Paraná −8.69 bags/ha/yr, wins 17 % of municipality-years). The corn risk criterion is calibrated in the north and west (24–32 % predicted vs 21–30 % observed) but too pessimistic in Centro-Sul, Sudeste, Sudoeste and Centro Oriental (37–52 % vs 17–26 %).
+  Status: done (findings below)
+
+- **Outside the Oeste the full engine ranks the cover crop first against the income evidence**: with default weights, millet/crotalaria is first in 86 % of the 399 municipality centroids (42 % in the Oeste, a near tie there), while on realized income it loses 8.7 bags/ha/yr on average (`validation.md` §7.2, §7.4). Causes: smaller off-season corn margin and larger income scale S outside the Oeste, risk over-penalty in the south, and fixed catalog soil/pest scores. A smaller S alone does not flip it.
+  Files: `src/field_shift/app/engine.py` (weights, `income_score`), `src/field_shift/income/income.py` (S), catalog.
+  Done so far: the outside-Oeste warning (`service.WARNINGS_OUTSIDE_OESTE`) now says the cover lost on realized income in every mesoregion and that corn risk tends to be overestimated in the south, and tells the farmer to compare the margins on the cards.
+  Options still open: (a) per-card text with the income given up by picking the cover; (b) regional weights or a fixed S, with a backtest; (c) wait for the expert panel to settle soil vs income. Needs a product decision.
+  Status: pending (decision)
+
+- **Corn frost/deficit risk over-penalizes the south of Paraná**: predicted loss 37–52 % against 17–26 % observed failures in Centro-Sul, Sudeste, Sudoeste and Centro Oriental; the flag barely separates failing seasons there (`validation.md` §7.3). Recalibrate the frost threshold or the POWER frost correction by region, with the out-of-sample protocol of §6 (it must beat the base rate on unseen seasons).
+  Files: `src/field_shift/app/engine.py` (`risk_probability`), `src/field_shift/climate/`.
+  Status: pending
 
 - **Ingest scripts of the `*_pr` data are not in the repo**: the engine now reads `data/raw/mapbiomas_pr`, `nasadem_pr`, `soilgrids_pr`, `regiao/{pr,municipios_pr}.geojson`, `clima_pr/` (raw), `processed/clima_pr/`, `processed/relevo_pr/` and `ibge/pam_pr.parquet` (399 municipalities), but `ingest/` only has the `*_oeste_pr` scripts. Confirm who generated the data, version the scripts, and document the commands.
   Files: `ingest/`, `api/README.md`.

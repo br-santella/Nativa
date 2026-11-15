@@ -48,7 +48,10 @@ CRS_M = 32722  # UTM 22S (m), for areas and the point square
 WARNINGS_OUTSIDE_OESTE = [
     "Área fora do Oeste do Paraná: preços (média estadual SEAB/DERAL) e custos (fichas CONAB de Londrina, Ponta Grossa e Francisco "
     "Beltrão) são referências do estado e podem diferir na sua região; informe os seus em `ajustes`. As janelas de semeadura e o "
-    "mercado do catálogo e o backtest de renda são do Oeste do PR; a concordância com o ZARC foi medida no estado todo.",
+    "mercado do catálogo são do Oeste do PR; a renda, o risco e a concordância com o ZARC foram validados no estado todo.",
+    "Fora do Oeste, a cobertura (milheto/crotalária) costuma ficar em 1º pelos critérios de solo e pragas, mas na renda realizada "
+    "(IBGE PAM, safras passadas) perdeu do milho safrinha na média de todas as mesorregiões do PR; no sul do estado o risco "
+    "climático do milho safrinha tende a ser superestimado. Compare a margem nos cards antes de decidir.",
 ]
 
 

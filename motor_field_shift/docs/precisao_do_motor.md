@@ -16,6 +16,8 @@ O motor está mais preciso na renda. A decisão por renda passou de 7,39 para 8,
 | Erro da margem prevista da 2ª safra | 3,73 sc/ha (antes 4,63) | −19 % |
 | Premissas de uso do solo (satélite) | 98 % da área é soja no verão; 93 % dos talhões fazem soja → milho safrinha | Confirmadas |
 | Bônus na soja seguinte (satélite) | Não detectável no NDVI | Continua estimativa de literatura |
+| Decisão só por renda no Paraná todo (288 municípios, 2010–2025) | 5,15 sc/ha/ano (antes 3,61); ganho em todas as 9 mesorregiões com dados | O histórico de renda vale fora do Oeste |
+| Risco do milho safrinha no Paraná todo | Calibrado no norte e oeste; no sul prevê 37–52 % de perda contra 17–26 % observado | Pessimista demais no sul |
 
 Não existe um número único de "acurácia": não há um gabarito do tipo "a rotação certa no talhão X era Y". Cada parte do motor é comparada com a melhor referência disponível para ela.
 
@@ -159,16 +161,26 @@ As premissas de uso do solo do motor batem com o que os talhões reais fazem; os
 
 O catálogo agora usa a diferença medida para o pousio. As coberturas são raras demais na amostra para medir e continuam como estimativa. O bônus na soja seguinte não foi refutado: o NDVI satura perto de 0,9 numa lavoura de soja fechada, e um ganho de 2–3 sacas/ha é pequeno demais para aparecer. Ele continua sendo estimativa de literatura.
 
+## Paraná todo
+
+O motor roda nos 399 municípios. Repetimos as validações de renda e de risco por mesorregião do IBGE, com o mesmo código e sem reajustar nada (detalhes em [`validation.md`](validation.md) §7):
+
+- **Renda:** o histórico de 5 safras ganha do estimador anterior em todas as mesorregiões. No Paraná, a decisão por renda passa de 3,61 para 5,15 sacas de soja/ha/ano (intervalo de 90 %: +0,72 a +2,50; melhor em 12 de 16 safras).
+- **Cobertura vs milho:** na renda realizada, milheto/crotalária perde do milho safrinha em todas as mesorregiões (−8,7 sc/ha/ano no Paraná); só ganha em 17 % dos casos.
+- **Risco:** a perda prevista bate com a quebra observada no norte e no oeste. No sul (Centro-Sul, Sudeste, Sudoeste, Centro Oriental) o motor prevê 37–52 % de perda contra 17–26 % observados, então penaliza demais o milho lá.
+- **Ranking completo:** com os pesos padrão, o motor põe milheto/crotalária em 1º em 86 % dos municípios (42 % no Oeste, onde é quase empate). Isso vai contra a renda observada: é o peso de solo e pragas, que é estimativa de catálogo, decidindo onde a vantagem de renda do milho é menor. Não mexemos no motor; é uma decisão de produto (está nas pendências).
+
 ## Limites conhecidos e próximos passos
 
 O que ainda não está validado e o que fazer, por impacto:
 
-1. **Painel de agrônomos:** 8 a 10 cenários ordenados às cegas por agrônomos (Embrapa, IDR-PR, cooperativas). É a única forma de validar a parte agronômica (quebra de pragas, cobertura e bônus), que decide a disputa entre milho + braquiária e milheto/crotalária.
-2. **Dados por talhão:** a produtividade de cada talhão, vinda de cooperativas ou produtores parceiros, é o que pode tornar o risco e a renda mais precisos. Com dados municipais e ~23 safras, o risco climático chegou ao limite.
-3. **Sorgo e municípios frios:** dar ao sorgo uma janela de geada própria e criar um indicador de frio ao longo do ciclo.
-4. **Pragas:** uma série de anos de cigarrinha/enfezamento permitiria testar de novo as quebras que o clima não explica (2005, 2008, 2011, 2024).
-5. **Data de colheita da soja:** substituir a estimativa de 10/01 pela data dos boletins regionais do Deral, quando houver série do Oeste.
-6. **Solo:** os efeitos de fertilidade e matéria orgânica têm direção com fonte, mas o tamanho (±0,15) é escolha de modelagem; o ganho de matéria orgânica por safra no Oeste do PR não tem medição.
+1. **Paraná todo:** decidir como tratar a cobertura em 1º fora do Oeste (aviso no card, pesos regionais ou esperar o painel) e recalibrar o risco de geada no sul com o mesmo teste fora da amostra.
+2. **Painel de agrônomos:** 8 a 10 cenários ordenados às cegas por agrônomos (Embrapa, IDR-PR, cooperativas). É a única forma de validar a parte agronômica (quebra de pragas, cobertura e bônus), que decide a disputa entre milho + braquiária e milheto/crotalária.
+3. **Dados por talhão:** a produtividade de cada talhão, vinda de cooperativas ou produtores parceiros, é o que pode tornar o risco e a renda mais precisos. Com dados municipais e ~23 safras, o risco climático chegou ao limite.
+4. **Sorgo e municípios frios:** dar ao sorgo uma janela de geada própria e criar um indicador de frio ao longo do ciclo.
+5. **Pragas:** uma série de anos de cigarrinha/enfezamento permitiria testar de novo as quebras que o clima não explica (2005, 2008, 2011, 2024).
+6. **Data de colheita da soja:** substituir a estimativa de 10/01 pela data dos boletins regionais do Deral, quando houver série do Oeste.
+7. **Solo:** os efeitos de fertilidade e matéria orgânica têm direção com fonte, mas o tamanho (±0,15) é escolha de modelagem; o ganho de matéria orgânica por safra no Oeste do PR não tem medição.
 
 Outros limites:
 - O clima vem de células de ~50 km, então talhões vizinhos têm o mesmo clima.

@@ -33,7 +33,7 @@ Developed for the NASA Space Apps Challenge 2026 challenge
 
 ## Overview
 
-Field Shift ranks crop rotations for a field anywhere in Paraná (399 municipalities; the pilot and the income backtest are Western Paraná). A rotation is a pair: a summer crop
+Field Shift ranks crop rotations for a field anywhere in Paraná (399 municipalities; the pilot is Western Paraná, and the income and risk backtests were repeated for all of Paraná: `motor_field_shift/docs/validation.md` §7). A rotation is a pair: a summer crop
 (soybean or summer corn) followed by a second-window crop (the *safrinha* / off-season).
 
 **Inputs**
@@ -358,7 +358,7 @@ gh pr create --base main
 
 | Limitation | Effect |
 | --- | --- |
-| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows, market texts and the income backtest come from Western Paraná | An area outside Paraná returns 422; outside Western Paraná the response warns |
+| **Region:** Paraná (399 municipalities); prices/costs are state references, sowing windows and market texts come from Western Paraná; outside it the full engine tends to rank the cover crop first although it lost to off-season corn on realized income, and over-estimates corn climate risk in the south (`docs/validation.md` §7) | An area outside Paraná returns 422; outside Western Paraná the response warns about both |
 | **Climate cells of ~50 km** (NASA POWER) | Local microclimate is not represented |
 | **Soil water capacity** from Saxton & Rawls (2006), calibrated on temperate soils | Tends to underestimate it in clay-rich tropical Latosols. A farmer soil analysis replaces it |
 | **Income** from municipal averages and reference prices | Farm margins differ; yields, prices and costs can be overridden in the request |

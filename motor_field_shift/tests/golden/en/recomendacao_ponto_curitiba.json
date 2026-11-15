@@ -3050,7 +3050,8 @@
    }
   },
   "avisos": [
-   "Area outside Western Paraná: prices (SEAB/DERAL state mean) and costs (CONAB sheets of Londrina, Ponta Grossa and Francisco Beltrão) are state references and may differ in your region; give your own in `ajustes`. The catalog sowing windows and market and the income backtest are from Western Paraná; the agreement with ZARC was measured statewide.",
+   "Area outside Western Paraná: prices (SEAB/DERAL state average) and costs (CONAB sheets for Londrina, Ponta Grossa and Francisco Beltrão) are state references and may differ in your region; enter your own in `ajustes`. The catalog sowing windows and market are from Western Paraná; income, risk and agreement with ZARC were validated statewide.",
+   "Outside the Oeste, the cover crop (millet/crotalaria) usually ranks first on the soil and pest criteria, but on realized income (IBGE PAM, past seasons) it lost to off-season corn on average in every mesoregion of Paraná; in the south of the state the climate risk of off-season corn tends to be overestimated. Compare the margin on the cards before deciding.",
    "Soybean calendar for this area: Region 1 (South, East, Campos Gerais and Coast), soybean-free period 21/06–19/09 and sowing 20/09–20/01 (2026/2027 season, Ordinance SDA/MAPA No. 1,579 of 9 April 2026); check the ADAPAR ordinance in force and the municipality's ZARC.",
    "Point turned into a ~100 ha square centered on it; relief, history and soil apply to that square, not to the real field.",
    "No soil data (SoilGrids) for the area: the water criterion uses the rain/ET0 estimate of the cell.",
@@ -3107,7 +3108,8 @@
     "talhao_id": null
    },
    "avisos": [
-    "Area outside Western Paraná: prices (SEAB/DERAL state mean) and costs (CONAB sheets of Londrina, Ponta Grossa and Francisco Beltrão) are state references and may differ in your region; give your own in `ajustes`. The catalog sowing windows and market and the income backtest are from Western Paraná; the agreement with ZARC was measured statewide.",
+    "Area outside Western Paraná: prices (SEAB/DERAL state average) and costs (CONAB sheets for Londrina, Ponta Grossa and Francisco Beltrão) are state references and may differ in your region; enter your own in `ajustes`. The catalog sowing windows and market are from Western Paraná; income, risk and agreement with ZARC were validated statewide.",
+    "Outside the Oeste, the cover crop (millet/crotalaria) usually ranks first on the soil and pest criteria, but on realized income (IBGE PAM, past seasons) it lost to off-season corn on average in every mesoregion of Paraná; in the south of the state the climate risk of off-season corn tends to be overestimated. Compare the margin on the cards before deciding.",
     "Soybean calendar for this area: Region 1 (South, East, Campos Gerais and Coast), soybean-free period 21/06–19/09 and sowing 20/09–20/01 (2026/2027 season, Ordinance SDA/MAPA No. 1,579 of 9 April 2026); check the ADAPAR ordinance in force and the municipality's ZARC.",
     "Point turned into a ~100 ha square centered on it; relief, history and soil apply to that square, not to the real field.",
     "No soil data (SoilGrids) for the area: the water criterion uses the rain/ET0 estimate of the cell.",
