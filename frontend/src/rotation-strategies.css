@@ -88,10 +88,11 @@
    1–3 options fill the width with no scrolling; more options scroll sideways, snapping card by card. */
 .rs-cards { --rs-grid-cols: var(--rs-cols, 3); display: flex; gap: 14px; align-items: stretch; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 2px;
   padding: 2px 2px 12px; scrollbar-width: thin; scrollbar-color: var(--rs-line) transparent; }
-/* --rs-peek: when the row overflows, the visible cards shrink so a slice of the next card shows at the right edge. */
-.rs-cards { --rs-peek: 0px; }
-.rs-cards[data-count="4"] { --rs-peek: 62px; }
-.rs-cards > .rs-card { flex: 0 0 calc((100% - (var(--rs-grid-cols) - 1) * 14px - var(--rs-peek)) / var(--rs-grid-cols)); scroll-snap-align: start; }
+/* --rs-peek: 0 or 0.5 cards. When the row overflows, the visible cards shrink so half of the next card shows at the right edge
+   (width = (100% − gaps) ÷ (visible cards + 0.5)). */
+.rs-cards { --rs-peek: 0; }
+.rs-cards[data-count="4"] { --rs-peek: .5; }
+.rs-cards > .rs-card { flex: 0 0 calc((100% - (var(--rs-grid-cols) - 1 + var(--rs-peek) * 2) * 14px) / (var(--rs-grid-cols) + var(--rs-peek))); scroll-snap-align: start; }
 .rs-cards::-webkit-scrollbar { height: 8px; }
 .rs-cards::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--rs-line); }
 .rs-cards::-webkit-scrollbar-thumb:hover { background: #ffbf2266; }
@@ -228,7 +229,7 @@
   .rs-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rs-facts li:first-child { grid-column: auto; }
   .rs-cards { --rs-grid-cols: min(var(--rs-cols, 3), 2); }
-  .rs-cards[data-count="3"], .rs-cards[data-count="4"] { --rs-peek: 62px; }
+  .rs-cards[data-count="3"], .rs-cards[data-count="4"] { --rs-peek: .5; }
   .rs-cards-hint[data-count="3"] { display: block; }
   .rs-versus { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rs-versus-middle { grid-column: 1 / -1; order: 3; border: 0; border-top: 1px solid var(--rs-soft-line); }
