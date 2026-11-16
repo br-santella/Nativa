@@ -172,7 +172,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
   const statusLine = error?.codigo === "sem_conexao" ? null : (loading || pending) && res ? say("Atualizando resultados…", "Updating results…") : null;
 
   const comparison = res && current && target && <section className="rs-section" ref={compareRef}>
-    <header className="rs-heading">{!comparisonOnly && <span className="rs-step">03</span>}<div>
+    <header className="rs-heading is-wide">{!comparisonOnly && <span className="rs-step">03</span>}<div>
      <h2>{say("Compare lado a lado", "Compare side by side")}</h2>
      <p>{say("Sua rotação de hoje, à esquerda, contra uma das opções, à direita. No meio, o que você ganha e o que perde ao trocar; use as setas para passar pelas opções.", "Your rotation today on the left against one of the options on the right. In the middle, what you gain and lose by switching; use the arrows to go through the options.")}</p>
     </div></header>
@@ -239,9 +239,11 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
      {detail && <ScenarioDetail item={detail} current={current} block={block} rank={options.indexOf(detail) + 1} evaluated={evaluated} en={en} money={money}
       harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} pesos={committed}
       onClose={() => setDetailId(null)} onCompare={() => { setDetailId(null); compareWith(detail.id); }}/>}
-     <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
-      "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
-     {onGlossary && <button type="button" className="rs-link-button" onClick={onGlossary}>{say("O que cada cultura faz pelo solo →", "What each crop does for the soil →")}</button>}
+     <div className="rs-cards-foot">
+      <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
+       "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
+      {onGlossary && <button type="button" className="rs-link-button" onClick={onGlossary}>{say("O que cada cultura faz pelo solo →", "What each crop does for the soil →")}</button>}
+     </div>
     </>}
    </section>
 
@@ -387,25 +389,30 @@ function Versus({ current, option, rank, total, en, money, signedMoney, onStep }
     <b>{p.delta}</b>
    </li>)}</ul>;
   return <div className="rs-versus-middle">
-   <div className="rs-versus-nav">
-    <button type="button" onClick={() => onStep(-1)} disabled={total < 2} aria-label={say("Opção anterior", "Previous option")}>‹</button>
-    <span>{say(`Opção #${rank} de ${total}`, `Option #${rank} of ${total}`)}</span>
-    <button type="button" onClick={() => onStep(1)} disabled={total < 2} aria-label={say("Próxima opção", "Next option")}>›</button>
-   </div>
+   <header className="rs-versus-head">
+    <span className="rs-versus-eyebrow">{say("O que muda ao trocar", "What changes if you switch")}</span>
+    <div className="rs-versus-nav">
+     <button type="button" onClick={() => onStep(-1)} disabled={total < 2} aria-label={say("Opção anterior", "Previous option")}><span aria-hidden="true">‹</span> {say("Anterior", "Previous")}</button>
+     <span className="rs-versus-count" aria-live="polite">{say(`Opção ${rank} de ${total}`, `Option ${rank} of ${total}`)}
+      {total > 1 && <span className="rs-versus-dots" aria-hidden="true">{Array.from({ length: total }, (_, i) => <i key={i} className={i === rank - 1 ? "is-on" : ""}/>)}</span>}</span>
+     <button type="button" onClick={() => onStep(1)} disabled={total < 2} aria-label={say("Próxima opção", "Next option")}>{say("Próxima", "Next")} <span aria-hidden="true">›</span></button>
+    </div>
+   </header>
    {cs != null && <div className="rs-versus-score">
-    <span>{say("Nota geral", "Overall score")}</span>
-    <strong>{cs} → {os}</strong>
-    <b className={os > cs ? "is-up" : os < cs ? "is-down" : ""}>{os === cs ? say("igual", "same") : `${os > cs ? "+" : "−"}${Math.abs(os - cs)} ${say("pontos", "points")}`}</b>
+    <span className="rs-versus-score-side"><small>{say("Hoje", "Today")}</small><strong>{cs}</strong></span>
+    <span className="rs-versus-score-arrow" aria-hidden="true">→</span>
+    <span className="rs-versus-score-side is-option"><small>{say(`Opção ${rank}`, `Option ${rank}`)}</small><strong>{os}</strong></span>
+    <b className={"rs-versus-delta " + (os > cs ? "is-up" : os < cs ? "is-down" : "is-same")}>{os === cs ? say("nota igual", "same score") : `${os > cs ? "+" : "−"}${Math.abs(os - cs)} ${say("pontos", "points")}`}</b>
    </div>}
-   <div className="rs-versus-block">
-    <h4 className="is-up">{say(`Vantagens ao trocar (${pros.length})`, `Gains from switching (${pros.length})`)}</h4>
+   <div className="rs-versus-block is-up">
+    <h4>{say("Vantagens ao trocar", "Gains from switching")} <span className="rs-versus-tally">{pros.length}</span></h4>
     {pros.length ? list(pros) : <p className="rs-versus-empty">{say("Nenhuma em relação a hoje.", "None compared with today.")}</p>}
    </div>
-   <div className="rs-versus-block">
-    <h4 className="is-down">{say(`Desvantagens ao trocar (${cons.length})`, `Losses from switching (${cons.length})`)}</h4>
+   <div className="rs-versus-block is-down">
+    <h4>{say("Desvantagens ao trocar", "Losses from switching")} <span className="rs-versus-tally">{cons.length}</span></h4>
     {cons.length ? list(cons) : <p className="rs-versus-empty">{say("Nenhuma em relação a hoje.", "None compared with today.")}</p>}
    </div>
-   {same.length > 0 && <p className="rs-versus-same">{say("Sem diferença: ", "No difference: ")}{same.join(", ")}</p>}
+   {same.length > 0 && <div className="rs-versus-same"><span>{say("Sem diferença", "No difference")}</span>{same.map(s => <i key={s}>{s}</i>)}</div>}
    {option.card?.por_que && <details className="rs-versus-why"><summary>{say("O que muda, segundo o motor", "What changes, according to the engine")}</summary><p>{option.card.por_que}</p></details>}
   </div>;
 }
