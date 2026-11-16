@@ -1,7 +1,7 @@
 // "Estratégias de Rotação": the engine's result explained to the farmer.
 // 01 priorities (from the setup, editable) -> 02 the options chosen in the setup -> 03 current rotation vs one option.
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { ApiError, health, recomendacao } from "./api";
 import type { DataOrigem, Health, ItemRanking, Lang, Pesos, Recomendacao } from "./api";
 import type { SetupInputs } from "./PropertyWizard";
@@ -239,12 +239,11 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
       : <span className="rs-baseline-note" title={`${current.rotacao} · ${say("nota", "score")} ${score(current.nota)}`}>{say("Comparadas com a sua rotação atual", "Compared with your current rotation")}</span>}</p>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
      {/* One scrolling row: up to 3 cards visible (2 on medium screens, 1 on phones), so more options do not make the page taller. */}
-     <div className="rs-cards" role="region" tabIndex={0} aria-label={say("Opções de rotação", "Rotation options")} data-count={Math.min(options.length, 4)}
-      style={{ "--rs-cols": Math.min(Math.max(options.length, 1), 3) } as CSSProperties}>
+     <CardRow count={options.length} en={en}>
       {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
        compared={target?.id === item.id} onCompare={() => compareWith(item.id)} onDetails={() => setDetailId(item.id)}/>)}
-     </div>
+     </CardRow>
      {detail && <ScenarioDetail item={detail} current={current} block={block} rank={options.indexOf(detail) + 1} evaluated={evaluated} en={en} money={money}
       harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} pesos={committed}
       onClose={() => setDetailId(null)} onCompare={() => { setDetailId(null); compareWith(detail.id); }}/>}
@@ -281,6 +280,35 @@ function Placeholder({ error, degraded, en }: { error: ApiError | null; degraded
     : error.codigo === "sem_conexao" ? say("Não foi possível conectar ao motor agora. Tente de novo em instantes.", "Could not reach the engine right now. Try again in a moment.") : error.message}</p>;
   if (degraded) return <p className="rs-error" role="alert">{say("O motor está sem os dados necessários no momento. Tente novamente mais tarde.", "The engine is missing the data it needs right now. Please try again later.")}</p>;
   return <div className="rs-loading" role="status"><span/>{say("Calculando as opções para a sua área…", "Working out the options for your land…")}</div>;
+}
+
+/** The option cards in one scrolling row, with ‹ › buttons that move one card at a time while there is more to see. */
+function CardRow({ count, en, children }: { count: number; en: boolean; children: ReactNode }) {
+  const say = (pt: string, english: string) => (en ? english : pt);
+  const ref = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ prev: false, next: false });
+  useEffect(() => {
+    const row = ref.current;
+    if (!row) return;
+    const update = () => setEdges({ prev: row.scrollLeft > 4, next: row.scrollLeft + row.clientWidth < row.scrollWidth - 4 });
+    update();
+    row.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(row);
+    return () => { row.removeEventListener("scroll", update); observer.disconnect(); };
+  }, [count]);
+  const step = (direction: number) => {
+    const row = ref.current, card = row?.querySelector<HTMLElement>(".rs-card");
+    if (!row || !card) return;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    row.scrollBy({ left: direction * (card.offsetWidth + 14), behavior: smooth ? "smooth" : "auto" });
+  };
+  return <div className="rs-cards-wrap">
+   {edges.prev && <button type="button" className="rs-cards-arrow is-prev" aria-label={say("Opções anteriores", "Previous options")} onClick={() => step(-1)}>‹</button>}
+   <div ref={ref} className="rs-cards" role="region" tabIndex={0} aria-label={say("Opções de rotação", "Rotation options")} data-count={Math.min(count, 4)}
+    style={{ "--rs-cols": Math.min(Math.max(count, 1), 3) } as CSSProperties}>{children}</div>
+   {edges.next && <button type="button" className="rs-cards-arrow is-next" aria-label={say("Próximas opções", "Next options")} onClick={() => step(1)}>›</button>}
+  </div>;
 }
 
 type MoneyFns = { money: (v: number) => string; signedMoney: (v: number) => string };

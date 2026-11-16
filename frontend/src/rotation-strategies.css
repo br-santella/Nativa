@@ -96,6 +96,14 @@
 .rs-cards::-webkit-scrollbar { height: 8px; }
 .rs-cards::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--rs-line); }
 .rs-cards::-webkit-scrollbar-thumb:hover { background: #ffbf2266; }
+/* ‹ › buttons over the row edges, shown only while there is more to scroll in that direction. */
+.rs-cards-wrap { position: relative; }
+.rs-cards-arrow { position: absolute; top: calc(50% - 26px); z-index: 2; display: grid; place-items: center; width: 42px; height: 42px; padding: 0 0 3px; border: 1px solid #ffbf2280; border-radius: 50%;
+  background: #10292df2; color: var(--rs-yellow); font-size: 26px; line-height: 1; cursor: pointer; box-shadow: 0 6px 20px #0008; transition: border-color .18s, background .18s; }
+.rs-cards-arrow.is-prev { left: -10px; }
+.rs-cards-arrow.is-next { right: -10px; }
+.rs-cards-arrow:hover { border-color: var(--rs-yellow); background: #173a3f; }
+.rs-cards-arrow:focus-visible { outline: 2px solid var(--rs-yellow); outline-offset: 2px; }
 .rs-cards:focus-visible { outline: 2px solid var(--rs-yellow); outline-offset: 4px; border-radius: 16px; }
 /* Scroll hint only when the row overflows: more than 3 cards (wide), more than 2 (medium), more than 1 (phone). */
 .rs-cards-hint { display: none; margin-top: -10px; color: var(--rs-faint); font-size: 12px; text-align: right; }
@@ -237,6 +245,9 @@
 }
 @media (max-width: 640px) {
   .rs { gap: 20px; }
+  .rs-cards-arrow { width: 36px; height: 36px; font-size: 22px; }
+  .rs-cards-arrow.is-prev { left: -6px; }
+  .rs-cards-arrow.is-next { right: -6px; }
   .rs:not(.rs-overview-comparison) > .rs-section { padding-top: 20px; }
   .rs-profiles, .rs-sliders, .rs-versus { grid-template-columns: 1fr; }
   .rs-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
