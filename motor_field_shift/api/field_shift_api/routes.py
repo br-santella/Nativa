@@ -182,3 +182,21 @@ def monitoring(lat: float = Query(ge=-90, le=90), lon: float = Query(ge=-180, le
     from field_shift.monitoring import monitor
 
     return monitor(lat, lon)
+
+
+@router.get("/clima/mensal", tags=["clima"], summary="Temperatura média e chuva mensais de um ano no ponto (NASA POWER)")
+def monthly_climate(
+    lat: float = Query(ge=-90, le=90, examples=[-24.81]),
+    lon: float = Query(ge=-180, le=180, examples=[-53.55]),
+    year: int = Query(alias="ano", ge=1981, le=2100, examples=[2025]),
+) -> dict[str, Any]:
+    """Doze meses (jan–dez) de temperatura média do ar a 2 m (°C) e chuva total (mm), célula NASA POWER de ~50 km.
+    Meses ainda não publicados pela POWER vêm `null`. Falha do provedor: 504 `timeout_externo`."""
+    import requests
+
+    from field_shift.monitoring import monthly_climate as fetch
+
+    try:
+        return fetch(lat, lon, year)
+    except (requests.RequestException, ValueError, KeyError, TypeError) as exc:
+        raise service.ExternalQueryError("NASA POWER indisponível.") from exc

@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { motion, useReducedMotion } from "motion/react";
 import assets from "./assets.json";
 import { months, initialFarm, initialCrops, series, info, dataSources, } from "./data";
-import { health } from "./api";
+import { health, getMonthlyClimate } from "./api";
 import { rotacaoDoHistorico } from "./rotacaoAtual";
 import setupOptions from "./setup-options.json";
 /** Number in the active language (decimal comma in pt-BR, point in English). */
@@ -31,7 +31,7 @@ import SolutionStory from "./SolutionStory";
 import OnboardingTour, { tourSeen } from "./OnboardingTour";
 import { loadSaved, persist, clearSaved } from "./storage";
 import { PRIORITIES } from "./priorities";
-import type { Pesos } from "./api";
+import type { Pesos, MonthlyClimate } from "./api";
 const saved = loadSaved();
 const A = assets.overview, L = assets["13:16"];
 const path = (file: string) => "/assets/" + file;
@@ -171,6 +171,20 @@ function App() {
     const fahrenheit = settings.temperature.startsWith("Graus Fahrenheit");
     const tempUnit = fahrenheit ? "°F" : "°C";
     const toUnit = (celsius: number) => (fahrenheit ? celsius * 9 / 5 + 32 : celsius);
+    // History: temperature and rainfall come from NASA POWER (monthly, ~50 km cell) at the property point; moisture and NDVI stay illustrative.
+    const [powerMonthly, setPowerMonthly] = useState<{ key: string; data: MonthlyClimate | null }>({ key: "", data: null });
+    const powerKey = `${farm.latitude},${farm.longitude},${year}`;
+    const powerStatus = powerMonthly.key !== powerKey ? "loading" : powerMonthly.data ? "ok" : "error";
+    useEffect(() => {
+        const lat = Number(farm.latitude), lon = Number(farm.longitude);
+        if (page !== "crop-climate" || powerMonthly.key === powerKey) return;
+        if (!Number.isFinite(lat) || !Number.isFinite(lon) || String(farm.latitude).trim() === "" || String(farm.longitude).trim() === "") { setPowerMonthly({ key: powerKey, data: null }); return; }
+        const controller = new AbortController();
+        getMonthlyClimate(lat, lon, year, controller.signal)
+            .then(data => setPowerMonthly({ key: powerKey, data }))
+            .catch(() => { if (!controller.signal.aborted) setPowerMonthly({ key: powerKey, data: null }); });
+        return () => controller.abort();
+    }, [page, powerKey]); // eslint-disable-line react-hooks/exhaustive-deps
     const fmtDate = (s: string) => asDate(s).toLocaleDateString(locale(), { day: "numeric", month: "short", year: "numeric" });
     const sortedCrops = byPlantDesc(crops);
     // Latest history record of the current crop (farm.crop is kept in step with the setup's current rotation).
@@ -241,7 +255,7 @@ function App() {
     }
     function Demo() {
         return (<p className="demo">{__text("DADOS DEMONSTRATIVOS")}{__text(" ")}
-        <span>{__text("\u2022 S\u00E9ries de clima desta p\u00E1gina e cultivos de exemplo s\u00E3o ilustrativos, n\u00E3o medi\u00E7\u00F5es da sua propriedade nem recomenda\u00E7\u00F5es validadas.")}</span>
+        <span>{__text("\u2022 Temperatura e chuva v\u00EAm da NASA POWER (c\u00E9lula de ~50 km). Umidade do solo, NDVI e cultivos de exemplo s\u00E3o ilustrativos, n\u00E3o medi\u00E7\u00F5es da sua propriedade nem recomenda\u00E7\u00F5es validadas.")}</span>
       </p>);
     }
     function Btn({ children, onClick, secondary = false, type = "button", }: {
@@ -267,7 +281,7 @@ function App() {
         large?: boolean;
     }) {
         const vals = climateValues(kind);
-        if (!vals.length) return <p className="climate-unavailable" role="status">{__text("Sem série climática demonstrativa para este ano.")}</p>;
+        if (!vals.length) return <p className="climate-unavailable" role="status">{noSeries(kind)}</p>;
         const color = {
             temperature: "#efae38",
             rain: "#8ebdc6",
@@ -275,36 +289,37 @@ function App() {
             ndvi: "#8ca53b",
         }[kind];
         const max = { temperature: toUnit(35), rain: 300, moisture: 60, ndvi: 1 }[kind];
-        const minimum = kind === "temperature" ? toUnit(15) : 0;
-        const plotY = (v: number) => 125 - ((v - minimum) / (max - minimum)) * 110;
+        const minimum = kind === "temperature" ? toUnit(5) : 0;
+        const clamp = (v: number) => Math.max(minimum, Math.min(max, v));
+        const plotY = (v: number) => 125 - ((clamp(v) - minimum) / (max - minimum)) * 110;
         const positions = vals
-            .map((v, i) => `${(i / (vals.length - 1)) * 300},${plotY(v)}`)
+            .map((v, i) => v === null ? null : `${(i / (vals.length - 1)) * 300},${plotY(v)}`)
+            .filter(Boolean)
             .join(" ");
+        const lastValue = [...vals].reverse().find((v): v is number => v !== null) ?? minimum;
         return (<div className={"chart " + (large ? "chart-large" : "")}>
-        <svg viewBox="0 0 350 174" role="img" aria-label={__text(`${kind === "rain" ? t("Precipitação") : kind === "temperature" ? t("Temperatura") : kind === "moisture" ? t("Umidade do solo") : "NDVI"} ${t("— valores demonstrativos de")} ${year}`)}>
+        <svg viewBox="0 0 350 174" role="img" aria-label={__text(`${kind === "rain" ? t("Precipitação") : kind === "temperature" ? t("Temperatura") : kind === "moisture" ? t("Umidade do solo") : "NDVI"} ${t(isPower(kind) ? "— NASA POWER," : "— valores demonstrativos de")} ${year}`)}>
           <g transform="translate(34 8)">
             {__text([15, 70, 125].map((y, i) => (<g key={y}>
                 <line x1="0" x2="306" y1={y} y2={y} stroke="#28464b"/>
                 <text x="-12" y={y + 3} textAnchor="end">
                   {__text(kind === "temperature"
-                    ? num(toUnit([35, 25, 15][i]), 0)
+                    ? num(toUnit([35, 20, 5][i]), 0)
                     : i === 2
                         ? "0"
                         : (max * (1 - i * 0.5)).toLocaleString(locale()))}
                 </text>
               </g>)))}
-            {__text(kind === "rain" ? (vals.map((v, i) => (<rect key={i} x={(i * 300) / vals.length + 2} y={plotY(v)} width={vals.length === 6 ? 13 : 9} height={(v / max) * 110} rx="3" fill={color}>
+            {__text(kind === "rain" ? (vals.map((v, i) => v === null ? null : (<rect key={i} x={(i * 300) / vals.length + 2} y={plotY(v)} width={vals.length === 6 ? 13 : 9} height={(clamp(v) / max) * 110} rx="3" fill={color}>
                   <title>
                     {__text(months[(period === "6" ? 6 : 0) + i])}{__text(":")}{__text(v.toFixed(0))}{__text("mm")}</title>
                 </rect>))) : period === "12" &&
                 year === "2025" &&
                 !large &&
-                kind !== "ndvi" ? (<image href={kind === "temperature"
-                    ? A.imgCurvaDeTemperatura
-                    : A.imgCurvaDeUmidadeDoSolo} x="0" y={kind === "temperature" ? 55 : 54} width="306" height={kind === "temperature" ? 43 : 33}/>) : (<polyline points={positions} fill="none" stroke={color} strokeWidth="2.2"/>))}
-            {__text(large && (<>
+                kind === "moisture" ? (<image href={A.imgCurvaDeUmidadeDoSolo} x="0" y="54" width="306" height="33"/>) : (<polyline points={positions} fill="none" stroke={color} strokeWidth="2.2"/>))}
+            {__text(large && !isPower(kind) && (<>
                 <rect x="275" y="20" width="31" height="100" fill="#9aadb0" opacity=".08"/>
-                <path d={`M 250 ${plotY(vals[vals.length - 1])} L 300 28`} stroke={color} strokeDasharray="3 4" fill="none" opacity=".6"/>
+                <path d={`M 250 ${plotY(lastValue)} L 300 28`} stroke={color} strokeDasharray="3 4" fill="none" opacity=".6"/>
               </>))}
             {__text((period === "6"
                 ? ["Jul", "Ago", "Set", "Out", "Nov", "Dez"]
@@ -313,7 +328,7 @@ function App() {
               </text>)))}
           </g>
         </svg>
-        <small>{`● NASA ${kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} · `}{__text("s\u00E9rie fict\u00EDcia")}</small>
+        <small>{`● NASA ${kind === "moisture" ? "SMAP" : kind === "ndvi" ? "MODIS" : "POWER"} · `}{__text(isPower(kind) ? "dados mensais \u00B7 c\u00E9lula de ~50 km" : "s\u00E9rie fict\u00EDcia")}</small>
       </div>);
     }
     function Overview() {
@@ -425,21 +440,37 @@ function App() {
     }
     const climateIndicators = {
         temperature: { name: "Temperatura média", source: "NASA POWER", unit: tempUnit, color: "#efae38", description: "Meses mais quentes podem aumentar a demanda por água.", limitation: "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local." },
-        rain: { name: "Precipitação acumulada", source: "NASA POWER", unit: "mm", color: "#8ebdc6", description: "A chuva se concentra entre outubro e março neste exemplo.", limitation: "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local." },
+        rain: { name: "Precipitação acumulada", source: "NASA POWER", unit: "mm", color: "#8ebdc6", description: "Chuva total de cada mês na célula NASA POWER que contém o ponto da propriedade.", limitation: "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local." },
         moisture: { name: "Umidade do solo", source: "NASA SMAP", unit: "%", color: "#a8c9a3", description: "Água na camada superficial; não representa toda a zona de raízes.", limitation: "Umidade na camada superficial do solo. A conversão para percentual é ilustrativa e não descreve toda a zona de raízes." },
         ndvi: { name: "Índice de vegetação (NDVI)", source: "NASA MODIS", unit: "", color: "#8ca53b", description: "NDVI indica atividade da vegetação, não rendimento da safra.", limitation: "Índice espectral relacionado ao vigor vegetal. Nuvens, resolução e época do ano afetam a leitura." },
     };
-    function climateValues(kind: keyof typeof series) {
+    const isPower = (kind: keyof typeof series) => kind === "temperature" || kind === "rain";
+    function noSeries(kind: keyof typeof series) {
+        return __text(!isPower(kind) ? "Sem série climática demonstrativa para este ano." : powerStatus === "loading" ? "Carregando dados da NASA POWER…" : "NASA POWER sem dados para este ano ou indisponível.");
+    }
+    /** Months of the selected period (Jan–Dec or Jul–Dec); `null` where NASA POWER has no value yet. */
+    function climateValues(kind: keyof typeof series): (number | null)[] {
+        const start = period === "6" ? 6 : 0;
+        if (isPower(kind)) {
+            const data = powerStatus === "ok" ? powerMonthly.data : null;
+            const values = data ? (kind === "rain" ? data.precipitation : data.temperature).slice(start) : [];
+            return values.some(v => v !== null) ? values.map(v => v === null ? null : kind === "temperature" ? toUnit(v) : v) : [];
+        }
         if (!climateYears.includes(year)) return [];
         return series[kind].slice(period === "6" ? 6 : 0)
-            .map(x => year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x)
-            .map(x => kind === "temperature" ? toUnit(x) : x);
+            .map(x => year === "2024" ? x * 0.93 : year === "2023" ? x * 1.04 : x);
     }
     function climateValue(kind: keyof typeof series) {
-        const values = climateValues(kind);
-        if (!values.length) return __text("Dados indisponíveis");
+        const values = climateValues(kind).filter((v): v is number => v !== null);
+        if (!values.length) return __text(isPower(kind) && powerStatus === "loading" ? "Carregando…" : "Dados indisponíveis");
         const value = kind === "rain" ? values.reduce((a, b) => a + b, 0) : values.reduce((a, b) => a + b, 0) / values.length;
         return value.toLocaleString(locale(), { maximumFractionDigits: kind === "ndvi" ? 2 : 1 });
+    }
+    /** "Jan–Dez", or up to the last month with data ("Jan–Set") when the year is not complete yet. */
+    function periodLabel(values: (number | null)[]) {
+        const start = period === "6" ? 6 : 0;
+        const last = values.length ? values.map(v => v !== null).lastIndexOf(true) : -1;
+        return `${__text(months[start])}–${__text(months[last >= 0 ? start + last : 11])}`;
     }
     function CropClimate() {
         const fmt = (value: string) => new Date(value + "T12:00:00").toLocaleDateString(locale());
@@ -519,20 +550,21 @@ function App() {
                 {(Object.keys(climateIndicators) as (keyof typeof series)[]).map(kind => {
                     const indicator = climateIndicators[kind];
                     const values = climateValues(kind);
-                    const min = kind === "temperature" ? toUnit(15) : 0;
+                    const min = kind === "temperature" ? toUnit(5) : 0;
                     const max = { temperature: toUnit(35), rain: 300, moisture: 60, ndvi: 1 }[kind];
-                    const points = values.map((v, i) => `${i * 240 / (values.length - 1)},${52 - (v - min) / (max - min || 1) * 40}`).join(" ");
+                    const clamp = (v: number) => Math.max(min, Math.min(max, v));
+                    const points = values.map((v, i) => v === null ? null : `${i * 240 / (values.length - 1)},${52 - (clamp(v) - min) / (max - min || 1) * 40}`).filter(Boolean).join(" ");
                     return <button type="button" className="climate-mini" key={kind} aria-haspopup="dialog" onClick={() => { setClimateIndicator(kind); open("climate-detail"); }}>
                       <span className="climate-mini-heading"><span>{__text(indicator.name)}</span><span aria-hidden="true">↗</span></span>
                       <span className="climate-mini-value" style={{ color: indicator.color }}>{climateValue(kind)} <small>{values.length ? indicator.unit : ""}</small></span>
                       {values.length ? <svg viewBox="0 0 240 64" aria-hidden="true" focusable="false">
-                        {kind === "rain" ? values.map((v, i) => <rect key={i} x={i * 240 / values.length + 3} y={56 - v / max * 44} width={240 / values.length - 6} height={v / max * 44} rx="2" fill={indicator.color} />) : <polyline points={points} stroke={indicator.color} strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />}
-                      </svg> : <span className="climate-unavailable">{__text("Sem série climática demonstrativa para este ano.")}</span>}
-                      <span className="climate-mini-period">{__text(period === "6" ? "Jul–Dez" : "Jan–Dez")} {year} <span>{__text("Ver detalhes →")}</span></span>
+                        {kind === "rain" ? values.map((v, i) => v === null ? null : <rect key={i} x={i * 240 / values.length + 3} y={56 - clamp(v) / max * 44} width={240 / values.length - 6} height={clamp(v) / max * 44} rx="2" fill={indicator.color} />) : <polyline points={points} stroke={indicator.color} strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />}
+                      </svg> : <span className="climate-unavailable">{noSeries(kind)}</span>}
+                      <span className="climate-mini-period">{periodLabel(values)} {year} <span>{__text("Ver detalhes →")}</span></span>
                     </button>;
                 })}
               </div>
-              <p className="climate-summary-note">{__text("Séries demonstrativas, não medições da propriedade.")}</p>
+              <p className="climate-summary-note">{__text("Temperatura e chuva: NASA POWER, célula de ~50 km. Umidade e NDVI: séries demonstrativas, não medições da propriedade.")}</p>
               <LinkButton onClick={() => open("sources")}>{__text("Fontes e limitações →")}</LinkButton>
             </aside>
           </div>
@@ -551,14 +583,14 @@ function App() {
     function ClimateDetail() {
         const indicator = climateIndicators[climateIndicator];
         return <div className="climate-detail">
-          <header><small>{indicator.source} · {__text("DADOS DEMONSTRATIVOS")}</small><h2 id="climate-detail-title">{__text(indicator.name)}</h2></header>
+          <header><small>{indicator.source} · {__text(isPower(climateIndicator) ? "DADOS MENSAIS" : "DADOS DEMONSTRATIVOS")}</small><h2 id="climate-detail-title">{__text(indicator.name)}</h2></header>
           <div className="climate-detail-filters">
             <label>{__text("Ano")}<select value={year} onChange={e => setYear(e.target.value)}>{availableYears.map(y => <option key={y}>{y}</option>)}</select></label>
             <label>{__text("Período de análise")}<select value={period} onChange={e => setPeriod(e.target.value)}><option value="12">{__text("12 meses")}</option><option value="6">{__text("6 meses (Jul–Dez)")}</option></select></label>
             <strong style={{ color: indicator.color }}>{climateValue(climateIndicator)} <small>{climateValues(climateIndicator).length ? indicator.unit : ""}</small></strong>
           </div>
           <Chart kind={climateIndicator} large />
-          <section className="climate-detail-explanation"><h3>{__text("Interpretação e limitações")}</h3><p>{__text(indicator.description)}</p><p>{__text(indicator.limitation)}</p><p>{__text("As linhas tracejadas são ilustrativas; não representam uma previsão meteorológica.")}</p></section>
+          <section className="climate-detail-explanation"><h3>{__text("Interpretação e limitações")}</h3><p>{__text(indicator.description)}</p><p>{__text(indicator.limitation)}</p>{!isPower(climateIndicator) && <p>{__text("As linhas tracejadas são ilustrativas; não representam uma previsão meteorológica.")}</p>}</section>
         <div className="two-col">
           <section className="panel">
             <h2>{__text("Planeje com a sazonalidade")}</h2>
@@ -577,7 +609,7 @@ function App() {
           <section className="panel">
             <h2>{__text("Antes de decidir")}</h2>
             <h3>{__text("Hist\u00F3rico")}</h3>
-            <p>{__text("Observa\u00E7\u00F5es passadas, aqui representadas por exemplos fict\u00EDcios.")}</p>
+            <p>{__text(isPower(climateIndicator) ? "Observações passadas: médias mensais da NASA POWER no ponto da propriedade." : "Observações passadas, aqui representadas por exemplos fictícios.")}</p>
             <h3 className="warm">{__text("Estimativas e proje\u00E7\u00F5es")}</h3>
             <p>{__text("S\u00E3o aproxima\u00E7\u00F5es com incerteza. Linhas tracejadas n\u00E3o s\u00E3o observa\u00E7\u00F5es.")}</p>
           </section>

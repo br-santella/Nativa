@@ -107,3 +107,31 @@ def test_monitoring_endpoint_validates_point(client, monkeypatch):
     assert client.get('/v1/monitoramento?lat=-24.81&lon=-53.55').json()['point']['lat'] == -24.81
     assert client.get('/v1/monitoramento?lat=91&lon=0').status_code == 422
     assert client.get('/v1/monitoramento?lat=nan&lon=0').status_code == 422
+
+
+def test_monthly_climate_rain_total_and_unpublished_months(monkeypatch):
+    t2m = {f'2024{m:02d}': 20.0 for m in range(1, 13)} | {'202413': 20.0}
+    rain = {f'2024{m:02d}': 2.0 for m in range(1, 13)} | {'202413': 2.0}
+    t2m['202411'] = t2m['202412'] = rain['202412'] = -999.0
+    payload = {'parameters': {'T2M': {'units': 'C'}, 'PRECTOTCORR': {'units': 'mm/day'}},
+               'properties': {'parameter': {'T2M': t2m, 'PRECTOTCORR': rain}}}
+    monkeypatch.setattr(m, '_get', lambda *a, **kw: payload)
+    result = m.monthly_climate(-24.8, -53.5, 2024)
+    assert result['temperature'][:10] == [20.0] * 10 and result['temperature'][10:] == [None, None]
+    assert result['precipitation'][0] == 62.0   # 2 mm/day × 31 days
+    assert result['precipitation'][1] == 58.0   # leap February: 29 days
+    assert result['precipitation'][11] is None
+    payload['parameters']['PRECTOTCORR']['units'] = 'mm'
+    with pytest.raises(ValueError):
+        m.monthly_climate(-24.8, -53.5, 2024)
+
+
+def test_monthly_climate_route_maps_provider_failure_to_504(monkeypatch):
+    from fastapi.testclient import TestClient
+    from field_shift_api.main import app
+
+    def down(*a, **kw):
+        raise requests.ConnectionError('down')
+    monkeypatch.setattr(m, '_get', down)
+    response = TestClient(app, raise_server_exceptions=False).get('/v1/clima/mensal', params={'lat': -24.8, 'lon': -53.5, 'ano': 2024})
+    assert response.status_code == 504 and response.json()['erro'] == 'timeout_externo'
