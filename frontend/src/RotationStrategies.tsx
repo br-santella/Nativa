@@ -14,6 +14,7 @@ import { rotationCalendar } from "./rotationCalendar";
 import type { MonthUse } from "./rotationCalendar";
 import type { CriterionId } from "./priorities";
 import ScenarioDetail from "./ScenarioDetail";
+import SoilBadges from "./SoilBadges";
 import "./rotation-strategies.css";
 
 const DEMO_FIELD = "72638";
@@ -228,7 +229,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
       ? say(`A sua rotação de hoje (${current.rotacao}) foi eliminada pelas regras do motor, então as opções não têm com o que ser comparadas.`, `Your current rotation (${current.rotacao}) was ruled out by the engine rules, so the options have nothing to be compared with.`)
       : <>{say("Comparadas com a sua rotação de hoje:", "Compared with your rotation today:")} <strong>{current.rotacao}</strong> · {say("nota", "score")} <strong>{score(current.nota)}</strong>{current.posicao != null && evaluated > 0 ? say(` (${current.posicao}ª entre ${evaluated} avaliadas)`, ` (#${current.posicao} of ${evaluated} evaluated)`) : ""}</>}</p>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
-     <div className="rs-cards" style={{ "--rs-cols": options.length <= 4 ? options.length : Math.ceil(options.length / 2) } as CSSProperties}>
+     <div className="rs-cards" style={{ "--rs-cols": options.length <= 3 ? Math.max(options.length, 1) : options.length === 4 ? 2 : 3 } as CSSProperties}>
       {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
        compared={target?.id === item.id} onCompare={() => compareWith(item.id)} onDetails={() => setDetailId(item.id)}/>)}
@@ -323,10 +324,7 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
         </dd></div>;
       })}
      </dl>
-     {!compact && <>
-     <div className="rs-card-note is-benefit"><small>{say("Benefício potencial", "Potential benefit")}</small><p>{item.card?.beneficios[0] ?? say("Sem benefício marcante nos critérios avaliados.", "No notable benefit in the criteria evaluated.")}</p></div>
-     <div className="rs-card-note is-attention"><small>{say("Ponto de atenção", "Point of attention")}</small><p>{item.card?.riscos[0] ?? "—"}</p></div>
-     </>}
+     <SoilBadges item={item} baseline={baseline} en={en}/>
     </>}
    </div>
    {!compact && <div className="rs-card-actions">

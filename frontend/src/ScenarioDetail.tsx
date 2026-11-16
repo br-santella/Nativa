@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import type { Bloco, ItemRanking } from "./api";
 import { CRITERIA, levelLabel } from "./priorities";
+import { CROP_ROLES, bareSoilDays } from "./cropRoles";
+import SoilBadges from "./SoilBadges";
 
 type Props = {
   item: ItemRanking;
@@ -47,6 +49,8 @@ export default function ScenarioDetail({ item, current, block, rank, evaluated, 
   const noClimateRisk = !climate && item.criterios != null && item.criterios.risco >= 1;
   const estimated = (uncertainty?.criterios_estimados ?? []).map(id => CRITERIA.find(c => c.id === id)).filter(Boolean);
   const attention = [...(card?.riscos ?? []), ...(card?.avisos ?? [])];
+  const roles = item.segunda ? CROP_ROLES[item.segunda.id] ?? [] : [];
+  const bareDays = bareSoilDays(card?.evidencias);
   const secondName = item.segunda?.id === "pousio" ? say("Pousio", "Fallow") : item.segunda?.nome;
   // Engine enums: `confianca` is "baixa" or "não validada" ("not validated" in English); `mercado.nivel` stays in Portuguese.
   const confidence = (level: string) => ({ baixa: say("confiança baixa", "low confidence"), low: say("confiança baixa", "low confidence"),
@@ -104,6 +108,11 @@ export default function ScenarioDetail({ item, current, block, rank, evaluated, 
        </li>;
      })}
     </ul>
+    {(roles.length > 0 || bareDays != null) && <div className="sd-roles">
+     <span className="sd-roles-title">{say(`O que ${secondName ?? "a 2ª safra"} faz pelo solo`, `What ${secondName ?? "the second crop"} does for the soil`)}</span>
+     <SoilBadges item={item} baseline={baseline} en={en}/>
+     {roles.some(r => !r.scored) && <small className="sd-roles-note">{say("Selos tracejados: efeito agronômico conhecido, que não entra no cálculo da nota.", "Dashed badges: known agronomic effect, not part of the score.")}</small>}
+    </div>}
     {item.margem && <p className="sd-foot">{say("Margem estimada da rotação", "Estimated rotation margin")}: <strong>{money(item.margem.total_r_ha)}/ha</strong> {say("por ano", "per year")}</p>}
    </section>}
 
