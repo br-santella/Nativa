@@ -122,11 +122,14 @@
 .rs-traits dd small { color: var(--rs-faint); font-size: 12px; font-variant-numeric: tabular-nums; }
 .rs-traits .is-up { color: var(--rs-up); }
 .rs-traits .is-down { color: var(--rs-down); }
-.rs-card-actions { display: grid; gap: 10px; justify-items: center; padding: 0 18px 18px; }
+/* The two card actions share one line, at equal width. */
+.rs-card-actions { display: flex; gap: 10px; padding: 0 18px 18px; }
+.rs-card-actions > .rs-card-button { flex: 1 1 0; min-width: 0; }
 .rs-card-button { width: 100%; padding: 11px 12px; border: 0; border-radius: 10px; background: var(--agro-button); color: #e7ecdf; font-size: 14px; font-weight: 500; cursor: pointer; }
 .rs-card-button.is-primary { background: var(--rs-yellow); color: #152217; }
+.rs-card-button.is-outline { background: transparent; border: 1px solid var(--rs-line); color: var(--rs-text); }
+.rs-card-button.is-outline:hover { border-color: #ffbf2280; }
 .rs-card-button:focus-visible { outline: 2px solid var(--rs-yellow); outline-offset: 3px; }
-.rs-card-actions .rs-link-button { justify-self: center; }
 .rs-warning { color: #ffd0b3; font-size: 14px; line-height: 1.6; }
 
 /* 03 · one integrated panel: today | gains and losses | option */
@@ -291,4 +294,5 @@
 @container (max-width: 250px) {
   .rs-card-sequence { grid-template-columns: minmax(0, 1fr); }
   .rs-card-sequence-arrow { display: none; }
+  .rs-card-actions { flex-direction: column; }
 }
