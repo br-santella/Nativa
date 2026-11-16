@@ -237,6 +237,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
        compared={target?.id === item.id} onCompare={() => compareWith(item.id)} onDetails={() => setDetailId(item.id)}/>)}
      </div>
      {detail && <ScenarioDetail item={detail} current={current} block={block} rank={options.indexOf(detail) + 1} evaluated={evaluated} en={en} money={money}
+      harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} pesos={committed}
       onClose={() => setDetailId(null)} onCompare={() => { setDetailId(null); compareWith(detail.id); }}/>}
      <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
       "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
