@@ -1,7 +1,7 @@
 // "Estratégias de Rotação": the engine's result explained to the farmer.
 // 01 priorities (from the setup, editable) -> 02 the options chosen in the setup -> 03 current rotation vs one option.
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { ApiError, health, recomendacao } from "./api";
 import type { DataOrigem, Health, ItemRanking, Lang, Pesos, Recomendacao } from "./api";
 import type { SetupInputs } from "./PropertyWizard";
@@ -172,7 +172,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
   const statusLine = error?.codigo === "sem_conexao" ? null : (loading || pending) && res ? say("Atualizando resultados…", "Updating results…") : null;
 
   const comparison = res && current && target && <section className="rs-section" ref={compareRef}>
-    <header className="rs-heading">{!comparisonOnly && <span className="rs-step">03</span>}<div>
+    <header className="rs-heading is-wide">{!comparisonOnly && <span className="rs-step">03</span>}<div>
      <h2>{say("Compare lado a lado", "Compare side by side")}</h2>
      <p>{say("Sua rotação de hoje, à esquerda, contra uma das opções, à direita. No meio, o que você ganha e o que perde ao trocar; use as setas para passar pelas opções.", "Your rotation today on the left against one of the options on the right. In the middle, what you gain and lose by switching; use the arrows to go through the options.")}</p>
     </div></header>
@@ -200,7 +200,14 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
      <h2>{farm.name || say("Sua propriedade", "Your farm")}</h2>
      <p className="rs-summary-place">{[farm.city, farm.area && `${Number.isFinite(Number(farm.area)) ? Number(farm.area).toLocaleString(en ? "en-US" : "pt-BR", { maximumFractionDigits: 1 }) : farm.area} ha`].filter(Boolean).join(" · ")}</p>
      <ul className="rs-facts">
-      <li><span className="rs-fact-icon" aria-hidden="true">⟳</span><div><small>{say("Rotação atual", "Current rotation")}</small><strong>{current?.rotacao ?? "—"}</strong></div></li>
+      <li><span className="rs-fact-icon" aria-hidden="true">⟳</span><div><small>{say("Rotação atual", "Current rotation")}</small>
+       {current?.verao && current.segunda
+        ? <div className="rs-card-sequence rs-facts-sequence" aria-label={current.rotacao}>
+           <span className="is-summer"><small>{say("Verão", "Summer")}</small><strong>{current.verao.nome}</strong></span>
+           <span className="rs-card-sequence-arrow" aria-hidden="true">→</span>
+           <span className="is-second"><small>{say("2ª safra", "2nd season")}</small><strong>{current.segunda.id === "pousio" ? say("Pousio", "Fallow") : current.segunda.nome}</strong></span>
+          </div>
+        : <strong>{current?.rotacao ?? "—"}</strong>}</div></li>
       <li><span className="rs-fact-icon" aria-hidden="true">☀</span><div><small>{say("Colheita do verão", "Summer harvest")}</small><strong>{res?.colheita_estimada ? `~${res.colheita_estimada.data}` : "—"}</strong>{res?.colheita_estimada && <em>{origin(res.colheita_estimada.origem)}</em>}</div></li>
       <li><span className="rs-fact-icon" aria-hidden="true">✿</span><div><small>{say("Semeadura da 2ª safra", "Second-crop sowing")}</small><strong>{res?.semeadura_2a?.data ?? "—"}</strong>{res?.semeadura_2a && <em>{origin(res.semeadura_2a.origem)}</em>}</div></li>
      </ul>
@@ -215,7 +222,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
 
    {/* 02 · options */}
    <section className="rs-section">
-    <header className="rs-heading rs-heading-row"><span className="rs-step">02</span><div>
+    <header className="rs-heading rs-heading-row is-wide"><span className="rs-step">02</span><div>
      <h2>{say("Suas opções", "Your options")}</h2>
      <p>{say(`As ${count} alternativas com maior nota para as suas prioridades. A nota vai de 0 a 100 e junta os cinco critérios com os pesos acima.`,
       `The ${count} alternatives with the highest score for your priorities. The score goes from 0 to 100 and combines the five criteria with the weights above.`)}</p>
@@ -229,19 +236,23 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
     {!res ? <Placeholder error={error} degraded={api != null && api.status !== "ok"} en={en}/> : <>
      {current && <p className="rs-baseline">{current.eliminada
       ? say(`A sua rotação de hoje (${current.rotacao}) foi eliminada pelas regras do motor, então as opções não têm com o que ser comparadas.`, `Your current rotation (${current.rotacao}) was ruled out by the engine rules, so the options have nothing to be compared with.`)
-      : <>{say("Comparadas com a sua rotação de hoje:", "Compared with your rotation today:")} <strong>{current.rotacao}</strong> · {say("nota", "score")} <strong>{score(current.nota)}</strong>{current.posicao != null && evaluated > 0 ? say(` (${current.posicao}ª entre ${evaluated} avaliadas)`, ` (#${current.posicao} of ${evaluated} evaluated)`) : ""}</>}</p>}
+      : <span className="rs-baseline-note" title={`${current.rotacao} · ${say("nota", "score")} ${score(current.nota)}`}>{say("Comparadas com a sua rotação atual", "Compared with your current rotation")}</span>}</p>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
-     <div className="rs-cards" style={{ "--rs-cols": options.length <= 3 ? Math.max(options.length, 1) : options.length === 4 ? 2 : 3 } as CSSProperties}>
+     {/* One scrolling row: up to 3 cards visible (2 on medium screens, 1 on phones), so more options do not make the page taller. */}
+     <CardRow count={options.length} en={en}>
       {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
        compared={target?.id === item.id} onCompare={() => compareWith(item.id)} onDetails={() => setDetailId(item.id)}/>)}
-     </div>
+     </CardRow>
      {detail && <ScenarioDetail item={detail} current={current} block={block} rank={options.indexOf(detail) + 1} evaluated={evaluated} en={en} money={money}
       harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} pesos={committed}
       onClose={() => setDetailId(null)} onCompare={() => { setDetailId(null); compareWith(detail.id); }}/>}
-     <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
-      "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
-     {onGlossary && <button type="button" className="rs-link-button" onClick={onGlossary}>{say("O que cada cultura faz pelo solo →", "What each crop does for the soil →")}</button>}
+     {options.length > 1 && <p className="rs-cards-hint" data-count={Math.min(options.length, 4)} aria-hidden="true">{say("Role para o lado para ver mais opções →", "Scroll sideways to see more options →")}</p>}
+     <div className="rs-cards-foot">
+      <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
+       "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
+      {onGlossary && <button type="button" className="rs-link-button" onClick={onGlossary}>{say("O que cada cultura faz pelo solo →", "What each crop does for the soil →")}</button>}
+     </div>
     </>}
    </section>
 
@@ -269,6 +280,35 @@ function Placeholder({ error, degraded, en }: { error: ApiError | null; degraded
     : error.codigo === "sem_conexao" ? say("Não foi possível conectar ao motor agora. Tente de novo em instantes.", "Could not reach the engine right now. Try again in a moment.") : error.message}</p>;
   if (degraded) return <p className="rs-error" role="alert">{say("O motor está sem os dados necessários no momento. Tente novamente mais tarde.", "The engine is missing the data it needs right now. Please try again later.")}</p>;
   return <div className="rs-loading" role="status"><span/>{say("Calculando as opções para a sua área…", "Working out the options for your land…")}</div>;
+}
+
+/** The option cards in one scrolling row, with ‹ › buttons that move one card at a time while there is more to see. */
+function CardRow({ count, en, children }: { count: number; en: boolean; children: ReactNode }) {
+  const say = (pt: string, english: string) => (en ? english : pt);
+  const ref = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ prev: false, next: false });
+  useEffect(() => {
+    const row = ref.current;
+    if (!row) return;
+    const update = () => setEdges({ prev: row.scrollLeft > 4, next: row.scrollLeft + row.clientWidth < row.scrollWidth - 4 });
+    update();
+    row.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(row);
+    return () => { row.removeEventListener("scroll", update); observer.disconnect(); };
+  }, [count]);
+  const step = (direction: number) => {
+    const row = ref.current, card = row?.querySelector<HTMLElement>(".rs-card");
+    if (!row || !card) return;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    row.scrollBy({ left: direction * (card.offsetWidth + 14), behavior: smooth ? "smooth" : "auto" });
+  };
+  return <div className="rs-cards-wrap">
+   {edges.prev && <button type="button" className="rs-cards-arrow is-prev" aria-label={say("Opções anteriores", "Previous options")} onClick={() => step(-1)}>‹</button>}
+   <div ref={ref} className="rs-cards" role="region" tabIndex={0} aria-label={say("Opções de rotação", "Rotation options")} data-count={Math.min(count, 4)}
+    style={{ "--rs-cols": Math.min(Math.max(count, 1), 3) } as CSSProperties}>{children}</div>
+   {edges.next && <button type="button" className="rs-cards-arrow is-next" aria-label={say("Próximas opções", "Next options")} onClick={() => step(1)}>›</button>}
+  </div>;
 }
 
 type MoneyFns = { money: (v: number) => string; signedMoney: (v: number) => string };
@@ -332,7 +372,7 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
     </>}
    </div>
    {!compact && <div className="rs-card-actions">
-    {item.card && onDetails && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-haspopup="dialog" onClick={onDetails}>{say("Entender este cenário →", "Understand this scenario →")}</button>}
+    {item.card && onDetails && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-haspopup="dialog" onClick={onDetails}>{say("Entender este cenário\u00a0→", "Understand this scenario\u00a0→")}</button>}
     {onCompare && <button type="button" className="rs-card-button is-outline" onClick={onCompare}>{say("Comparar com a de hoje", "Compare with today’s")}</button>}
    </div>}
   </article>;
@@ -387,25 +427,30 @@ function Versus({ current, option, rank, total, en, money, signedMoney, onStep }
     <b>{p.delta}</b>
    </li>)}</ul>;
   return <div className="rs-versus-middle">
-   <div className="rs-versus-nav">
-    <button type="button" onClick={() => onStep(-1)} disabled={total < 2} aria-label={say("Opção anterior", "Previous option")}>‹</button>
-    <span>{say(`Opção #${rank} de ${total}`, `Option #${rank} of ${total}`)}</span>
-    <button type="button" onClick={() => onStep(1)} disabled={total < 2} aria-label={say("Próxima opção", "Next option")}>›</button>
-   </div>
+   <header className="rs-versus-head">
+    <span className="rs-versus-eyebrow">{say("O que muda ao trocar", "What changes if you switch")}</span>
+    <div className="rs-versus-nav">
+     <button type="button" onClick={() => onStep(-1)} disabled={total < 2} aria-label={say("Opção anterior", "Previous option")}><span aria-hidden="true">‹</span> {say("Anterior", "Previous")}</button>
+     <span className="rs-versus-count" aria-live="polite">{say(`Opção ${rank} de ${total}`, `Option ${rank} of ${total}`)}
+      {total > 1 && <span className="rs-versus-dots" aria-hidden="true">{Array.from({ length: total }, (_, i) => <i key={i} className={i === rank - 1 ? "is-on" : ""}/>)}</span>}</span>
+     <button type="button" onClick={() => onStep(1)} disabled={total < 2} aria-label={say("Próxima opção", "Next option")}>{say("Próxima", "Next")} <span aria-hidden="true">›</span></button>
+    </div>
+   </header>
    {cs != null && <div className="rs-versus-score">
-    <span>{say("Nota geral", "Overall score")}</span>
-    <strong>{cs} → {os}</strong>
-    <b className={os > cs ? "is-up" : os < cs ? "is-down" : ""}>{os === cs ? say("igual", "same") : `${os > cs ? "+" : "−"}${Math.abs(os - cs)} ${say("pontos", "points")}`}</b>
+    <span className="rs-versus-score-side"><small>{say("Hoje", "Today")}</small><strong>{cs}</strong></span>
+    <span className="rs-versus-score-arrow" aria-hidden="true">→</span>
+    <span className="rs-versus-score-side is-option"><small>{say(`Opção ${rank}`, `Option ${rank}`)}</small><strong>{os}</strong></span>
+    <b className={"rs-versus-delta " + (os > cs ? "is-up" : os < cs ? "is-down" : "is-same")}>{os === cs ? say("nota igual", "same score") : `${os > cs ? "+" : "−"}${Math.abs(os - cs)} ${say("pontos", "points")}`}</b>
    </div>}
-   <div className="rs-versus-block">
-    <h4 className="is-up">{say(`Vantagens ao trocar (${pros.length})`, `Gains from switching (${pros.length})`)}</h4>
+   <div className="rs-versus-block is-up">
+    <h4>{say("Vantagens ao trocar", "Gains from switching")} <span className="rs-versus-tally">{pros.length}</span></h4>
     {pros.length ? list(pros) : <p className="rs-versus-empty">{say("Nenhuma em relação a hoje.", "None compared with today.")}</p>}
    </div>
-   <div className="rs-versus-block">
-    <h4 className="is-down">{say(`Desvantagens ao trocar (${cons.length})`, `Losses from switching (${cons.length})`)}</h4>
+   <div className="rs-versus-block is-down">
+    <h4>{say("Desvantagens ao trocar", "Losses from switching")} <span className="rs-versus-tally">{cons.length}</span></h4>
     {cons.length ? list(cons) : <p className="rs-versus-empty">{say("Nenhuma em relação a hoje.", "None compared with today.")}</p>}
    </div>
-   {same.length > 0 && <p className="rs-versus-same">{say("Sem diferença: ", "No difference: ")}{same.join(", ")}</p>}
+   {same.length > 0 && <div className="rs-versus-same"><span>{say("Sem diferença", "No difference")}</span>{same.map(s => <i key={s}>{s}</i>)}</div>}
    {option.card?.por_que && <details className="rs-versus-why"><summary>{say("O que muda, segundo o motor", "What changes, according to the engine")}</summary><p>{option.card.por_que}</p></details>}
   </div>;
 }
