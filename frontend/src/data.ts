@@ -133,6 +133,22 @@ export const info = {
         "Diferença em relação ao normal da mesma época. Separa uma seca fora do comum da estação seca esperada.",
       ],
       [
+        "Fixadoras de nitrogênio",
+        "Leguminosas, como crotalária e soja, captam nitrogênio do ar com bactérias nas raízes e deixam parte dele no solo para a cultura seguinte.",
+      ],
+      [
+        "Plantas de cobertura",
+        "Aveia, milheto e braquiária mantêm o solo coberto entre safras. A palha reduz erosão e evaporação e, ao se decompor, aumenta a matéria orgânica.",
+      ],
+      [
+        "Raízes profundas",
+        "Nabo forrageiro e braquiária abrem canais em camadas compactadas, melhoram a infiltração da água e trazem nutrientes do fundo para a superfície.",
+      ],
+      [
+        "Tolerantes à seca",
+        "Sorgo e milheto produzem com menos água que o milho, o que reduz o risco de perda em anos de veranico.",
+      ],
+      [
         "Evapotranspiração de referência (ET0)",
         "Água que solo e plantas perdem para o ar, em mm por dia. Quanto maior, mais água a lavoura consome.",
       ],
