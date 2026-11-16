@@ -21,7 +21,7 @@
 .rs-step { flex: 0 0 auto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #ffbf2266; background: #ffbf2212; color: var(--rs-yellow); font-size: 13px; font-variant-numeric: tabular-nums; }
 .rs-heading h2 { font-size: 24px; font-weight: 500; letter-spacing: -.3px; line-height: 1.3; }
 .rs-heading p { margin-top: 5px; color: var(--rs-muted); font-size: 14px; line-height: 1.6; max-width: 760px; }
-.rs-heading.is-wide > div { flex: 1; }
+.rs-heading.is-wide > div:not(.rs-count) { flex: 1 1 360px; }
 .rs-heading.is-wide p { max-width: none; }
 
 /* Top row: land summary | priorities */
@@ -38,6 +38,11 @@
 .rs-facts small { display: block; color: var(--rs-faint); font-size: 12px; }
 .rs-facts strong { display: block; font-size: 17px; font-weight: 500; line-height: 1.35; font-variant-numeric: tabular-nums; }
 .rs-facts em { display: block; color: var(--rs-muted); font-size: 12px; font-style: normal; }
+/* Current rotation as the same crop chips as the option cards. */
+.rs-facts-sequence { margin-top: 6px; }
+.rs-facts .rs-facts-sequence small { display: block; color: #b9c9b8; font-size: 11px; letter-spacing: .5px; text-transform: uppercase; }
+.rs-facts .rs-facts-sequence > .is-second small { color: #e6d79c; }
+.rs-facts .rs-facts-sequence strong { font-size: 14px; font-weight: 600; line-height: 1.3; color: #f4f7ee; }
 
 /* 01 · priorities */
 .rs-profiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -76,11 +81,21 @@
 .rs-empty { color: var(--rs-muted); font-size: 14px; }
 .rs-baseline { color: var(--rs-muted); font-size: 14px; line-height: 1.6; }
 .rs-baseline strong { color: var(--rs-text); font-weight: 500; }
+.rs-baseline-note { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border: 1px solid var(--rs-line); border-radius: 999px; color: var(--rs-muted); font-size: 12px; }
+.rs-baseline-note::before { content: "⟳"; color: var(--rs-yellow); }
 
-/* Option grid: up to 3 per row (1–3 in one row, 4 as 2 + 2, 5 as 3 + 2, 6 as 3 + 3; --rs-cols set by the page).
-   Flex wrap, so the last row also fills the full width. Medium screens: at most 2 per row; phones: 1. */
-.rs-cards { --rs-grid-cols: var(--rs-cols, 3); display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; }
-.rs-cards > .rs-card { flex: 1 1 calc((100% - (var(--rs-grid-cols) - 1) * 14px) / var(--rs-grid-cols)); }
+/* Options in one horizontal scrolling row (--rs-cols = visible cards, at most 3, set by the page):
+   1–3 options fill the width with no scrolling; more options scroll sideways, snapping card by card. */
+.rs-cards { --rs-grid-cols: var(--rs-cols, 3); display: flex; gap: 14px; align-items: stretch; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 2px;
+  padding: 2px 2px 12px; scrollbar-width: thin; scrollbar-color: var(--rs-line) transparent; }
+.rs-cards > .rs-card { flex: 0 0 calc((100% - (var(--rs-grid-cols) - 1) * 14px) / var(--rs-grid-cols)); scroll-snap-align: start; }
+.rs-cards::-webkit-scrollbar { height: 8px; }
+.rs-cards::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--rs-line); }
+.rs-cards::-webkit-scrollbar-thumb:hover { background: #ffbf2266; }
+.rs-cards:focus-visible { outline: 2px solid var(--rs-yellow); outline-offset: 4px; border-radius: 16px; }
+/* Scroll hint only when the row overflows: more than 3 cards (wide), more than 2 (medium), more than 1 (phone). */
+.rs-cards-hint { display: none; margin-top: -10px; color: var(--rs-faint); font-size: 12px; text-align: right; }
+.rs-cards-hint[data-count="4"] { display: block; }
 .rs-cards-legend { color: var(--rs-faint); font-size: 13px; line-height: 1.6; }
 /* Legend and glossary link on one line; the link wraps below on narrow screens. */
 .rs-cards-foot { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
@@ -201,7 +216,8 @@
 .rs-notes summary { padding: 13px 0; font-size: 14px; color: #cfdbc9; cursor: pointer; }
 .rs-notes ul { margin: 0 0 14px; padding-left: 18px; display: grid; gap: 6px; font-size: 13px; line-height: 1.6; color: var(--rs-muted); }
 .rs-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; padding-top: 16px; border-top: 1px solid var(--rs-soft-line); }
-.rs-footer p { color: var(--rs-faint); font-size: 13px; line-height: 1.6; max-width: 720px; }
+.rs-footer p { flex: 1 1 480px; color: var(--rs-faint); font-size: 13px; line-height: 1.6; }
+.rs-footer > .rs-link-button { align-self: center; white-space: nowrap; }
 
 @media (max-width: 1100px) {
   .rs-top { grid-template-columns: 1fr; gap: 28px; }
@@ -209,6 +225,7 @@
   .rs-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rs-facts li:first-child { grid-column: auto; }
   .rs-cards { --rs-grid-cols: min(var(--rs-cols, 3), 2); }
+  .rs-cards-hint[data-count="3"] { display: block; }
   .rs-versus { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rs-versus-middle { grid-column: 1 / -1; order: 3; border: 0; border-top: 1px solid var(--rs-soft-line); }
   .rs-versus > .rs-card + .rs-card { border-left: 1px solid var(--rs-soft-line); }
@@ -220,6 +237,9 @@
   .rs-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rs-facts li:first-child { grid-column: 1 / -1; }
   .rs-cards { --rs-grid-cols: 1; }
+  .rs-cards > .rs-card { flex-basis: 86%; }
+  .rs-cards > .rs-card:only-child { flex-basis: 100%; }
+  .rs-cards-hint[data-count="2"] { display: block; }
   .rs-count { margin-left: 0; }
   .rs-versus > .rs-card + .rs-card { border-left: 0; border-top: 1px solid var(--rs-soft-line); }
 }

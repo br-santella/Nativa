@@ -200,7 +200,14 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
      <h2>{farm.name || say("Sua propriedade", "Your farm")}</h2>
      <p className="rs-summary-place">{[farm.city, farm.area && `${Number.isFinite(Number(farm.area)) ? Number(farm.area).toLocaleString(en ? "en-US" : "pt-BR", { maximumFractionDigits: 1 }) : farm.area} ha`].filter(Boolean).join(" · ")}</p>
      <ul className="rs-facts">
-      <li><span className="rs-fact-icon" aria-hidden="true">⟳</span><div><small>{say("Rotação atual", "Current rotation")}</small><strong>{current?.rotacao ?? "—"}</strong></div></li>
+      <li><span className="rs-fact-icon" aria-hidden="true">⟳</span><div><small>{say("Rotação atual", "Current rotation")}</small>
+       {current?.verao && current.segunda
+        ? <div className="rs-card-sequence rs-facts-sequence" aria-label={current.rotacao}>
+           <span className="is-summer"><small>{say("Verão", "Summer")}</small><strong>{current.verao.nome}</strong></span>
+           <span className="rs-card-sequence-arrow" aria-hidden="true">→</span>
+           <span className="is-second"><small>{say("2ª safra", "2nd season")}</small><strong>{current.segunda.id === "pousio" ? say("Pousio", "Fallow") : current.segunda.nome}</strong></span>
+          </div>
+        : <strong>{current?.rotacao ?? "—"}</strong>}</div></li>
       <li><span className="rs-fact-icon" aria-hidden="true">☀</span><div><small>{say("Colheita do verão", "Summer harvest")}</small><strong>{res?.colheita_estimada ? `~${res.colheita_estimada.data}` : "—"}</strong>{res?.colheita_estimada && <em>{origin(res.colheita_estimada.origem)}</em>}</div></li>
       <li><span className="rs-fact-icon" aria-hidden="true">✿</span><div><small>{say("Semeadura da 2ª safra", "Second-crop sowing")}</small><strong>{res?.semeadura_2a?.data ?? "—"}</strong>{res?.semeadura_2a && <em>{origin(res.semeadura_2a.origem)}</em>}</div></li>
      </ul>
@@ -215,7 +222,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
 
    {/* 02 · options */}
    <section className="rs-section">
-    <header className="rs-heading rs-heading-row"><span className="rs-step">02</span><div>
+    <header className="rs-heading rs-heading-row is-wide"><span className="rs-step">02</span><div>
      <h2>{say("Suas opções", "Your options")}</h2>
      <p>{say(`As ${count} alternativas com maior nota para as suas prioridades. A nota vai de 0 a 100 e junta os cinco critérios com os pesos acima.`,
       `The ${count} alternatives with the highest score for your priorities. The score goes from 0 to 100 and combines the five criteria with the weights above.`)}</p>
@@ -229,9 +236,11 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
     {!res ? <Placeholder error={error} degraded={api != null && api.status !== "ok"} en={en}/> : <>
      {current && <p className="rs-baseline">{current.eliminada
       ? say(`A sua rotação de hoje (${current.rotacao}) foi eliminada pelas regras do motor, então as opções não têm com o que ser comparadas.`, `Your current rotation (${current.rotacao}) was ruled out by the engine rules, so the options have nothing to be compared with.`)
-      : <>{say("Comparadas com a sua rotação de hoje:", "Compared with your rotation today:")} <strong>{current.rotacao}</strong> · {say("nota", "score")} <strong>{score(current.nota)}</strong>{current.posicao != null && evaluated > 0 ? say(` (${current.posicao}ª entre ${evaluated} avaliadas)`, ` (#${current.posicao} of ${evaluated} evaluated)`) : ""}</>}</p>}
+      : <span className="rs-baseline-note" title={`${current.rotacao} · ${say("nota", "score")} ${score(current.nota)}`}>{say("Comparadas com a sua rotação atual", "Compared with your current rotation")}</span>}</p>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
-     <div className="rs-cards" style={{ "--rs-cols": options.length <= 3 ? Math.max(options.length, 1) : options.length === 4 ? 2 : 3 } as CSSProperties}>
+     {/* One scrolling row: up to 3 cards visible (2 on medium screens, 1 on phones), so more options do not make the page taller. */}
+     <div className="rs-cards" role="region" tabIndex={0} aria-label={say("Opções de rotação", "Rotation options")}
+      style={{ "--rs-cols": Math.min(Math.max(options.length, 1), 3) } as CSSProperties}>
       {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
        compared={target?.id === item.id} onCompare={() => compareWith(item.id)} onDetails={() => setDetailId(item.id)}/>)}
@@ -239,6 +248,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
      {detail && <ScenarioDetail item={detail} current={current} block={block} rank={options.indexOf(detail) + 1} evaluated={evaluated} en={en} money={money}
       harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} pesos={committed}
       onClose={() => setDetailId(null)} onCompare={() => { setDetailId(null); compareWith(detail.id); }}/>}
+     {options.length > 1 && <p className="rs-cards-hint" data-count={Math.min(options.length, 4)} aria-hidden="true">{say("Role para o lado para ver mais opções →", "Scroll sideways to see more options →")}</p>}
      <div className="rs-cards-foot">
       <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
        "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
