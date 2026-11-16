@@ -273,6 +273,7 @@
  "NASA POWER 1991–2024, célula ~50 km": "NASA POWER 1991–2024, ~50 km cell",
  "NASA POWER 1991–2024, célula ~50 km (%s)": "NASA POWER 1991–2024, ~50 km cell (%s)",
  "NASA POWER ao vivo (ponto do centróide)": "NASA POWER live (centroid point)",
+ "NASA POWER indisponível.": "NASA POWER unavailable.",
  "NASA POWER unavailable and no disk cache: {0}": "NASA POWER unavailable and no disk cache: {0}",
  "NASA POWER {0}, ponto do centróide": "NASA POWER {0}, centroid point",
  "NC = ({0} − V% {1})/100 × CTC {2} / PRNT {3} = {4} t/ha × R$ {5}/t, diluída em {6} anos; fórmula do Manual PR (SENAR-AR/PR PR.0404) com PRNT de referência da {7}; V2: {8}; preço do calcário, teto de 6 t/ha e diluição em 3 anos: {9}{10}": "LR = ({0} − V% {1})/100 × CEC {2} / ECCE {3} = {4} t/ha × R$ {5}/t, spread over {6} years; Paraná Manual formula (SENAR-AR/PR PR.0404) with the reference ECCE of {7}; V2: {8}; limestone price, 6 t/ha cap and 3-year spread: {9}{10}",

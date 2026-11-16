@@ -49,6 +49,7 @@ the client sends all the data with every request.
 | POST | `/v1/diagnostico` | Terrain, soil, MapBiomas history, detected rotation, climate and risks, yields |
 | POST | `/v1/recomendacao` | Ranking, current rotation, alternatives, eliminated rotations, cards |
 | GET | `/v1/clima` | Climate block only, for a point |
+| GET | `/v1/clima/mensal` | Monthly mean temperature (°C) and rainfall total (mm) of one year at a point (`lat`, `lon`, `ano`), from NASA POWER |
 | GET, POST | `/v1/contexto` | Current conditions (ENSO, SMAP, MJO, pests). Informational: does not change the score |
 
 ### Area (shared by `/diagnostico`, `/recomendacao` and `POST /contexto`)

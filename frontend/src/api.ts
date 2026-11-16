@@ -118,3 +118,9 @@ export type Monitoring = { indicators: Record<string, MonitoringIndicator> };
 export function getMonitoring(lat: number, lon: number, signal: AbortSignal) {
   return request<Monitoring>(`/v1/monitoramento?lat=${lat}&lon=${lon}`, { signal });
 }
+
+/** One calendar year of monthly NASA POWER climate at a point: Jan–Dec, `null` for months not published yet. */
+export type MonthlyClimate = { year: number; source: string; resolution: string; temperature: (number | null)[]; precipitation: (number | null)[] };
+export function getMonthlyClimate(lat: number, lon: number, year: string, signal: AbortSignal) {
+  return request<MonthlyClimate>(`/v1/clima/mensal?lat=${lat}&lon=${lon}&ano=${year}`, { signal });
+}

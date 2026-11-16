@@ -128,3 +128,25 @@ def monitor(lat, lon):
                 log.warning("Monitoring provider unavailable", exc_info=True)
                 continue
     return {"point": {"lat": lat, "lon": lon}, "queried_at": datetime.now(timezone.utc).isoformat(), "indicators": indicators}
+
+
+def monthly_climate(lat, lon, year):
+    """Monthly mean temperature (°C) and rainfall total (mm) of one calendar year at a point, from NASA POWER.
+
+    Months POWER has not published yet (or flags as -999) are `None`. Rainfall is the daily mean (`PRECTOTCORR`,
+    mm/day) times the days in the month: the monthly `_SUM` parameter carries a mm/day unit label, so it is not used.
+    """
+    data = _get("https://power.larc.nasa.gov/api/temporal/monthly/point", read_timeout=40, parameters="T2M,PRECTOTCORR",
+                community="AG", latitude=round(lat, 5), longitude=round(lon, 5), start=year, end=year, format="JSON")
+    if data["parameters"]["T2M"]["units"] != "C" or data["parameters"]["PRECTOTCORR"]["units"] != "mm/day":
+        raise ValueError("Unexpected provider units")
+    values = data["properties"]["parameter"]
+    temperature, precipitation = [], []
+    for month in range(1, 13):
+        key = f"{year}{month:02d}"
+        t2m, rain = values["T2M"].get(key), values["PRECTOTCORR"].get(key)
+        days = ((date(year + month // 12, month % 12 + 1, 1)) - date(year, month, 1)).days
+        temperature.append(round(t2m, 2) if _number(t2m, -100, 70) else None)
+        precipitation.append(round(rain * days, 1) if _number(rain, 0, 3000) else None)
+    return {"year": year, "point": {"lat": lat, "lon": lon}, "source": "NASA POWER", "url": "https://power.larc.nasa.gov/",
+            "resolution": "0.5° × 0.625°", "temperature": temperature, "precipitation": precipitation}

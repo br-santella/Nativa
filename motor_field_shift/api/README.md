@@ -77,6 +77,7 @@ without it returns 422); the only live fallback is the SoilGrids REST API, for a
 | POST | `/v1/diagnostico` | Full diagnosis of the area |
 | POST | `/v1/recomendacao` | Ranking of rotations (and, optionally, the diagnosis) |
 | GET | `/v1/clima` | Shortcut: only the diagnosis `clima` block for a point |
+| GET | `/v1/clima/mensal` | Monthly NASA POWER climate of one year at a point (`lat`, `lon`, `ano`): mean temperature (°C) and rainfall total (mm) for Jan–Dec, `null` for months not yet published; 504 `timeout_externo` when POWER fails |
 | GET, POST | `/v1/contexto` | Current conditions (informational): ENSO, SMAP soil moisture, MJO, pest outbreaks. Does not change the ranking or the score |
 
 ### Response language (`lang`)
