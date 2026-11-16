@@ -37,6 +37,8 @@ type Props = {
   /** Number of options shown when there is no setup yet (kept by the app like `pesos`). */
   count?: number;
   onSources: () => void;
+  /** Opens the glossary, which also explains what each crop type does for the soil. */
+  onGlossary?: () => void;
   /** Reuse only the side-by-side comparison in the Overview. */
   comparisonOnly?: boolean;
 };
@@ -62,7 +64,7 @@ function fallbackInputs(farm: Farm, crops: Crop[], pesos: Pesos = PRIORITIES[0].
 
 const score = (v: number | null | undefined) => (v == null ? null : Math.round(v * 100));
 
-export default function RotationStrategies({ inputs, farm, crops, pesos: appPesos, onPesosChange, onCountChange, count: appCount, onSources, comparisonOnly = false }: Props) {
+export default function RotationStrategies({ inputs, farm, crops, pesos: appPesos, onPesosChange, onCountChange, count: appCount, onSources, onGlossary, comparisonOnly = false }: Props) {
   const { language } = useLanguage();
   const en = language === "en";
   const lang: Lang = en ? "en" : "pt-BR";
@@ -237,6 +239,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
       onClose={() => setDetailId(null)} onCompare={() => { setDetailId(null); compareWith(detail.id); }}/>}
      <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
       "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
+     {onGlossary && <button type="button" className="rs-link-button" onClick={onGlossary}>{say("O que cada cultura faz pelo solo →", "What each crop does for the soil →")}</button>}
     </>}
    </section>
 
