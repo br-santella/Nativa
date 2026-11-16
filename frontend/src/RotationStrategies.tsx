@@ -13,6 +13,7 @@ import PriorityPicker from "./PriorityPicker";
 import { rotationCalendar } from "./rotationCalendar";
 import type { MonthUse } from "./rotationCalendar";
 import type { CriterionId } from "./priorities";
+import ScenarioDetail from "./ScenarioDetail";
 import "./rotation-strategies.css";
 
 const DEMO_FIELD = "72638";
@@ -154,6 +155,9 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
   const target = options.find(o => o.id === compareId) ?? options[0] ?? null;
   const compareRef = useRef<HTMLElement>(null);
   const compareWith = (id: string) => { setCompareId(id); compareRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); };
+  // "Entender este cenário" window: one option at a time.
+  const [detailId, setDetailId] = useState<string | null>(null);
+  const detail = options.find(o => o.id === detailId) ?? null;
 
   const origin = (o: DataOrigem["origem"]) => ({
     estagio: say("pelo estágio da lavoura", "from the crop stage"),
@@ -227,8 +231,10 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
      <div className="rs-cards" style={{ "--rs-cols": options.length <= 4 ? options.length : Math.ceil(options.length / 2) } as CSSProperties}>
       {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
-       compared={target?.id === item.id} onCompare={() => compareWith(item.id)}/>)}
+       compared={target?.id === item.id} onCompare={() => compareWith(item.id)} onDetails={() => setDetailId(item.id)}/>)}
      </div>
+     {detail && <ScenarioDetail item={detail} current={current} block={block} rank={options.indexOf(detail) + 1} evaluated={evaluated} en={en} money={money}
+      onClose={() => setDetailId(null)} onCompare={() => { setDetailId(null); compareWith(detail.id); }}/>}
      <p className="rs-cards-legend">{say("↑ melhor que a rotação de hoje · ↓ pior que a rotação de hoje. As frases resumem as notas de cada critério calculadas pelo motor.",
       "↑ better than today’s rotation · ↓ worse than today’s rotation. The phrases summarise each criterion score computed by the engine.")}</p>
     </>}
@@ -273,15 +279,16 @@ const SHORT_NAMES: Record<string, { pt: string; en: string }> = {
   pragas: { pt: "Pragas", en: "Pests" }, risco: { pt: "Clima", en: "Climate" },
 };
 
-function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evaluated, en, money, compared, onCompare, compact = false }: {
+function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evaluated, en, money, compared, onCompare, onDetails, compact = false }: {
   item: ItemRanking; rank: number; current: ItemRanking | null; best: boolean; theme: CriterionId | null; harvest?: string; sowing?: string;
   evaluated: number; en: boolean; money: (v: number) => string; compared: boolean; onCompare?: () => void;
+  /** Opens the "Entender este cenário" window. */
+  onDetails?: () => void;
   /** Comparison view: no details panel and no buttons. */
   compact?: boolean;
 }) {
   const say = (pt: string, english: string) => (en ? english : pt);
   const tx = (text: { pt: string; en: string }) => (en ? text.en : text.pt);
-  const [open, setOpen] = useState(false);
   const isCurrent = item.atual;
   const baseline = !isCurrent && current && !current.eliminada ? current : null;
   const title = isCurrent ? say("Rotação atual", "Current rotation") : theme ? tx(THEMES[theme]) : say("Alternativa para explorar", "Alternative to explore");
@@ -322,13 +329,8 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
      </>}
     </>}
    </div>
-   {!compact && open && item.card && <div className="rs-details">
-    <p>{item.card.por_que}</p>
-    {item.card.evidencias.length > 0 && <><h4>{say("De onde vêm esses números", "Where these numbers come from")}</h4><ul>{item.card.evidencias.map(e => <li key={e}>{e}</li>)}</ul></>}
-    {item.card.lacunas.length > 0 && <><h4>{say("O que ainda falta saber", "What is still unknown")}</h4><ul>{item.card.lacunas.map(e => <li key={e}>{e}</li>)}</ul></>}
-   </div>}
    {!compact && <div className="rs-card-actions">
-    {item.card && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? say("Ocultar detalhes", "Hide details") : say("Entender este cenário →", "Understand this scenario →")}</button>}
+    {item.card && onDetails && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-haspopup="dialog" onClick={onDetails}>{say("Entender este cenário →", "Understand this scenario →")}</button>}
     {onCompare && <button type="button" className="rs-link-button" onClick={onCompare}>{say("Comparar com a de hoje", "Compare with today’s")}</button>}
    </div>}
   </article>;
