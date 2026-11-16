@@ -30,6 +30,7 @@
 .climate-mini:hover { background: #0b2024; }
 .climate-mini:focus-visible { outline: 2px solid #ffbf22; outline-offset: 4px; border-radius: 4px; }
 .crop-climate-page .climate-summary-note { margin-top: 20px; }
+.crop-climate-sidebar .text-link + .text-link { margin-top: 10px; }
 .climate-detail { padding-top: 8px; }
 .climate-detail header > small { color: #96b2a5; font-size: 11px; }
 .climate-detail-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin: 24px 0; }

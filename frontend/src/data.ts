@@ -83,69 +83,108 @@ export const info = {
   sources: {
     title: "Fontes, escala e incerteza",
     subtitle:
-      "Como cada fonte entra na NATIVA. Indicadores e cenários usam dados reais do ponto cadastrado; no Histórico, temperatura e chuva vêm da NASA POWER e umidade e NDVI são ilustrativos.",
+      "De onde vêm os dados e até onde eles valem. No Histórico, umidade do solo e NDVI são ilustrativos; o restante usa dados reais do ponto cadastrado.",
     items: [
       [
         "NASA POWER",
-        "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local.",
+        "Clima diário desde 1991 (chuva, temperatura e evapotranspiração) em células de ~50 km. Representa a região, não o talhão.",
       ],
       [
-        "NASA SMAP",
-        "Umidade na camada superficial do solo. A conversão para percentual é ilustrativa e não descreve toda a zona de raízes.",
+        "Umidade do solo",
+        "O indicador usa ERA5-Land (camada de 0–7 cm) e a camada do mapa usa NASA SMAP. Nenhum dos dois mede a zona das raízes.",
       ],
       [
-        "NASA MODIS / NDVI",
-        "Índice espectral relacionado ao vigor vegetal. Nuvens, resolução e época do ano afetam a leitura.",
+        "NASA MODIS · NDVI",
+        "Vigor da vegetação em pixels de 250 m, a cada 16 dias. No indicador, leituras com nuvem são descartadas.",
       ],
       [
-        "Sem validação agronômica",
-        "Os cenários do motor são estimativas: confirme a adequação com assistência técnica local.",
+        "O que entra na nota",
+        "Clima (NASA POWER), relevo (NASADEM), solo (SoilGrids), uso da terra (MapBiomas), produtividade municipal (IBGE) e preços e custos (DERAL e CONAB).",
+      ],
+      [
+        "Satélite × estação",
+        "Comparada com 7 estações do INMET, a NASA POWER acompanha bem a temperatura mínima (correlação de 0,94), mas registra cerca de 40% menos dias de geada. Em baixadas, o risco real de geada pode ser maior que o estimado.",
+      ],
+      [
+        "Validado com dados, sem revisão agronômica",
+        "As regras foram conferidas com o ZARC e com safras passadas (IBGE), mas ainda não foram revisadas por agrônomos. Confirme com a assistência técnica local.",
       ],
     ],
   },
   indicators: {
     title: "O que os indicadores significam?",
-    subtitle: "Uma leitura simples para apoiar a exploração.",
+    subtitle:
+      "Termos usados nos indicadores, no Histórico e nas estratégias de rotação.",
     items: [
       [
         "NDVI",
-        "Índice de −1 a 1 relacionado ao vigor vegetal. Não equivale à produtividade.",
-      ],
-      [
-        "Umidade do solo",
-        "Água na camada superficial. A umidade das raízes pode ser diferente.",
+        "Vigor da vegetação, de −1 a 1. Abaixo de 0,2: solo exposto ou palha; acima de 0,6: lavoura vigorosa. Não mede produtividade.",
       ],
       [
         "pH do solo",
-        "Indica acidez ou alcalinidade. A interpretação depende da cultura e da análise laboratorial.",
+        "Acidez do solo. Cada cultura tem uma faixa adequada; abaixo dela, a correção costuma ser a calagem.",
+      ],
+      [
+        "Umidade do solo",
+        "Água nos primeiros centímetros do solo (0–7 cm no indicador). As raízes exploram camadas mais fundas, que podem estar diferentes.",
+      ],
+      [
+        "Anomalia de umidade do solo",
+        "Diferença em relação ao normal da mesma época. Separa uma seca fora do comum da estação seca esperada.",
+      ],
+      [
+        "Evapotranspiração de referência (ET0)",
+        "Água que solo e plantas perdem para o ar, em mm por dia. Quanto maior, mais água a lavoura consome.",
+      ],
+      [
+        "Balanço hídrico",
+        "Chuva menos evapotranspiração, calculado dia a dia (método FAO-56). Mostra se falta água na fase crítica da cultura.",
+      ],
+      [
+        "Déficit hídrico",
+        "A cultura recebe menos de 55% da água de que precisa na fase crítica. O risco é a fração dos 34 anos (1991–2024) em que isso ocorreu.",
+      ],
+      [
+        "Veranico",
+        "15 dias ou mais com menos de 1 mm de chuva por dia, em março e abril. Usado quando faltam dados de solo para o balanço hídrico.",
+      ],
+      [
+        "Risco de geada",
+        "Fração dos 34 anos com mínima de 3 °C ou menos na floração e no enchimento de grão. Semear mais tarde aumenta o risco.",
+      ],
+      [
+        "Célula de grade",
+        "Área com um único valor. Na NASA POWER, cerca de 50 km: o dado descreve a região, não o talhão.",
       ],
     ],
   },
   help: {
     title: "Da órbita à sua terra",
-    subtitle: "Um roteiro rápido para explorar a NATIVA.",
+    subtitle:
+      "Um roteiro rápido para explorar a NATIVA.",
     items: [
       [
         "1. Conheça a propriedade",
-        "Explore os indicadores e o mapa ilustrativo.",
+        "Na Visão Geral, veja os indicadores de clima e o mapa com camadas da NASA.",
       ],
       [
         "2. Registre seu contexto",
-        "Veja os campos de solo, água e histórico de cultivo.",
+        "No Histórico e em Configurações, informe cultivos anteriores, solo e água.",
       ],
       [
         "3. Compare possibilidades",
-        "Explore os perfis solo, água/clima e rentabilidade ou ajuste suas prioridades.",
+        "Em Estratégias de Rotação, escolha um perfil de prioridade ou ajuste os controles.",
       ],
     ],
   },
   technology: {
     title: "Tecnologia espacial. Propósito no campo.",
-    subtitle: "Da observação do espaço às possibilidades da sua próxima safra.",
+    subtitle:
+      "Da observação do espaço às possibilidades da sua próxima safra.",
     items: [
       [
         "Dados em perspectiva",
-        "Referências NASA POWER, SMAP e MODIS contextualizam indicadores de clima, umidade superficial e vegetação.",
+        "NASA POWER traz o clima, MODIS o vigor da vegetação e SMAP a umidade do solo no mapa.",
       ],
       [
         "Da observação à decisão",
@@ -153,7 +192,7 @@ export const info = {
       ],
       [
         "Sobre esta demonstração",
-        "Indicadores e cenários usam NASA POWER, MODIS e outras bases públicas para a localização cadastrada. No Histórico, temperatura e chuva vêm da NASA POWER; umidade e NDVI são ilustrativos.",
+        "Os cultivos de exemplo e as séries de umidade do solo e NDVI do Histórico são ilustrativos. O restante usa dados públicos para a localização cadastrada.",
       ],
     ],
   },
@@ -173,7 +212,6 @@ export const dataSources = {
     ["Esri World Imagery", "Imagem de satélite do mapa"],
   ],
   illustrative: [
-    ["NASA POWER", "Séries de temperatura e precipitação"],
     ["NASA SMAP", "Série de umidade superficial do solo"],
     ["NASA MODIS", "Série de vigor da vegetação (NDVI)"],
   ],
