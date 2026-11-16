@@ -71,8 +71,10 @@
 .rs-baseline { color: var(--rs-muted); font-size: 14px; line-height: 1.6; }
 .rs-baseline strong { color: var(--rs-text); font-weight: 500; }
 
-/* Option grid: up to 4 in one row, 5 or 6 in two rows (--rs-cols set by the page). */
-.rs-cards { display: grid; grid-template-columns: repeat(var(--rs-cols, 3), minmax(0, 1fr)); gap: 14px; align-items: stretch; }
+/* Option grid: up to 3 per row (1–3 in one row, 4 as 2 + 2, 5 as 3 + 2, 6 as 3 + 3; --rs-cols set by the page).
+   Flex wrap, so the last row also fills the full width. Medium screens: at most 2 per row; phones: 1. */
+.rs-cards { --rs-grid-cols: var(--rs-cols, 3); display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; }
+.rs-cards > .rs-card { flex: 1 1 calc((100% - (var(--rs-grid-cols) - 1) * 14px) / var(--rs-grid-cols)); }
 .rs-cards-legend { color: var(--rs-faint); font-size: 13px; line-height: 1.6; }
 
 /* Scenario card */
@@ -90,14 +92,15 @@
 .rs-card-score span { color: var(--rs-muted); font-size: 14px; }
 .rs-card-score small { flex-basis: 100%; color: var(--rs-faint); font-size: 12px; }
 /* Crop sequence: summer → second season, same colours as the calendar. */
-.rs-card-sequence { display: grid; gap: 6px; }
-.rs-card-sequence > span:not(.rs-card-sequence-arrow) { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 9px 12px; border-radius: 10px; background: var(--rs-deep); border-left: 4px solid #5aa36f; min-width: 0; }
+/* Summer crop -> second crop on one line: two chips, each with a small title above the crop name. */
+.rs-card-sequence { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 6px; align-items: stretch; }
+.rs-card-sequence > span:not(.rs-card-sequence-arrow) { display: grid; gap: 3px; align-content: start; padding: 8px 10px; border-radius: 10px; background: var(--rs-deep); border-left: 4px solid #5aa36f; min-width: 0; }
 .rs-card-sequence > .is-second { background: #3a3519; border-left-color: #e0c45c; }
 .rs-card-sequence small { color: #b9c9b8; font-size: 11px; letter-spacing: .5px; text-transform: uppercase; }
 .rs-card-sequence > .is-second small { color: #e6d79c; }
-.rs-card-sequence strong { color: #f4f7ee; font-size: 15px; font-weight: 600; line-height: 1.3; }
+.rs-card-sequence strong { color: #f4f7ee; font-size: 14px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
 /* The two rows read top to bottom; the arrow stays for screen readers only. */
-.rs-card-sequence-arrow { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.rs-card-sequence-arrow { align-self: center; color: var(--rs-faint); font-size: 16px; }
 .rs-card-sequence.is-plain { display: block; font-size: 15px; font-weight: 600; color: #f4f7ee; }
 .rs-cal { display: grid; gap: 6px; }
 .rs-cal-title { color: var(--rs-faint); font-size: 11px; letter-spacing: .6px; text-transform: uppercase; }
@@ -119,17 +122,14 @@
 .rs-traits dd small { color: var(--rs-faint); font-size: 12px; font-variant-numeric: tabular-nums; }
 .rs-traits .is-up { color: var(--rs-up); }
 .rs-traits .is-down { color: var(--rs-down); }
-.rs-card-note { display: grid; gap: 4px; }
-.rs-card-note small { font-size: 11px; letter-spacing: .6px; text-transform: uppercase; }
-.rs-card-note.is-benefit small { color: var(--rs-up); }
-.rs-card-note.is-attention small { color: var(--rs-yellow); }
-.rs-card-note p { font-size: 13px; line-height: 1.55; color: #cfdbc0; }
-.rs-card-body > .rs-traits + .rs-card-note { padding-top: 14px; border-top: 1px solid var(--rs-soft-line); }
-.rs-card-actions { display: grid; gap: 10px; justify-items: center; padding: 0 18px 18px; }
+/* The two card actions share one line, at equal width. */
+.rs-card-actions { display: flex; gap: 10px; padding: 0 18px 18px; }
+.rs-card-actions > .rs-card-button { flex: 1 1 0; min-width: 0; }
 .rs-card-button { width: 100%; padding: 11px 12px; border: 0; border-radius: 10px; background: var(--agro-button); color: #e7ecdf; font-size: 14px; font-weight: 500; cursor: pointer; }
 .rs-card-button.is-primary { background: var(--rs-yellow); color: #152217; }
+.rs-card-button.is-outline { background: transparent; border: 1px solid var(--rs-line); color: var(--rs-text); }
+.rs-card-button.is-outline:hover { border-color: #ffbf2280; }
 .rs-card-button:focus-visible { outline: 2px solid var(--rs-yellow); outline-offset: 3px; }
-.rs-card-actions .rs-link-button { justify-self: center; }
 .rs-warning { color: #ffd0b3; font-size: 14px; line-height: 1.6; }
 
 /* 03 · one integrated panel: today | gains and losses | option */
@@ -182,13 +182,14 @@
   .rs-top { grid-template-columns: 1fr; gap: 28px; }
   .rs-summary { padding-right: 0; padding-bottom: 24px; border-right: 0; border-bottom: 1px solid var(--rs-soft-line); }
   .rs-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .rs-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rs-cards { --rs-grid-cols: min(var(--rs-cols, 3), 2); }
   .rs-versus { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rs-versus-middle { grid-column: 1 / -1; order: 3; border: 0; border-top: 1px solid var(--rs-soft-line); }
   .rs-versus > .rs-card + .rs-card { border-left: 1px solid var(--rs-soft-line); }
 }
 @media (max-width: 640px) {
-  .rs-facts, .rs-profiles, .rs-sliders, .rs-cards, .rs-versus { grid-template-columns: 1fr; }
+  .rs-facts, .rs-profiles, .rs-sliders, .rs-versus { grid-template-columns: 1fr; }
+  .rs-cards { --rs-grid-cols: 1; }
   .rs-count { margin-left: 0; }
   .rs-versus > .rs-card + .rs-card { border-left: 0; border-top: 1px solid var(--rs-soft-line); }
 }
@@ -204,6 +205,12 @@
 .sd-badge { padding: 4px 10px; border: 1px solid var(--rs-line); border-radius: 999px; color: var(--rs-muted); font-size: 12px; }
 .sd-badge.is-good { border-color: #9ad3a466; color: var(--rs-up); }
 .sd-badge.is-warn { border-color: #ffbf2266; color: #f6d583; }
+.sd-roles { display: grid; gap: 8px; padding: 12px 14px; border-radius: 10px; background: var(--rs-deep); }
+.sd-roles-title { color: var(--rs-muted); font-size: 12px; }
+.sd-role.is-scored { border-color: #9ad3a466; color: var(--rs-up); }
+.sd-role.is-info { border-style: dashed; }
+.sd-badge b { font-weight: 400; }
+.sd .sd-roles-note { margin: 0; color: var(--rs-faint); font-size: 12px; }
 .sd-score { display: grid; grid-template-columns: auto auto; align-items: baseline; column-gap: 4px; text-align: right; flex: 0 0 auto; }
 .sd-score strong { font-size: 44px; font-weight: 500; line-height: 1; color: var(--rs-yellow); font-variant-numeric: tabular-nums; }
 .sd-score span { color: var(--rs-muted); font-size: 14px; }
@@ -275,4 +282,17 @@
   .sd-bars li { grid-template-columns: 1fr 44px; }
   .sd-bar { grid-column: 1 / -1; grid-row: 2; }
   .sd-two { grid-template-columns: 1fr; }
+}
+
+/* Soil badges on the option cards (same look as in the scenario window). */
+.rs-card-body > .soil-badges { padding-top: 14px; border-top: 1px solid var(--rs-soft-line); }
+.soil-badges .sd-badge { font-size: 12px; line-height: 1.4; }
+.soil-badges .is-up { color: var(--rs-up); }
+.soil-badges .is-down { color: var(--rs-down); }
+/* Very narrow cards: the two crop chips stack again. */
+.rs-card { container-type: inline-size; }
+@container (max-width: 250px) {
+  .rs-card-sequence { grid-template-columns: minmax(0, 1fr); }
+  .rs-card-sequence-arrow { display: none; }
+  .rs-card-actions { flex-direction: column; }
 }
