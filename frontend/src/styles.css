@@ -47,6 +47,32 @@
 body {
   margin: 0;
 }
+/* Dark, thin scrollbars matching the theme (Firefox + Chromium/WebKit). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3d6b5a;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
 button,
 input,
 select,
