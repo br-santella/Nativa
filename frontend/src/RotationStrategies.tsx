@@ -239,7 +239,7 @@ export default function RotationStrategies({ inputs, farm, crops, pesos: appPeso
       : <span className="rs-baseline-note" title={`${current.rotacao} · ${say("nota", "score")} ${score(current.nota)}`}>{say("Comparadas com a sua rotação atual", "Compared with your current rotation")}</span>}</p>}
      {options.length === 0 && <p className="rs-empty">{say("O motor não encontrou alternativas válidas para esta área com o seu cadastro.", "The engine found no valid alternatives for this land with your setup.")}</p>}
      {/* One scrolling row: up to 3 cards visible (2 on medium screens, 1 on phones), so more options do not make the page taller. */}
-     <div className="rs-cards" role="region" tabIndex={0} aria-label={say("Opções de rotação", "Rotation options")}
+     <div className="rs-cards" role="region" tabIndex={0} aria-label={say("Opções de rotação", "Rotation options")} data-count={Math.min(options.length, 4)}
       style={{ "--rs-cols": Math.min(Math.max(options.length, 1), 3) } as CSSProperties}>
       {options.map((item, i) => <ScenarioCard key={item.id} item={item} rank={i + 1} current={current} best={item.id === bestId}
        theme={themes.get(item.id) ?? null} harvest={res.colheita_estimada?.data} sowing={res.semeadura_2a?.data} evaluated={evaluated} en={en} money={money}
