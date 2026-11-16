@@ -372,7 +372,7 @@ function ScenarioCard({ item, rank, current, best, theme, harvest, sowing, evalu
     </>}
    </div>
    {!compact && <div className="rs-card-actions">
-    {item.card && onDetails && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-haspopup="dialog" onClick={onDetails}>{say("Entender este cenário →", "Understand this scenario →")}</button>}
+    {item.card && onDetails && <button type="button" className={"rs-card-button" + (best ? " is-primary" : "")} aria-haspopup="dialog" onClick={onDetails}>{say("Entender este cenário\u00a0→", "Understand this scenario\u00a0→")}</button>}
     {onCompare && <button type="button" className="rs-card-button is-outline" onClick={onCompare}>{say("Comparar com a de hoje", "Compare with today’s")}</button>}
    </div>}
   </article>;
