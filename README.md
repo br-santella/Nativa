@@ -255,6 +255,7 @@ Interactive documentation (Swagger, with pre-filled examples): **`http://localho
 | `POST` | `/v1/diagnostico` | Full diagnosis of an area |
 | `POST` | `/v1/recomendacao` | Ranked rotations, optionally with the diagnosis |
 | `GET` | `/v1/clima` | Climate block only, for a point |
+| `GET` | `/v1/clima/mensal` | Monthly mean temperature (°C) and rainfall total (mm) of one year at a point, from NASA POWER; months not yet published are `null` |
 | `GET` `POST` | `/v1/contexto` | Current conditions (ENSO, SMAP soil moisture, MJO, pest outbreaks). Informational: does not change the score |
 
 Responses are in **Brazilian Portuguese by default** and in **English** with `?lang=en` or `Accept-Language: en`
