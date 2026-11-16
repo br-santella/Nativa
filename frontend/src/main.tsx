@@ -255,7 +255,7 @@ function App() {
     }
     function Demo() {
         return (<p className="demo">{__text("DADOS DEMONSTRATIVOS")}{__text(" ")}
-        <span>{__text("\u2022 Temperatura e chuva v\u00EAm da NASA POWER (c\u00E9lula de ~50 km). Umidade do solo, NDVI e cultivos de exemplo s\u00E3o ilustrativos, n\u00E3o medi\u00E7\u00F5es da sua propriedade nem recomenda\u00E7\u00F5es validadas.")}</span>
+        <span>{__text("• Temperatura e chuva: NASA POWER (célula de ~50 km). Umidade do solo, NDVI e cultivos de exemplo são ilustrativos.")}</span>
       </p>);
     }
     function Btn({ children, onClick, secondary = false, type = "button", }: {
@@ -335,7 +335,7 @@ function App() {
         return (<div className="overview-page">
         <h1 className="overview-title">{__text("Visão Geral")}</h1>
         <p className="overview-intro">{__text("Acompanhe sua propriedade, entenda o ciclo atual e explore possibilidades para a próxima safra.")}</p>
-        <p className="demo">{locale() === "en-US" ? "Climate indicators: API estimates at the property reference point. Other demonstration information remains illustrative." : "Indicadores climáticos: estimativas via API no ponto de referência da propriedade. Outras informações de demonstração permanecem ilustrativas."}</p>
+        <p className="demo">{locale() === "en-US" ? "Climate indicators: satellite and model data at the property point. Sample crops and seasons are illustrative." : "Indicadores de clima: dados de satélite e modelos no ponto da propriedade. Cultivos e safras de exemplo são ilustrativos."}</p>
         <section className="overview-current-crop" aria-labelledby="overview-current-crop-title">
           <div>
             <small id="overview-current-crop-title"><PropertyIcon kind="farm" />{__text("Nome da propriedade")}</small>
@@ -439,10 +439,10 @@ function App() {
       </section>);
     }
     const climateIndicators = {
-        temperature: { name: "Temperatura média", source: "NASA POWER", unit: tempUnit, color: "#efae38", description: "Meses mais quentes podem aumentar a demanda por água.", limitation: "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local." },
-        rain: { name: "Precipitação acumulada", source: "NASA POWER", unit: "mm", color: "#8ebdc6", description: "Chuva total de cada mês na célula NASA POWER que contém o ponto da propriedade.", limitation: "Meteorologia em grade: temperatura e precipitação. A escala regional não substitui uma estação local." },
-        moisture: { name: "Umidade do solo", source: "NASA SMAP", unit: "%", color: "#a8c9a3", description: "Água na camada superficial; não representa toda a zona de raízes.", limitation: "Umidade na camada superficial do solo. A conversão para percentual é ilustrativa e não descreve toda a zona de raízes." },
-        ndvi: { name: "Índice de vegetação (NDVI)", source: "NASA MODIS", unit: "", color: "#8ca53b", description: "NDVI indica atividade da vegetação, não rendimento da safra.", limitation: "Índice espectral relacionado ao vigor vegetal. Nuvens, resolução e época do ano afetam a leitura." },
+        temperature: { name: "Temperatura média", source: "NASA POWER", unit: tempUnit, color: "#efae38", description: "Média mensal do ar a 2 m. Meses mais quentes aumentam o consumo de água da lavoura.", limitation: "Célula de ~50 km: não capta diferenças de relevo dentro da propriedade, como baixadas mais frias." },
+        rain: { name: "Precipitação acumulada", source: "NASA POWER", unit: "mm", color: "#8ebdc6", description: "Chuva total de cada mês na célula NASA POWER do ponto da propriedade.", limitation: "Valores de grade suavizam temporais locais: uma chuva forte no talhão pode não aparecer." },
+        moisture: { name: "Umidade do solo", source: "NASA SMAP", unit: "%", color: "#a8c9a3", description: "Água nos primeiros centímetros do solo; não representa a zona das raízes.", limitation: "Série ilustrativa. O indicador real da Visão Geral usa ERA5-Land, camada de 0–7 cm." },
+        ndvi: { name: "Índice de vegetação (NDVI)", source: "NASA MODIS", unit: "", color: "#8ca53b", description: "Vigor da vegetação: abaixo de 0,2, solo exposto ou palha; acima de 0,6, lavoura vigorosa.", limitation: "Série ilustrativa. Nuvens e o pixel de 250 m afetam a leitura." },
     };
     const isPower = (kind: keyof typeof series) => kind === "temperature" || kind === "rain";
     function noSeries(kind: keyof typeof series) {
@@ -564,8 +564,9 @@ function App() {
                     </button>;
                 })}
               </div>
-              <p className="climate-summary-note">{__text("Temperatura e chuva: NASA POWER, célula de ~50 km. Umidade e NDVI: séries demonstrativas, não medições da propriedade.")}</p>
+              <p className="climate-summary-note">{__text("Temperatura e chuva: NASA POWER. Umidade e NDVI: séries de exemplo.")}</p>
               <LinkButton onClick={() => open("sources")}>{__text("Fontes e limitações →")}</LinkButton>
+              <LinkButton onClick={() => open("indicators")}>{__text("O que significam esses termos? →")}</LinkButton>
             </aside>
           </div>
               <section className="plan-banner crop-plan-banner">
@@ -594,15 +595,15 @@ function App() {
         <div className="two-col">
           <section className="panel">
             <h2>{__text("Planeje com a sazonalidade")}</h2>
-            <p>{__text("Padr\u00E3o ilustrativo \u2022 n\u00E3o \u00E9 previs\u00E3o meteorol\u00F3gica")}</p>
+            <p>{__text("Média de longo prazo da NASA POWER no Paraná • cada ano varia")}</p>
             <div className="season wet">
-              <strong>{__text("Out\u2013Mar")}</strong>
-              <div>{__text("Per\u00EDodo mais chuvoso")}<small>{__text("Aten\u00E7\u00E3o \u00E0 drenagem e \u00E0 janela de plantio.")}</small>
+              <strong>{__text("Out\u2013Jan")}</strong>
+              <div>{__text("Mais chuvoso, em média")}<small>{__text("Aten\u00E7\u00E3o \u00E0 drenagem e \u00E0 janela de plantio.")}</small>
               </div>
             </div>
             <div className="season dry">
-              <strong>{__text("Mai\u2013Ago")}</strong>
-              <div>{__text("Per\u00EDodo mais seco")}<small>{__text("Cobertura do solo ajuda a reduzir evapora\u00E7\u00E3o.")}</small>
+              <strong>{__text("Jul\u2013Ago")}</strong>
+              <div>{__text("Mais seco, em média")}<small>{__text("Cobertura do solo ajuda a reduzir evapora\u00E7\u00E3o.")}</small>
               </div>
             </div>
           </section>
@@ -611,7 +612,7 @@ function App() {
             <h3>{__text("Hist\u00F3rico")}</h3>
             <p>{__text(isPower(climateIndicator) ? "Observações passadas: médias mensais da NASA POWER no ponto da propriedade." : "Observações passadas, aqui representadas por exemplos fictícios.")}</p>
             <h3 className="warm">{__text("Estimativas e proje\u00E7\u00F5es")}</h3>
-            <p>{__text("S\u00E3o aproxima\u00E7\u00F5es com incerteza. Linhas tracejadas n\u00E3o s\u00E3o observa\u00E7\u00F5es.")}</p>
+            <p>{__text(isPower(climateIndicator) ? "Modelos e satélites têm incerteza; confira com observações locais." : "S\u00E3o aproxima\u00E7\u00F5es com incerteza. Linhas tracejadas n\u00E3o s\u00E3o observa\u00E7\u00F5es.")}</p>
           </section>
         </div>
         <section className="callout">
@@ -732,7 +733,7 @@ function App() {
             {([
                 ["engine", "Motor de rota\u00E7\u00E3o", "Estrat\u00E9gias de Rota\u00E7\u00E3o e Safra anual \u2022 para a \u00E1rea cadastrada", true],
                 ["indicators", "Indicadores e mapa", "Vis\u00E3o Geral \u2022 no ponto de refer\u00EAncia da propriedade", true],
-                ["illustrative", "Ilustrativas", "Hist\u00F3rico \u2022 s\u00E9ries clim\u00E1ticas de exemplo", false],
+                ["illustrative", "Ilustrativas", "Histórico • umidade do solo e NDVI de exemplo", false],
             ] as const).map(([key, title, where, live]) => (<section className="panel" key={key}>
                 <h3 className={live ? "" : "warm"}>{__text(title)}</h3>
                 <p>{__text(where)}</p>
