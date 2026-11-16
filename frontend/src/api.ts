@@ -12,7 +12,22 @@ export type Card = {
   lacunas: string[];
   riscos: string[];
   avisos: string[];
+  /** Local market for the rotation's crops (`nivel`: alto | medio | baixo). */
+  mercado?: { nivel: string; texto: string; estimativa?: string };
 };
+
+/** How far to trust one option (docs/motor.md §7.1). */
+export type Incerteza = {
+  /** Incremental second-season income: worst and best of the last seasons (BRL/ha). */
+  /** `origem`: "historico" (last seasons), "custo_fixo" (no grain sold: income is the cost) or "ano_ruim_p20" (worst 20% of years; best is null). */
+  renda?: { incremental_r_ha: number; faixa_r_ha: [number, number | null]; origem: string };
+  nota_faixa?: [number, number | null];
+  nota_por_safra?: Record<string, number> | null;
+  risco_climatico?: { probabilidade: number; eventos: string[]; confianca: string; texto: string } | null;
+  criterios_estimados?: string[];
+};
+export type Zarc = { indicado: boolean; culturas: { cultura: string; semeadura: string; indicado: boolean; risco_pct: number | null }[] };
+export type HistoricoRenda = { cultura: string; safras: { ano: number; margem_sc_soja_ha: number }[]; fonte?: string };
 
 export type ItemRanking = {
   posicao: number | null;
@@ -26,6 +41,10 @@ export type ItemRanking = {
   criterios?: { renda: number; solo: number; agua: number; pragas: number; risco: number };
   margem?: { total_r_ha: number; incremental_r_ha: number };
   card?: Card;
+  incerteza?: Incerteza;
+  zarc?: Zarc | null;
+  /** Realized second-crop margin of the last 5 seasons, in soybean bags/ha (corn, corn + brachiaria and wheat only). */
+  historico_renda?: HistoricoRenda | null;
   eliminada?: boolean;
   motivos?: string[];
 };
@@ -33,7 +52,12 @@ export type ItemRanking = {
 export type Eliminada = { id: string; rotacao: string; motivos: string[] };
 
 /** Ranking of one set of combinations; `posicao` restarts at 1 in each block. */
-export type Bloco = { ranking: ItemRanking[]; alternativas: ItemRanking[]; eliminadas: Eliminada[] };
+export type Bloco = {
+  ranking: ItemRanking[]; alternativas: ItemRanking[]; eliminadas: Eliminada[];
+  /** How often each option would be first, repeating each of the last seasons. */
+  estabilidade?: { safras: number[]; primeiro: { id: string; safras: number }[]; texto: string } | null;
+  empate_tecnico?: { ids: string[]; diferenca: number; limiar: number; texto: string } | null;
+};
 
 export type DataOrigem = { data: string; origem: "estagio" | "informada" | "premissa" | "derivada" };
 
